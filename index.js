@@ -54,8 +54,7 @@ module.exports = function (options) {
 
     function loadData() {
         var specPath = path.resolve(opts.specFile)
-        delete require.cache[specPath]
-        var specData = require(opts.appDir + '/lib/resolve-references.js').fetchReference(specPath)
+        var specData = require(path.resolve(opts.appDir + '/graphicle/index'))(specPath)
         return require(path.resolve(opts.appDir + '/lib/preprocessor'))(options, specData)
     }
 

@@ -13,16 +13,13 @@
 {{#if parameters}}
   <section class="swagger-request-params">
     {{#each parameters}}
-      {{#schemaReferenceContext $ref}}
+      {{!-- {{#schemaReferenceContext $ref}} --}}
         <div class="prop-row prop-group">
           <div class="prop-name">
-            <div class="prop-title">{{name}}: <span class="prop-type">{{~>json-schema/datatype . ~}}</span></div>
+            <div class="prop-title">{{name}}: <span class="prop-type">{{~>json-schema/datatype schema ~}}</span></div>
             {{#if required}}
               <span class="json-property-required"></span>
-            {{/if}}
-            <div class="prop-subtitle">
-              in {{in}}
-            </div>
+            {{/if}}            
             {{!--
             {{#if schema.$ref}}
               <span class="swagger-global"></span> <span class="json-schema-reference"><a href="{{$ref}}">{{$ref}}</a></span>
@@ -39,7 +36,7 @@
             {{md (swaggerCollectionFormat collectionFormat name) stripParagraph=true}}
           </div>
         {{~/if}}
-      {{/schemaReferenceContext}}
+      {{!-- {{/schemaReferenceContext}} --}}
     {{/each}}
   </section>
 {{/if}}

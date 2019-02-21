@@ -1,0 +1,61 @@
+introspection: https://graphql-pokemon.now.sh
+servers:
+  - url: https://graphql-pokemon.now.sh
+    description: Test Server  
+info:
+  description: |
+    Welcome to the sample Pokémon API reference. This is a live example of how you can use [Graphicle](https://github.com/wayfair/graphicle) in conjunction with [GraphQL](https://graphql.org/) to generate beautiful static documentation for your own APIs.
+
+    The Pokémon API is GraphQL API. It's schema can be fetched using introspection query and can be used for generating code, documentations, tests etc.
+
+    GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.
+  version: 1.0.0
+  title: Pokémon API
+  termsOfService: 'https://graphql-pokemon.now.sh/terms'
+  contact:
+    email: dmiasoutov@wayfair.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+domains:
+  - name: Fetching Pokémons
+    description: Base methods to fetch pokemon information.
+    usecases:
+     - name: Fetch Pokémons
+       description: Query list of Pokémon
+       query: query.pokemons
+       expand: weight,height       
+     - name: Fetch single Pokémon
+       description: Query any Pokémon by number or name
+       query: query.pokemon
+       expand: weight,height
+  - name: Evolution & Attacks
+    description: Custom methods to fetch pokemon
+    usecases:
+     - name: Query Attack Rating
+       description: Query Pokémon
+       query: query.pokemon       
+       select: id name
+       expand: attacks,fast,special
+     - name: Query Evolutions
+       description: Query Pokémon evolutions
+       query: query.pokemon
+       select: id name
+       expand: evolutions
+# securityDefinitions:
+#   cheesy_auth:
+#     type: oauth2
+#     authorizationUrl: 'http://cheesy.sourcey.com/api/oauth/dialog'
+#     description: Provides OAuth access to the cheese
+#     flow: implicit
+#     scopes:
+#       'write:cheeses': Modify cheeses in your account
+#       'read:cheeses': Read your cheeses
+#   api_key:
+#     type: apiKey
+#     name: api_key
+#     description: Provides API Key access to the cheese
+#     in: header
+# externalDocs:
+#   description: Find out more about Swagger
+#   url: 'http://swagger.io'

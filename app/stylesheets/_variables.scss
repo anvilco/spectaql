@@ -50,7 +50,7 @@ $msg-swagger-description: 'Description' !default;
 $msg-swagger-section-operation-path: 'Path' !default;
 $msg-swagger-section-operation-description: $msg-swagger-description !default;
 $msg-swagger-section-request-params: 'Request parameters' !default;
-$msg-swagger-section-request-body: 'Request body' !default;
+$msg-swagger-section-request-body: '' !default;
 $msg-swagger-section-responses: 'Responses' !default;
 
 $msg-swagger-param-key: 'Key' !default;

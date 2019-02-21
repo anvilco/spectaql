@@ -1,7 +1,7 @@
+var highlightGraphQl = require('../graphicle/graphql-hl')
 var cheerio = require('cheerio')
 var marked = require('marked')
 var highlight = require('highlight.js')
-var yaml = require('js-yaml')
 var _ = require('lodash')
 
 var common = {
@@ -13,41 +13,42 @@ var common = {
    *      If this options is set to true, the <p>-tag is stripped.
    * @returns {string} the markdown rendered as HTML.
    */
-  markdown: function(value, stripParagraph) {
+  markdown: function (value, stripParagraph) {
     if (!value) {
-         return value;
-     }
+      return value;
+    }
 
-     var html = marked(value)
-     // We strip the surrounding <p>-tag, if
-     if (stripParagraph) {
-         var $ = cheerio("<root>" + html + "</root>")
-         // Only strip <p>-tags and only if there is just one of them.
-         if ($.children().length === 1 && $.children('p').length === 1) {
-             html = $.children('p').html()
-         }
-     }
-     return html;
+    var html = marked(value)
+    // We strip the surrounding <p>-tag, if
+    if (stripParagraph) {
+      var $ = cheerio("<root>" + html + "</root>")
+      // Only strip <p>-tags and only if there is just one of them.
+      if ($.children().length === 1 && $.children('p').length === 1) {
+        html = $.children('p').html()
+      }
+    }
+    return html;
   },
 
-  highlight: function(code, lang) {
-      var highlighted;
-      if (lang) {
-          try {
-              highlighted = highlight.highlight(lang, code).value;
-          } catch (e) {}
-      }
-      if (!highlighted) {
-          highlighted = highlight.highlightAuto(code).value;
-      }
+  highlight: function (code, lang) {
+    var highlighted;
+    if (lang) {
+      try {
+        highlighted = highlight.highlight(lang, code).value;
+      } catch (e) {}
+    }
+    if (!highlighted) {
+      highlighted = highlight.highlightAuto(code).value;
+    }
 
-      return '<pre><code'
-          + (lang
-              ? ' class="hljs ' + this.options.langPrefix + lang + '"'
-              : ' class="hljs"')
-          + '>'
-          + highlighted //code //
-          + '\n</code></pre>\n';
+    return '<pre><code' +
+      (lang ?
+        ' class="hljs ' + this.options.langPrefix + lang + '"' :
+        ' class="hljs"') +
+      '>' +
+      highlighted //code //
+      +
+      '\n</code></pre>\n';
   },
 
   // formatSchema: function(value) {
@@ -80,26 +81,24 @@ var common = {
   //   return cloned;
   // },
 
-  formatExample: function(value, root, options) {
+  formatExample: function (value, root, options) {
     if (!value) {
       // throw 'Cannot format NULL object ' + value;
       return;
     }
-    
-    if (value.example) {
-      return value.example;
-    }
-    else if (value.schema) {
+
+    if (typeof (value) == "string") {
+      return value
+    } else if (value.schema) {
       return this.formatExampleProp(value.schema, root, options)
-    }
-    else if (value.type || value.properties || value.allOf)  {
+    } else if (value.type || value.properties || value.allOf) {
       return this.formatExampleProp(value, root, options)
     }
 
     console.error('Cannot format example on object ', value)
   },
 
-  formatExampleProp: function(ref, root, options) {
+  formatExampleProp: function (ref, root, options) {
     if (!ref) {
       console.error('Cannot format NULL property')
       return;
@@ -122,24 +121,21 @@ var common = {
 
     if (ref.example !== undefined) {
       return ref.example;
-    }
-    else if (ref.$ref) {
+    } else if (ref.$ref) {
       var remoteRef = this.resolveSchemaReference(ref.$ref, root)
       if (remoteRef)
         return this.formatExampleProp(remoteRef, root, options)
-    }
-    else if (ref.properties) { // && ref.type == 'object'
+    } else if (ref.properties) { // && ref.type == 'object'
       var obj = {};
-      Object.keys(ref.properties).forEach(function(k) {
+      Object.keys(ref.properties).forEach(function (k) {
         if (showReadOnly || ref.properties[k].readOnly !== true) {
           obj[k] = that.formatExampleProp(ref.properties[k], root, options)
         }
       })
       return obj;
-    }
-    else if (ref.allOf) {
+    } else if (ref.allOf) {
       var obj = {};
-      ref.allOf.forEach(function(parent) {
+      ref.allOf.forEach(function (parent) {
         var prop = that.formatExampleProp(parent, root, options)
         if (!prop || typeof prop == 'string') {
           // console.log('skipping property', prop, parent)
@@ -148,64 +144,45 @@ var common = {
         obj = Object.assign(prop, obj)
       })
       return obj;
-    }
-    else if (ref.items && ref.type == 'array') {
-      return [ this.formatExampleProp(ref.items, root, options) ];
-    }
-    else if (ref.type) {
+    } else if (ref.items && ref.type == 'array') {
+      return [this.formatExampleProp(ref.items, root, options)];
+    } else if (ref.type) {
       return ref.type + (ref.format ? ' (' + ref.format + ')' : '')
     }
 
     console.error('Cannot format example on property ', ref, ref.$ref)
   },
 
-  printSchema: function(value, toyaml) {
+  printSchema: function (value, root) {
     if (!value) {
       return '';
     }
-    
-    var schemaString = toyaml ? yaml.safeDump(value, {skipInvalid:true}) : JSON.stringify(value, null, 2) 
-      // Add an extra CRLR before the code so the postprocessor can determine
-      // the correct line indent for the <pre> tag.
-      
-    var $ = cheerio.load(marked(toyaml ? "```yaml\r\n" + schemaString + "```" : "```json\r\n" + schemaString + "\n```"))
-    var definitions = $('span:not(:has(span)):contains("#/definitions/")')
-    definitions.each(function(index, item) {
-      var ref = $(item).html()
-      var refLink = ref.replace(/&quot;/g, "").replace('#/definitions/', '#definition-')
-      // TODO: This should be done in a template
-      $(item).html("<a href=" + refLink + ">" + ref + "</a>")
-    })
-    
-    // Remove trailing whitespace before code tag
-    // var re = /([\n\r\s]+)(<\/code>)/g;
-    // str = $.html().replace(re, '$2')
 
-    // return '<pre><code class="hljs lang-json">' +
-    //   this.highlight(schemaString, 'json') +
-    //   '</code></pre>';
-    
-    return $.html()
+    if (typeof (value) == "string") {      
+      return cheerio.load(marked("```gql\r\n" + value + "\n```")).html();      
+    } else {
+      var obj = JSON.stringify(value, null, 2)
+      return cheerio.load(marked("```json\r\n" + obj + "\n```")).html()
+    }
   },
 
-  resolveSchemaReference: function(reference, json) {
+  resolveSchemaReference: function (reference, json) {
     var hashParts
 
     reference = reference.trim()
     if (reference.indexOf('#') === 0) {
-      var hash = reference.split('#')[1]
+      var hash = reference.substr(2);
       hashParts = hash.split('/')
-    }
-    else {
-      hashParts = [ 'definitions', reference ]
+    } else {
+      hashParts = ['definitions', reference]
     }
 
     var current = json;
-    hashParts.forEach(function(hashPart) {
+    hashParts.forEach(function (hashPart) {
       // Traverse schema from root along the path
       if (hashPart.trim().length > 0) {
         if (typeof current === 'undefined') {
-          console.warn("Reference '"+reference+"' cannot be resolved. '"+hashPart+"' is undefined.")
+          console.warn("Reference '" + reference + "' cannot be resolved. '" + hashPart + "' is undefined.")
           return {};
         }
         current = current[hashPart];
@@ -219,6 +196,8 @@ var common = {
 highlight.configure({
   // "useBR": true
 })
+
+highlight.registerLanguage("graphql", highlightGraphQl);
 
 // Create a custom renderer for highlight.js compatability
 var renderer = new marked.Renderer()

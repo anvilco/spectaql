@@ -1,60 +1,63 @@
 {
-  "name": "spectacle-docs",
-  "version": "1.0.7",
-  "description": "Generate beautiful static API documentation from OpenAPI/Swagger 2.0 specifications",
+  "name": "graphicle",
+  "version": "1.0.0",
+  "description": "Generate beautiful static API documentation from GraphQL Schema",
   "preferGlobal": true,
   "bin": {
-    "spectacle": "bin/spectacle.js"
+    "graphicle": "bin/graphicle.js"
   },
   "scripts": {
-    "build": "node bin/spectacle -l test/fixtures/cheese.png test/fixtures/cheese.yml",
-    "test": "mocha && node bin/spectacle -l test/fixtures/cheese.png test/fixtures/cheese.yml",
-    "develop": "spectacle -d",
-    "start": "spectacle -s"
+    "build": "node bin/graphicle -l eevee.png graphicle.yml",
+    "publish": "node bin/graphicle -l eevee.png -t docs graphicle.yml",
+    "test": "mocha && node bin/graphicle -l eevee.png graphicle.yml",
+    "develop": "graphicle -d",
+    "start": "graphicle -s"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sourcey/spectacle.git"
+    "url": "git+https://github.com/wayfair/graphicle.git"
   },
   "engines": {
     "node": ">=8"
   },
   "keywords": [
-    "openapi",
-    "swagger",
+    "graphql",
     "docs",
     "documentation",
     "builder",
     "generator"
   ],
-  "author": "Kam Low <auscaster@gmail.com> (https://sourcey.com)",
+  "author": "Dennis Miasoutov <dmiasoutov@wayfair.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sourcey/spectacle/issues"
+    "url": "https://github.com/sourcey/graphicle/issues"
   },
-  "homepage": "https://sourcey.com/spectacle",
+  "homepage": "https://github.com/wayfair/graphicle",
   "dependencies": {
     "bluebird": "^3.5.2",
     "cheerio": "^1.0.0-rc.2",
     "clarify": "^2.1.0",
     "commander": "*",
     "foundation-sites": "^6.5.0-rc.4",
+    "graphql": "^14.1.1",
+    "graphql-2-json-schema": "^0.1.1",
+    "graphql-json-schema": "^0.1.2",
     "grunt": "^1.0.3",
+    "grunt-compile-handlebars": "^2.0.2",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-connect": "^2.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^3.0.0",
+    "grunt-contrib-handlebars": "^1.0.0",
     "grunt-contrib-jshint": "^2.0.0",
     "grunt-contrib-uglify": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-contrib-handlebars": "^1.0.0",
-    "grunt-compile-handlebars": "^2.0.2",
     "grunt-embed": "^0.2.1",
     "grunt-prettify": "^0.4.0",
     "grunt-sass": "^3.0.2",
     "handlebars": "^4.0.12",
-    "highlight.js": "^9.13.0",
+    "highlight.js": "9.13.1",
     "js-yaml": "^3.12.0",
     "json-refs": "^3.0.12",
     "json-stable-stringify": "^1.0.1",
