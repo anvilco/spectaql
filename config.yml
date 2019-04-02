@@ -4,7 +4,7 @@ servers:
     description: Test Server  
 info:
   description: |
-    Welcome to the sample Pokémon API reference. This is a live example of how you can use [Graphicle](https://github.com/wayfair/graphicle) in conjunction with [GraphQL](https://graphql.org/) to generate beautiful static documentation for your own APIs.
+    Welcome to the sample Pokémon API reference. This is a live example of how you can use [DociQL](https://github.com/wayfair/dociql) in conjunction with [GraphQL](https://graphql.org/) to generate beautiful static documentation for your own APIs.
 
     The Pokémon API is GraphQL API. It's schema can be fetched using introspection query and can be used for generating code, documentations, tests etc.
 

@@ -1,13 +1,13 @@
-# Graphicle
+# DociQL
 
 > A nice fork of [Spectacle](http://sourcey.com/spectacle)
 
-Graphicle generates beautiful static HTML5 documentation from [GraphQL](https://graphql.org) endpoint using introspection query.
+DociQL generates beautiful static HTML5 documentation from [GraphQL](https://graphql.org) endpoint using introspection query.
 
-The goal of Graphicle is help you "save time and look good" by providing an extensible platform for auto generating your API docs. The default layout is a three column single page, similar to those
+The goal of DociQL is help you "save time and look good" by providing an extensible platform for auto generating your API docs. The default layout is a three column single page, similar to those
 employed by [Stripe](https://stripe.com/docs/api) and [Intercom](https://developers.intercom.com/reference).
 
-See a demo of Graphicle in action here: [https://wayfair.github.io/graphicle/](https://wayfair.github.io/graphicle/)
+See a demo of DociQL in action here: [https://wayfair.github.io/dociql/](https://wayfair.github.io/dociql/)
 
 ---
 
@@ -28,14 +28,14 @@ See a demo of Graphicle in action here: [https://wayfair.github.io/graphicle/](h
 
 ## Usage
 
-### Install Graphicle from `npm` like so:
+### Install DociQL from `npm` like so:
 
 ```bash
-npm install -g graphicle-docs
+npm install -g dociql-docs
 ```
 
 
-### Define `graphicle.yml` template to help generating bautiful docs:
+### Define `config.yml` template to help generating bautiful docs:
 ```yml
 # To fetch schema from
 introspection: https://url-to-you-graphql-endpoint
@@ -66,10 +66,10 @@ domains:
        description: Markdown enabled description for operation
        query: mutation.mutateSome # Mutation example - invoke mutation
 ```
-### Next pass your `graphicle.yml` document to generate your documentation.
+### Next pass your `config.yml` document to generate your documentation.
 
 ```bash
-graphql -d graphicle.yml
+dociql -d config.yml
 ```
 
 Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, or view your docs by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
@@ -83,9 +83,9 @@ Your generated documentation will be located in the `public` directory by defaul
 The basic CLI options are detailed below:
 
 ```bash
-$ spectacle -h
+$ dociql -h
 
-  Usage: spectacle [options] <graphicle.yaml>
+  Usage: dociql [options] <dociql.yaml>
 
   Options:
 
@@ -114,7 +114,7 @@ Most options are self explanatory, but the following options warrant some furthe
 
 * **--start-server** `-s`: This option starts a production server without any development options enabled that serves the contents of your `--target-dir`.
 
-* **--embeddable** `-e`: This option lets you build a minimal version of the documentation without the HTML `<body>` tags, so you can embed Graphicle into your own website template. More info on [custom builds](#custom-builds) here.
+* **--embeddable** `-e`: This option lets you build a minimal version of the documentation without the HTML `<body>` tags, so you can embed DociQL into your own website template. More info on [custom builds](#custom-builds) here.
 
 * **--app-dir** `-a`: This option overrides the default directory which contains all the Handlebars templates, SCSS, and JavaScript source files. This option is useful for development because you can copy the contents of `app` to a remote location or a separate repo for custom builds.
 
@@ -122,11 +122,11 @@ Most options are self explanatory, but the following options warrant some furthe
 
 ## Custom Builds
 
-The best option for building your own custom functionality into Graphicle is to [fork Graphicle on GitHub](https://help.github.com/articles/fork-a-repo/), and make your own modifications in source. This way you can keep up to date by merging changes from the `master` branch, and your can also contribute your updates back to `master` by creating a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) if you think they improve Graphicle somehow.
+The best option for building your own custom functionality into DociQL is to [fork DociQL on GitHub](https://help.github.com/articles/fork-a-repo/), and make your own modifications in source. This way you can keep up to date by merging changes from the `master` branch, and your can also contribute your updates back to `master` by creating a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) if you think they improve DociQL somehow.
 
-To fork Graphicle go to `https://github.com/wayfair/graphicle`, and press the 'Fork' button. Now you can `git clone git@github.com:<yourname>/graphicle.git` to make your own changes.
+To fork DociQL go to `https://github.com/wayfair/dociql`, and press the 'Fork' button. Now you can `git clone git@github.com:<yourname>/dociql.git` to make your own changes.
 
-Alternatively, you can just copy the contents of `app` from the main repo which contains all the source files such as templates, stylesheets and JavaScripts. Now just pass the path to your custom `app` path to the CLI like so: `graphicle -a graphicle.json`
+Alternatively, you can just copy the contents of `app` from the main repo which contains all the source files such as templates, stylesheets and JavaScripts. Now just pass the path to your custom `app` path to the CLI like so: `dociql -a dociql.json`
 
 ## Optimizing Your Workflow
 
@@ -150,7 +150,7 @@ Run `npm test` on the repository to start the automated tests.
 Some parts of testing can be configured using environment variables.
 
 - `OFFLINE=true`
-  Some tests use HTTP connections to test giving Graphicle remote API specifications.
+  Some tests use HTTP connections to test giving DociQL remote API specifications.
   Use `OFFLINE=true` to skip tests that require an internet connection.
 
 Include environment variables before calling `npm test`.  For example, `OFFLINE` mode can be enabled via `OFFLINE=true npm test`.
@@ -158,7 +158,7 @@ Include environment variables before calling `npm test`.  For example, `OFFLINE`
 
 <!-- ## Contributors
 
-Thanks to all the great developers who make Graphicle great!
+Thanks to all the great developers who make DociQL great!
 
 TODO
 -->
@@ -166,10 +166,10 @@ TODO
 
 ## More Information
 
-More info is available on the [Graphicle homepage](https://github.com/wayfair/graphicle).
+More info is available on the [DociQL homepage](https://github.com/wayfair/dociql).
 
 Please use the [GitHub issue tracker](https://github.com/sourcey/spectacle/issues) if you have any ideas or bugs to report.
 
 All contributions are welcome.
 
-Good luck and enjoy Graphicle!
+Good luck and enjoy DociQL!

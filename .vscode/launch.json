@@ -9,12 +9,12 @@
             "request": "launch",
             "name": "Launch Program",
             "cwd": "${workspaceRoot}",
-            "program": "${workspaceFolder}/bin/graphicle.js",
+            "program": "${workspaceFolder}/bin/dociql.js",
             "protocol": "inspector",
             "args": [                
                 "-l", 
                 "eevee.png",
-                "graphicle.yml"
+                "config.yml"
             ]
         }
     ]

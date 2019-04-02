@@ -1,4 +1,4 @@
-var highlightGraphQl = require('../graphicle/graphql-hl')
+var highlightGraphQl = require('../dociql/graphql-hl')
 var cheerio = require('cheerio')
 var marked = require('marked')
 var highlight = require('highlight.js')

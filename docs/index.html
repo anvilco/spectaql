@@ -65,7 +65,7 @@
             <div class="doc-row">
               <div class="doc-copy">
                 <p>Welcome to the sample Pokémon API reference. This is a live example of how you can use
-                  <a href="https://github.com/wayfair/graphicle">Graphicle</a> in conjunction with
+                  <a href="https://github.com/wayfair/dociql">DociQL</a> in conjunction with
                   <a href="https://graphql.org/">GraphQL</a> to generate beautiful static documentation for your own APIs.</p>
                 <p>The Pokémon API is GraphQL API. It&#39;s schema can be fetched using introspection query and can be used for generating code, documentations, tests etc.</p>
                 <p>GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.</p>
@@ -190,7 +190,7 @@ https://graphql-pokemon.now.sh
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemons(%24first%3A%20Int!)%7B%0D%0A%20%20pokemons(first%3A%20%24first)%7B%0D%0A%20%20%20%20id%0D%0A%20%20%20%20number%0D%0A%20%20%20%20name%0D%0A%20%20%20%20weight%7B%0D%0A%20%20%20%20%20%20minimum%0D%0A%20%20%20%20%20%20maximum%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20height%7B%0D%0A%20%20%20%20%20%20minimum%0D%0A%20%20%20%20%20%20maximum%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20classification%0D%0A%20%20%20%20types%0D%0A%20%20%20%20resistant%0D%0A%20%20%20%20weaknesses%0D%0A%20%20%20%20fleeRate%0D%0A%20%20%20%20maxCP%0D%0A%20%20%20%20maxHP%0D%0A%20%20%20%20image%0D%0A%20%20%7D%0D%0A%7D" target="_blank">Try it now
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemons(%24first%3A%20Int!)%7B%0A%20%20pokemons(first%3A%20%24first)%7B%0A%20%20%20%20id%0A%20%20%20%20number%0A%20%20%20%20name%0A%20%20%20%20weight%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20height%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20classification%0A%20%20%20%20types%0A%20%20%20%20resistant%0A%20%20%20%20weaknesses%0A%20%20%20%20fleeRate%0A%20%20%20%20maxCP%0A%20%20%20%20maxHP%0A%20%20%20%20image%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -382,7 +382,7 @@ https://graphql-pokemon.now.sh
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0D%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0D%0A%20%20%20%20id%0D%0A%20%20%20%20number%0D%0A%20%20%20%20name%0D%0A%20%20%20%20weight%7B%0D%0A%20%20%20%20%20%20minimum%0D%0A%20%20%20%20%20%20maximum%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20height%7B%0D%0A%20%20%20%20%20%20minimum%0D%0A%20%20%20%20%20%20maximum%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20classification%0D%0A%20%20%20%20types%0D%0A%20%20%20%20resistant%0D%0A%20%20%20%20weaknesses%0D%0A%20%20%20%20fleeRate%0D%0A%20%20%20%20maxCP%0D%0A%20%20%20%20maxHP%0D%0A%20%20%20%20image%0D%0A%20%20%7D%0D%0A%7D" target="_blank">Try it now
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0A%20%20%20%20id%0A%20%20%20%20number%0A%20%20%20%20name%0A%20%20%20%20weight%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20height%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20classification%0A%20%20%20%20types%0A%20%20%20%20resistant%0A%20%20%20%20weaknesses%0A%20%20%20%20fleeRate%0A%20%20%20%20maxCP%0A%20%20%20%20maxHP%0A%20%20%20%20image%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -573,7 +573,7 @@ https://graphql-pokemon.now.sh
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0D%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0D%0A%20%20%20%20id%0D%0A%20%20%20%20name%0D%0A%20%20%20%20attacks%7B%0D%0A%20%20%20%20%20%20fast%7B%0D%0A%20%20%20%20%20%20%20%20name%0D%0A%20%20%20%20%20%20%20%20type%0D%0A%20%20%20%20%20%20%20%20damage%0D%0A%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20special%7B%0D%0A%20%20%20%20%20%20%20%20name%0D%0A%20%20%20%20%20%20%20%20type%0D%0A%20%20%20%20%20%20%20%20damage%0D%0A%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%20%20%7D%0D%0A%7D" target="_blank">Try it now
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20attacks%7B%0A%20%20%20%20%20%20fast%7B%0A%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20damage%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20special%7B%0A%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20damage%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -755,7 +755,7 @@ https://graphql-pokemon.now.sh
 </code></pre> </body>
                     </html>
                     <!-- </div> -->
-                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0D%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0D%0A%20%20%20%20id%0D%0A%20%20%20%20name%0D%0A%20%20%20%20evolutions%7B%0D%0A%20%20%20%20%20%20id%0D%0A%20%20%20%20%20%20number%0D%0A%20%20%20%20%20%20name%0D%0A%20%20%20%20%20%20classification%0D%0A%20%20%20%20%20%20types%0D%0A%20%20%20%20%20%20resistant%0D%0A%20%20%20%20%20%20weaknesses%0D%0A%20%20%20%20%20%20fleeRate%0D%0A%20%20%20%20%20%20maxCP%0D%0A%20%20%20%20%20%20evolutions%7B%0D%0A%20%20%20%20%20%20%20%20...RecursivePokemonFragment%0D%0A%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20maxHP%0D%0A%20%20%20%20%20%20image%0D%0A%20%20%20%20%7D%0D%0A%20%20%7D%0D%0A%7D" target="_blank">Try it now
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20evolutions%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20number%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20classification%0A%20%20%20%20%20%20types%0A%20%20%20%20%20%20resistant%0A%20%20%20%20%20%20weaknesses%0A%20%20%20%20%20%20fleeRate%0A%20%20%20%20%20%20maxCP%0A%20%20%20%20%20%20evolutions%7B%0A%20%20%20%20%20%20%20%20...RecursivePokemonFragment%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20maxHP%0A%20%20%20%20%20%20image%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D" target="_blank">Try it now
                       <a/> </section>
               </div>
             </div>
@@ -1360,8 +1360,8 @@ https://graphql-pokemon.now.sh
           </div>
           <div class="doc-row no-margin">
             <div class="doc-copy doc-separator">
-              <a class="powered-by" href="https://github.com/wayfair/graphicle">Documentation by
-                <span>Graphicle</span>
+              <a class="powered-by" href="https://github.com/wayfair/dociql">Documentation by
+                <span>DociQL</span>
               </a>
             </div>
           </div>

@@ -1,21 +1,21 @@
 {
-  "name": "graphicle",
+  "name": "dociql",
   "version": "1.0.0",
   "description": "Generate beautiful static API documentation from GraphQL Schema",
   "preferGlobal": true,
   "bin": {
-    "graphicle": "bin/graphicle.js"
+    "dociql": "bin/dociql.js"
   },
   "scripts": {
-    "build": "node bin/graphicle -l eevee.png graphicle.yml",
-    "publish": "node bin/graphicle -l eevee.png -t docs graphicle.yml",
-    "test": "mocha && node bin/graphicle -l eevee.png graphicle.yml",
-    "develop": "graphicle -d",
-    "start": "graphicle -s"
+    "build": "node bin/dociql -l eevee.png config.yml",
+    "publish": "node bin/dociql -l eevee.png -t docs config.yml",
+    "test": "mocha && node bin/dociql -l eevee.png config.yml",
+    "develop": "dociql -d",
+    "start": "dociql -s"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wayfair/graphicle.git"
+    "url": "git+https://github.com/wayfair/dociql.git"
   },
   "engines": {
     "node": ">=8"
@@ -30,9 +30,9 @@
   "author": "Dennis Miasoutov <dmiasoutov@wayfair.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sourcey/graphicle/issues"
+    "url": "https://github.com/sourcey/dociql/issues"
   },
-  "homepage": "https://github.com/wayfair/graphicle",
+  "homepage": "https://github.com/wayfair/dociql",
   "dependencies": {
     "bluebird": "^3.5.2",
     "cheerio": "^1.0.0-rc.2",
