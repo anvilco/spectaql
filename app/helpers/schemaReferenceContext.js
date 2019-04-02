@@ -6,5 +6,5 @@ var common = require('../lib/common');
  * @param options
  */
 module.exports = function(reference, options) {
-  return options.fn(reference ? common.resolveSchemaReference(reference, options.data.root) : this);
+  return options.fn(reference ? common.resolveSchemaReference(reference, options.data.root) : this);  
 };

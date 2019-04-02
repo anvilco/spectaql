@@ -1,0 +1,1372 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokémon API | API Reference</title>
+    <link rel="stylesheet" href="stylesheets/foundation.min.css" />
+    <link rel="stylesheet" href="stylesheets/spectacle.min.css" />
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- <script src="javascripts/foundation.js"></script> -->
+    <script src="javascripts/spectacle.min.js"></script>
+  </head>
+  <body id="spectacle">
+    <div id="page" class="drawer-layout drawer-slide-right-large">
+      <div id="sidebar">
+        <button class="close-button" aria-label="Close menu" type="button" data-drawer-close>
+          <span aria-hidden="true">×</span>
+        </button>
+        <div id="logo">
+          <img src="images/eevee.png" title="Pokémon API" /> </div>
+        <nav id="nav" role="navigation">
+          <h5>Topics</h5>
+          <a href="#introduction">Introduction</a>
+          <h5>Operations</h5>
+          <section>
+            <a href="#tag-Fetching-Pok-mons">Fetching Pokémons</a>
+            <ul>
+              <li>
+                <a href="#operation-fetch_pok-mons-post"> Fetch Pokémons </a>
+              </li>
+              <li>
+                <a href="#operation-fetch_single_pok-mon-post"> Fetch single Pokémon </a>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <a href="#tag-Evolution---Attacks">Evolution &amp; Attacks</a>
+            <ul>
+              <li>
+                <a href="#operation-query_attack_rating-post"> Query Attack Rating </a>
+              </li>
+              <li>
+                <a href="#operation-query_evolutions-post"> Query Evolutions </a>
+              </li>
+            </ul>
+          </section>
+          <h5>Schema Definitions</h5>
+          <a href="#definition-Pokemon"> Pokemon </a>
+          <a href="#definition-PokemonDimension"> PokemonDimension </a>
+          <a href="#definition-PokemonAttack"> PokemonAttack </a>
+          <a href="#definition-Attack"> Attack </a>
+          <a href="#definition-PokemonEvolutionRequirement"> PokemonEvolutionRequirement </a>
+        </nav>
+      </div>
+      <div id="docs" class="row collapse expanded drawer" data-drawer>
+        <button class="floating-menu-icon" type="button" data-drawer-slide="right">
+          <span class="hamburger"></span>
+        </button>
+        <div class="example-box doc-content"></div>
+        <article>
+          <h1 class="doc-title">Pokémon API
+            <span>API Reference</span>
+          </h1>
+          <div id="introduction" data-traverse-target="introduction">
+            <div class="doc-row">
+              <div class="doc-copy">
+                <p>Welcome to the sample Pokémon API reference. This is a live example of how you can use
+                  <a href="https://github.com/wayfair/dociql">DociQL</a> in conjunction with
+                  <a href="https://graphql.org/">GraphQL</a> to generate beautiful static documentation for your own APIs.</p>
+                <p>The Pokémon API is GraphQL API. It&#39;s schema can be fetched using introspection query and can be used for generating code, documentations, tests etc.</p>
+                <p>GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.</p>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>API Endpoints</h5>
+                  <!-- <div class="hljs"> --><pre><code>Test Server:
+https://graphql-pokemon.now.sh
+</code></pre>
+                  <!-- </div> -->
+                  <h5>Terms of Service:
+                    <a href="https://graphql-pokemon.now.sh/terms">https://graphql-pokemon.now.sh/terms</a>
+                  </h5>
+                  <h5>Contact:
+                    <a href="mailto:dmiasoutov@wayfair.com">dmiasoutov@wayfair.com</a>
+                  </h5>
+                  <h5>Version:
+                    <span>1.0.0</span>
+                  </h5>
+                </section>
+              </div>
+            </div>
+          </div>
+          <h1 id="tag-Fetching-Pok-mons" class="swagger-summary-tag" data-traverse-target="tag-Fetching-Pok-mons">Fetching Pokémons</h1>
+          <div class="tag-description doc-row">
+            <div class="doc-copy">
+              <p>Base methods to fetch pokemon information.</p>
+            </div>
+          </div>
+          <div id="operation-fetch_pok-mons-post" class="operation panel" data-traverse-target="operation-fetch_pok-mons-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Fetching-Pok-mons">Fetching Pokémons</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Fetch Pok&#xE9;mons</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Query list of Pokémon</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body">
+                  <section class="json-schema-properties">
+                    <dl>
+                      <dt data-property-name="first">
+                        <span class="json-property-name">first:</span>
+                        <div class="json-property-type">integer</div>
+                        <span class="json-property-range" title="Value limits"></span>
+                      </dt>
+                    </dl>
+                  </section>
+                </section>
+                <section class="swagger-request-params">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">first:
+                        <span class="prop-type">
+                          <div class="json-property-type">integer</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> pokemons<span class="hljs-tag">(<span class="hljs-code">$first</span>:<span class="hljs-type"> Int!</span>)</span><span class="hljs-tag">{
+  <span class="hljs-symbol">pokemons<span class="hljs-tag">(first: <span class="hljs-code">$first</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">number</span>
+    <span class="hljs-symbol">name</span>
+    <span class="hljs-symbol">weight<span class="hljs-tag">{
+      <span class="hljs-symbol">minimum</span>
+      <span class="hljs-symbol">maximum</span>
+    }</span></span>
+    <span class="hljs-symbol">height<span class="hljs-tag">{
+      <span class="hljs-symbol">minimum</span>
+      <span class="hljs-symbol">maximum</span>
+    }</span></span>
+    <span class="hljs-symbol">classification</span>
+    <span class="hljs-symbol">types</span>
+    <span class="hljs-symbol">resistant</span>
+    <span class="hljs-symbol">weaknesses</span>
+    <span class="hljs-symbol">fleeRate</span>
+    <span class="hljs-symbol">maxCP</span>
+    <span class="hljs-symbol">maxHP</span>
+    <span class="hljs-symbol">image</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <h5>Variables</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;first&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemons(%24first%3A%20Int!)%7B%0A%20%20pokemons(first%3A%20%24first)%7B%0A%20%20%20%20id%0A%20%20%20%20number%0A%20%20%20%20name%0A%20%20%20%20weight%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20height%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20classification%0A%20%20%20%20types%0A%20%20%20%20resistant%0A%20%20%20%20weaknesses%0A%20%20%20%20fleeRate%0A%20%20%20%20maxCP%0A%20%20%20%20maxHP%0A%20%20%20%20image%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-array">
+                          <a class="json-schema-ref" href="#/definitions/Pokemon">Pokemon</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;pokemons&quot;</span>: [
+      {
+        <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;number&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;weight&quot;</span>: {
+          <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+        },
+        <span class="hljs-attr">&quot;height&quot;</span>: {
+          <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+        },
+        <span class="hljs-attr">&quot;classification&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;types&quot;</span>: [
+          <span class="hljs-string">&quot;string&quot;</span>
+        ],
+        <span class="hljs-attr">&quot;resistant&quot;</span>: [
+          <span class="hljs-string">&quot;string&quot;</span>
+        ],
+        <span class="hljs-attr">&quot;weaknesses&quot;</span>: [
+          <span class="hljs-string">&quot;string&quot;</span>
+        ],
+        <span class="hljs-attr">&quot;fleeRate&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+        <span class="hljs-attr">&quot;maxCP&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
+        <span class="hljs-attr">&quot;maxHP&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
+        <span class="hljs-attr">&quot;image&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+      }
+    ]
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-fetch_single_pok-mon-post" class="operation panel" data-traverse-target="operation-fetch_single_pok-mon-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Fetching-Pok-mons">Fetching Pokémons</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Fetch single Pok&#xE9;mon</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Query any Pokémon by number or name</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body">
+                  <section class="json-schema-properties">
+                    <dl>
+                      <dt data-property-name="id">
+                        <span class="json-property-name">id:</span>
+                        <div class="json-property-type">string</div>
+                        <span class="json-property-range" title="Value limits"></span>
+                      </dt>
+                      <dt data-property-name="name">
+                        <span class="json-property-name">name:</span>
+                        <div class="json-property-type">string</div>
+                        <span class="json-property-range" title="Value limits"></span>
+                      </dt>
+                    </dl>
+                  </section>
+                </section>
+                <section class="swagger-request-params">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">id:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">name:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> pokemon<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> String,</span> <span class="hljs-code">$name</span>:<span class="hljs-type"> String)</span>{
+  pokemon(id: <span class="hljs-code">$id</span>, name: <span class="hljs-code">$name</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">number</span>
+    <span class="hljs-symbol">name</span>
+    <span class="hljs-symbol">weight<span class="hljs-tag">{
+      <span class="hljs-symbol">minimum</span>
+      <span class="hljs-symbol">maximum</span>
+    }</span></span>
+    <span class="hljs-symbol">height<span class="hljs-tag">{
+      <span class="hljs-symbol">minimum</span>
+      <span class="hljs-symbol">maximum</span>
+    }</span></span>
+    <span class="hljs-symbol">classification</span>
+    <span class="hljs-symbol">types</span>
+    <span class="hljs-symbol">resistant</span>
+    <span class="hljs-symbol">weaknesses</span>
+    <span class="hljs-symbol">fleeRate</span>
+    <span class="hljs-symbol">maxCP</span>
+    <span class="hljs-symbol">maxHP</span>
+    <span class="hljs-symbol">image</span>
+  }</span></span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <h5>Variables</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0A%20%20%20%20id%0A%20%20%20%20number%0A%20%20%20%20name%0A%20%20%20%20weight%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20height%7B%0A%20%20%20%20%20%20minimum%0A%20%20%20%20%20%20maximum%0A%20%20%20%20%7D%0A%20%20%20%20classification%0A%20%20%20%20types%0A%20%20%20%20resistant%0A%20%20%20%20weaknesses%0A%20%20%20%20fleeRate%0A%20%20%20%20maxCP%0A%20%20%20%20maxHP%0A%20%20%20%20image%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Pokemon">Pokemon</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;pokemon&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;number&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;weight&quot;</span>: {
+        <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+      },
+      <span class="hljs-attr">&quot;height&quot;</span>: {
+        <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+      },
+      <span class="hljs-attr">&quot;classification&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;types&quot;</span>: [
+        <span class="hljs-string">&quot;string&quot;</span>
+      ],
+      <span class="hljs-attr">&quot;resistant&quot;</span>: [
+        <span class="hljs-string">&quot;string&quot;</span>
+      ],
+      <span class="hljs-attr">&quot;weaknesses&quot;</span>: [
+        <span class="hljs-string">&quot;string&quot;</span>
+      ],
+      <span class="hljs-attr">&quot;fleeRate&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;maxCP&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
+      <span class="hljs-attr">&quot;maxHP&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
+      <span class="hljs-attr">&quot;image&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+    }
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <h1 id="tag-Evolution---Attacks" class="swagger-summary-tag" data-traverse-target="tag-Evolution---Attacks">Evolution &amp; Attacks</h1>
+          <div class="tag-description doc-row">
+            <div class="doc-copy">
+              <p>Custom methods to fetch pokemon</p>
+            </div>
+          </div>
+          <div id="operation-query_attack_rating-post" class="operation panel" data-traverse-target="operation-query_attack_rating-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Evolution---Attacks">Evolution &amp; Attacks</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Query Attack Rating</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Query Pokémon</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body">
+                  <section class="json-schema-properties">
+                    <dl>
+                      <dt data-property-name="id">
+                        <span class="json-property-name">id:</span>
+                        <div class="json-property-type">string</div>
+                        <span class="json-property-range" title="Value limits"></span>
+                      </dt>
+                      <dt data-property-name="name">
+                        <span class="json-property-name">name:</span>
+                        <div class="json-property-type">string</div>
+                        <span class="json-property-range" title="Value limits"></span>
+                      </dt>
+                    </dl>
+                  </section>
+                </section>
+                <section class="swagger-request-params">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">id:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">name:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> pokemon<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> String,</span> <span class="hljs-code">$name</span>:<span class="hljs-type"> String)</span>{
+  pokemon(id: <span class="hljs-code">$id</span>, name: <span class="hljs-code">$name</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">name</span>
+    <span class="hljs-symbol">attacks<span class="hljs-tag">{
+      <span class="hljs-symbol">fast<span class="hljs-tag">{
+        <span class="hljs-symbol">name</span>
+        <span class="hljs-symbol">type</span>
+        <span class="hljs-symbol">damage</span>
+      }</span></span>
+      <span class="hljs-symbol">special<span class="hljs-tag">{
+        <span class="hljs-symbol">name</span>
+        <span class="hljs-symbol">type</span>
+        <span class="hljs-symbol">damage</span>
+      }</span></span>
+    }</span></span>
+  }</span></span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <h5>Variables</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20attacks%7B%0A%20%20%20%20%20%20fast%7B%0A%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20damage%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20special%7B%0A%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20damage%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Pokemon">Pokemon</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;pokemon&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;attacks&quot;</span>: {
+        <span class="hljs-attr">&quot;fast&quot;</span>: [
+          {
+            <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>
+          }
+        ],
+        <span class="hljs-attr">&quot;special&quot;</span>: [
+          {
+            <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>
+          }
+        ]
+      }
+    }
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-query_evolutions-post" class="operation panel" data-traverse-target="operation-query_evolutions-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Evolution---Attacks">Evolution &amp; Attacks</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-title">
+              <span class="operation-summary">Query Evolutions</span>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description">
+                  <p>Query Pokémon evolutions</p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body">
+                  <section class="json-schema-properties">
+                    <dl>
+                      <dt data-property-name="id">
+                        <span class="json-property-name">id:</span>
+                        <div class="json-property-type">string</div>
+                        <span class="json-property-range" title="Value limits"></span>
+                      </dt>
+                      <dt data-property-name="name">
+                        <span class="json-property-name">name:</span>
+                        <div class="json-property-type">string</div>
+                        <span class="json-property-range" title="Value limits"></span>
+                      </dt>
+                    </dl>
+                  </section>
+                </section>
+                <section class="swagger-request-params">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">id:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">name:
+                        <span class="prop-type">
+                          <div class="json-property-type">string</div>
+                          <span class="json-property-range" title="Value limits"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="prop-value">
+                      <p class="no-description">(no description)</p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Request Content-Types:
+                      <span>application/json</span>
+                    </h5>
+                    <h5>Query</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> pokemon<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> String,</span> <span class="hljs-code">$name</span>:<span class="hljs-type"> String)</span>{
+  pokemon(id: <span class="hljs-code">$id</span>, name: <span class="hljs-code">$name</span>)</span><span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+    <span class="hljs-symbol">name</span>
+    <span class="hljs-symbol">evolutions<span class="hljs-tag">{
+      <span class="hljs-symbol">id</span>
+      <span class="hljs-symbol">number</span>
+      <span class="hljs-symbol">name</span>
+      <span class="hljs-symbol">classification</span>
+      <span class="hljs-symbol">types</span>
+      <span class="hljs-symbol">resistant</span>
+      <span class="hljs-symbol">weaknesses</span>
+      <span class="hljs-symbol">fleeRate</span>
+      <span class="hljs-symbol">maxCP</span>
+      <span class="hljs-symbol">evolutions<span class="hljs-tag">{
+        <span class="hljs-type">...RecursivePokemonFragment
+</span>      }</span></span>
+      <span class="hljs-symbol">maxHP</span>
+      <span class="hljs-symbol">image</span>
+    }</span></span>
+  }</span></span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <h5>Variables</h5>
+                    <!-- <div class="hljs"> -->
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                    </html>
+                    <!-- </div> -->
+                    <a href="https://graphql-pokemon.now.sh?query=query%20pokemon(%24id%3A%20String%2C%20%24name%3A%20String)%7B%0A%20%20pokemon(id%3A%20%24id%2C%20name%3A%20%24name)%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20evolutions%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20number%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20classification%0A%20%20%20%20%20%20types%0A%20%20%20%20%20%20resistant%0A%20%20%20%20%20%20weaknesses%0A%20%20%20%20%20%20fleeRate%0A%20%20%20%20%20%20maxCP%0A%20%20%20%20%20%20evolutions%7B%0A%20%20%20%20%20%20%20%20...RecursivePokemonFragment%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20maxHP%0A%20%20%20%20%20%20image%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D" target="_blank">Try it now
+                      <a/> </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-responses">
+                  <div class="prop-row prop-group">
+                    <div class="prop-name">
+                      <div class="prop-title">200 OK</div>
+                    </div>
+                    <div class="prop-value">
+                      <p>Successful operation</p>
+                    </div>
+                  </div>
+                  <div class="prop-row prop-inner">
+                    <div class="prop-name">type</div>
+                    <div class="prop-value">
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/Pokemon">Pokemon</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <h5>Response Content-Types:
+                  <span>application/json</span>
+                </h5>
+                <section>
+                  <h5>Response Example
+                    <span>(200 OK)</span>
+                  </h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;pokemon&quot;</span>: {
+      <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;evolutions&quot;</span>: [
+        {
+          <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;number&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;classification&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;types&quot;</span>: [
+            <span class="hljs-string">&quot;string&quot;</span>
+          ],
+          <span class="hljs-attr">&quot;resistant&quot;</span>: [
+            <span class="hljs-string">&quot;string&quot;</span>
+          ],
+          <span class="hljs-attr">&quot;weaknesses&quot;</span>: [
+            <span class="hljs-string">&quot;string&quot;</span>
+          ],
+          <span class="hljs-attr">&quot;fleeRate&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+          <span class="hljs-attr">&quot;maxCP&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
+          <span class="hljs-attr">&quot;maxHP&quot;</span>: <span class="hljs-string">&quot;integer&quot;</span>,
+          <span class="hljs-attr">&quot;image&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+        }
+      ]
+    }
+  }
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <h1>Schema Definitions</h1>
+          <div id="definition-Pokemon" class="definition panel" data-traverse-target="definition-Pokemon">
+            <h2 class="panel-title">
+              <a name="/definitions/Pokemon"></a>Pokemon: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>Represents a Pokémon</p>
+                </section>
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="id" class="has-description">
+                      <span class="json-property-name">id:</span>
+                      <div class="json-property-type">object</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                      <span class="json-property-required"></span>
+                    </dt>
+                    <dd>
+                      <p>The ID of an object</p>
+                    </dd>
+                    <dt data-property-name="number" class="has-description">
+                      <span class="json-property-name">number:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The identifier of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="name" class="has-description">
+                      <span class="json-property-name">name:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The name of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="weight" class="has-description">
+                      <span class="json-property-name">weight:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/PokemonDimension">PokemonDimension</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The minimum and maximum weight of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="height" class="has-description">
+                      <span class="json-property-name">height:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/PokemonDimension">PokemonDimension</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The minimum and maximum weight of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="classification" class="has-description">
+                      <span class="json-property-name">classification:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The classification of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="types" class="has-description">
+                      <span class="json-property-name">types:</span>
+                      <div class="json-property-type">string[]</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The type(s) of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="resistant" class="has-description">
+                      <span class="json-property-name">resistant:</span>
+                      <div class="json-property-type">string[]</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The type(s) of Pokémons that this Pokémon is resistant to</p>
+                    </dd>
+                    <dt data-property-name="attacks" class="has-description">
+                      <span class="json-property-name">attacks:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/PokemonAttack">PokemonAttack</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The attacks of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="weaknesses" class="has-description">
+                      <span class="json-property-name">weaknesses:</span>
+                      <div class="json-property-type">string[]</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The type(s) of Pokémons that this Pokémon weak to</p>
+                    </dd>
+                    <dt data-property-name="fleeRate">
+                      <span class="json-property-name">fleeRate:</span>
+                      <div class="json-property-type">number</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dt data-property-name="maxCP" class="has-description">
+                      <span class="json-property-name">maxCP:</span>
+                      <div class="json-property-type">number</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The maximum CP of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="evolutions" class="has-description">
+                      <span class="json-property-name">evolutions:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-array">
+                          <a class="json-schema-ref" href="#/definitions/Pokemon">Pokemon</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The evolutions of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="evolutionRequirements" class="has-description">
+                      <span class="json-property-name">evolutionRequirements:</span>
+                      <div class="json-property-type">
+                        <div class="">
+                          <a class="json-schema-ref" href="#/definitions/PokemonEvolutionRequirement">PokemonEvolutionRequirement</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The evolution requirements of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="maxHP" class="has-description">
+                      <span class="json-property-name">maxHP:</span>
+                      <div class="json-property-type">number</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The maximum HP of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="image">
+                      <span class="json-property-name">image:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;number&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;weight&quot;</span>: {
+    <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+  },
+  <span class="hljs-attr">&quot;height&quot;</span>: {
+    <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+    <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+  },
+  <span class="hljs-attr">&quot;classification&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;types&quot;</span>: [
+    <span class="hljs-string">&quot;string&quot;</span>
+  ],
+  <span class="hljs-attr">&quot;resistant&quot;</span>: [
+    <span class="hljs-string">&quot;string&quot;</span>
+  ],
+  <span class="hljs-attr">&quot;attacks&quot;</span>: {
+    <span class="hljs-attr">&quot;fast&quot;</span>: [
+      {
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+      }
+    ],
+    <span class="hljs-attr">&quot;special&quot;</span>: [
+      {
+        <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+      }
+    ]
+  },
+  <span class="hljs-attr">&quot;weaknesses&quot;</span>: [
+    <span class="hljs-string">&quot;string&quot;</span>
+  ],
+  <span class="hljs-attr">&quot;fleeRate&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+  <span class="hljs-attr">&quot;maxCP&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+  <span class="hljs-attr">&quot;evolutions&quot;</span>: [
+    {
+      <span class="hljs-attr">&quot;number&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;weight&quot;</span>: {
+        <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+      },
+      <span class="hljs-attr">&quot;height&quot;</span>: {
+        <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+        <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+      },
+      <span class="hljs-attr">&quot;classification&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;types&quot;</span>: [
+        <span class="hljs-string">&quot;string&quot;</span>
+      ],
+      <span class="hljs-attr">&quot;resistant&quot;</span>: [
+        <span class="hljs-string">&quot;string&quot;</span>
+      ],
+      <span class="hljs-attr">&quot;attacks&quot;</span>: {
+        <span class="hljs-attr">&quot;fast&quot;</span>: [
+          {
+            <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+          }
+        ],
+        <span class="hljs-attr">&quot;special&quot;</span>: [
+          {
+            <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+          }
+        ]
+      },
+      <span class="hljs-attr">&quot;weaknesses&quot;</span>: [
+        <span class="hljs-string">&quot;string&quot;</span>
+      ],
+      <span class="hljs-attr">&quot;fleeRate&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;maxCP&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+      <span class="hljs-attr">&quot;evolutions&quot;</span>: [
+        {
+          <span class="hljs-attr">&quot;number&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;weight&quot;</span>: {
+            <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+          },
+          <span class="hljs-attr">&quot;height&quot;</span>: {
+            <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+            <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+          },
+          <span class="hljs-attr">&quot;classification&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">&quot;types&quot;</span>: [
+            <span class="hljs-string">&quot;string&quot;</span>
+          ],
+          <span class="hljs-attr">&quot;resistant&quot;</span>: [
+            <span class="hljs-string">&quot;string&quot;</span>
+          ],
+          <span class="hljs-attr">&quot;attacks&quot;</span>: {
+            <span class="hljs-attr">&quot;fast&quot;</span>: [
+              {
+                <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+                <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+                <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+              }
+            ],
+            <span class="hljs-attr">&quot;special&quot;</span>: [
+              <span class="hljs-literal">null</span>
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-PokemonDimension" class="definition panel" data-traverse-target="definition-PokemonDimension">
+            <h2 class="panel-title">
+              <a name="/definitions/PokemonDimension"></a>PokemonDimension: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>Represents a Pokémon&#39;s dimensions</p>
+                </section>
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="minimum" class="has-description">
+                      <span class="json-property-name">minimum:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The minimum value of this dimension</p>
+                    </dd>
+                    <dt data-property-name="maximum" class="has-description">
+                      <span class="json-property-name">maximum:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The maximum value of this dimension</p>
+                    </dd>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;minimum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;maximum&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-PokemonAttack" class="definition panel" data-traverse-target="definition-PokemonAttack">
+            <h2 class="panel-title">
+              <a name="/definitions/PokemonAttack"></a>PokemonAttack: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>Represents a Pokémon&#39;s attack types</p>
+                </section>
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="fast" class="has-description">
+                      <span class="json-property-name">fast:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-array">
+                          <a class="json-schema-ref" href="#/definitions/Attack">Attack</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The fast attacks of this Pokémon</p>
+                    </dd>
+                    <dt data-property-name="special" class="has-description">
+                      <span class="json-property-name">special:</span>
+                      <div class="json-property-type">
+                        <div class="json-schema-ref-array">
+                          <a class="json-schema-ref" href="#/definitions/Attack">Attack</a>
+                        </div>
+                      </div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The special attacks of this Pokémon</p>
+                    </dd>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;fast&quot;</span>: [
+    {
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+    }
+  ],
+  <span class="hljs-attr">&quot;special&quot;</span>: [
+    {
+      <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+      <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+    }
+  ]
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-Attack" class="definition panel" data-traverse-target="definition-Attack">
+            <h2 class="panel-title">
+              <a name="/definitions/Attack"></a>Attack: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>Represents a Pokémon&#39;s attack types</p>
+                </section>
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="name" class="has-description">
+                      <span class="json-property-name">name:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The name of this Pokémon attack</p>
+                    </dd>
+                    <dt data-property-name="type" class="has-description">
+                      <span class="json-property-name">type:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The type of this Pokémon attack</p>
+                    </dd>
+                    <dt data-property-name="damage" class="has-description">
+                      <span class="json-property-name">damage:</span>
+                      <div class="json-property-type">number</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The damage of this Pokémon attack</p>
+                    </dd>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,
+  <span class="hljs-attr">&quot;damage&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-PokemonEvolutionRequirement" class="definition panel" data-traverse-target="definition-PokemonEvolutionRequirement">
+            <h2 class="panel-title">
+              <a name="/definitions/PokemonEvolutionRequirement"></a>PokemonEvolutionRequirement: object
+              <!-- <span class="json-property-type"><div class="json-property-type">object</div>
+              <span class="json-property-range" title="Value limits"></span>
+              
+              
+              </span> -->
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>Represents a Pokémon&#39;s requirement to evolve</p>
+                </section>
+                <section class="json-schema-properties">
+                  <dl>
+                    <dt data-property-name="amount" class="has-description">
+                      <span class="json-property-name">amount:</span>
+                      <div class="json-property-type">number</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The amount of candy to evolve</p>
+                    </dd>
+                    <dt data-property-name="name" class="has-description">
+                      <span class="json-property-name">name:</span>
+                      <div class="json-property-type">string</div>
+                      <span class="json-property-range" title="Value limits"></span>
+                    </dt>
+                    <dd>
+                      <p>The name of the candy to evolve</p>
+                    </dd>
+                  </dl>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <!-- <div class="hljs"> -->
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;amount&quot;</span>: <span class="hljs-string">&quot;number&quot;</span>,
+  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>
+}
+</code></pre> </body>
+                  </html>
+                  <!-- </div> -->
+                </section>
+              </div>
+            </div>
+          </div>
+          <div class="doc-row no-margin">
+            <div class="doc-copy doc-separator">
+              <a class="powered-by" href="https://github.com/wayfair/dociql">Documentation by
+                <span>DociQL</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </body>
+</html>

@@ -5,8 +5,8 @@
     </div>
     <div class="doc-examples">
       <section>
-        {{#if host}}
-          <h5>API Endpoint</h5>
+        {{#if servers}}
+          <h5>API Endpoints</h5>
           <!-- <div class="hljs"> -->
             <pre><code>{{swaggerEndpoint}}</code></pre>
           <!-- </div> -->
@@ -38,11 +38,11 @@
           </h5>
         {{/if}}
 
-        {{#if schemes}}
+        {{!-- {{#if schemes}}
           <h5>Schemes:
             <span>{{#each schemes}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}</span>
           </h5>
-        {{/if}}
+        {{/if}} --}}
 
         {{#if info.version}}
           <h5>Version:

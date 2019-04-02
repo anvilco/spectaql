@@ -24,27 +24,27 @@
         --}}
 
         {{#each responses}}
-          {{#schemaReferenceContext $ref}}
+          {{!-- {{#schemaReferenceContext $ref}} --}}
             <div class="prop-row prop-group">
               <div class="prop-name">
                 {{! Use response-code and http-name as text}}
                 <div class="prop-title">{{@key}} {{httpResponseCode @key}}</div>
-                {{#if schema}}
+                {{!-- {{#if schema}}
                   <div class="prop-ref">{{>json-schema/reference schema}}</div>
                   <!-- <span class="swagger-global"></span> <span class="json-schema-reference"><a href="{{$ref}}">{{$ref}}</a></span> -->
-                {{/if}}
+                {{/if}} --}}
               </div>
               <div class="prop-value">
                 {{md description}}
               </div>
             </div>
-            {{#if schema.type}}
+            {{#if schema}}
               <div class="prop-row prop-inner">
                 <div class="prop-name">type</div>
                 <div class="prop-value">{{>json-schema/datatype schema}}</div>
               </div>
             {{/if}}
-          {{/schemaReferenceContext}}
+          {{!-- {{/schemaReferenceContext}} --}}
         {{/each}}
       </section>
     </div>
@@ -58,13 +58,11 @@
       {{/if}}
 
       {{#each responses}}
-        {{#schemaReferenceContext $ref}}
-          {{#if schema}}
+        {{#schemaReferenceContext $ref}}          
           <section>
             <h5>Response Example <span>({{@key}} {{httpResponseCode @key}})</span></h5>
-            {{>swagger/print-example .}}
-          </section>
-          {{/if}}
+            {{>swagger/print-example schema.example}}
+          </section>          
           {{#if headers}}
             <section>
               <h5>Response Headers <span>({{@key}} {{httpResponseCode @key}})</span></h5>
