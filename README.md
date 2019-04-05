@@ -2,9 +2,9 @@
 
 > A nice fork of [Spectacle](http://sourcey.com/spectacle)
 
-DociQL generates beautiful static HTML5 documentation from [GraphQL](https://graphql.org) endpoint using introspection query.
+DociQL generates beautiful static HTML5 documentation from a [GraphQL](https://graphql.org) endpoint using the introspection query.
 
-The goal of DociQL is help you "save time and look good" by providing an extensible platform for auto generating your API docs. The default layout is a three column single page, similar to those
+The goal of DociQL is help you "save time and look good" by providing an extensible platform for auto generating your API documentation. The default layout is a three column single page, similar to those
 employed by [Stripe](https://stripe.com/docs/api) and [Intercom](https://developers.intercom.com/reference).
 
 See a demo of DociQL in action here: [https://wayfair.github.io/dociql/](https://wayfair.github.io/dociql/)
@@ -17,25 +17,25 @@ See a demo of DociQL in action here: [https://wayfair.github.io/dociql/](https:/
 
 ## Features
 
-* **Uses introspection query to fetch schema of GraphQL and generates documentation on the fly.
-* **Generates example request and response with "Try it now" links.
-* **Allows user to define usecases and group them by domain.
-* **Highly configurable**: Easily configurable Handlebars templates and SCSS styles so you can add your own design and flavour without going bald. See [Custom Builds](#custom-builds)
+* Uses the introspection query to fetch a schema of GraphQL and generates documentation on the fly.
+* Generates an example request and response with "Try it now" links.
+* Allows the user to define use cases and group them by domain.
+* **Highly configurable**: Easily configurable Handlebars templates and SCSS styles so you can add your own design and flavour without going bald. See [Custom Builds](#custom-builds).
 * **Markdown support**: Render markdown written in any of your API descriptions.
-* **Clean responsive design**: Responsive HTML5 and CSS3 layout built with [Foundation 6](http://foundation.zurb.com/sites.html) that looks great on all devices and screen sizes.
-* **Embed into your existing website**: An embedded option so that generate partial docs without a HTML `<body>` for convenient integration into your existing website.
-* **Live preview developer mode**: Development mode that starts a local HTTP server with a file watcher and live reload so you can preview live changes in your browser as you update your spec.
+* **Clean, responsive design**: Responsive HTML5 and CSS3 layout built with [Foundation 6](http://foundation.zurb.com/sites.html) that looks great on all devices and screen sizes.
+* **Embed into your existing website**: An embedded option so that you can generate partial docs without a HTML `<body>` tag for convenient integration into your existing website.
+* **Live preview developer mode**: Development mode that starts a local HTTP server with a file watcher and live reload, so you can preview live changes in your browser as you update your specification.
 
 ## Usage
 
-### Install DociQL from `npm` like so:
+### Install DociQL from `npm`:
 
 ```bash
 npm install -g dociql-docs
 ```
 
 
-### Define `config.yml` template to help generating bautiful docs:
+### Define `config.yml` template to help generate beautiful docs:
 ```yml
 # To fetch schema from
 introspection: https://url-to-you-graphql-endpoint
@@ -66,7 +66,7 @@ domains:
        description: Markdown enabled description for operation
        query: mutation.mutateSome # Mutation example - invoke mutation
 ```
-### Next pass your `config.yml` document to generate your documentation.
+### Pass your `config.yml` document to generate your documentation:
 
 ```bash
 dociql -d config.yml
@@ -76,7 +76,7 @@ Your generated documentation will be located in the `public` directory by defaul
 
 ### Docker
 
-> comming soon
+> Coming soon!
 
 ## Configuration Options
 
@@ -114,7 +114,7 @@ Most options are self explanatory, but the following options warrant some furthe
 
 * **--start-server** `-s`: This option starts a production server without any development options enabled that serves the contents of your `--target-dir`.
 
-* **--embeddable** `-e`: This option lets you build a minimal version of the documentation without the HTML `<body>` tags, so you can embed DociQL into your own website template. More info on [custom builds](#custom-builds) here.
+* **--embeddable** `-e`: This option lets you build a minimal version of the documentation without the HTML `<body>` tags, so you can embed DociQL into your own website template. More info on [Custom Builds](#custom-builds) here.
 
 * **--app-dir** `-a`: This option overrides the default directory which contains all the Handlebars templates, SCSS, and JavaScript source files. This option is useful for development because you can copy the contents of `app` to a remote location or a separate repo for custom builds.
 
@@ -122,15 +122,15 @@ Most options are self explanatory, but the following options warrant some furthe
 
 ## Custom Builds
 
-The best option for building your own custom functionality into DociQL is to [fork DociQL on GitHub](https://help.github.com/articles/fork-a-repo/), and make your own modifications in source. This way you can keep up to date by merging changes from the `master` branch, and your can also contribute your updates back to `master` by creating a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) if you think they improve DociQL somehow.
+The best option for building your own custom functionality into DociQL is to [fork DociQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. This way, you can keep up-to-date by merging changes from the `master` branch and you can also contribute your updates back to `master` by creating a [Pull Request](https://help.github.com/articles/creating-a-pull-request/), especially if you think they'll be an improvement for DociQL.
 
-To fork DociQL go to `https://github.com/wayfair/dociql`, and press the 'Fork' button. Now you can `git clone git@github.com:<yourname>/dociql.git` to make your own changes.
+To fork DociQL go to `https://github.com/wayfair/dociql` and press the 'Fork' button. Now you can `git clone git@github.com:<yourname>/dociql.git` to make your own changes.
 
-Alternatively, you can just copy the contents of `app` from the main repo which contains all the source files such as templates, stylesheets and JavaScripts. Now just pass the path to your custom `app` path to the CLI like so: `dociql -a dociql.json`
+Alternatively, you can just copy the contents of `app` from the main repo which contains all of the source files such as templates, stylesheets, and JavaScripts. Now, just pass the path from your custom `app` path to the CLI like so: `dociql -a dociql.json`.
 
 ## Optimizing Your Workflow
 
-Using an API spec to generate your docs has a number of great advantages, such as:
+Using an API spec to generate your documentation has a number of great advantages, such as:
 
 * **Maintain a single source**: Save time by removing the need to maintain a separate API spec and API documentation.
 * **No more out-of-date documentation**: Your documentation will always be up-to-date with your API spec.
@@ -140,18 +140,16 @@ Using an API spec to generate your docs has a number of great advantages, such a
 
 ### Testing
 
-> comming soon
+> Coming soon!
 
-Testing is powered by [Mocha](https://mochajs.org/)/[Chai](http://chaijs.com/), and automated testing is run via [CircleCI](https://circleci.com/).
+Testing is powered by [Mocha](https://mochajs.org/)/[Chai](http://chaijs.com/) and automated testing is run via [CircleCI](https://circleci.com/).
 
 At this stage, unit tests have not been written for all parts of the codebase.  However, new code should be tested, and unit tests for the existing code will be added in the future.
 
-Run `npm test` on the repository to start the automated tests.
-Some parts of testing can be configured using environment variables.
+Run `npm test` on the repository to start the automated tests. Some parts of testing can be configured using environment variables.
 
 - `OFFLINE=true`
-  Some tests use HTTP connections to test giving DociQL remote API specifications.
-  Use `OFFLINE=true` to skip tests that require an internet connection.
+  Some tests use HTTP connections to test, giving DociQL remote API specifications. Use `OFFLINE=true` to skip tests that require an internet connection.
 
 Include environment variables before calling `npm test`.  For example, `OFFLINE` mode can be enabled via `OFFLINE=true npm test`.
 
@@ -163,6 +161,10 @@ Thanks to all the great developers who make DociQL great!
 TODO
 -->
 
+
+## License
+
+DociQL is licensed under the Apache License 2.0 – see the [LICENSE.md](https://github.com/wayfair/dociql/blob/master/LICENSE) for specific details.
 
 ## More Information
 
