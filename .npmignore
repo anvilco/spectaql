@@ -1,4 +1,9 @@
 /docs
 /test
 /.vscode
+/public
+/config.yml
+/eevee.png
+/TODO.md
+
 *.log
