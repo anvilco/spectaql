@@ -1,6 +1,6 @@
 {
   "name": "dociql",
-  "version": "1.0.0-rc",
+  "version": "1.0.0",
   "description": "Generate beautiful static API documentation from GraphQL Schema",
   "preferGlobal": true,
   "bin": {
@@ -28,7 +28,7 @@
     "generator"
   ],
   "author": "Dennis Miasoutov <dmiasoutov@wayfair.com>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/sourcey/dociql/issues"
   },
