@@ -31,7 +31,7 @@ See a demo of DociQL in action here: [https://wayfair.github.io/dociql/](https:/
 ### Install DociQL from `npm`:
 
 ```bash
-npm install -g dociql-docs
+npm install -g dociql
 ```
 
 
