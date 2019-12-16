@@ -63,7 +63,7 @@
     "json-stable-stringify": "^1.0.1",
     "lodash": "^4.17.12",
     "marked": "^0.7.0",
-    "node-sass": "^4.9.4",
+    "node-sass": "4.13.0",
     "sync-request": "^6.0.0",
     "tmp": "0.0.33",
     "trace": "^3.1.0"
