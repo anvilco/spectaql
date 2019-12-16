@@ -16,8 +16,14 @@ function generateQueryInternal(field, expandGraph, arguments, depth, typeCounts 
     const space = '  '.repeat(depth)
     var queryStr = space + field.name
 
+    // It's important to clone the array here. Otherwise we would
+    // be pushing arguments into the array passed by reference,
+    // which results in arguments from one query being incorrectly
+    // shown on another query's example.
+    const fieldArgs = [...arguments];
+
     if (field.args.length > 0) {
-        arguments.push(...field.args);
+        fieldArgs.push(...field.args);
         const argsStr = field.args.map(arg => `${arg.name}: $${arg.name}`).join(', ');
         queryStr += `(${argsStr})`;
     }
@@ -31,7 +37,7 @@ function generateQueryInternal(field, expandGraph, arguments, depth, typeCounts 
         if (!expandedField)
             return {
                 query: "",
-                args: arguments
+                args: fieldArgs
             };
 
         if (depth > 1) {
@@ -53,7 +59,7 @@ function generateQueryInternal(field, expandGraph, arguments, depth, typeCounts 
             return generateQueryInternal(
                 childFields[key],
                 expandGraph,
-                arguments,
+                fieldArgs,
                 depth + 1,
                 typeCounts).query
         }).join("");
@@ -63,7 +69,7 @@ function generateQueryInternal(field, expandGraph, arguments, depth, typeCounts 
 
     return {
         query: queryStr + "\n",
-        args: arguments
+        args: fieldArgs
     };
 }
 
@@ -106,7 +112,7 @@ function generateExampleSchema(name, type, expandGraph, depth) {
     if (type instanceof GraphQLNonNull)
         return generateExampleSchema(name, type.ofType, expandGraph, depth + 1);
     if (type instanceof GraphQLList) {
-        var schema = generateExampleSchema(name, type.ofType, expandGraph, depth) // do not increment depth        
+        var schema = generateExampleSchema(name, type.ofType, expandGraph, depth) // do not increment depth
         return schema ? {
             type: 'array',
             items: schema

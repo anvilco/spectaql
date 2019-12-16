@@ -77,6 +77,16 @@ module.exports = function(options, specData) {
   var replaceRefs = require("./resolve-references").replaceRefs;
   replaceRefs(path.dirname(copy["x-spec-path"]), copy, copy, "")
 
+  if (copy.definitions) {
+    var names = Object.keys(copy.definitions);
+    names.sort();
+    var sortedDefinitions = {};
+    for (const name of names) {
+      sortedDefinitions[name] = copy.definitions[name];
+    }
+    copy.definitions = sortedDefinitions;
+  }
+
   return copy;
 }
 
