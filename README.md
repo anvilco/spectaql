@@ -1,5 +1,10 @@
 # DociQL
 
+[![npm][npm]][npm-url]
+[![downloads][npm-downloads]][npm-url]
+[![builds][builds]][builds-url]
+[![coverage][cover]][cover-url]
+
 > A nice fork of [Spectacle](http://sourcey.com/spectacle)
 
 DociQL generates beautiful static HTML5 documentation from a [GraphQL](https://graphql.org) endpoint using the introspection query.
@@ -175,3 +180,13 @@ Please use the [GitHub issue tracker](https://github.com/sourcey/spectacle/issue
 All contributions are welcome.
 
 Good luck and enjoy DociQL!
+
+[npm]: https://img.shields.io/npm/v/dociql.svg
+[npm-downloads]: https://img.shields.io/npm/dw/dociql
+[npm-url]: https://www.npmjs.com/package/dociql
+
+[builds]: https://travis-ci.org/wayfair/dociql.svg?branch=master
+[builds-url]: https://travis-ci.org/wayfair/dociql
+
+[cover]: https://codecov.io/gh/wayfair/dociql/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/wayfair/dociql
