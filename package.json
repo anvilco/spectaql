@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node bin/dociql -l eevee.png config.yml",
     "publish": "node bin/dociql -l eevee.png -t docs config.yml",
-    "test": "mocha && node bin/dociql -l eevee.png config.yml",
+    "test": "nyc --reporter=lcovonly --reporter=text-summary mocha && node bin/dociql -l eevee.png config.yml",
     "develop": "dociql -d",
     "start": "dociql -s"
   },
@@ -70,6 +70,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "nyc": "^14.1.1"
   }
 }
