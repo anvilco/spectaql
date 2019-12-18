@@ -4,6 +4,7 @@
 [![downloads][npm-downloads]][npm-url]
 [![builds][builds]][builds-url]
 [![coverage][cover]][cover-url]
+[![Quality Gate Status](sonar)](sonar-url)
 
 > A nice fork of [Spectacle](http://sourcey.com/spectacle)
 
@@ -190,3 +191,6 @@ Good luck and enjoy DociQL!
 
 [cover]: https://codecov.io/gh/wayfair/dociql/branch/master/graph/badge.svg
 [cover-url]: https://codecov.io/gh/wayfair/dociql
+
+[sonar]: https://sonarcloud.io/api/project_badges/measure?project=wayfair_dociql&metric=alert_status
+[sonar-url]: https://sonarcloud.io/dashboard?id=wayfair_dociql
