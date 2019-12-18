@@ -4,7 +4,7 @@
 [![downloads][npm-downloads]][npm-url]
 [![builds][builds]][builds-url]
 [![coverage][cover]][cover-url]
-[![Quality Gate Status](sonar)](sonar-url)
+[![Quality Gate Status][sonar]](sonar-url)
 
 > A nice fork of [Spectacle](http://sourcey.com/spectacle)
 
