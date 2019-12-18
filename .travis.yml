@@ -1,10 +1,19 @@
-dist: xenial
+dist: trusty
 sudo: false
 language: node_js
 node_js:
 - 12
 after_success:
 - "./node_modules/.bin/codecov"
+addons:
+  sonarcloud:
+    organization: "wayfair"
+    token:
+      secure: Nu85f+oAoIb5Sq663FNWNJ2T/IZbNkIUYJpIWGpVAaNaaYw/pohS9jsxf1z4Z3II/ma1OJSDQUvkxV9FzaTVzFRVxTJ0ngnVKe5sxvh5K6UfPLqeDCZ+yL9Vu3Vad32VuObk+FIlcM5XfTwiq5JW5ne4tRmnGUYT/fa2HvGQ0Dr3ntk/z897H+2H/XCu69edoconK4LI3qIXBBxGNz+a4yqCbh4azRb27rIDGZXqPynCXfLaePhliTYsN/z2CLDoXdPJFvmpYktCq5+0l9kxNoMUNU9khqclFMXo0uUZt90ESjERWpAb/vdRELu+8M35AgYaadTy8CMW3NFqpJ/qvcTLgAO8sAQuq58vjgHRZuK6mRutL7BLCOdQkeGNXXEXC1V83yqxTBp5/UAbQnNG8c3BR6vQH87DcoPM3qgJQ3esdUO1Qyx8V/bdO/Ylcf3sgNXHTR34LPjL9yKvDVLMIYJLogIi/1uhuAmMUxzKDuNGjHRenruNpB28xe9UZ++Qc+djSepgb5aLmdXoUijGw2Gck3y7d7nLNwG+zkEcaq9ifM8CVUsAHbEek7HkVfGNakcx2AdMXng74BoUTLOaTsEQOZyRZISnnBeZsdiVby8IK9joXH3sMLVTT8nhyreGF3EKoPnshVMsaK3nSt5b+roPpVhKYhX1SYDTAJW+6Es=
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - sonar-scanner
 deploy:
   provider: npm
   email: jsopensource@wayfair.com
