@@ -3,13 +3,16 @@ const request = require("sync-request")
 
 const converter = require('graphql-2-json-schema');
 
-module.exports = function (graphUrl) {
+module.exports = function (graphUrl, authHeader) {
 
     const requestBody = {
         query: graphql.introspectionQuery
     };
 
     const responseBody = request("POST", graphUrl, {
+        headers: {
+            authorization: authHeader,
+        },
         json: requestBody
     }).getBody('utf8');
 

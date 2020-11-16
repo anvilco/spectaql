@@ -5,14 +5,14 @@ const fs = require("fs")
 const fetchSchema = require("./fetch-schema")
 const composePaths = require("./compose-paths")
 
-module.exports = function(specPath) {
+module.exports = function(specPath, headers) {
     // read spec file content
     const fileContent = fs.readFileSync(specPath, "utf8")
     // deserialise
     const spec = yaml.safeLoad(fileContent)
     // fetch graphQL Schema
     const graphUrl = spec.introspection
-    const {graphQLSchema, jsonSchema} = fetchSchema(graphUrl)    
+    const {graphQLSchema, jsonSchema} = fetchSchema(graphUrl, headers)
 
     // parse URL
     const parsedUrl = url.parse(graphUrl)
@@ -32,6 +32,7 @@ module.exports = function(specPath) {
             externalDocs: _.externalDocs
         })),
         paths: composePaths(spec.domains, graphQLSchema),
+        securityDefinitions: spec.securityDefinitions,
         definitions: jsonSchema.definitions
     }
 

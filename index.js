@@ -54,7 +54,7 @@ module.exports = function (options) {
 
     function loadData() {
         var specPath = path.resolve(opts.specFile)
-        var specData = require(path.resolve(opts.appDir + '/dociql/index'))(specPath)
+        var specData = require(path.resolve(opts.appDir + '/dociql/index'))(specPath, opts.header)
         return require(path.resolve(opts.appDir + '/lib/preprocessor'))(options, specData)
     }
 
