@@ -28,7 +28,11 @@ function generateQueryInternal(field, expandGraph, arguments, depth, typeCounts 
         queryStr += `(${argsStr})`;
     }
 
-    var returnType = field.type.ofType || field.type;
+    var returnType = field.type;
+
+    while(returnType.ofType) {
+        returnType = returnType.ofType;
+    }
 
     if (returnType.getFields) {
         var subQuery = null;
