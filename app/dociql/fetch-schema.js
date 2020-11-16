@@ -6,6 +6,7 @@ const converter = require('graphql-2-json-schema');
 module.exports = function (graphUrl, authHeader) {
 
     const requestBody = {
+        operationName: "IntrospectionQuery",
         query: graphql.introspectionQuery
     };
 
