@@ -9,18 +9,18 @@
 
   @param {boolean} discriminator true, this property is a swagger-discriminator (in which case enums are rendered as links)
 --}}
-<div class="json-property-type">
+{{#unless nodivs}}<div class="json-property-type">{{/unless}}
   {{~#if $ref}}
-    {{~>json-schema/reference .}}
+    {{~>json-schema/reference . nodivs=nodivs}}
   {{~else if items.$ref}}
-    {{~>json-schema/reference .}}
+    {{~>json-schema/reference . nodivs=nodivs}}
   {{~else}}
-    {{~schemaDatatype .}}
+    {{~schemaDatatype . nodivs=nodivs}}
   {{~/if}}
   {{~#if x-nullable}}
     | null
   {{~/if}}
-</div>
+{{#unless nodivs}}</div>{{/unless}}
 {{~#if format}}
   <span class="json-property-format">({{format}})</span>
 {{~/if~}}

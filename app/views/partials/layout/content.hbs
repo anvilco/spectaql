@@ -2,22 +2,23 @@
   This partial renders the documentation content
   @api public
 --}}
-
-<article>
-  <h1 class="doc-title">{{info.title}}
-    <span>API Reference</span>
-  </h1>
-   {{#unless info.x-spectacle-hide}}
-    {{>swagger/introduction}}
+<article id="content">
+  <h1 class="doc-title">{{info.title}}</h1>
+  {{! Check if there is effectively nothing to do }}
+  {{#unless (or info.x-hideIntroduction (and info.x-hideWelcome (or info.x-hideIntroItems (empty info.x-introItems))))}}
+    {{>swagger/introduction/introduction}}
   {{/unless}}
+
   {{#unless securityDefinitions.x-spectacle-hide}}
     {{>swagger/securityDefinitions}}
   {{/unless}}
+
   {{>swagger/x-spectacle-topics}}
 
   {{#if showTagSummary}}
     {{>swagger/tags}}
   {{else}}
+    {{! TODO: remove? }}
     {{>swagger/paths}}
   {{/if}}
 
@@ -27,10 +28,10 @@
   <div class="doc-row no-margin">
     <div class="doc-copy doc-separator">
       {{#if externalDocs}}
-      <a href="{{externalDocs.url}}">{{externalDocs.description}}</a>
-       {{else}}
-      <a class="powered-by" href="https://github.com/wayfair/dociql">Documentation by <span>DociQL</span></a>
-      {{/if}}
+      <a class="powered-by" href="{{externalDocs.url}}">{{externalDocs.description}}</a>
+       {{else}}{{#unless info.x-hidePoweredBy }}
+      <a class="powered-by" href="https://github.com/anvilco/spectaql">Documentation by <span>Anvil SpectaQL</span></a>
+      {{/unless}}{{/if}}
     </div>
   </div>
 </article>

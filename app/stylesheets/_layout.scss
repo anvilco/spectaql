@@ -72,10 +72,10 @@ button:focus {
 
   h5 {
     margin: 1.5rem 0 0.65rem;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     color: scale-color($medium-gray, $lightness: -10%);
     // color: $accent-color;
-    font-size: 0.9rem;
+    //font-size: 0.9rem;
   }
 
   a {
@@ -156,6 +156,7 @@ button:focus {
 }
 
 article {
+  padding-top: 64px;
   position: relative;
 
   .no-description {
@@ -215,12 +216,16 @@ article {
     border: none;
     color: scale-color($black, $lightness: 20%);
 
-    span {
-      display: none;
-      opacity: 0.65;
-      margin-left: 5px;
-      font-weight: normal;
-    }
+    // span {
+    //   display: none;
+    //   opacity: 0.65;
+    //   margin-left: 5px;
+    //   font-weight: normal;
+    // }
+  }
+
+  h5.doc-intro-item {
+    @extend .doc-content;
   }
 
   h2 {
@@ -349,7 +354,7 @@ article {
   .doc-row {
     @extend .row;
     @extend .collapse;
-    margin: 2rem 0 20px;
+    margin: 0.5rem 0 20px;
   }
 
   .doc-copy {
@@ -423,7 +428,7 @@ article {
 
     .swagger-response-headers {
 
-      @include inset-panel()
+      @include inset-panel();
       margin-bottom: 1.5rem;
 
       thead {
@@ -469,8 +474,8 @@ article {
     .operation-tags {
       position: absolute;
       top: 0;
-      text-align: right;
-      right: 0;
+      //text-align: right;
+      left: 0;
 
       .label {
         cursor: pointer;
@@ -508,6 +513,27 @@ article {
   // Definition panel
 
   .definition {
+    .definition-tags {
+      position: absolute;
+      top: 0;
+      //text-align: right;
+      left: 0;
+
+      .label {
+        cursor: pointer;
+        &:hover {
+          color: $light-gray;
+        }
+      }
+    }
+
+    @include breakpoint(large) {
+      // @media screen and (min-width: $large-width) { // large and up
+      .definition-tags {
+        right: 50%;
+      }
+    }
+
     .doc-examples h5 {
       margin-top: -1rem;
     }

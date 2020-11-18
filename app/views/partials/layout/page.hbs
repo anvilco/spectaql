@@ -3,8 +3,9 @@
   @api public
 --}}
 <div id="page" class="drawer-layout drawer-slide-right-large">
+  {{! The leftmost column where the Nav stuff goes }}
   <div id="sidebar">
-    <button class="close-button" aria-label="Close menu" type="button" data-drawer-close>
+    <button id="close-button" class="close-button" aria-label="Close menu" type="button" data-drawer-close>
       <span aria-hidden="true">×</span>
     </button>
     {{#if logo}}
@@ -14,11 +15,12 @@
     {{/if}}
     {{>layout/nav}}
   </div>
-  {{!layout/topbar}}
   <div id="docs" class="row collapse expanded drawer" data-drawer>
+    {{! The Hamburger for when Nav column has been collapsed }}
     <button class="floating-menu-icon" type="button" data-drawer-slide="right">
       <span class="hamburger"></span>
     </button>
+    {{! Draws the rightmost dark column where examples usually go }}
     <div class="example-box doc-content"></div>
     {{>layout/content}}
   </div>
