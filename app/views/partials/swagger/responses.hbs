@@ -11,42 +11,6 @@
 {{#if responses}}
   <div class="doc-row">
     <div class="doc-copy">
-      <section class="swagger-responses">
-        {{!--
-          {{#if produces}}
-            <p>{{>swagger/list-of-labels values=produces}}</p>
-          {{else if @root.produces}}
-            <p>
-              <!-- <a href="#swagger-default-produces">Uses default content-types: </a> -->
-              {{>swagger/list-of-labels values=@root.produces}}
-            </p>
-          {{/if}}
-        --}}
-
-        {{#each responses}}
-          {{!-- {{#schemaReferenceContext $ref}} --}}
-            <div class="prop-row prop-group">
-              <div class="prop-name">
-                {{! Use response-code and http-name as text}}
-                <div class="prop-title">{{@key}} {{httpResponseCode @key}}</div>
-                {{!-- {{#if schema}}
-                  <div class="prop-ref">{{>json-schema/reference schema}}</div>
-                  <!-- <span class="swagger-global"></span> <span class="json-schema-reference"><a href="{{$ref}}">{{$ref}}</a></span> -->
-                {{/if}} --}}
-              </div>
-              <div class="prop-value">
-                {{md description}}
-              </div>
-            </div>
-            {{#if schema}}
-              <div class="prop-row prop-inner">
-                <div class="prop-name">type</div>
-                <div class="prop-value">{{>json-schema/datatype schema}}</div>
-              </div>
-            {{/if}}
-          {{!-- {{/schemaReferenceContext}} --}}
-        {{/each}}
-      </section>
     </div>
 
     {{! Print examples without whitespace. }}
@@ -58,11 +22,20 @@
       {{/if}}
 
       {{#each responses}}
-        {{#schemaReferenceContext $ref}}          
+        {{#schemaReferenceContext $ref}}
           <section>
-            <h5>Response Example <span>({{@key}} {{httpResponseCode @key}})</span></h5>
+            {{!
+
+              The HTTP Response Example
+
+            }}
+            <h5>Response
+              {{!-- We don't need the response code, do we? no.
+                <span>({{@key}} {{httpResponseCode @key}})</span>
+              --}}
+            </h5>
             {{>swagger/print-example schema.example}}
-          </section>          
+          </section>
           {{#if headers}}
             <section>
               <h5>Response Headers <span>({{@key}} {{httpResponseCode @key}})</span></h5>

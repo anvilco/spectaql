@@ -40,6 +40,7 @@ module.exports = function(range, options) {
         range.minimumExclusive ? "<" : "\u2264",
         range.maximum)
     // NOTREACHED
+    // eslint-disable-next-line no-unreachable
     return util.format("x %s %d | x %s %d",
         range.minimumExclusive ? ">" : "\u2265",  // <<----- correction here
         range.minimum,

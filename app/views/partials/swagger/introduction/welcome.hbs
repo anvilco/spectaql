@@ -1,0 +1,45 @@
+<div class="doc-row">
+  <div class="doc-copy">
+      {{md info.description}}
+  </div>
+  <div class="doc-examples">
+    <section>
+      {{#if servers}}
+        <h5>API Endpoints</h5>
+          <pre><code>{{swaggerEndpoint}}</code></pre>
+      {{/if}}
+
+      {{#if info.termsOfService}}
+        <p>Terms of Service:
+          <a href="{{info.termsOfService}}">{{info.termsOfService}}</a>
+        </p>
+      {{/if}}
+
+      {{#if info.contact}}
+        {{#if info.contact.email}}
+          <p>Contact:
+            <a href="mailto:{{info.contact.email}}">{{info.contact.email}}</a>
+          </p>
+        {{/if}}
+      {{/if}}
+
+      {{#if consumes}}
+        <h5>Request Content-Types:
+          <span>{{#each consumes}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        </h5>
+      {{/if}}
+
+      {{#if produces}}
+        <h5>Response Content-Types:
+          <span>{{#each produces}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        </h5>
+      {{/if}}
+
+      {{#if info.version}}
+        <h5>Version:
+          <span>{{info.version}}</span>
+        </h5>
+      {{/if}}
+    </section>
+  </div>
+</div>

@@ -1,0 +1,712 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
+    <title>GraphQL API Reference</title>
+    <link rel="stylesheet" href="stylesheets/spectaql.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="javascripts/spectaql.min.js"></script>
+  </head>
+  <body id="spectacle">
+    <div id="page" class="drawer-layout drawer-slide-right-large">
+      <div id="sidebar">
+        <button id="close-button" class="close-button" aria-label="Close menu" type="button" data-drawer-close>
+          <span aria-hidden="true">×</span>
+        </button>
+        <div id="logo">
+          <img src="images/logo.png" title="GraphQL API Reference" /> </div>
+        <nav id="nav" role="navigation">
+          <h5>Introduction</h5>
+          <a href="#introduction">Welcome</a>
+          <h5>Operations</h5>
+          <section>
+            <a href="#tag-Queries">Queries</a>
+            <ul>
+              <li>
+                <a href="#operation-getint-post"> getInt </a>
+              </li>
+              <li>
+                <a href="#operation-getints-post"> getInts </a>
+              </li>
+              <li>
+                <a href="#operation-myquery-post"> myQuery </a>
+              </li>
+              <li>
+                <a href="#operation-mytypes-post"> myTypes </a>
+              </li>
+              <li>
+                <a href="#operation-optionalsquery-post"> optionalsQuery </a>
+              </li>
+              <li>
+                <a href="#operation-requiredsquery-post"> requiredsQuery </a>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <a href="#tag-Mutations">Mutations</a>
+            <ul>
+              <li>
+                <a href="#operation-mymutation-post"> myMutation </a>
+              </li>
+            </ul>
+          </section>
+          <h5>Types</h5>
+          <a href="#definition-Boolean"> Boolean </a>
+          <a href="#definition-Int"> Int </a>
+          <a href="#definition-MyType"> MyType </a>
+          <a href="#definition-String"> String </a>
+        </nav>
+      </div>
+      <div id="docs" class="row collapse expanded drawer" data-drawer>
+        <button class="floating-menu-icon" type="button" data-drawer-slide="right">
+          <span class="hamburger"></span>
+        </button>
+        <div class="example-box doc-content"></div>
+        <article id="content">
+          <h1 class="doc-title">GraphQL API Reference</h1>
+          <div id="introduction" data-traverse-target="introduction">
+            <div class="doc-row">
+              <div class="doc-copy">
+                <p>Welcome to the party!</p>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>API Endpoints</h5> <pre><code>Production:
+https://example.com/graphql
+</code></pre>
+                  <p>Terms of Service:
+                    <a href="https://www.example.com/terms">https://www.example.com/terms</a>
+                  </p>
+                  <p>Contact:
+                    <a href="mailto:support@example.com">support@example.com</a>
+                  </p>
+                </section>
+              </div>
+            </div>
+          </div>
+          <h1 id="tag-Queries" class="swagger-summary-tag tag-name" data-traverse-target="tag-Queries">Queries</h1>
+          <div id="operation-getint-post" class="operation panel" data-traverse-target="operation-getint-post">
+            <h2 class="operation-name"> <code>getInt</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-responses"> Returns an
+                  <a href="#definition-Int"><code>Int</code></a>
+                </section>
+                <br> </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Query</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getInt <span class="hljs-tag">{
+  <span class="hljs-symbol">getInt</span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy"> </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Response </h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;getInt&quot;</span>: <span class="hljs-number">123</span>}}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-getints-post" class="operation panel" data-traverse-target="operation-getints-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Queries">Queries</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-name"> <code>getInts</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-responses"> Returns
+                  <a href="#definition-Int"><code>[Int]</code></a>
+                </section>
+                <br> </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Query</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getInts <span class="hljs-tag">{
+  <span class="hljs-symbol">getInts</span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy"> </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Response </h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;getInts&quot;</span>: [<span class="hljs-number">987</span>]}}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-myquery-post" class="operation panel" data-traverse-target="operation-myquery-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Queries">Queries</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-name"> <code>myQuery</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-operation-description operation-description">
+                  <p>This is a description of <code>myQuery</code></p>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-responses"> Returns a
+                  <a href="#definition-String"><code>String</code></a>
+                </section>
+                <br>
+                <section class="swagger-request-params">
+                  <table>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                    <tr>
+                      <td><code>nonReqQueryArg</code> -
+                        <a href="#definition-String"><code>String</code></a>
+                      </td>
+                      <td> This is a description of a <code>nonRequiredQueryArg</code>. Default = <code>&quot;some default string&quot;</code> </td>
+                    </tr>
+                    <tr>
+                      <td><code>reqQueryArg</code> -
+                        <a href="#definition-String"><code>String!</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td><code>reqQueryArrayArg</code> -
+                        <a href="#definition-String"><code>[String]!</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td><code>dblReqQueryArrayArg</code> -
+                        <a href="#definition-String"><code>[String!]!</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                  </table>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Query</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> myQuery<span class="hljs-tag">(<span class="hljs-code">$nonReqQueryArg</span>:<span class="hljs-type"> String,</span> <span class="hljs-code">$reqQueryArg</span>:<span class="hljs-type"> String!</span>, <span class="hljs-code">$reqQueryArrayArg</span>: <span class="hljs-type">[String]</span>!, <span class="hljs-code">$dblReqQueryArrayArg</span>: <span class="hljs-type">[String!</span>]!)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">myQuery<span class="hljs-tag">(nonReqQueryArg: <span class="hljs-code">$nonReqQueryArg</span>, reqQueryArg: <span class="hljs-code">$reqQueryArg</span>, reqQueryArrayArg: <span class="hljs-code">$reqQueryArrayArg</span>, dblReqQueryArrayArg: <span class="hljs-code">$dblReqQueryArrayArg</span>)</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <h5>Variables</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;nonReqQueryArg&quot;</span>: <span class="hljs-string">&quot;Special generated Argument example for myQuery nonReqQueryArg&quot;</span>,
+  <span class="hljs-attr">&quot;reqQueryArg&quot;</span>: <span class="hljs-string">&quot;Special generated Argument example for myQuery reqQueryArg&quot;</span>,
+  <span class="hljs-attr">&quot;reqQueryArrayArg&quot;</span>: [
+    <span class="hljs-string">&quot;Special generated Argument example for myQuery reqQueryArrayArg&quot;</span>
+  ],
+  <span class="hljs-attr">&quot;dblReqQueryArrayArg&quot;</span>: [
+    <span class="hljs-string">&quot;Special generated Argument example for myQuery dblReqQueryArrayArg&quot;</span>
+  ]
+}
+</code></pre> </body>
+                    </html>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy"> </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Response </h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;myQuery&quot;</span>: <span class="hljs-string">&quot;abc123&quot;</span>}}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-mytypes-post" class="operation panel" data-traverse-target="operation-mytypes-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Queries">Queries</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-name"> <code>myTypes</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-responses"> Returns
+                  <a href="#definition-MyType"><code>[MyType]</code></a>
+                </section>
+                <br> </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Query</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> myTypes <span class="hljs-tag">{
+  <span class="hljs-symbol">myTypes <span class="hljs-tag">{
+    <span class="hljs-symbol">nonRequiredField<span class="hljs-tag">(nonRequiredArg: <span class="hljs-code">$nonRequiredArg</span>, reqArg: <span class="hljs-code">$reqArg</span>, reqArrayArg: <span class="hljs-code">$reqArrayArg</span>, dblReqArrayArg: <span class="hljs-code">$dblReqArrayArg</span>)</span></span>
+    <span class="hljs-symbol">requiredField</span>
+    <span class="hljs-symbol">requiredArrayField</span>
+    <span class="hljs-symbol">doubleRequiredArrayField</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy"> </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Response </h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;data&quot;</span>: {
+    <span class="hljs-attr">&quot;myTypes&quot;</span>: [
+      {
+        <span class="hljs-attr">&quot;nonRequiredField&quot;</span>: <span class="hljs-string">&quot;xyz789&quot;</span>,
+        <span class="hljs-attr">&quot;requiredField&quot;</span>: <span class="hljs-string">&quot;xyz789&quot;</span>,
+        <span class="hljs-attr">&quot;requiredArrayField&quot;</span>: [<span class="hljs-string">&quot;abc123&quot;</span>],
+        <span class="hljs-attr">&quot;doubleRequiredArrayField&quot;</span>: [<span class="hljs-string">&quot;abc123&quot;</span>]
+      }
+    ]
+  }
+}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-optionalsquery-post" class="operation panel" data-traverse-target="operation-optionalsquery-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Queries">Queries</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-name"> <code>optionalsQuery</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-responses"> Returns
+                  <a href="#definition-String"><code>[String]</code></a>
+                </section>
+                <br>
+                <section class="swagger-request-params">
+                  <table>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                    <tr>
+                      <td><code>optionalArg</code> -
+                        <a href="#definition-String"><code>[String]</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                  </table>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Query</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> optionalsQuery<span class="hljs-tag">(<span class="hljs-code">$optionalArg</span>: <span class="hljs-type">[String]</span>)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">optionalsQuery<span class="hljs-tag">(optionalArg: <span class="hljs-code">$optionalArg</span>)</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <h5>Variables</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;optionalArg&quot;</span>: [
+    <span class="hljs-string">&quot;Generated Argument example for optionalsQuery optionalArg&quot;</span>
+  ]
+}
+</code></pre> </body>
+                    </html>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy"> </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Response </h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;optionalsQuery&quot;</span>: [<span class="hljs-string">&quot;xyz789&quot;</span>]}}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="operation-requiredsquery-post" class="operation panel" data-traverse-target="operation-requiredsquery-post">
+            <!-- <section class="operation-tags row"> -->
+            <!-- <div class="doc-copy"> -->
+            <div class="operation-tags">
+              <a class="label" href="#tag-Queries">Queries</a>
+              <!---->
+            </div>
+            <!-- </div> -->
+            <!-- </section> -->
+            <h2 class="operation-name"> <code>requiredsQuery</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-responses"> Returns
+                  <a href="#definition-String"><code>[String!]!</code></a>
+                </section>
+                <br>
+                <section class="swagger-request-params">
+                  <table>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                    <tr>
+                      <td><code>dblReqArg</code> -
+                        <a href="#definition-String"><code>[String!]!</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                  </table>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Query</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> requiredsQuery<span class="hljs-tag">(<span class="hljs-code">$dblReqArg</span>: <span class="hljs-type">[String!</span>]!)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">requiredsQuery<span class="hljs-tag">(dblReqArg: <span class="hljs-code">$dblReqArg</span>)</span></span>
+}</span></span>
+</code></pre> </body>
+                    </html>
+                    <h5>Variables</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;dblReqArg&quot;</span>: [
+    <span class="hljs-string">&quot;Generated Argument example for requiredsQuery dblReqArg&quot;</span>
+  ]
+}
+</code></pre> </body>
+                    </html>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy"> </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Response </h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;requiredsQuery&quot;</span>: [<span class="hljs-string">&quot;abc123&quot;</span>]}}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <h1 id="tag-Mutations" class="swagger-summary-tag tag-name" data-traverse-target="tag-Mutations">Mutations</h1>
+          <div id="operation-mymutation-post" class="operation panel" data-traverse-target="operation-mymutation-post">
+            <h2 class="operation-name"> <code>myMutation</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="swagger-request-body"> </section>
+                <section class="swagger-responses"> Returns a
+                  <a href="#definition-String"><code>String</code></a>
+                </section>
+                <br>
+                <section class="swagger-request-params">
+                  <table>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                    <tr>
+                      <td><code>myArg</code> -
+                        <a href="#definition-String"><code>String</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                  </table>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h4>Example</h3>
+                    <h5>Query</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> myMutation<span class="hljs-tag">(<span class="hljs-code">$myArg</span>:<span class="hljs-type"> String)</span> {
+  myMutation(myArg: <span class="hljs-code">$myArg</span>)</span></span>
+}
+</code></pre> </body>
+                    </html>
+                    <h5>Variables</h5>
+                    <html>
+                    <head></head>
+                    <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;myArg&quot;</span>: <span class="hljs-string">&quot;Generated Argument example for myMutation myArg&quot;</span>
+}
+</code></pre> </body>
+                    </html>
+                </section>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy"> </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Response </h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;myMutation&quot;</span>: <span class="hljs-string">&quot;abc123&quot;</span>}}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <span id="tag-types"></span>
+          <h1>Types</h1>
+          <div id="definition-Boolean" class="definition panel" data-traverse-target="definition-Boolean">
+            <h2 class="panel-title">
+              <a name="/definitions/Boolean"></a>
+              <p><code>Boolean</code></p>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>The <code>Boolean</code> scalar type represents <code>true</code> or <code>false</code>.</p>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-literal">false</span></span>
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-Int" class="definition panel" data-traverse-target="definition-Int">
+            <div class="definition-tags">
+              <a class="label" href="#tag-types">Types</a>
+            </div>
+            <h2 class="panel-title">
+              <a name="/definitions/Int"></a>
+              <p><code>Int</code></p>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>The <code>Int</code> scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.</p>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">123</span>
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-MyType" class="definition panel" data-traverse-target="definition-MyType">
+            <div class="definition-tags">
+              <a class="label" href="#tag-types">Types</a>
+            </div>
+            <h2 class="panel-title">
+              <a name="/definitions/MyType"></a>
+              <p><code>MyType</code></p>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>This is a description of <code>MyType</code></p>
+                </section>
+                <section class="json-schema-properties">
+                  <table>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                    <tr>
+                      <td data-property-name="nonRequiredField"> <code>nonRequiredField</code> -
+                        <a href="#definition-String"><code>String</code></a>
+                      </td>
+                      <td>
+                        <p>This is a description of <code>nonRequiredField</code></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" class="no-top-border">
+                        <div class="field-arguments">
+                          <p class="field-arguments-header"> Arguments </p>
+                          <div class="field-argument">
+                            <p class="field-argument-name"><code>nonRequiredArg</code> -
+                              <a href="#definition-String"><code>String</code></a> default = <code>&quot;some default string&quot;</code></p>
+                            <p>
+                              <p>This is a description of a <code>nonRequiredArg</code></p>
+                            </p>
+                          </div>
+                          <div class="field-argument">
+                            <p class="field-argument-name"><code>reqArg</code> -
+                              <a href="#definition-String"><code>String!</code></a>
+                            </p>
+                          </div>
+                          <div class="field-argument">
+                            <p class="field-argument-name"><code>reqArrayArg</code> -
+                              <a href="#definition-String"><code>[String]!</code></a>
+                            </p>
+                          </div>
+                          <div class="field-argument">
+                            <p class="field-argument-name"><code>dblReqArrayArg</code> -
+                              <a href="#definition-String"><code>[String!]!</code></a>
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td data-property-name="requiredField"> <code>requiredField</code> -
+                        <a href="#definition-String"><code>String!</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td data-property-name="requiredArrayField"> <code>requiredArrayField</code> -
+                        <a href="#definition-String"><code>[String]!</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                    <tr>
+                      <td data-property-name="doubleRequiredArrayField"> <code>doubleRequiredArrayField</code> -
+                        <a href="#definition-String"><code>[String!]!</code></a>
+                      </td>
+                      <td> </td>
+                    </tr>
+                  </table>
+                </section>
+              </div>
+              <div class="doc-examples">
+                <section>
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json">{
+  <span class="hljs-attr">&quot;nonRequiredField&quot;</span>: <span class="hljs-string">&quot;Generated Field example for nonRequiredField&quot;</span>,
+  <span class="hljs-attr">&quot;requiredField&quot;</span>: <span class="hljs-string">&quot;Generated Field example for requiredField&quot;</span>,
+  <span class="hljs-attr">&quot;requiredArrayField&quot;</span>: [
+    <span class="hljs-string">&quot;Generated Field example for requiredArrayField&quot;</span>
+  ],
+  <span class="hljs-attr">&quot;doubleRequiredArrayField&quot;</span>: [
+    <span class="hljs-string">&quot;Generated Field example for doubleRequiredArrayField&quot;</span>
+  ]
+}
+</code></pre> </body>
+                  </html>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div id="definition-String" class="definition panel" data-traverse-target="definition-String">
+            <div class="definition-tags">
+              <a class="label" href="#tag-types">Types</a>
+            </div>
+            <h2 class="panel-title">
+              <a name="/definitions/String"></a>
+              <p><code>String</code></p>
+            </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <section class="json-schema-description">
+                  <p>The <code>String</code> scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.</p>
+                </section>
+              </div>
+            </div>
+          </div>
+          <div class="doc-row no-margin">
+            <div class="doc-copy doc-separator">
+              <a class="powered-by" href="https://github.com/anvilco/spectaql">Documentation by
+                <span>Anvil SpectaQL</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </body>
+</html>

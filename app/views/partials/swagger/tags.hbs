@@ -1,5 +1,6 @@
-{{#each tags}}
-    <h1 id="tag-{{htmlId name}}" class="swagger-summary-tag" data-traverse-target="tag-{{htmlId name}}">{{name}}</h1>
+{{#if (nempty tags) }}
+  {{#each tags}}
+    <h1 id="tag-{{htmlId name}}" class="swagger-summary-tag tag-name" data-traverse-target="tag-{{htmlId name}}">{{name}}</h1>
     {{#if description}}
       <div class="tag-description doc-row">
         <div class="doc-copy">
@@ -7,7 +8,6 @@
         </div>
       </div>
     {{/if}}
-    {{#each operations}}
-      {{>swagger/operation . operation=. method=method path=path}}
-    {{/each}}
-{{/each}}
+    {{>swagger/operations/operations . method=method path=path}}
+  {{/each}}
+{{/if}}

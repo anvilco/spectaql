@@ -4,7 +4,7 @@ var common = require('../lib/common')
 module.exports = function(value, options) {
   var cloned = common.formatExample(value, options.data.root, options.hash)
   if (!cloned)
-  	return '';
+    return '';
   var html = common.printSchema(cloned, options.data.root)
   return new Handlebars.SafeString(html)
 };

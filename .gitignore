@@ -1,3 +1,5 @@
+**/.DS_STORE
+**/.DS_Store
 ~*
 *~
 *bak
@@ -5,5 +7,4 @@
 *.log
 node_modules
 public
-.nyc_output
-coverage
+scratch

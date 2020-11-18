@@ -6,14 +6,21 @@
   @public
   @readonly
 --}}
+{{! This is for Types }}
 <div id="definition-{{htmlId @key}}" class="definition panel"
   data-traverse-target="definition-{{htmlId @key}}">
+  {{# unless @first }}
+    <div class="definition-tags">
+      <a class="label" href="#tag-types">Types</a>
+    </div>
+  {{/unless}}
   {{#if title}}
     {{#if anchor}}
       <h2 class="panel-title">
-        <a name="/definitions/{{title}}"></a>{{title}}:
-        {{type}}
-        <!-- <span class="json-property-type">{{>json-schema/datatype}}</span> -->
+        <a name="/definitions/{{title}}"></a>{{md (codify title)}}
+        {{!--
+          <!-- <span class="json-property-type">{{>json-schema/datatype}}</span> -->
+        --}}
       </h2>
     {{else}}
       <h2 class="panel-title">{{title}}</h2>

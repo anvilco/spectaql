@@ -1,0 +1,18 @@
+{
+  "OBJECT": {
+    "SecretType": {
+      "documentation": { "undocumented": true }
+    },
+    "Query": {
+      "fields": {
+        "myQuery": {
+          "args": {
+            "nonReqQueryArg": {
+              "documentation": { "example": "I am an example from metadata" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
