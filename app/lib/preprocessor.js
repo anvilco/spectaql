@@ -1,5 +1,5 @@
-var path = require('path'),
-  _ = require('lodash')
+const path = require('path')
+const _ = require('lodash')
 
 var httpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', '$ref'];
 
@@ -12,7 +12,7 @@ module.exports = function(options, specData) {
     options.specFile = process.cwd()
   }
 
-  // Don't normalize x-spec-path to posix path. It must be a platoform specific.
+  // Don't normalize x-spec-path to posix path. It must be a platform specific.
   specData["x-spec-path"] = options.specFile;
 
   var copy = _.cloneDeep(specData)
@@ -20,8 +20,12 @@ module.exports = function(options, specData) {
 
   copy.tags = copy.tags || [];
 
-  if (options.logoFile) {
-    copy.logo = path.basename(options.logoFile)
+  if (options.logoFileTargetName) {
+    copy.logo = path.basename(options.logoFileTargetName)
+  }
+
+  if (options.faviconFileTargetName) {
+    copy.favicon = path.basename(options.faviconFileTargetName)
   }
 
   // The "body"-parameter in each operation is stored in a
@@ -40,6 +44,7 @@ module.exports = function(options, specData) {
         operation.method = method
         // Draw links from tags to operations referencing them
         var operationTags = operation.tags || ['default']
+
         operationTags.forEach(function(tag) {
           if (!tagsByName[tag]) {
             // New implicit declaration of tag not defined in global "tags"-object
@@ -56,7 +61,11 @@ module.exports = function(options, specData) {
             tagsByName[tag].operations.push(operation)
           }
         })
+
         // Join parameters with path-parameters
+        //
+        // Filter out the 'body' parameter from the rest of them, and stuff it into the _request_body
+        // key. Weird.
         operation.parameters = (operation.parameters || [])
           .concat(pathParameters)
           .filter(function(param) {

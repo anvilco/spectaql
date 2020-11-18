@@ -1,3 +1,4 @@
+{{! TODO: remove? }}
 {{!--
   Original work Copyright (c) 2015 Nils Knappmeier
   https://github.com/bootprint/bootprint-openapi
@@ -7,13 +8,18 @@
   @api public
 --}}
 
-<h1>Paths</h1>
-{{#if showTagSummary}}
-	{{#eachSorted paths}}
-	  {{>swagger/path pathItems=. path=@key}}
-	{{/eachSorted}}
-{{else}}
-  {{#each paths}}
-    {{>swagger/path pathItems=. path=@key}}
-  {{/each}}
+{{#if (nempty paths)}}
+  {{#if showTagSummary}}
+    <h1>Operations</h1>
+  	{{#eachSorted paths}}
+  	  {{>swagger/path pathItems=. path=@key}}
+  	{{/eachSorted}}
+  {{else}}
+    {{# if tags.0.name}}
+      <h1>{{ tags.0.name }}</h1>
+    {{/if}}
+    {{#each paths}}
+      {{>swagger/path pathItems=. path=@key}}
+    {{/each}}
+  {{/if}}
 {{/if}}

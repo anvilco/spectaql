@@ -1,0 +1,17 @@
+type MyType {
+  myField(
+    myArg: String
+  ): String
+}
+
+type Query {
+  myQuery(
+    myArg: String
+  ): String
+}
+
+type Mutation {
+  myMutation(
+    myArg: String
+  ): String
+}

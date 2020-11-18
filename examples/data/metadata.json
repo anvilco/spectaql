@@ -1,0 +1,18 @@
+{
+  "OBJECT": {
+    "MyType": {
+      "documentation": { "documented": true }
+    },
+    "Query": {
+      "fields": {
+        "myQuery": {
+          "args": {
+            "myArg": {
+              "documentation": { "example": "Foo and bar and stuff" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

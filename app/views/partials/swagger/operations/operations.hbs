@@ -1,0 +1,5 @@
+{{#if (nempty operations)}}
+  {{#each operations}}
+    {{>swagger/operations/operation . operation=. method=method path=path}}
+  {{/each}}
+{{/if}}

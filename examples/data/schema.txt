@@ -1,0 +1,48 @@
+"This is a description of `MyType`"
+type MyType {
+  "This is a description of `nonRequiredField`"
+  nonRequiredField(
+    "This is a description of a `nonRequiredArg`"
+    nonRequiredArg: String = "some default string"
+    reqArg: String!
+    reqArrayArg: [String]!
+    dblReqArrayArg: [String!]!
+
+  ): String
+
+  requiredField: String!
+
+  requiredArrayField: [String]!
+
+  doubleRequiredArrayField: [String!]!
+}
+
+type Query {
+  "This is a description of `myQuery`"
+  myQuery(
+    "This is a description of a `nonRequiredQueryArg`"
+    nonReqQueryArg: String = "some default string"
+    reqQueryArg: String!
+    reqQueryArrayArg: [String]!
+    dblReqQueryArrayArg: [String!]!
+  ): String
+
+  getInt: Int
+  getInts: [Int]
+
+  optionalsQuery(
+    optionalArg: [String]
+  ): [String]
+
+  requiredsQuery(
+    dblReqArg: [String!]!
+  ): [String!]!
+
+  myTypes: [MyType]
+}
+
+type Mutation {
+  myMutation(
+    myArg: String
+  ): String
+}

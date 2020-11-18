@@ -1,138 +1,116 @@
-# DociQL
+# SpectaQL
 
 [![npm][npm]][npm-url]
 [![downloads][npm-downloads]][npm-url]
-[![builds][builds]][builds-url]
-[![coverage][cover]][cover-url]
-[![Quality Gate Status][sonar]](sonar-url)
 
-> A nice fork of [Spectacle](http://sourcey.com/spectacle)
+> A nice enhancement of [DociQL](https://github.com/wayfair/dociql)
 
-DociQL generates beautiful static HTML5 documentation from a [GraphQL](https://graphql.org) endpoint using the introspection query.
+SpectaQL is a Node.js library that generates static documentation for a [GraphQL](https://graphql.org) schema using a variety of options:
+1. From a live endpoint using the introspection query.
+2. From a file containing an introspection query result.
+3. From a file containing the schema definition in SDL.
 
-The goal of DociQL is help you "save time and look good" by providing an extensible platform for auto generating your API documentation. The default layout is a three column single page, similar to those
-employed by [Stripe](https://stripe.com/docs/api) and [Intercom](https://developers.intercom.com/reference).
+The goal of SpectaQL is to help you keep your documentation complete, current and beautiful with the least amount of pain as possible.
 
-See a demo of DociQL in action here: [https://wayfair.github.io/dociql/](https://wayfair.github.io/dociql/)
+Out of the box, SpectaQL delivers a 3-column page with a modern look and feel. However, many aspects can be customized with ease, and just about everything can be customized if you're willing to dig in.
 
----
+SpectaQL also has lots of advanced features and ways to enhance your GraphQL documentation.
 
-![Demo Screenshot](screenshot.png)
+Anvil uses SpectaQL for our own docs, and you can see them here: [https://www.useanvil.com/docs/api/graphql/reference/](https://www.useanvil.com/docs/api/graphql/reference/)
 
----
+![Screenshot](_docs/anvil-api-screenshot.jpg)
+
+## Benefits
+Using SpectaQL to generate your documentation has a number of benefits, such as:
+- Your documentation will always be up-to-date
+- Your documentation will always be complete
+- Your documentation can be beautiful and "on brand"
+- Save developers time and headache by not having to write documentation
 
 ## Features
 
-* Uses the introspection query to fetch a schema of GraphQL and generates documentation on the fly.
-* Generates an example request and response with "Try it now" links.
-* Allows the user to define use cases and group them by domain.
-* **Highly configurable**: Easily configurable Handlebars templates and SCSS styles so you can add your own design and flavour without going bald. See [Custom Builds](#custom-builds).
-* **Markdown support**: Render markdown written in any of your API descriptions.
-* **Clean, responsive design**: Responsive HTML5 and CSS3 layout built with [Foundation 6](http://foundation.zurb.com/sites.html) that looks great on all devices and screen sizes.
-* **Embed into your existing website**: An embedded option so that you can generate partial docs without a HTML `<body>` tag for convenient integration into your existing website.
-* **Live preview developer mode**: Development mode that starts a local HTTP server with a file watcher and live reload, so you can preview live changes in your browser as you update your specification.
+* Various ways to ingest your schema:
+  - Hit a live GraphQL endpoint with an introspection query
+  - Provide a file containing an introspection query result
+  - Provide a file containing your schema in SDL
+* Will automatically generate documentation for all Types, Fields, Queries, Mutations and Arguments by default.
+* Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
+* Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
+* Supports customization of CSS to allow overriding the styles.
+* Supports markdown just about everywhere you can provide text.
+* Live preview mode while developing.
+* Many options for output:
+  - Specify a logo
+  - Specify a favicon
+  - Specify the target directory and HTML file name
+  - Can output JS and/or CSS "in line" in your HTML file, rather than as separate files.
+  - Can output in "embeddable" mode (only the `<body>` content is generated) so output can be integrated into your existing site.
+  - ...and more!
 
-## Usage
 
-### Install DociQL from `npm`:
+## Getting Started
 
-```bash
-npm install -g dociql
-```
+1. Install SpectaQL:
+  
+    ```sh
+    yarn global add spectaql
+    # OR
+    npm install -g spectaql
+    ```
 
+    This is a global installation, but you can also either:
+    + Clone this repository
+    + Add `spectaql` as a dependency to an existing project.
 
-### Define `config.yml` template to help generate beautiful docs:
-```yml
-# To fetch schema from
-introspection: https://url-to-you-graphql-endpoint
+2. Define a `config.yml` that specifies how you'd like to generate your docs.
+  See [YAML Options](#yaml-options) for more.
 
-servers: # same format as for OpenAPI Specification
-  - url: https://dev-server.com
-    description: Dev
-  - url: https://prod-server.com
-    description: Prod
-    ...
+3. Generate your docs!
+    ```sh
+    npx spectaql config.yml
+    ```
 
-info: # same format as for OpenAPI Specification
-    title: Your API Title
-    description: Markdown enabled description of your api.    
-    ...
+Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, write the output to somewhere else, or view your docs by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
 
- # define your domains by providing a set of usecases
-domains:
-  - name: Top Level Menu Section # Name of the domain
-    description: Description  # Description of the domain
-    usecases:         
-     - name: Fetch 'Some' field # Operation name
-       description: Markdown enabled description for operation # Opearation description
-       query: query.some # Query example - fetching single field
-       select: field1 field2 # select only specific sub fields. By default - all are selected
-       expand: field3(sub1, sub2, sub3),field4 # go deep by expanding specific fields.
-     - name: Invoke Mutation # Mutation 
-       description: Markdown enabled description for operation
-       query: mutation.mutateSome # Mutation example - invoke mutation
-```
-### Pass your `config.yml` document to generate your documentation:
+## YAML Options
 
-```bash
-dociql -d config.yml
-```
+To generate your documentation, SpectaQL requires a configuration YAML. This file is where you can specify most of the options to make your output the way you'd like it. All the supported options and their descriptions can be found in the [config-example.yml](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file.
 
-Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, or view your docs by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
+## Command Line Options
 
-### Docker
+Several options are supported via the CLI. Some are exclusive to the CLI, while others are also possible to specify in the YAML config. Options specified in the CLI take precedence over those that exist in the YAML config. All the supported options and their descriptions can be found in [/bin/spectaql.js](https://github.com/anvilco/spectaql/blob/master/bin/spectaql.js).
 
-> Coming soon!
+## Metadata
 
-## Configuration Options
+In our experience, nearly all of the stuff we need for the content of the documentation comes from things supported in GraphQL and introspection queries...but not everything. To supplement some things that are missing, SpectaQL provides support for including "metadata" about your schema that can be used when generating the output. The following options are currently supported:
+- `example`: When provided for a Field or Argument, this value will be used as an "example" for the Field or Argument. It can be any value supported in JSON.
+- `examples`: Same as `example`, but allows an Array of examples to be provided, from which one random one will be used during generation.
+- `undocumented`: A Boolean value that can be provided on a Type, Field, Argument, Query or Mutation indicating that this item is _**not**_ to be included in the resulting output. Useful for 1-off hiding of things where the default was to show them.
+- `documented`: Just like `undocumented`, except it _**will**_ include it in the resulting output. Useful for 1-off showing of things where the default was to hide them.
 
-The basic CLI options are detailed below:
+SpectaQL supports 2 ways to include metadata to be used during processing:
+1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to get our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/master/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
+2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/master/examples/data/metadata.json) file to understand its format.
 
-```bash
-$ dociql -h
+## Dynamic Example Generators
 
-  Usage: dociql [options] <dociql.yaml>
+In addition to being able to use any static examples you've provided, SpectaQL also supports dynamically generating examples for Fields and Arguments. When it comes time to generate an example, SpectaQL can pass all the necessary information about the Field or Argument to your generator in order for it to decide what the example should look like. See the included [example generator](https://github.com/anvilco/spectaql/blob/master/examples/customizations/examples/index.js) to see how it works.
 
-  Options:
-
-    -h, --help                   output usage information
-    -V, --version                output the version number
-    -C, --disable-css            omit CSS generation (default: false)
-    -J, --disable-js             omit JavaScript generation (default: false)
-    -e, --embeddable             omit the HTML <body/> and generate the documentation content only (default: false)
-    -d, --development-mode       start HTTP server with the file watcher (default: false)
-    -D, --development-mode-live  start HTTP server with the file watcher and live reload (default: false)
-    -s, --start-server           start the HTTP server without any development features
-    -p, --port <port>            the port number for the HTTP server to listen on (default: 4400)
-    -P, --port-live <port>       the port number for the live reload to listen on (default: 4401)
-    -t, --target-dir <dir>       the target build directory (default: public)
-    -f, --target-file <file>     the target build HTML file (default: index.html)
-    -a, --app-dir <dir>          the application source directory (default: app)
-    -l, --logo-file <file>       specify a custom logo file (default: null)
-    -c, --config-file <file>     specify a custom configuration file (default: app/lib/config.js)
-```
-
-Most options are self explanatory, but the following options warrant some further explanation:
-
-* **--development-mode** `-d`: This option starts a development server with a file watcher, and will automatically regenerate your docs when any of your spec or app files change.
-
-* **--development-mode-live** `-D`: This option starts a development server with a file watcher and live reload, and will automatically regenerate your docs when any of your spec or app files change.
-
-* **--start-server** `-s`: This option starts a production server without any development options enabled that serves the contents of your `--target-dir`.
-
-* **--embeddable** `-e`: This option lets you build a minimal version of the documentation without the HTML `<body>` tags, so you can embed DociQL into your own website template. More info on [Custom Builds](#custom-builds) here.
-
-* **--app-dir** `-a`: This option overrides the default directory which contains all the Handlebars templates, SCSS, and JavaScript source files. This option is useful for development because you can copy the contents of `app` to a remote location or a separate repo for custom builds.
-
-* **--target-dir** `-t`: This option specifies where the generated documentation HTML files will be output.
+**NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata *before* SpectaQL even gets involved. Just a thought.
 
 ## Custom Builds
 
-The best option for building your own custom functionality into DociQL is to [fork DociQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. This way, you can keep up-to-date by merging changes from the `master` branch and you can also contribute your updates back to `master` by creating a [Pull Request](https://help.github.com/articles/creating-a-pull-request/), especially if you think they'll be an improvement for DociQL.
+The best option for customizing your output is to see if what you want to do is already supported out of the box:
+- There are various options in the [CLI](#command-line-options) and [YAML](yaml-options) config for customizing your results.
+- Overriding CSS is already supported. Check [customizations/scss](https://github.com/anvilco/spectaql/blob/master/customizations/scss) for more.
+- Overriding "examples" for things is already supported via [metadata](#metadata), or via a [dynamic examples processor](#dynamic-examples-processor).
 
-To fork DociQL go to `https://github.com/wayfair/dociql` and press the 'Fork' button. Now you can `git clone git@github.com:<yourname>/dociql.git` to make your own changes.
 
-Alternatively, you can just copy the contents of `app` from the main repo which contains all of the source files such as templates, stylesheets, and JavaScripts. Now, just pass the path from your custom `app` path to the CLI like so: `dociql -a dociql.json`.
+If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `master` branch. 
+
+Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL.
+
+Alternatively, you can just copy and modify the contents of `app` from the main repo and pass the path from your custom `app` path to the CLI using the `-a` flag.
 
 ## Optimizing Your Workflow
 
@@ -144,53 +122,38 @@ Using an API spec to generate your documentation has a number of great advantage
 
 ## Development
 
+When developing, you'll likely want to use the `-d` or `-D` development modes so that your output is hosted live for you, and changes to the code will trigger a rebuilding of the output:
+```sh
+npx spectaql -d path/to/config.yml
+```
+
 ### Testing
 
-> Coming soon!
+> Under Construction
 
-Testing is powered by [Mocha](https://mochajs.org/)/[Chai](http://chaijs.com/) and automated testing is run via [CircleCI](https://circleci.com/).
+The changes we made from the DociQL project are significant, and as a result there is only a limited amount of test coverage at this point. However, new code should be tested, and unit tests for the existing code will be added in the future...or are welcome as pull requests!
 
-At this stage, unit tests have not been written for all parts of the codebase.  However, new code should be tested, and unit tests for the existing code will be added in the future.
+Testing is powered by [Mocha](https://mochajs.org/)/[Chai](http://chaijs.com/) and uses the [BDD Lazy Var](https://github.com/stalniy/bdd-lazy-var) enhancement for writing RSpec-style tests.
 
-Run `npm test` on the repository to start the automated tests. Some parts of testing can be configured using environment variables.
+Run `npm test` on the repository to start the automated tests.
 
-- `OFFLINE=true`
-  Some tests use HTTP connections to test, giving DociQL remote API specifications. Use `OFFLINE=true` to skip tests that require an internet connection.
+## Contributors and Special Thanks
 
-Include environment variables before calling `npm test`.  For example, `OFFLINE` mode can be enabled via `OFFLINE=true npm test`.
-
-
-<!-- ## Contributors
-
-Thanks to all the great developers who make DociQL great!
-
-TODO
--->
-
+This library owes a very special thanks to the [DociQL](https://github.com/wayfair/dociql) project, which served as a great starting point for SpectaQL to build on top of.
 
 ## License
 
-DociQL is licensed under the Apache License 2.0 – see the [LICENSE.md](https://github.com/wayfair/dociql/blob/master/LICENSE) for specific details.
+SpectaQL is licensed under the MIT License – see the [LICENSE.md](https://github.com/anvilco/spectaql/blob/master/LICENSE) for specific details.
 
 ## More Information
 
-More info is available on the [DociQL homepage](https://github.com/wayfair/dociql).
+More info is available on the [SpectaQL homepage](https://github.com/anvilco/spectaql).
 
-Please use the [GitHub issue tracker](https://github.com/sourcey/spectacle/issues) if you have any ideas or bugs to report.
 
 All contributions are welcome.
 
-Good luck and enjoy DociQL!
+Good luck and enjoy SpectaQL!
 
-[npm]: https://img.shields.io/npm/v/dociql.svg
-[npm-downloads]: https://img.shields.io/npm/dw/dociql
-[npm-url]: https://www.npmjs.com/package/dociql
-
-[builds]: https://travis-ci.org/wayfair/dociql.svg?branch=master
-[builds-url]: https://travis-ci.org/wayfair/dociql
-
-[cover]: https://codecov.io/gh/wayfair/dociql/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/wayfair/dociql
-
-[sonar]: https://sonarcloud.io/api/project_badges/measure?project=wayfair_dociql&metric=alert_status
-[sonar-url]: https://sonarcloud.io/dashboard?id=wayfair_dociql
+[npm]: https://img.shields.io/npm/v/spectaql.svg
+[npm-downloads]: https://img.shields.io/npm/dw/specatql
+[npm-url]: https://www.npmjs.com/package/spectaql

@@ -9,7 +9,7 @@ var path = require("path")
 */
 function jsonSearch(ref, obj) {
   var current = obj;
-  refs = ref.replace(/^#?\/?/, "").split("/").forEach(function(section) {
+  ref.replace(/^#?\/?/, "").split("/").forEach(function(section) {
     if(section.trim().length < 1) {
       return;
     }
@@ -20,6 +20,7 @@ function jsonSearch(ref, obj) {
       throw new ReferenceError("Couldn't evaluate JSON reference '"+ref+"': Couldn't find key "+section)
     }
   })
+
   return current;
 }
 

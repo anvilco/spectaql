@@ -1,9 +1,17 @@
-/docs
-/test
-/.vscode
-/public
-/config.yml
-/eevee.png
-/TODO.md
+.gitignore
+.git/
 
-*.log
+*.md
+
+.eslintrc.js
+.gitignore
+.nvmrc
+config-example.yml
+
+_docs/
+test/
+examples/
+public/
+scratch/
+
+yarn.lock

@@ -1,10 +1,70 @@
-var highlightGraphQl = require('../dociql/graphql-hl')
-var cheerio = require('cheerio')
-var marked = require('marked')
-var highlight = require('highlight.js')
-var _ = require('lodash')
+const _ = require('lodash')
+const stringify = require('json-stringify-pretty-compact')
+const cheerio = require('cheerio')
+const marked = require('marked')
+const highlight = require('highlight.js')
+
+const highlightGraphQl = require('../spectaql/graphql-hl')
+const {
+  typeIsArray,
+} = require('../spectaql/type-helpers')
+
+// Some things that we want to display as a primitive/scalar are not able to be dealt with in some
+// of the processes we go through. In those cases, we'll have to deal with them as strings and surround
+// them with these crazy tags in order to then strip the tags out later when displaying
+// them.
+const SPECIAL_TAG = 'SPECIALTAG'
+const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, "g")
+
+const QUOTE_TAG = 'QUOTETAG'
+const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, "g")
+
+// Map Scalar types to example data to use fro them
+const SCALAR_TO_EXAMPLE = {
+  String: ['abc123', 'xyz789'],
+  Int: [123, 987],
+  Float: [123.45, 987.65],
+  Boolean: [true, false],
+  Date: [new Date(), new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf())].map((date) => date.toISOString()),
+  JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
+}
+
+function unwindSpecialTags (str) {
+  if (typeof str !== 'string') {
+    return str
+  }
+
+  return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
+}
+
+function getExampleForScalar (value) {
+  const replacement = SCALAR_TO_EXAMPLE[value]
+  if (typeof replacement !== 'undefined') {
+    return Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
+  }
+}
+
+function jsonReplacer (name, value) {
+  return addSpecialTags(value)
+}
+
+function addSpecialTags (value, { placeholdQuotes = false } = {}) {
+  if (typeof value !== 'string') return value
+
+  const replacement = getExampleForScalar(value)
+  if (typeof replacement !== 'undefined') {
+    return replacement
+  }
+
+  // Don't quote it if it's already been quoted
+  const maybeQuoteTag = (placeholdQuotes && !value.includes(QUOTE_TAG)) ? QUOTE_TAG : ''
+
+  return `${SPECIAL_TAG}${maybeQuoteTag}${value}${maybeQuoteTag}${SPECIAL_TAG}`
+}
 
 var common = {
+
+  addSpecialTags,
 
   /**
    * Render a markdown formatted text as HTML.
@@ -35,7 +95,9 @@ var common = {
     if (lang) {
       try {
         highlighted = highlight.highlight(lang, code).value;
-      } catch (e) {}
+      } catch (e) {
+        console.error(e)
+      }
     }
     if (!highlighted) {
       highlighted = highlight.highlightAuto(code).value;
@@ -81,101 +143,143 @@ var common = {
   //   return cloned;
   // },
 
-  formatExample: function (value, root, options) {
-    if (!value) {
+  formatExample: function (ref, root, options) {
+    if (!ref) {
+      console.error('Cannot format NULL object ' + ref)
       // throw 'Cannot format NULL object ' + value;
       return;
     }
 
-    if (typeof (value) == "string") {
-      return value
-    } else if (value.schema) {
-      return this.formatExampleProp(value.schema, root, options)
-    } else if (value.type || value.properties || value.allOf) {
-      return this.formatExampleProp(value, root, options)
+    if (typeof (ref) == "string") {
+      // console.error('ref is a string! ' + ref)
+      return ref
     }
 
-    console.error('Cannot format example on object ', value)
-  },
-
-  formatExampleProp: function (ref, root, options) {
-    if (!ref) {
-      console.error('Cannot format NULL property')
-      return;
+    if (ref.schema) {
+      ref = ref.schema
     }
 
     // NOTE: Large schemas with circular references have been known to exceed
     // maximum stack size, so bail out here before that happens.
     // A better fix is required.
     // /usr/local/bin/node bin/spectacle -d test/fixtures/billing.yaml
-    if (!options.depth)
+    if (!options.depth) {
       options.depth = 0;
+    }
+
     options.depth++;
+
     if (options.depth > 100) {
       // console.log('max depth', ref)
       return;
     }
 
     var showReadOnly = options.showReadOnly !== false
-    var that = this;
 
+    // If there's an example, use it.
     if (ref.example !== undefined) {
-      return ref.example;
-    } else if (ref.$ref) {
-      var remoteRef = this.resolveSchemaReference(ref.$ref, root)
-      if (remoteRef)
-        return this.formatExampleProp(remoteRef, root, options)
+      return ref.example
+
+    } else if (ref.$ref) { // && !ref.type
+      // Don't expand out nested things...just stick their type in there
+      return this.getReferenceName(ref.$ref)
+
+      // var remoteRef = this.resolveSchemaReference(ref.$ref, root)
+      // if (remoteRef) {
+      //   return this.formatExample(remoteRef, root, options)
+      // }
     } else if (ref.properties) { // && ref.type == 'object'
-      var obj = {};
-      Object.keys(ref.properties).forEach(function (k) {
-        if (showReadOnly || ref.properties[k].readOnly !== true) {
-          obj[k] = that.formatExampleProp(ref.properties[k], root, options)
-        }
-      })
-      return obj;
+      return Object.entries(ref.properties).reduce(
+        (acc, [k, v]) => {
+          // If the value has a properties.return, then it's a "field" on a Type
+          // or an individual "query" or "mutation", and the schema to use for the
+          // example is in properties.return
+          if (v.type === 'object' && v.properties?.return) {
+            v = v.properties.return
+          }
+          if (showReadOnly || v.readOnly !== true) {
+            acc[k] = this.formatExample(v, root, options)
+          }
+
+          return acc
+        },
+        {},
+      )
     } else if (ref.allOf) {
-      var obj = {};
-      ref.allOf.forEach(function (parent) {
-        var prop = that.formatExampleProp(parent, root, options)
+      let obj = {};
+      ref.allOf.forEach((parent) => {
+        var prop = this.formatExample(parent, root, options)
         if (!prop || typeof prop == 'string') {
           // console.log('skipping property', prop, parent)
           return
         }
         obj = Object.assign(prop, obj)
       })
+
       return obj;
-    } else if (ref.items && ref.type == 'array') {
-      return [this.formatExampleProp(ref.items, root, options)];
+    } else if (ref.anyOf) {
+      // Try to sample from one of the non-null possibilities
+      let samples = ref.anyOf.filter((schema) => schema.type !== 'null')
+      if (!samples.length) {
+        samples = ref.anyOf
+      }
+
+      return this.formatExample(
+        _.sample(samples),
+        root,
+        options,
+       )
+    } else if (typeIsArray(ref)) {
+      return [this.formatExample(ref.items, root, options)];
     } else if (ref.type) {
-      return ref.type + (ref.format ? ' (' + ref.format + ')' : '')
+      let {
+        type,
+        title,
+        format,
+      } = ref
+      const replacement = getExampleForScalar(title)
+      if (typeof replacement !== 'undefined') {
+        type = unwindSpecialTags(replacement)
+      }
+
+      return type + (format ? ' (' + format + ')' : '')
     }
 
     console.error('Cannot format example on property ', ref, ref.$ref)
   },
 
-  printSchema: function (value, root) {
+  printSchema: function (value, _root) {
     if (!value) {
       return '';
     }
 
-    if (typeof (value) == "string") {      
-      return cheerio.load(marked("```gql\r\n" + value + "\n```")).html();      
+    if (typeof (value) == "string") {
+      return cheerio.load(marked("```gql\r\n" + value + "\n```")).html();
     } else {
-      var obj = JSON.stringify(value, null, 2)
-      return cheerio.load(marked("```json\r\n" + obj + "\n```")).html()
+      const stringified = unwindSpecialTags(
+        stringify(value, { indent: 2, replacer: jsonReplacer }),
+      )
+
+      return cheerio.load(marked("```json\r\n" + stringified + "\n```")).html()
     }
   },
 
-  resolveSchemaReference: function (reference, json) {
-    var hashParts
-
+  getReferencePath: function (reference) {
     reference = reference.trim()
     if (reference.indexOf('#') === 0) {
       var hash = reference.substr(2);
-      hashParts = hash.split('/')
-    } else {
-      hashParts = ['definitions', reference]
+      return hash.split('/')
     }
+
+    return ['definitions', reference]
+  },
+
+  getReferenceName: function (reference) {
+    return this.getReferencePath(reference).pop()
+  },
+
+  resolveSchemaReference: function (reference, json) {
+    var hashParts = this.getReferencePath(reference)
 
     var current = json;
     hashParts.forEach(function (hashPart) {
@@ -189,7 +293,7 @@ var common = {
       }
     })
     return current;
-  }
+  },
 }
 
 // Configure highlight.js

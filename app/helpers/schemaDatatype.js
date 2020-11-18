@@ -10,11 +10,7 @@
  * @param value
  * @returns {String} a string like <code>string[]</code> or <code>object[][]</code>
  */
-module.exports = function (value) {
-  return dataType(value)
-}
-
-function dataType(value) {
+module.exports = function schemaDatatype (value) {
   // console.log('dataType', value)
   if (!value) return null
   if (typeof value === 'string') {

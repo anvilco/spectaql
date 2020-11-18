@@ -4,46 +4,75 @@
 
   Renders json-schema object properties.
 --}}
+
+{{!--
+  This does the Fields on Types
+--}}
 {{#if properties}}
 <section class="json-schema-properties">
-  <dl>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
     {{#each properties}}
-      <dt data-property-name="{{htmlId @key}}"{{#if description}} class="has-description"{{/if}}>
-        {{!Single property, default type is "object"}}
-        <span class="json-property-name">{{@key}}:</span>
-        {{>json-schema/datatype}}
-        {{!>json-schema/datatype discriminator=(equal @key ../discriminator)}}
-        {{#ifcontains ../required @key}}
-          <span class="json-property-required"></span>
-        {{/ifcontains}}
-        {{#ifeq @key ../discriminator}}
-          <span class="json-property-discriminator"></span>
-        {{/ifeq}}
-        {{#if readOnly}}
-          <span class="json-property-read-only"></span>
-        {{/if}}
-      </dt>
-      {{#if description}}
-        <dd>
-          {{md description}}
-          {{!-- Show details of nested property schema
-          <div class="json-inner-schema">
-            {{>json-schema/body $ref="" description=""}}
-          </div>
+      <tr>
+        {{! The Name column }}
+        <td data-property-name="{{htmlId @key}}"
+          {{!-- Not sure what this does yet
+            {{#if description}} class="has-description"{{/if}}
           --}}
-        </dd>
+        >
+          {{! Add in the name and parent since they're unattainable otherwise }}
+          {{~> graphql/name-and-type properties.return name=@key parent=.. }}
+          {{!-- Handled now in name-and-type
+            {{#ifcontains ../required @key}}
+              <span class="json-property-not-nullable"></span>
+            {{/ifcontains}}
+          --}}
+          {{#ifeq @key ../discriminator}}
+            <span class="json-property-discriminator"></span>
+          {{/ifeq}}
+          {{#if readOnly}}
+            <span class="json-property-read-only"></span>
+          {{/if}}
+        </td>
+        {{!-- Not sure what this does yet
+          <td>
+            {{>json-schema/datatype discriminator=(equal @key ../discriminator)}}
+          </td>
+        --}}
+        <td>
+          {{! The Description column }}
+          {{#if description}}
+            {{md description}}
+            {{!-- Show details of nested property schema?
+              <div class="json-inner-schema">
+                {{>json-schema/body $ref="" description=""}}
+              </div>
+            --}}
+          {{/if}}
+          {{!--
+            {{#if items}}
+              <dt class="json-inner-schema">
+                {{~>json-schema/body $ref="" description=""}}
+              </dt>
+            {{/if}}
+          --}}
+        </td>
+      </tr>
+      {{#if (nempty properties.arguments.properties)}}
+        <tr><td colspan="2" class="no-top-border">
+          {{>graphql/field-arguments properties.arguments }}
+
+          {{!-- Not sure we want to display this thing here like this...
+            <dt class="json-inner-schema">
+                {{~>json-schema/body $ref="" description="" properties=arguments}}
+            </dt>
+          --}}
+        </td></tr>
       {{/if}}
-      {{#if properties}}
-        <dt class="json-inner-schema">
-          {{~>json-schema/body $ref="" description=""}}
-        </dt>
-      {{/if}}
-      {{!-- {{#if items}}
-        <dt class="json-inner-schema">
-          {{~>json-schema/body $ref="" description=""}}
-        </dt>
-      {{/if}} --}}
     {{/each}}
-  </dl>
+  </table>
 </section>
 {{/if}}
