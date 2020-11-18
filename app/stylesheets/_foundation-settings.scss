@@ -73,8 +73,9 @@ $foundation-palette: (
   secondary: #767676,
   success: #3adb76,
   warning: #ffae00,
-  alert: #cc4b37,
+  alert: #fcd7d8,
 );
+$very-light-gray: #fafbfc;
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
@@ -83,7 +84,7 @@ $black: #2d3134; //#0a0a0a;
 $white: #fefefe;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+$body-font-family: Barlow, 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
@@ -184,7 +185,7 @@ $code-font-family: $font-family-monospace;
 $code-font-weight: $global-weight-normal;
 $code-background: $light-gray;
 $code-border: 1px solid $medium-gray;
-$code-padding: rem-calc(2 5 1);
+$code-padding: rem-calc(1 1 1);
 $anchor-color: $primary-color;
 $anchor-color-hover: scale-color($anchor-color, $lightness: -14%);
 $anchor-text-decoration: none;
@@ -790,7 +791,10 @@ $table-padding: rem-calc(8 10 10);
 $table-hover-scale: 2%;
 $table-row-hover: darken($table-background, $table-hover-scale);
 $table-row-stripe-hover: darken($table-background, $table-color-scale + $table-hover-scale);
-$table-is-striped: true;
+
+// Turn off striping!!!!
+$table-is-striped: false;
+
 $table-striped-background: smart-scale($table-background, $table-color-scale);
 $table-stripe: even;
 $table-head-background: smart-scale($table-background, $table-color-scale / 2);

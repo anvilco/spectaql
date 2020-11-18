@@ -1,21 +1,24 @@
 {
-  "name": "dociql",
-  "version": "1.0.3",
-  "description": "Generate beautiful static API documentation from GraphQL Schema",
-  "preferGlobal": true,
+  "name": "spectaql",
+  "version": "0.0.3",
+  "description": "A powerful library for autogenerating static GraphQL API documentation",
+  "author": "Anvil Foundry Inc. <hello@useanvil.com>",
+  "license": "MIT",
+  "main": "app/index.js",
   "bin": {
-    "dociql": "bin/dociql.js"
+    "spectaql": "./bin/spectaql.js"
   },
   "scripts": {
-    "build": "node bin/dociql -l eevee.png config.yml",
-    "publish": "node bin/dociql -l eevee.png -t docs config.yml",
-    "test": "nyc --lines 85 --reporter=lcovonly --reporter=text-summary mocha && node bin/dociql -l eevee.png config.yml",
-    "develop": "dociql -d",
-    "start": "dociql -s"
+    "develop": "nodemon -x 'node bin/spectaql' -D",
+    "start": "spectaql -s",
+    "build": "node bin/spectaql",
+    "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
+    "build:marketing-site": "yarn build --no-logo-file --no-favicon-file --disable-css --disable-js --embeddable --target-dir ../marketing-site/src/pages/docs/api/graphql/static --target-file index.html.txt",
+    "test": "mocha --config ./test/mocha-config.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wayfair/dociql.git"
+    "url": "https://github.com/anvilco/spectaql.git"
   },
   "engines": {
     "node": ">=8"
@@ -24,23 +27,25 @@
     "graphql",
     "docs",
     "documentation",
+    "introspection",
+    "introspection-query",
+    "api",
     "builder",
     "generator"
   ],
-  "author": "Dennis Miasoutov <dmiasoutov@wayfair.com>",
-  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/sourcey/dociql/issues"
+    "url": "https://github.com/anvilco/spectaql/issues"
   },
-  "homepage": "https://github.com/wayfair/dociql",
+  "homepage": "https://github.com/anvilco/spectaql",
   "dependencies": {
-    "bluebird": "^3.5.2",
+    "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.0",
     "cheerio": "^1.0.0-rc.2",
     "clarify": "^2.1.0",
+    "coffeescript": "^2.5.1",
     "commander": "*",
-    "foundation-sites": "^6.5.0-rc.4",
+    "foundation-sites": "^6.6.3",
     "graphql": "^14.1.1",
-    "graphql-2-json-schema": "^0.2.0",
+    "graphql-2-json-schema": "0.6.0",
     "graphql-json-schema": "^0.1.2",
     "grunt": "^1.0.4",
     "grunt-compile-handlebars": "^2.0.2",
@@ -61,17 +66,28 @@
     "js-yaml": "^3.13.1",
     "json-refs": "^3.0.12",
     "json-stable-stringify": "^1.0.1",
+    "json-stringify-pretty-compact": "^2.0.0",
     "lodash": "^4.17.12",
     "marked": "^0.7.0",
     "node-sass": "^4.14.1",
-    "sync-request": "^6.0.0",
+    "sass": "^1.32.6",
+    "sync-request": "^6.1.0",
     "tmp": "0.0.33",
     "trace": "^3.1.0"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
+    "app-module-path": "^2.2.0",
+    "bdd-lazy-var": "^2.6.0",
+    "chai": "^4.3.0",
+    "chai-exclude": "^2.0.2",
     "codecov": "^3.6.1",
-    "mocha": "^5.2.0",
+    "eslint": "^7.19.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6",
     "nyc": "^14.1.1"
   }
 }

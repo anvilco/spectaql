@@ -1,9 +1,12 @@
-/docs
-/test
-/.vscode
-/public
-/config.yml
-/eevee.png
-/TODO.md
+# Ignore everything
+*
 
-*.log
+# Whitelist these
+!/app/**
+!/bin/**
+!/customizations/**
+!nodemon.json
+
+# Re-ignore these
+**/.DS_STORE
+**/.DS_Store

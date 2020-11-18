@@ -5,6 +5,6 @@
  * @returns {string} the uppercase string
  * @api public
  */
-module.exports = function(value, options) {
+module.exports = function(value, _options) {
   return value ? value.toUpperCase() : '';
 };

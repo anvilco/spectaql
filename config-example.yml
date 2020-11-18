@@ -1,0 +1,199 @@
+# This config will not run "as-is" and will need to be modified. You can see a minimal working
+# config in /examples/config.yml
+
+spectaql:
+  # Optional path to an image to use as the logo in the top-left of the output
+  logoFile: path/to/logo.png
+  # Optional path to an image to use as a favicon for the site when it's not embedded
+  faviconFile: path/to/favicon.png
+
+  # Optional string specifying how to build and include CSS for the output:
+  #   full: will include a very opinionated set of CSS to make the output look good
+  #   basic: will include a very minimal set of CSS mostly used for layout purposes.
+  #     You can then season to taste with your own additional CSS
+  cssBuildMode: full # or basic
+
+
+introspection:
+  ##############################################
+  # These options specify where/how to get the information requried to generate your
+  # documentation.
+  #
+  # Each of these have corresponding CLI options where they can be expressed instead of here.
+  # The CLI options will take precedence over what is in your config file
+  #
+  # 1 and only 1 of the following options must be provided:
+  #
+
+  # URL of the GraphQL endpoint to hit if you want to generate the documentation based on live Introspection Query results
+  url: https://yoursite.com/graphql
+
+  # File containing a GraphQL Schema Definition written in SDL
+  schemaFile: path/to/schema.txt
+
+  # File containing Introspection Query response in JS module export, or JSON format
+  introspectionFile: path/to/introspection.js[on]
+
+  #
+  #
+  ##############################################
+
+  ##############################################
+  # These options specify how, where and if any "metadata" information is to be added to your Introspection
+  # Query results IF it is not already present. If you are not dealing with metadata, or you have already
+  # baked it into your Introspection Query results somehow (on the server-side, for example) then you
+  # can ignore these options completely.
+  #
+
+  # File that contains your metadata data in JS module export, or JSON format
+  metadataFile: path/to/metadata.js[on]
+
+  # The path to the read the documentation-related metadata from in your metadata file.
+  # Defaults to 'documentation', but in case you have a complex/nested metadata structure, you can
+  # specify it here.
+  metadatasReadPath: documentation
+
+  # The path to write the documentation-related metadata to in your augmented Introspection
+  # Query results. This value should be set the same as the metadatasPath below in order to ensure
+  # that the metadata you've written can be found later on down the line.
+  # Defaults to 'documentation', but in case you have a complex/nested metadata structure, you can
+  # specify it here.
+  metadatasWritePath: documentation
+
+  #
+  #
+  ##############################################
+
+  ##############################################
+  # These options specify how, where and if any "metadata" information is to be found, or
+  # used/ignored when processing your documentation.
+  #
+
+  # The key path in your Introspection Query results where metadata supported by this library can
+  # be found.
+  # Defaults to 'documentation', but in case you have a complex/nested metadata structure, you can
+  # specify it here.
+  metadatasPath: documentation
+
+  # Whether or not to look for and use metadata in your data. If turned off, metadata will be ignored
+  # even if it's there
+  metadatas: true
+
+  #
+  #
+  ##############################################
+
+
+  # This allows you to specify a custom path to a JS moddule to handle the generation of
+  # example values for your schema. The default is "./customizations/examples" which starts
+  # out doing nothing
+  dynamicExamplesProcessingModule: path/to/examples.js
+
+  ##############################################
+  # These options specify what the default behavior should be
+  # (regarding documented vs non-documented) in the absence of
+  # metadata directives on a given item
+
+  # Whether to document any Queries at all, in the absence of a metadata directive
+  # Default: true
+  queriesDocumentedDefault: true
+  # Whether to document an individual Query, in the absence of a metadata directive
+  # Default: true
+  queryDocumentedDefault: true
+  # Whether to document a Query Argument, in the absence of a metadata directive
+  # Default: true
+  queryArgDocumentedDefault: true
+  # Hide any Queries with undocumented return types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideQueriesWithUndocumentedReturnType: true
+
+  # Whether to document any Mutations at all, in the absence of a metadata directive
+  # Default: true
+  mutationsDocumentedDefault: true
+  # Whether to document an individual Mutation, in the absence of a metadata directive
+  # Default: true
+  mutationDocumentedDefault: true
+  # Whether to document a Mutation Argument, in the absence of a metadata directive
+  # Default: true
+  mutationArgDocumentedDefault: true
+  # Hide any Mutations with undocumented return types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideMutationsWithUndocumentedReturnType: true
+
+  # Whether to document any Types at all
+  # Default: true
+  typesDocumented: true
+  # Whether to document an individual Type, in the absence of a metadata directive
+  # Default: true
+  typeDocumentedDefault: true
+  # Whether to document an individual Field, in the absence of a metadata directive
+  # Default: true
+  fieldDocumentedDefault: true
+  # Whether to document an individual Argument, in the absence of a metadata directive
+  # Default: true
+  argDocumentedDefault: true
+  # Hide any fields with undocumented return types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideFieldsWithUndocumentedReturnType: true
+
+  #
+  #
+  ##############################################
+
+servers:
+  # same format as for OpenAPI Specification https://swagger.io/specification/#server-object
+
+  - url: https://yoursite.com/graphql
+    description: Production Server
+    # Indicates to use this server's URL as the typical GraphQL request base in the documentation
+    # If no server entries have this indicator, the first server's URL will be used.
+    # If no server entries are defined at all, the Introspection URL will be used.
+    production: true
+
+info:
+  # Tries to adhere to OpenAPI Specification https://swagger.io/specification/#info-object
+  # Will be used to populate the Welcome section of the output
+
+  ##############################################
+  # Introduction area flags
+  #
+
+  # Set to true to do no Introduction area rendering at all. Supersedes the below options
+  x-hideIntroduction: false
+  # Set to true to not render a friendly Welcome section based on the description in this area
+  x-hideWelcome: false
+  # Set to true to not render your intro items
+  x-hideIntroItems: false
+
+  #
+  ##############################################
+
+  description: Your description here
+  version: 1.0.0
+  title: Your Welcome title here
+  # This is non-standard and optional. If omitted, will use "title". Also only relevant
+  # when building non-embedded.
+  x-htmlTitle: Your HTML page title here
+  termsOfService: 'https://yoursite.com/terms'
+  contact:
+    name: YourSite Support
+    email: support@yoursite.com
+    url: https://yoursite.com/support
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+  # A non-standard array of items to display in your Introduction Area
+  x-introItems:
+    # Can be a Title (for the Nav panel) + URL to simply add a link to somewhere
+    - title: A silly link to our website!
+      url: http://yoursite.com
+    # Can be a Title (for the Nav panel) + description (for the Content panel)
+    - title: Important thing 1
+      description: Some important stuff we wanted you to know. Supports `markdown`
+
+  # If you really want to hide the "Documentation by" at the bottom of your output, you can do so here
+  x-hidePoweredBy: true

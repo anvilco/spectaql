@@ -47,7 +47,7 @@
 }
 
 .swagger-responses {
-  @include named-section($msg-swagger-section-responses);
+  @include named-section($msg-swagger-section-response);
 }
 
 .swagger-global {
@@ -147,11 +147,105 @@ table.table {
   }
 }
 
+
+// Anvil Tables
+.json-schema-properties, .swagger-request-params {
+  // table {
+  //   table-layout: fixed;
+  // }
+
+  tbody {
+    border: none !important;
+  }
+
+  tbody tr {
+    border-bottom: none !important;
+
+    vertical-align: top;
+
+    th {
+      border-bottom: 2px solid black;
+
+      // &.col1 {
+      //   width: 30%;
+      // }
+
+      // &.col2 {
+      //   width: 20%;
+      // }
+
+      // &.col3 {
+      //   width: 20%;
+      // }
+    }
+
+    td {
+      border-top: 1px solid $light-gray;
+
+      &.no-top-border {
+        border-top: none !important;
+      }
+    }
+  }
+
+  th, td {
+    padding: 5px;
+
+    // No left-padding on left-most column
+    &:first-child {
+      padding-left: 0px;
+    }
+
+    // No right-padding on right-most column
+    &:last-child {
+      padding-right: 0px;
+    }
+  }
+
+  th {
+    text-align: left;
+    font-weight: bold;
+  }
+}
+
+// Code
+// Things to do when code is in a link
+a > code {
+  // Set the color back
+  color: $anchor-color;
+}
+
+
+// Field Arguments
+.field-arguments {
+  background-color: $very-light-gray;
+  border: 1px $light-gray solid;
+  padding-left: 10px;
+  padding-top: 10px;
+
+  p {
+    margin-bottom: 0.25rem;
+  }
+
+  // .field-arguments-header {
+  // }
+
+  .field-argument {
+    border-top: 1px $light-gray solid;
+    margin-bottom: 0.5rem;
+
+    .field-argument-name {
+      padding-top: 5px;
+    }
+  }
+}
+
 //
 //= Swagger JSON schema
 
 .json-schema-description {
-  @include named-section($msg-json-section-description);
+  // Don't add the "Description" header to the description...it's implied
+  //@include named-section($msg-json-section-description);
 }
 
 .json-schema-properties {
@@ -182,11 +276,11 @@ table.table {
 .json-schema-ref-array {
   &:before {
     color: $dark-gray;
-    content: "Array<";
+    content: "Array[";
   }
   &:after {
     color: $dark-gray;
-    content: ">";
+    content: "]";
   }
 }
 
@@ -235,6 +329,10 @@ table.table {
 
 .json-property-required {
   @include named-label($msg-json-required)
+}
+
+.json-property-not-nullable {
+  @include named-label($msg-json-not-nullable)
 }
 
 .json-property-read-only {

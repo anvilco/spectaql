@@ -62,7 +62,7 @@ Traverse.prototype._init = function() {
   var id = this.$element[0].id, // || Foundation.GetYoDigits(6, 'traverse'),
       _this = this;
   this.$targets = $('[data-traverse-target]');
-  this.$links = this.$element.find('a');
+  this.$links = this.$element.find('a:not([data-traverse-ignore])');
   this.$element.attr({
     'data-resize': id,
     'data-scroll': id,
