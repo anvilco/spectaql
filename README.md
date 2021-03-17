@@ -18,7 +18,7 @@ SpectaQL also has lots of advanced features and ways to enhance your GraphQL doc
 
 Anvil uses SpectaQL for our own docs, and you can see them here: [https://www.useanvil.com/docs/api/graphql/reference/](https://www.useanvil.com/docs/api/graphql/reference/)
 
-![Screenshot](_docs/anvil-api-screenshot.jpg)
+![Screenshot](static/anvil-api-screenshot.jpg)
 
 ## Benefits
 Using SpectaQL to generate your documentation has a number of benefits, such as:

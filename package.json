@@ -1,7 +1,7 @@
 {
   "name": "spectaql",
   "version": "0.0.2",
-  "description": "Autogenerate static GraphQL API documentation",
+  "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "license": "MIT",
   "bin": {
@@ -26,6 +26,9 @@
     "graphql",
     "docs",
     "documentation",
+    "introspection",
+    "introspection-query",
+    "api",
     "builder",
     "generator"
   ],
