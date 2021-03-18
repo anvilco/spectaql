@@ -18,7 +18,8 @@ Out of the box, SpectaQL delivers a 3-column page with a modern look and feel. H
 
 SpectaQL also has lots of advanced features and ways to enhance your GraphQL documentation.
 
-Anvil uses SpectaQL for our own docs, and you can see them here: [https://www.useanvil.com/docs/api/graphql/reference/](https://www.useanvil.com/docs/api/graphql/reference/)
+Anvil uses SpectaQL for our own docs, and you can see them [here][docs].
+Also, this supporting [blog post][blog] outlines our use-case and implementation.
 
 <img src="/static/anvil-api-screenshot.jpg" width="800">
 
@@ -72,7 +73,7 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
     npx spectaql config.yml
     ```
 
-Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, write the output to somewhere else, or by adding the `-D` flag and viewing your docs live by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
+Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, write the output to somewhere else using the `-t /path/to/ouputDir` option, or add `-D` flag and view your docs live by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
 
 ## Examples
 
@@ -103,7 +104,7 @@ In our experience, nearly all of the stuff we need for the content of the docume
 - `documented`: Just like `undocumented`, except it _**will**_ include it in the resulting output. Useful for 1-off showing of things where the default was to hide them.
 
 SpectaQL supports 2 ways to include metadata to be used during processing:
-1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to get our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/master/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
+1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to "weave" our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/master/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
 2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/master/examples/data/metadata.json) file to understand its format.
 
 ## Dynamic Example Generators
@@ -115,9 +116,9 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 ## Custom Builds
 
 The best option for customizing your output is to see if what you want to do is already supported out of the box:
-- There are various options in the [CLI](#command-line-options) and [YAML](yaml-options) config for customizing your results.
+- There are various options in the [CLI](#command-line-options) and [YAML](#yaml-options) config for customizing your results.
 - Overriding CSS is already supported. Check [customizations/scss](https://github.com/anvilco/spectaql/blob/master/customizations/scss) for more.
-- Overriding "examples" for things is already supported via [metadata](#metadata), or via a [dynamic examples processor](#dynamic-examples-processor).
+- Overriding "examples" for things is already supported via [metadata](#metadata), or via a [dynamic example generator](#dynamic-example-generators).
 
 
 If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `master` branch. 
@@ -126,17 +127,9 @@ Please consider submitting a Pull Request (or asking first via an Issue) for any
 
 Alternatively, you can just copy and modify the contents of `app` from the main repo and pass the path from your custom `app` path to the CLI using the `-a` flag.
 
-## Optimizing Your Workflow
-
-Using an API spec to generate your documentation has a number of great advantages, such as:
-
-* **Maintain a single source**: Save time by removing the need to maintain a separate API spec and API documentation.
-* **No more out-of-date documentation**: Your documentation will always be up-to-date with your API spec.
-* **Be a better developer**: Your entire API system will be more stable and robust when built around your spec as a single source of truth.
-
 ## Development
 
-When developing, you'll likely want to use the `-d` or `-D` development modes so that your output is hosted live for you, and changes to the code will trigger a rebuilding of the output:
+When developing, you'll likely want to use the `-D` (or `-d`) development modes so that your output is hosted live for you, and changes to the code will trigger a rebuilding of the output:
 ```sh
 npx spectaql -d path/to/config.yml
 ```
@@ -167,6 +160,7 @@ SpectaQL is licensed under the MIT License – see the [LICENSE.md](https://gith
 
 More info is available on the [SpectaQL homepage](https://github.com/anvilco/spectaql).
 
+You may also find this supporting [blog post][blog] that outlines our use-case and implementation to be helpful.
 
 All contributions are welcome.
 
@@ -175,3 +169,5 @@ Good luck and enjoy SpectaQL!
 [npm]: https://img.shields.io/npm/v/spectaql.svg
 [npm-downloads]: https://img.shields.io/npm/dw/specatql
 [npm-url]: https://www.npmjs.com/package/spectaql
+[docs]: https://www.useanvil.com/docs/api/graphql/reference/
+[blog]: https://www.useanvil.com/blog/2021-03-17-autogenerate-graphql-docs-with-spectaql
