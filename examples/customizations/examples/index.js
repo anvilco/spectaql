@@ -1,5 +1,5 @@
 /**
- * Accepts a bunch of inforamtion about a Field, and allows you to return an example
+ * Accepts a bunch of information about a Field, and allows you to return an example
  * to be used in your documentation. If undefined is returned, a default example will
  * be used for you.
  *
@@ -7,7 +7,7 @@
  *    {String} parentName - The name of the Type this Field is part of
  *
  *    {String} name - The name of this Field
- *    {String} returnType - The return Type of the Field
+ *    {String} returnType - The singular, when-non-null return Type of the Field (e.g. `[Foo!]!` would be `Foo` here)
  *    {Object} definition - The JSON Schema definition for this Field
  *
  *    {Boolean} isArray - Boolean indicating if the return Type is an array/list
@@ -29,7 +29,7 @@ function fieldProcessor (argz = {}) {
     isArray,
   } = argz
 
-  // All String fields of MyType get an example
+  // All String fields on MyType get an example
   if (parentName === 'MyType' && returnType === 'String') {
     const val = `Generated Field example for ${name}`
     // Might need to be an array
@@ -39,7 +39,7 @@ function fieldProcessor (argz = {}) {
 
 
 /**
- * Accepts a bunch of inforamtion about an Argument, and allows you to return an example
+ * Accepts a bunch of information about an Argument, and allows you to return an example
  * to be used in your documentation. If undefined is returned, a default example will
  * be used for you.
  *
@@ -57,7 +57,7 @@ function fieldProcessor (argz = {}) {
  *
  *    {String} name - The name of this Argument
  *    {Object} definition - The JSON Schema definition for this Argument
- *    {String} type - The Type of this Argument
+ *    {String} type - The singular, when-non-null return Type of this Argument (e.g. `[Foo!]!` would be `Foo` here)
  *
  *    {Boolean} isArray - Boolean indicating if the return Type is an array/list
  *    {Boolean} itemsRequired - Boolean indicating if the items in the array/list are required
@@ -78,7 +78,7 @@ function argumentProcessor (argz = {}) {
     isArray,
   } = argz
 
-  // All String arguments of the myQuery Query get examples
+  // All String arguments on the myQuery Query get examples
   if (parentType === 'Query' && parentName === 'myQuery' && type === 'String') {
     const val = `Special generated Argument example for ${parentName} ${name}`
     // Might need to be an array
