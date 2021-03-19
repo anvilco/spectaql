@@ -1,11 +1,14 @@
+<a href="https://www.useanvil.com"><img src="/static/anvil.png" width="50"></a>
+
 # SpectaQL
 
 [![npm][npm]][npm-url]
 [![downloads][npm-downloads]][npm-url]
 
-<img src="/static/SpectaQL.png" width="800">
+<a href="https://www.useanvil.com/docs"><img src="/static/SpectaQL.png" width="800"></a>
 
 > A nice enhancement of [DociQL](https://github.com/wayfair/dociql)
+
 
 SpectaQL is a Node.js library that generates static documentation for a [GraphQL](https://graphql.org) schema using a variety of options:
 1. From a live endpoint using the introspection query.
@@ -18,8 +21,8 @@ Out of the box, SpectaQL delivers a 3-column page with a modern look and feel. H
 
 SpectaQL also has lots of advanced features and ways to enhance your GraphQL documentation.
 
-Anvil uses SpectaQL for our own docs, and you can see them [here][docs].
-Also, this supporting [blog post][blog] outlines our use-case and implementation.
+:tada:&nbsp;&nbsp;[Anvil](https://www.useanvil.com) uses SpectaQL for our own docs, and you can see them [here][docs]. :tada:<br>
+:tada:&nbsp;&nbsp;This supporting [blog post][blog] outlines our use-case and implementation, and may be worth a read :tada:
 
 <img src="/static/anvil-api-screenshot.jpg" width="800">
 
@@ -165,6 +168,9 @@ You may also find this supporting [blog post][blog] that outlines our use-case a
 All contributions are welcome.
 
 Good luck and enjoy SpectaQL!
+
+<a href="https://www.useanvil.com"><img src="/static/anvil.png" height="15"></a>&nbsp;&nbsp;*Powered by [Anvil](https://www.useanvil.com)*
+
 
 [npm]: https://img.shields.io/npm/v/spectaql.svg
 [npm-downloads]: https://img.shields.io/npm/dw/specatql
