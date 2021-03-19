@@ -1,3 +1,4 @@
+const { get } = require('lodash')
 // Wraps a string in `backticks` so when it's rendered in markdown it will look cool
 //
 // Options:
@@ -7,7 +8,7 @@ module.exports = function(value, options) {
     return value
   }
 
-  const stringify = !!options?.hash?.stringify
+  const stringify = !!get(options, 'hash.stringify')
   if (stringify) {
     value = JSON.stringify(value)
   }

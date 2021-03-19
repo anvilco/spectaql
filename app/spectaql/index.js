@@ -100,8 +100,7 @@ module.exports = function(opts) {
 
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
-  const urlToParse = servers.find((server) => server.production === true)?.url ||
-    servers[0] ||
+  const urlToParse = (servers.find((server) => server.production === true) || servers[0] || {}).url ||
     introspectionUrl
 
   if (!urlToParse) {

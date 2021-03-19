@@ -194,7 +194,7 @@ var common = {
           // If the value has a properties.return, then it's a "field" on a Type
           // or an individual "query" or "mutation", and the schema to use for the
           // example is in properties.return
-          if (v.type === 'object' && v.properties?.return) {
+          if (v.type === 'object' && _.get(v, 'properties.return')) {
             v = v.properties.return
           }
           if (showReadOnly || v.readOnly !== true) {

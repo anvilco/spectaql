@@ -60,7 +60,7 @@ function addExamplesFromMetadata (args = {}) {
 }
 
 function addExamplesDynamically (args = {}) {
-  const dynamicExamplesProcessingModule = args?.introspectionOptions?.dynamicExamplesProcessingModule
+  const dynamicExamplesProcessingModule = _.get(args, 'introspectionOptions.dynamicExamplesProcessingModule')
 
   if (!dynamicExamplesProcessingModule) {
     console.warn('\n\n\nNO EXAMPLE PROCESSOR PATH PROVIDED\n\n\n')
