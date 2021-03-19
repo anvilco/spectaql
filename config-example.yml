@@ -11,6 +11,8 @@ spectaql:
   #   full: will include a very opinionated set of CSS to make the output look good
   #   basic: will include a very minimal set of CSS mostly used for layout purposes.
   #     You can then season to taste with your own additional CSS
+  #
+  # Default: full
   cssBuildMode: full # or basic
 
 
@@ -48,16 +50,25 @@ introspection:
   # File that contains your metadata data in JS module export, or JSON format
   metadataFile: path/to/metadata.js[on]
 
-  # The path to the read the documentation-related metadata from in your metadata file.
-  # Defaults to 'documentation', but in case you have a complex/nested metadata structure, you can
+  # The path to a key from which to read the documentation-related metadata at each level of your metadata file.
+  # Defaults to 'documentation', but in case you use a different name, or have a complex/nested metadata structure, you can
   # specify it here.
+  #
+  # Default: documentation
   metadatasReadPath: documentation
 
-  # The path to write the documentation-related metadata to in your augmented Introspection
-  # Query results. This value should be set the same as the metadatasPath below in order to ensure
-  # that the metadata you've written can be found later on down the line.
+  # The metadata that was just read from the above key path will be woven into your Introspection Query results.
+  # This option specifies the key path where that data will be written at each level.
+  #
+  #   ***
+  #   In order to ensure that the metadata you've written can be found later on down the line, this value
+  #   should be set the same as the "metadatasPath" option below
+  #   ***
+  #
   # Defaults to 'documentation', but in case you have a complex/nested metadata structure, you can
   # specify it here.
+  #
+  # Default: documentation
   metadatasWritePath: documentation
 
   #
@@ -73,10 +84,14 @@ introspection:
   # be found.
   # Defaults to 'documentation', but in case you have a complex/nested metadata structure, you can
   # specify it here.
+  #
+  # Default: documentation
   metadatasPath: documentation
 
   # Whether or not to look for and use metadata in your data. If turned off, metadata will be ignored
   # even if it's there
+  #
+  # Default: true
   metadatas: true
 
   #
@@ -87,6 +102,8 @@ introspection:
   # This allows you to specify a custom path to a JS moddule to handle the generation of
   # example values for your schema. The default is "./customizations/examples" which starts
   # out doing nothing
+  #
+  # Default: ./customizations/examples
   dynamicExamplesProcessingModule: path/to/examples.js
 
   ##############################################
@@ -162,10 +179,13 @@ info:
   #
 
   # Set to true to do no Introduction area rendering at all. Supersedes the below options
+  # Default: false
   x-hideIntroduction: false
   # Set to true to not render a friendly Welcome section based on the description in this area
+  # Default: false
   x-hideWelcome: false
   # Set to true to not render your intro items
+  # Default: false
   x-hideIntroItems: false
 
   #
@@ -196,4 +216,5 @@ info:
       description: Some important stuff we wanted you to know. Supports `markdown`
 
   # If you really want to hide the "Documentation by" at the bottom of your output, you can do so here
-  x-hidePoweredBy: true
+  # Default: false
+  x-hidePoweredBy: false
