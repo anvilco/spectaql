@@ -194,7 +194,7 @@ function getTypeFromIntrospectionResponse ({
   introspectionResponse,
 } = {}) {
   kinds = kind ? [kind] : kinds
-  return name && introspectionResponse?.__schema?.types?.find((type) => type.name === name && kinds.includes(type.kind))
+  return name && _.get(introspectionResponse, '__schema.types', []).find((type) => type.name === name && kinds.includes(type.kind))
 }
 
 function getFieldFromIntrospectionResponseType ({
@@ -220,7 +220,7 @@ function returnTypeExistsForJsonSchemaField({
 }
 
 function getReturnTypeNameFromJsonSchemaFieldDefinition (fieldDefinition = {}) {
-  const returnSchema = fieldDefinition?.properties?.return
+  const returnSchema = _.get(fieldDefinition, 'properties.return')
   return returnSchema && getReturnTypeNameFromJsonSchemaReturnSchema(returnSchema)
 }
 
@@ -239,7 +239,7 @@ function getReturnTypeNameFromJsonSchemaReturnSchema(schema = {}) {
 
 // Provide some basic analysis of a type Field from JSON Schema
 function analayzeJsonSchemaFieldDefinition (fieldDefinition = {}) {
-    const returnSchema = fieldDefinition?.properties?.return
+    const returnSchema = _.get(fieldDefinition, 'properties.return')
     const returnType = getReturnTypeNameFromJsonSchemaReturnSchema(returnSchema)
     return {
         ..._analyzeJsonSchemaDefinition(returnSchema),
@@ -290,7 +290,7 @@ function analyzeTypeSchema (thing) {
     getTypesFrom = thing
 
     // parent should have been added to the current context in the right place
-    if (parent?.required?.includes(name)) {
+    if (_.get(parent, 'required', []).includes(name)) {
        isRequired = true
     }
   }

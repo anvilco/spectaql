@@ -106,7 +106,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                     // Get the GraphQLField that represents this Query/Mutation
                     const gqlField = gqlType.getFields()[name] || {}
                     // Get its return type so that we can figure out what fields to put in the example
-                    const returnTypeName = gqlField?.type?.name
+                    const returnTypeName = _.get(gqlField, 'type.name')
                     // Get the properties for that return type. If the return type is not documented, this will
                     // be undefined
                     const returnTypeProperties = _.get(jsonSchema, `definitions.${returnTypeName}.properties`)
@@ -122,7 +122,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                     const {
                         examplesByArgName,
                         defaultsByArgName,
-                    } = Object.entries(def?.properties?.arguments?.properties || {}).reduce(
+                    } = Object.entries(_.get(def, 'properties.arguments.properties') || {}).reduce(
                         (acc, [name, { example, default: dfault }]) => {
                             if (typeof example !== 'undefined') {
                                 acc.examplesByArgName[name] = example
@@ -140,7 +140,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                         }
                     )
 
-                    if (returnTypeProperties && select?.length) {
+                    if (returnTypeProperties && select && select.length) {
                         // Go through each field in the response type and look for an example to add
                         // to the map
                         select.forEach((fieldName) => {
