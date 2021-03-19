@@ -6,8 +6,6 @@
 !/bin/**
 !/customizations/**
 !nodemon.json
-!yarn.lock
-!package-lock.json
 
 # Re-ignore these
 **/.DS_STORE
