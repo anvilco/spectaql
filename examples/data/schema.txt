@@ -45,9 +45,3 @@ type Query {
 
   myTypes: [MyType]
 }
-
-type Mutation {
-  myMutation(
-    myArg: String
-  ): String
-}

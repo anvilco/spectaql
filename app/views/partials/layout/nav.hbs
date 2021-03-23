@@ -43,22 +43,34 @@
   {{#if (nempty tags) }}
     <h5>Operations</h5>
     {{#each tags}}
-      <section>
-        <a href="#tag-{{htmlId name}}">{{name}}</a>
-        <ul>
-          {{#each operations}}
-            <li>
-              <a href="#operation-{{htmlId path}}-{{htmlId method}}">
-                {{#if summary}}
-                  {{summary}}
-                {{else}}
-                  {{toUpperCase method}} {{path}}
-                {{/if}}
-              </a>
-            </li>
-          {{/each}}
-        </ul>
-      </section>
+      {{#if ../showTagSummary}}
+        <section>
+          <a href="#tag-{{htmlId name}}">{{name}}</a>
+          <ul>
+            {{#each operations}}
+              <li>
+                <a href="#operation-{{htmlId path}}-{{htmlId method}}">
+                  {{#if summary}}
+                    {{summary}}
+                  {{else}}
+                    {{toUpperCase method}} {{path}}
+                  {{/if}}
+                </a>
+              </li>
+            {{/each}}
+          </ul>
+        </section>
+    {{else}}
+      {{#each operations}}
+        <a href="#operation-{{htmlId path}}-{{htmlId method}}">
+          {{#if summary}}
+            {{summary}}
+          {{else}}
+            {{toUpperCase method}} {{path}}
+          {{/if}}
+        </a>
+      {{/each}}
+    {{/if}}
     {{/each}}
   {{/if}}
 
