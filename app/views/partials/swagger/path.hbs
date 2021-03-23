@@ -10,5 +10,5 @@
 
 <span id="path-{{htmlId path}}"></span>
 {{#each pathItems}}
-  {{>swagger/operation . operation=. method=@key path=../path}}
+  {{>swagger/operations/operation . operation=. method=@key path=../path}}
 {{/each}}
