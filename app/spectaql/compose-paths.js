@@ -1,7 +1,7 @@
 const _ = require('lodash')
 
 const generateQuery = require("./generate-example")
-const { convertGraphQLType } = require("./type-helpers")
+const { digNonNullTypeGraphQL, convertGraphQLType } = require("./type-helpers")
 
 function getExpandField(expandNotation) {
     const subExpandIndex = expandNotation.indexOf("(")
@@ -105,8 +105,8 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
 
                     // Get the GraphQLField that represents this Query/Mutation
                     const gqlField = gqlType.getFields()[name] || {}
-                    // Get its return type so that we can figure out what fields to put in the example
-                    const returnTypeName = _.get(gqlField, 'type.name')
+                    // Get its return type so that we can figure out what fields to put in the example.
+                    const returnTypeName = (digNonNullTypeGraphQL(gqlField.type) || {}).name
                     // Get the properties for that return type. If the return type is not documented, this will
                     // be undefined
                     const returnTypeProperties = _.get(jsonSchema, `definitions.${returnTypeName}.properties`)
@@ -172,6 +172,8 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                                 if (typeof type.getFields === 'function') {
                                     // Maybe also filter the 'select' by the fields that are in the returnTypeProperties?
                                     // They will presumably have already respected the undocumentedness.
+                                    //
+                                    // Note to self on the above statement: I think it is already done.
                                     acc.push({
                                         field: name,
                                         select: Object.keys(type.getFields()),
@@ -196,19 +198,6 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                         examplesByArgName,
                         defaultsByArgName,
                     }
-
-                    // if (['currentUser', 'omniSearch', 'organization'].includes(name)) {
-                    //     console.log(JSON.stringify({
-                    //         usecases: true,
-                    //         expand,
-                    //         queryOrMutationName,
-                    //         usecase,
-                    //         def,
-                    //         returnTypeName,
-                    //         returnTypeProperties,
-                    //         gqlField
-                    //     }))
-                    // }
 
                     return usecase
                 }).sort(sortByProperty('name'))

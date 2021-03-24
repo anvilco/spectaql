@@ -13,6 +13,15 @@ const SCALARS = {
     ID: 'string',
 };
 
+
+function digNonNullTypeGraphQL(graphqlType) {
+    while (graphqlType instanceof GraphQLNonNull || graphqlType instanceof GraphQLList) {
+        graphqlType = graphqlType.ofType
+    }
+
+    return graphqlType
+}
+
 // Create a JSON Schema and provide metainfo from a GraphQL instance. This is usually
 // from something parsing the Introspection Query results. Like in fetch-schema.js:
 // const graphQLSchema = graphql.buildClientSchema(introspectionResponse, { assumeValid: true })
@@ -310,6 +319,7 @@ function analyzeTypeSchema (thing) {
 }
 
 module.exports = {
+    digNonNullTypeGraphQL,
     convertGraphQLType,
     convertGraphQLJSONType,
     typeIsRequired,
