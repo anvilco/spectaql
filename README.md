@@ -173,7 +173,7 @@ Good luck and enjoy SpectaQL!
 
 
 [npm]: https://img.shields.io/npm/v/spectaql.svg
-[npm-downloads]: https://img.shields.io/npm/dw/specatql
+[npm-downloads]: https://img.shields.io/npm/dw/spectaql
 [npm-url]: https://www.npmjs.com/package/spectaql
 [docs]: https://www.useanvil.com/docs/api/graphql/reference/
 [blog]: https://www.useanvil.com/blog/2021-03-17-autogenerate-graphql-docs-with-spectaql
