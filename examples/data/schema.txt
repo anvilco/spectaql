@@ -12,6 +12,8 @@ type MyType {
 
   requiredField: String!
 
+  episode: EpisodeEnum!
+
   requiredArrayField: [String]!
 
   doubleRequiredArrayField: [String!]!
@@ -44,4 +46,14 @@ type Query {
   ): [String!]!
 
   myTypes: [MyType]
+}
+
+"These are very important `enum`s"
+enum EpisodeEnum {
+  "Who is Luke?"
+  NEWHOPE
+  "Who is Darth?"
+  EMPIRE
+  "Who are the Ewoks?"
+  JEDI
 }

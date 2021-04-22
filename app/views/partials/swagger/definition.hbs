@@ -9,7 +9,7 @@
 {{! This is for Types }}
 <div id="definition-{{htmlId @key}}" class="definition panel"
   data-traverse-target="definition-{{htmlId @key}}">
-  {{# unless @first }}
+  {{#unless @first }}
     <div class="definition-tags">
       <a class="label" href="#tag-types">Types</a>
     </div>
@@ -32,13 +32,8 @@
       {{#if $ref}}
         {{>json-schema/reference .}}
       {{else}}
-        {{#if enum}}
-          {{#if description}}
-            <section class="json-schema-description">
-              {{md description}}
-            </section>
-          {{/if}}
-          {{~>json-schema/datatype}}
+        {{#if (isEnum . )}}
+          {{>json-schema/enum}}
         {{else}}
           {{>json-schema/body}}
         {{/if}}
