@@ -25,22 +25,6 @@
   <span class="json-property-format">({{format}})</span>
 {{~/if~}}
 
-{{!-- Enum values --}}
-{{~#if enum}}
-  <span class="json-property-enum" title="Possible values">
-    {{#each enum}}
-      {{! Render enums in the descriminator as links to the appropriate definitions}}
-      {{~#if ../discriminator}}
-        <span class="json-property-enum-item"><a href="#definition-{{.}}">{{.}}</a></span>
-      {{~else if $ref}}
-          {{~>json-schema/reference .}}
-      {{~else}}
-        <span class="json-property-enum-item{{#ifeq ../default .}} json-property-enum-default-value{{/ifeq}}">{{.}}</span>
-      {{~/if}}{{#unless @last}},{{/unless}}
-    {{/each}}
-  </span>
-{{~/if}}
-
 {{!-- Min and Max values --}}
 <span class="json-property-range" title="Value limits">
   {{~schemaRange . ~}}

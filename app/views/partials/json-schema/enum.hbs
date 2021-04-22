@@ -1,0 +1,44 @@
+{{#if description}}
+  <section class="json-schema-description">
+    {{md description}}
+  </section>
+  {{#if anyOf}}
+    <section class="json-schema-properties-enum">
+      <table>
+        <tr>
+          <th>Enum Value</th>
+          <th>Description</th>
+        </tr>
+        {{#each anyOf}}
+          <tr>
+            {{! The Value column }}
+            <td>{{md (codify enum.[0])}}</td>
+            <td>
+              {{! The Description column }}
+              {{#if description}}
+                {{md description}}
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    </section>
+  {{/if}}
+{{/if}}
+
+{{!-- Old way of doing Enum values
+{{~#if (isEnum .)}}
+  <span class="json-property-enum" title="Possible values">
+    {{#each enum}}
+      {{! Render enums in the descriminator as links to the appropriate definitions}}
+      {{~#if ../discriminator}}
+        <span class="json-property-enum-item"><a href="#definition-{{.}}">{{.}}</a></span>
+      {{~else if $ref}}
+          {{~>json-schema/reference .}}
+      {{~else}}
+        <span class="json-property-enum-item{{#ifeq ../default .}} json-property-enum-default-value{{/ifeq}}">{{.}}</span>
+      {{~/if}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  </span>
+{{~/if}}
+--}}

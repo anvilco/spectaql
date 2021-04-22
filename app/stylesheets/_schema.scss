@@ -41,7 +41,7 @@
 .swagger-request-body {
   @include named-section($msg-swagger-section-request-body);
 
-  .json-schema-properties:before {
+  .json-schema-properties-base:before {
     display: none;
   }
 }
@@ -149,7 +149,7 @@ table.table {
 
 
 // Anvil Tables
-.json-schema-properties, .swagger-request-params {
+.json-schema-properties-base, .swagger-request-params {
   // table {
   //   table-layout: fixed;
   // }
@@ -248,9 +248,7 @@ a > code {
   //@include named-section($msg-json-section-description);
 }
 
-.json-schema-properties {
-  @include named-section($msg-json-section-properties);
-
+.json-schema-properties-base {
   dl {
     margin: 0;
   }
@@ -269,7 +267,16 @@ a > code {
   }
 }
 
-.json-schema-description + .json-schema-properties {
+.json-schema-properties {
+  @extend .json-schema-properties-base;
+  @include named-section($msg-json-section-properties);
+}
+
+.json-schema-properties-enum {
+  @extend .json-schema-properties-base;
+}
+
+.json-schema-description + .json-schema-properties-base {
     margin-top: 1.5rem;
 }
 
@@ -313,7 +320,7 @@ a > code {
 }
 
 .json-inner-schema {
-  .json-schema-properties,
+  .json-schema-properties-base,
   .json-schema-array-items,
   .json-schema-description,
   .json-schema-example {
