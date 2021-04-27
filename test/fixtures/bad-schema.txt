@@ -1,0 +1,36 @@
+directive @imported(
+  uri: String!
+) on OBJECT | ENUM
+
+directive @imports(
+  types: [String!]!
+) on OBJECT
+
+type Query @imports(
+  types: [
+    "MyQuery",
+    "MyConnection"
+  ]
+) {
+  getData(
+    data: String!
+    connection: MyConnection
+  ): Int!
+}
+
+type MyQuery @imported(
+  uri: "w3://somewhere/out-there",
+) {
+  info(
+    address: String!
+    connection: MyConnection
+  ): String!
+}
+
+
+type MyConnection @imported(
+  uri: "w3://somewhere/out-there",
+) {
+  thing: String
+  otherThing: String
+}

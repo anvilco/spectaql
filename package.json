@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "license": "MIT",
@@ -12,7 +12,8 @@
     "develop": "nodemon -x 'node bin/spectaql' -D",
     "build": "node bin/spectaql",
     "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
-    "test": "mocha --config ./test/mocha-config.js"
+    "test": "mocha --config ./test/mocha-config.js",
+    "test:watch": "nodemon -x 'yarn test'"
   },
   "repository": {
     "type": "git",

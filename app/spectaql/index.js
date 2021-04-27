@@ -88,6 +88,11 @@ module.exports = function(opts) {
     })
   }
 
+  if (introspectionResponse.errors) {
+    console.error(introspectionResponse.errors)
+    throw new Error('Problem with Introspection Query Response')
+  }
+
   const jsonSchema = jsonSchemaFromIntrospectionResponse(introspectionResponse)
   const graphQLSchema = graphQLSchemaFromIntrospectionResponse(introspectionResponse)
 
