@@ -71,7 +71,7 @@
     "node-sass": "^4.14.1",
     "sass": "^1.32.6",
     "sync-request": "^6.1.0",
-    "tmp": "0.0.33",
+    "tmp": "0.2.1",
     "trace": "^3.1.0"
   },
   "devDependencies": {
