@@ -272,7 +272,8 @@ a > code {
   @include named-section($msg-json-section-properties);
 }
 
-.json-schema-properties-enum {
+// This one just doesn't have any named-section
+.json-schema-properties-blank {
   @extend .json-schema-properties-base;
 }
 

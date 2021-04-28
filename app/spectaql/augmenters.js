@@ -432,7 +432,6 @@ function hideFields(args = {}) {
     }) => {
       typeDefinition.properties = Object.entries(typeDefinition.properties).reduce(
         (acc, [fieldName, fieldDefinition]) => {
-
           if (thingTypeToHideIfReturnTypeUndocumentedMap[typeOfThing] &&
             !returnTypeExistsForJsonSchemaField({
               jsonSchema,
