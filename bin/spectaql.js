@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-var program = require('commander'),
-  package = require('../package.json'),
-  spectaql = require('../app')
+const { Command } = require('commander');
+const program = new Command();
+
+const package = require('../package.json')
+const spectaql = require('../app')
 
 //
 //= Process CLI input
@@ -58,7 +60,8 @@ if (program.args.length < 1) { // && program.rawArgs.length < 1
   program.help()
 }
 
-program.specFile = program.args[0]; // || path.resolve(root, 'test/fixtures/cheese.json')
+const options = program.opts()
+options.specFile = program.args[0]
 
 // Run the main app with parsed options
-spectaql(program)
+spectaql(options).catch(console.warn)
