@@ -34,6 +34,8 @@
       {{else}}
         {{#if (isEnum . )}}
           {{>json-schema/enum}}
+        {{else if (isInputType .)}}
+          {{>json-schema/input-type}}
         {{else}}
           {{>json-schema/body}}
         {{/if}}

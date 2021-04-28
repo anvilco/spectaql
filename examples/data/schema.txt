@@ -57,3 +57,11 @@ enum EpisodeEnum {
   "Who are the Ewoks?"
   JEDI
 }
+
+"An Input Type for filtering things"
+input FilterType {
+  "Comment for someField"
+  someField: Boolean = false
+  "Comment for anotherField"
+  anotherField: String
+}

@@ -179,7 +179,9 @@ var common = {
     // If there's an example, use it.
     if (ref.example !== undefined) {
       return ref.example
-
+    } else if (typeof ref.default !== 'undefined') {
+      // If there is a default, use it.
+      return addSpecialTags(ref.default, { placeholdQuotes: true })
     } else if (ref.$ref) { // && !ref.type
       // Don't expand out nested things...just stick their type in there
       return this.getReferenceName(ref.$ref)

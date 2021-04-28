@@ -224,7 +224,10 @@ function returnTypeExistsForJsonSchemaField({
   jsonSchema,
   fieldDefinition,
 } = {}) {
-  const returnTypeName = getReturnTypeNameFromJsonSchemaFieldDefinition(fieldDefinition)
+
+  // Fields on proper Types will have properties.return...but (at least) Input Types will have $ref right at the top
+  // or nested in { type: 'array', items: { $ref: '...' } }
+  const returnTypeName = getReturnTypeNameFromJsonSchemaFieldDefinition(fieldDefinition) || getReturnTypeNameFromJsonSchemaReturnSchema(fieldDefinition)
   return !!returnTypeName && _.has(jsonSchema, `definitions.${returnTypeName}`)
 }
 

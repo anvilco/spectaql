@@ -2,28 +2,28 @@
   <section class="json-schema-description">
     {{md description}}
   </section>
-  {{#if anyOf}}
-    <section class="json-schema-properties-enum">
-      <table>
+{{/if}}
+{{#if anyOf}}
+  <section class="json-schema-properties-blank">
+    <table>
+      <tr>
+        <th>Enum Value</th>
+        <th>Description</th>
+      </tr>
+      {{#each anyOf}}
         <tr>
-          <th>Enum Value</th>
-          <th>Description</th>
+          {{! The Value column }}
+          <td>{{md (codify enum.[0])}}</td>
+          <td>
+            {{! The Description column }}
+            {{#if description}}
+              {{md description}}
+            {{/if}}
+          </td>
         </tr>
-        {{#each anyOf}}
-          <tr>
-            {{! The Value column }}
-            <td>{{md (codify enum.[0])}}</td>
-            <td>
-              {{! The Description column }}
-              {{#if description}}
-                {{md description}}
-              {{/if}}
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-    </section>
-  {{/if}}
+      {{/each}}
+    </table>
+  </section>
 {{/if}}
 
 {{!-- Old way of doing Enum values
