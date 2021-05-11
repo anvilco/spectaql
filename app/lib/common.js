@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const stringify = require('json-stringify-pretty-compact')
-const cheerio = require('cheerio')
+const cheerio = require('cheerio').default
 const marked = require('marked')
 const highlight = require('highlight.js')
 
