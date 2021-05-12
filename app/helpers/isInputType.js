@@ -25,5 +25,5 @@ module.exports = (value) => {
   //     },
   //   }
   // }
-  return value && value.type === 'object' && value.properties && Object.values(value.properties).every((schema) => schema.$ref || (schema.type === 'array' && schema.items && schema.items.$ref))
+  return value && value.type === 'object' && value.properties && Object.values(value.properties).length && Object.values(value.properties).every((schema) => schema.$ref || (schema.type === 'array' && schema.items && schema.items.$ref))
 }
