@@ -81,7 +81,7 @@ var common = {
     var html = marked(value)
     // We strip the surrounding <p>-tag, if
     if (stripParagraph) {
-      var $ = cheerio("<root>" + html + "</root>")
+      var $ = cheerio.load("<root>" + html + "</root>")('root')
       // Only strip <p>-tags and only if there is just one of them.
       if ($.children().length === 1 && $.children('p').length === 1) {
         html = $.children('p').html()
