@@ -42,7 +42,7 @@ module.exports = function(opts) {
     },
     domains = [],
     servers = [],
-    info,
+    info = {},
     externalDocs,
     securityDefinitions,
   } = spec
@@ -117,11 +117,13 @@ module.exports = function(opts) {
 
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
-  const urlToParse = (servers.find((server) => server.production === true) || servers[0] || {}).url ||
-    introspectionUrl
+  const urlToParse =
+    info['x-swaggerUrl']
+    || (servers.find((server) => server.production === true) || servers[0] || {}).url
+    || introspectionUrl
 
   if (!urlToParse) {
-    throw new Error('Must provide Introspection URL')
+    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
   }
 
   const {

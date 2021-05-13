@@ -3,6 +3,8 @@ const {
   introspectionResponseFromSchema,
 } = require('app/spectaql/graphql-loaders')
 
+const pathToSimpleSchema = './test/fixtures/simple-schema.txt'
+
 const generateIntrospectionQueryResult = ({
   schemaType = 'simple',
 }) => {
@@ -10,7 +12,7 @@ const generateIntrospectionQueryResult = ({
   switch (schemaType) {
     case 'simple':
     default: {
-      const schema = loadSchemaFromSDLFile({ pathToFile: './test/fixtures/simple-schema.txt' })
+      const schema = loadSchemaFromSDLFile({ pathToFile: pathToSimpleSchema })
       return introspectionResponseFromSchema({ schema })
     }
   }
@@ -18,4 +20,5 @@ const generateIntrospectionQueryResult = ({
 
 module.exports = {
   generateIntrospectionQueryResult,
+  pathToSimpleSchema,
 }

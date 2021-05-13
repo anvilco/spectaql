@@ -28,6 +28,8 @@ introspection:
   #
 
   # URL of the GraphQL endpoint to hit if you want to generate the documentation based on live Introspection Query results
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
+  # to satisfy the URL Swagger requirement.
   url: https://yoursite.com/graphql
 
   # File containing a GraphQL Schema Definition written in SDL
@@ -166,6 +168,9 @@ introspection:
   ##############################################
 
 servers:
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
+  # to satisfy the URL Swagger requirement.
+
   # same format as for OpenAPI Specification https://swagger.io/specification/#server-object
 
   - url: https://yoursite.com/graphql
@@ -223,3 +228,7 @@ info:
   # If you really want to hide the "Documentation by" at the bottom of your output, you can do so here
   # Default: false
   x-hidePoweredBy: false
+
+  # If not using introspection.url OR servers[], you need to provide x-swaggerUrl
+  # to satisfy the URL Swagger requirement. This allows for that.
+  x-swaggerUrl: https://yoursite.com/graphql
