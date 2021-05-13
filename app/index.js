@@ -69,7 +69,7 @@ const introspectionOptionDefaults = {
 function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'faviconFile', 'specFile']) {
   keys.forEach((key) => {
     const val = options[key]
-    if (val && val.startsWith('.')) {
+    if (typeof val === 'string' && val.startsWith('.')) {
       options[key] = path.resolve(val)
     }
   })
@@ -83,7 +83,9 @@ function resolveOptions(options) {
     schemaFile: 'schemaFile',
     introspectionFile: 'introspectionFile',
     introspectionMetadataFile: 'metadataFile',
-    dynamicExamplesProcessingModule : 'dynamicExamplesProcessingModule',
+    dynamicExamplesProcessingModule: 'dynamicExamplesProcessingModule',
+    header: 'authHeader',
+    headers: 'headers',
   }
 
   // Resolve the top-level paths

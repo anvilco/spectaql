@@ -1,3 +1,5 @@
+const isEmpty = require('lodash/isEmpty')
+
 const {
   buildClientSchema,
   buildSchema,
@@ -43,18 +45,21 @@ const loadIntrospectionResponseFromFile = ({
   return standardizeIntrospectionQueryResult(fileToObject(pathToFile))
 }
 
-const loadIntrospectionResponseFromUrl = ({ authHeader, url }) => {
+const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
   const requestBody = {
     operationName: "IntrospectionQuery",
     query: getIntrospectionQuery()
   };
 
-  const responseBody = request("POST", url, {
-    headers: {
-      authorization: authHeader,
-    },
+  const requestOpts = {
     json: requestBody
-  }).getBody('utf8')
+  }
+
+  if (!isEmpty(headers)) {
+    requestOpts.headers = headers
+  }
+
+  const responseBody = request("POST", url, requestOpts).getBody('utf8')
 
   // Standardize it
   return standardizeIntrospectionQueryResult(

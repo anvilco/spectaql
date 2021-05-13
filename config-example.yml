@@ -40,6 +40,11 @@ introspection:
   #
   ##############################################
 
+  # If using the "url" option above, any headers (such as Authorization) can be added here. This
+  # can also be added via the CLI options
+  headers:
+    Authorization: Bearer s3cretT0k2n
+
   ##############################################
   # These options specify how, where and if any "metadata" information is to be added to your Introspection
   # Query results IF it is not already present. If you are not dealing with metadata, or you have already
