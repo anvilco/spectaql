@@ -50,7 +50,9 @@ program.version(package.version)
   .option('--dynamic-examples-processing-module <file>', 'specify a JS module that will dynamically generate schema examples (default: /customizations/examples', String)
 
   .option('-g, --grunt-config-file <file>', 'specify a custom Grunt configuration file (default: app/lib/gruntConfig.js)', String)
+  // TODO: remove this option in favor of --headers as part of a breaking change
   .option('-H, --header <header>', 'specify a custom auth token for the header (default: none)')
+  .option('-A, --headers <headers>', 'specify arbitrary headers for the Introspection Query as a JSON string (default: none)', String)
   .option('-q, --quiet', 'Silence the output from the generator (default: false)')
   // .option('-f, --spec-file <file>', 'the input OpenAPI/Swagger spec file (default: test/fixtures/petstore.json)', String, 'test/fixtures/petstore.json')
   .parse(process.argv)

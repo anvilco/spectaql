@@ -28,7 +28,6 @@ function errorThingDone ({ trying, done }) {
 module.exports = function(opts) {
   const {
     specData: spec,
-    authHeader,
   } = opts
 
   const {
@@ -38,6 +37,8 @@ module.exports = function(opts) {
       schemaFile,
       introspectionFile,
       metadataFile,
+      authHeader,
+      headers,
     },
     domains = [],
     servers = [],
@@ -68,7 +69,18 @@ module.exports = function(opts) {
       errorThingDone({ trying: 'load Introspection from URL', done })
     }
 
-    introspectionResponse = loadIntrospectionResponseFromUrl({ authHeader, url: introspectionUrl })
+    if (authHeader && headers) {
+      throw new Error('Cannot provide both header and headers options. Please choose one.')
+    }
+    let resolvedHeaders = {}
+    if (authHeader) {
+      resolvedHeaders.authorization = authHeader
+    } else if (headers) {
+      // CLI headers come in as a string; YAML as an object.
+      resolvedHeaders = typeof headers === 'string' ? JSON.parse(headers) : headers
+    }
+
+    introspectionResponse = loadIntrospectionResponseFromUrl({ headers: resolvedHeaders, url: introspectionUrl })
     done = 'loaded via Introspection URL'
   }
 
