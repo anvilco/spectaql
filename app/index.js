@@ -204,7 +204,7 @@ module.exports = function (options) {
 
   grunt.registerTask('predentation', 'Remove indentation from generated <pre> tags.', function() {
     var html = fs.readFileSync(opts.cacheDir + '/' + opts.targetFile, 'utf8')
-    html = html.replace(/<pre.*?><code.*?>([\s\S]*?)<\/code><\/pre>/gmi, function(x, y) {
+    html = html.replace(/<pre.*?><code.*?>([\s\S]*?)<\/code><\/pre>/gmi, function(x, _y) {
       var lines = x.split('\n'), level = null;
       if (lines) {
 
