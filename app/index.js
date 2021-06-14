@@ -66,6 +66,17 @@ const introspectionOptionDefaults = {
   hideFieldsWithUndocumentedReturnType: true,
 }
 
+// From CLI option name to introspection config option name
+const introspectionOptionsMap = {
+  schemaFile: 'schemaFile',
+  introspectionUrl: 'url',
+  introspectionFile: 'introspectionFile',
+  introspectionMetadataFile: 'metadataFile',
+  dynamicExamplesProcessingModule: 'dynamicExamplesProcessingModule',
+  header: 'authHeader',
+  headers: 'headers',
+}
+
 function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'faviconFile', 'specFile']) {
   keys.forEach((key) => {
     const val = options[key]
@@ -76,50 +87,31 @@ function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'favi
 }
 
 function resolveOptions(options) {
-
-  // From CLI option name to introspection config option name
-  const introspectionOptionsMap = {
-    introspectionUrl: 'url',
-    schemaFile: 'schemaFile',
-    introspectionFile: 'introspectionFile',
-    introspectionMetadataFile: 'metadataFile',
-    dynamicExamplesProcessingModule: 'dynamicExamplesProcessingModule',
-    header: 'authHeader',
-    headers: 'headers',
-  }
-
-  // Resolve the top-level paths
-  resolvePaths(options)
-
-  let opts = _.extend({}, defaults, options)
+  // Start with options from the CLI
+  let opts = _.extend({}, options)
 
   // Replace some absolute paths
-  if (opts.specFile && opts.specFile.indexOf('test/fixtures') === 0)
-    opts.specFile = path.resolve(opts.specFile)
+  if (options.specFile && options.specFile.indexOf('test/fixtures') === 0) {
+    options.specFile = path.resolve(options.specFile)
+  }
 
-  if (opts.appDir && opts.appDir.indexOf('/') !== 0)
-    opts.appDir = path.resolve(opts.appDir)
-
-  if (opts.specFile) {
+  if (options.specFile) {
     // Add the loaded YAML to the options
-    const spec = opts.specData = loadYaml(opts.specFile)
+    const spec = opts.specData = loadYaml(options.specFile)
 
     const {
       spectaql: spectaqlYaml,
-      introspection: introspectionYaml = {},
+      introspection: introspectionYaml,
     } = spec
 
     if (spectaqlYaml) {
-      resolvePaths(spectaqlYaml)
-      // Use `_.defaults` here to preserve any values already set via command line
+      // Use "defaults" here to preserve whatever may have been specified in the CLI
       opts = _.defaults({}, opts, spectaqlYaml)
     }
 
     if (introspectionYaml) {
       // Move the provided Introspection-related CLI options into the Introspection
       // data from the YAML config. CLI opts take precedent
-
-
       Object.entries(introspectionOptionsMap).forEach(([fromKey, toKey]) => {
         if (typeof opts[fromKey] !== 'undefined') {
           introspectionYaml[toKey] = opts[fromKey]
@@ -128,14 +120,24 @@ function resolveOptions(options) {
     }
   }
 
+  // Add in defaults for things that were not set via CLI or YAML config
+  opts = _.defaults({}, opts, defaults)
+
+  // Resolve all the top-level paths
+  resolvePaths(opts)
+
+  if (opts.appDir && opts.appDir.indexOf('/') !== 0) {
+    opts.appDir = path.resolve(opts.appDir)
+  }
+
   // Add in some defaults here
   opts.specData.introspection = _.defaults({}, opts.specData.introspection, introspectionOptionDefaults)
 
-  // Resolve the introspection options
+  // Resolve the introspection options paths
   resolvePaths(opts.specData.introspection, Object.values(introspectionOptionsMap))
 
   // OK, layer in any defaults that may be set by the CLI and the YAML, but may not have been:
-  opts =  _.defaults({}, opts, spectaqlOptionDefaults)
+  opts = _.defaults({}, opts, spectaqlOptionDefaults)
 
   if (opts.logoFile) {
     if (opts.logoFile.indexOf('test/fixtures') === 0) {
