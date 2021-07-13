@@ -32,8 +32,13 @@ introspection:
   # to satisfy the URL Swagger requirement.
   url: https://yoursite.com/graphql
 
-  # File containing a GraphQL Schema Definition written in SDL
-  schemaFile: path/to/schema.txt
+  # File containing a GraphQL Schema Definition written in SDL.
+  # Can also pass an array of paths (or glob supported by @graphql-tools/load-files)
+  # like so:
+  # schemaFile:
+  #   - path/to/schema/part1.gql
+  #   - path/to/schema/part2.gql
+  schemaFile: path/to/schema.gql
 
   # File containing Introspection Query response in JS module export, or JSON format
   introspectionFile: path/to/introspection.js[on]

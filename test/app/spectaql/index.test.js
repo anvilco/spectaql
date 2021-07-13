@@ -70,7 +70,7 @@ describe('index', function () {
   })
 
   context('Introspection Response has errors', function () {
-    def('schemaFile', () => './test/fixtures/bad-schema.txt')
+    def('schemaFile', () => './test/fixtures/bad-schema.gql')
 
     it('raises error', function () {
       return expect(() => spectaql($.opts)).to.throw('Problem with Introspection Query Response')

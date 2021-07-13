@@ -3,7 +3,7 @@ spectaql:
   faviconFile: ./test/fixtures/favicon.png
 
 introspection:
-  schemaFile: ./examples/data/schema.txt
+  schemaFile: ./examples/data/schema.gql
   metadataFile: ./examples/data/metadata.json
   dynamicExamplesProcessingModule: ./examples/customizations/examples
 

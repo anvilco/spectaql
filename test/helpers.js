@@ -3,7 +3,8 @@ const {
   introspectionResponseFromSchema,
 } = require('app/spectaql/graphql-loaders')
 
-const pathToSimpleSchema = './test/fixtures/simple-schema.txt'
+const pathToSimpleSchema = './test/fixtures/simple-schema.gql'
+const pathToSimpleSchemaSupplement = './test/fixtures/simple-schema-supplement.txt'
 
 const generateIntrospectionQueryResult = ({
   schemaType = 'simple',
@@ -21,4 +22,5 @@ const generateIntrospectionQueryResult = ({
 module.exports = {
   generateIntrospectionQueryResult,
   pathToSimpleSchema,
+  pathToSimpleSchemaSupplement,
 }
