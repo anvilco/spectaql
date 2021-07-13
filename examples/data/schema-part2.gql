@@ -1,0 +1,8 @@
+type MyType {
+  "I will only show up when an array of strings or a glob that covers me gets provided to `schemaFile`"
+  superduperThing: String!
+}
+
+type Query {
+  getInt: Int
+}

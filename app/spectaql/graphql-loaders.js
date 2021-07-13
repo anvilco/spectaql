@@ -5,8 +5,10 @@ const {
   buildSchema,
   getIntrospectionQuery,
   graphqlSync,
+  print,
 } = require('graphql')
-
+const { loadFilesSync } = require('@graphql-tools/load-files');
+const { mergeTypeDefs } = require('@graphql-tools/merge');
 const converter = require('graphql-2-json-schema')
 const request = require('sync-request')
 
@@ -35,7 +37,20 @@ const introspectionResponseFromSchema = ({ schema }) => {
 const loadSchemaFromSDLFile = ({
   pathToFile
 } = {}) => {
-  return buildSchema(readTextFile(pathToFile))
+  const paths = Array.isArray(pathToFile) ? pathToFile : [pathToFile]
+  const typesArray = []
+  for (const path of paths) {
+    // loadFilesSync won't load .txt files, so we'll load them ourselves
+    if (path.endsWith('.txt')) {
+      typesArray.push(readTextFile(path))
+    } else {
+      typesArray.push(...loadFilesSync(path))
+    }
+  }
+
+  const mergedTypeDefs = mergeTypeDefs(typesArray)
+  const printedTypeDefs = print(mergedTypeDefs)
+  return buildSchema(printedTypeDefs)
 }
 
 const loadIntrospectionResponseFromFile = ({

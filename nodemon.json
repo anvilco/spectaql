@@ -1,7 +1,7 @@
 {
   "delay": 2000,
   "verbose": true,
-  "ext": "js,json,yaml,yml,css,scss,hbs",
+  "ext": "js,json,yaml,yml,css,scss,hbs,txt,gql,graphql,graphqls",
   "ignore": [
     ".git",
     "docs",
