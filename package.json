@@ -38,7 +38,7 @@
   "homepage": "https://github.com/anvilco/spectaql",
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.0",
-    "cheerio": "^1.0.0-rc.2",
+    "cheerio": "^1.0.0-rc.10",
     "clarify": "^2.1.0",
     "coffeescript": "^2.5.1",
     "commander": "^7.2.0",
@@ -46,7 +46,7 @@
     "graphql": "^14.1.1",
     "graphql-2-json-schema": "0.6.0",
     "graphql-json-schema": "^0.1.2",
-    "grunt": "^1.4.0",
+    "grunt": "^1.4.1",
     "grunt-compile-handlebars": "^2.0.2",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -68,24 +68,28 @@
     "json-stringify-pretty-compact": "^2.0.0",
     "lodash": "^4.17.12",
     "marked": "^2.0.3",
-    "node-sass": "^4.14.1",
-    "sass": "^1.32.6",
+    "sass": "^1.32.13",
     "sync-request": "^6.1.0",
-    "tmp": "0.2.1",
-    "trace": "^3.1.0"
+    "tmp": "0.2.1"
   },
   "devDependencies": {
     "app-module-path": "^2.2.0",
     "bdd-lazy-var": "^2.6.0",
     "chai": "^4.3.0",
     "chai-exclude": "^2.0.2",
-    "eslint": "^7.19.0",
+    "eslint": "^7.30.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-standard": "^5.0.0",
-    "mocha": "^8.3.2",
-    "nodemon": "^2.0.7",
+    "mocha": "^9.0.2",
+    "nodemon": "^2.0.12",
     "rewire": "^5.0.0"
+  },
+  "resolutions": {
+    "grunt-compile-handlebars/lodash.merge": "^4.6.2",
+    "grunt-prettify/globby": "^11.0.4",
+    "grunt-prettify/underscore.string": "^3.3.5",
+    "**/lodash": "^4.17.20"
   }
 }
