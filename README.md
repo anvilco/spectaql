@@ -13,7 +13,7 @@
 SpectaQL is a Node.js library that generates static documentation for a [GraphQL](https://graphql.org) schema using a variety of options:
 1. From a live endpoint using the introspection query.
 2. From a file containing an introspection query result.
-3. From a file containing the schema definition in SDL.
+3. From a file, files or glob leading to the schema definitions in SDL.
 
 The goal of SpectaQL is to help you keep your documentation complete, current and beautiful with the least amount of pain as possible.
 
@@ -38,7 +38,9 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
 * Various ways to ingest your schema:
   - Hit a live GraphQL endpoint with an introspection query
   - Provide a file containing an introspection query result
-  - Provide a file containing your schema in SDL
+  - Provide a single SDL file containing your schema
+  - Provide an array of multiple SDL files to be merged into a final schema
+  - Provide a glob that leads to SDL files to be merged into a final schema
 * Will automatically generate documentation for all Types, Fields, Queries, Mutations and Arguments by default.
 * Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
 * Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
