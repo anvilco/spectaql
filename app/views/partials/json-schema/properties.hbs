@@ -43,6 +43,9 @@
           </td>
         --}}
         <td>
+          {{#if isDeprecated }}
+            Deprecated {{#if deprecationReason }}{{md deprecationReason}}{{/if}}
+          {{/if}}
           {{! The Description column }}
           {{#if description}}
             {{md description}}

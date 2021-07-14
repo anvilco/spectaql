@@ -34,6 +34,11 @@
   @include named-section($msg-swagger-section-operation-description);
 }
 
+.swagger-operation-deprecated {
+  @include named-section($msg-swagger-section-operation-deprecated, 'red');
+  color: 'red'
+}
+
 .swagger-request-params {
   @include named-section($msg-swagger-section-request-params);
 }

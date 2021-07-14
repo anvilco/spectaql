@@ -210,7 +210,7 @@ function getFieldFromIntrospectionResponseType ({
   name,
   type: introspectionResponseTypeObject,
 } = {}) {
-  return name && (introspectionResponseTypeObject.fields || []).find((field) => field.name === name)
+  return name && (introspectionResponseTypeObject.fields || introspectionResponseTypeObject.inputFields || introspectionResponseTypeObject.enumValues || []).find((field) => field.name === name)
 }
 
 function getArgFromIntrospectionResponseField ({

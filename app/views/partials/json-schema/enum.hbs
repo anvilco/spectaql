@@ -14,8 +14,11 @@
         <tr>
           {{! The Value column }}
           <td>{{md (codify enum.[0])}}</td>
+          {{! The Description column }}
           <td>
-            {{! The Description column }}
+            {{#if isDeprecated }}
+              Deprecated {{#if deprecationReason }}{{md deprecationReason}}{{/if}}
+            {{/if}}
             {{#if description}}
               {{md description}}
             {{/if}}

@@ -47,9 +47,11 @@ $msg-json-section-example: "Example" !default;
 
 $msg-swagger-data-type: 'Data type' !default;
 $msg-swagger-description: 'Description' !default;
+$msg-swagger-deprecated: 'Deprecated' !default;
 
 $msg-swagger-section-operation-path: 'Path' !default;
 $msg-swagger-section-operation-description: $msg-swagger-description !default;
+$msg-swagger-section-operation-deprecated: $msg-swagger-deprecated !default;
 $msg-swagger-section-request-params: 'Arguments' !default;
 $msg-swagger-section-request-body: '' !default;
 $msg-swagger-section-response: 'Response' !default;

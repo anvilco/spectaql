@@ -10,13 +10,13 @@ type MyType {
 
   ): String
 
-  requiredField: String!
+  requiredField: String! @deprecated(reason: "requiredField is going away")
 
   episode: EpisodeEnum!
 
   requiredArrayField: [String]!
 
-  doubleRequiredArrayField: [String!]!
+  doubleRequiredArrayField: [String!]! @deprecated(reason: "sucks")
 }
 
 type SecretType {
@@ -29,10 +29,10 @@ type Query {
   myQuery(
     "This is a description of a `nonRequiredQueryArg`"
     nonReqQueryArg: String = "some default string"
-    reqQueryArg: String!
+    reqQueryArg: String
     reqQueryArrayArg: [String]!
     dblReqQueryArrayArg: [String!]!
-  ): String
+  ): String @deprecated(reason: "myQuery is going away")
 
   getInt: Int
   getInts: [Int]
@@ -51,7 +51,7 @@ type Query {
 "These are very important `enum`s"
 enum EpisodeEnum {
   "Who is Luke?"
-  NEWHOPE
+  NEWHOPE @deprecated(reason: "NEWHOPE is going away")
   "Who is Darth?"
   EMPIRE
   "Who are the Ewoks?"

@@ -29,6 +29,16 @@
     {{md (codify summary) stripParagraph="true"}}
   </h2>
 
+  {{#if isDeprecated }}
+    <div class="doc-row">
+      <div class="doc-copy">
+        <section class="swagger-operation-deprecated operation-deprecated">
+          {{#if deprecationReason }}{{md deprecationReason}}{{/if}}
+        </section>
+      </div>
+    </div>
+  {{/if}}
+
   {{#if description}}
     <div class="doc-row">
       <div class="doc-copy">

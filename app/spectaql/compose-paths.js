@@ -301,6 +301,8 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
             in: "query",
             name: _.name,
             description: _.description,
+            isDeprecated: _.isDeprecated,
+            deprecationReason: _.deprecationReason,
             schema: {
                 ...convertGraphQLType(_.type).schema,
                 example: examplesByArgName[_.name],
@@ -332,6 +334,8 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                 tags: [tag],
                 summary: name,
                 description: description,
+                isDeprecated: target.isDeprecated,
+                deprecationReason: target.deprecationReason,
                 operationId: operationId,
                 // Display some dumb stuff about the request format?
                 // consumes: ["application/json"],
