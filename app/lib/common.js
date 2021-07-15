@@ -90,12 +90,10 @@ var common = {
 
     if (addClass) {
       let $ = cheerio.load("<root>" + html + "</root>")('root')
-      // if ($.children().length === 1) {
+      if ($.children().length === 1) {
         $.children().first().addClass(addClass)
         html = $.html()
-      // } else {
-      //   console.log({html})
-      // }
+      }
     }
 
     return html;

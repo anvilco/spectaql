@@ -16,13 +16,6 @@ module.exports = function(value, options) {
     markdownOpts.stripParagraph = options.hash.stripParagraph || false
     markdownOpts.addClass = options.hash.addClass || false
   }
-
-  if (markdownOpts.addClass) {
-    console.log({
-      value,
-      addClass: markdownOpts.addClass,
-    })
-  }
   var html = common.markdown(value, markdownOpts)
   return new Handlebars.SafeString(html)
 };

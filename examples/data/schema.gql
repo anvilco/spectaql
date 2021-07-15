@@ -10,13 +10,13 @@ type MyType {
 
   ): String
 
-  requiredField: String! @deprecated(reason: "requiredField is going away")
+  requiredField: String! @deprecated(reason: "`requiredField` is going away")
 
   episode: EpisodeEnum!
 
   requiredArrayField: [String]!
 
-  doubleRequiredArrayField: [String!]! @deprecated(reason: "sucks")
+  doubleRequiredArrayField: [String!]!
 }
 
 type SecretType {
@@ -32,7 +32,7 @@ type Query {
     reqQueryArg: String
     reqQueryArrayArg: [String]!
     dblReqQueryArrayArg: [String!]!
-  ): String @deprecated(reason: "myQuery is going away")
+  ): String @deprecated(reason: "`myQuery` is going away")
 
   getInt: Int
   getInts: [Int]
@@ -52,7 +52,7 @@ type Query {
 "These are very important `enum`s"
 enum EpisodeEnum {
   "Who is Luke?"
-  NEWHOPE @deprecated(reason: "NEWHOPE is going away")
+  NEWHOPE @deprecated(reason: "`NEWHOPE` is going away")
   "Who is Darth?"
   EMPIRE
   "Who are the Ewoks?"
