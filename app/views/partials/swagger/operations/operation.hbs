@@ -29,20 +29,21 @@
     {{md (codify summary) stripParagraph="true"}}
   </h2>
 
+  {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+    <div class="doc-row">
+      <div class="doc-copy">
+        <section class="operation-deprecation-reason">
+          {{ md deprecationReason stripParagraph=true }}
+        </section>
+      </div>
+    </div>
+  {{/if}}
+
   {{#if description}}
     <div class="doc-row">
       <div class="doc-copy">
         <section class="swagger-operation-description operation-description">
-          {{ md (
-              concat
-                (stripTrailing description ".")
-                (ternary (and deprecationReason (not @root.info.x-hideDeprecationReason))
-                  (concat "Deprecation Reason: " deprecationReason)
-                  ""
-                )
-              joiner=". " filterFalsy=true
-            ) stripParagraph=true
-          }}
+          {{ md (stripTrailing description ".") stripParagraph=true }}
         </section>
       </div>
     </div>

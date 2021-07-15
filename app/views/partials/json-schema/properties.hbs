@@ -45,19 +45,12 @@
         --}}
         {{! The Description column }}
         <td>
-          {{ md (
-            concat
-              (ternary description
-                (stripTrailing description ".")
-                ""
-              )
-              (ternary (and deprecationReason (not @root.info.x-hideDeprecationReason))
-                (concat "Deprecation Reason: " deprecationReason)
-                ""
-              )
-              joiner=". " altJoiner=" " altJoinerRegex="[\?\!]" filterFalsy=true
-            ) stripParagraph=true
-          }}
+          {{#if description}}
+            {{md description stripParagraph=true}}
+          {{/if}}
+          {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+            <span class="properties-deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>
+          {{/if}}
           {{!--
             {{#if items}}
               <dt class="json-inner-schema">

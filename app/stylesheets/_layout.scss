@@ -361,6 +361,18 @@ article {
     @extend .doc-content;
     @extend .columns;
 
+    .operation-deprecation-reason {
+      font-style: italic;
+      opacity: 75%
+    }
+
+    tr {
+      .properties-deprecation-reason, .enum-deprecation-reason {
+        font-style: italic;
+        opacity: 75%
+      }
+    }
+
     // > h2 {
     //   width: 100%;
     //   margin-left: -$column-padding;
