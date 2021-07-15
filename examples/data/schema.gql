@@ -37,6 +37,7 @@ type Query {
   getInt: Int
   getInts: [Int]
 
+  "I'm the optionals query"
   optionalsQuery(
     optionalArg: [String]
   ): [String]

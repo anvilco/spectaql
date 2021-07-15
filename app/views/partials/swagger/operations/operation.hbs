@@ -25,25 +25,24 @@
     {{/if}}
   {{/unless}}
 
-  <h2 class="operation-name">
+  <h2 class="operation-name {{#if (and isDeprecated (not @root.info.x-hideIsDeprecated)) }}swagger-operation-deprecated{{/if}}">
     {{md (codify summary) stripParagraph="true"}}
   </h2>
-
-  {{#if isDeprecated }}
-    <div class="doc-row">
-      <div class="doc-copy">
-        <section class="swagger-operation-deprecated operation-deprecated">
-          {{#if deprecationReason }}{{md deprecationReason}}{{/if}}
-        </section>
-      </div>
-    </div>
-  {{/if}}
 
   {{#if description}}
     <div class="doc-row">
       <div class="doc-copy">
         <section class="swagger-operation-description operation-description">
-          {{md description}}
+          {{ md (
+              concat
+                (stripTrailing description ".")
+                (ternary (and deprecationReason (not @root.info.x-hideDeprecationReason))
+                  (concat "Deprecation Reason: " deprecationReason)
+                  ""
+                )
+              joiner=". " filterFalsy=true
+            ) stripParagraph=true
+          }}
         </section>
       </div>
     </div>

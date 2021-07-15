@@ -19,6 +19,7 @@
       <tr>
         {{! The Name column }}
         <td data-property-name="{{htmlId @key}}"
+          {{#if (and isDeprecated (not @root.info.x-hideIsDeprecated)) }}class="swagger-operation-deprecated"{{/if}}
           {{!-- Not sure what this does yet
             {{#if description}} class="has-description"{{/if}}
           --}}
@@ -42,19 +43,21 @@
             {{>json-schema/datatype discriminator=(equal @key ../discriminator)}}
           </td>
         --}}
+        {{! The Description column }}
         <td>
-          {{#if isDeprecated }}
-            Deprecated {{#if deprecationReason }}{{md deprecationReason}}{{/if}}
-          {{/if}}
-          {{! The Description column }}
-          {{#if description}}
-            {{md description}}
-            {{!-- Show details of nested property schema?
-              <div class="json-inner-schema">
-                {{>json-schema/body $ref="" description=""}}
-              </div>
-            --}}
-          {{/if}}
+          {{ md (
+            concat
+              (ternary description
+                (stripTrailing description ".")
+                ""
+              )
+              (ternary (and deprecationReason (not @root.info.x-hideDeprecationReason))
+                (concat "Deprecation Reason: " deprecationReason)
+                ""
+              )
+              joiner=". " altJoiner=" " altJoinerRegex="[\?\!]" filterFalsy=true
+            ) stripParagraph=true
+          }}
           {{!--
             {{#if items}}
               <dt class="json-inner-schema">

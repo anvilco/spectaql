@@ -3,33 +3,54 @@
 //
 
 // Named sections
-@mixin named-section($title, $color: scale-color($medium-gray, $lightness: -35%)) {
+@mixin named-section($title) {
   &:before {
     content: $title;
     display: block;
     // @extend h6;
     margin-bottom: 0.5em;
-    color: $color
+    color: scale-color($medium-gray, $lightness: -35%);
     // color: $accent-color;
     // text-transform: uppercase;
     // font-size: 0.9rem;
   }
 }
 
-@mixin small-label($color: $alert-color, $font-size: 0.75rem) {
+@mixin small-label($color: $alert-color, $font-size: 0.75rem, $invert: false, $transparent: false, $text-transform: false) {
   @include label();
   // @extend .label.#{$style};
-  background: $color;
-  color: color-pick-contrast($color);
   font-size: $font-size;
   border-radius: 4px;
   padding: 3px 6px;
+
+  @if $text-transform {
+    text-transform: $text-transform
+  }
+
+  @if $transparent {
+    color: $color
+  } @else {
+    @if $invert {
+      background: color-pick-contrast($color);
+      color: $color;
+    } @else {
+      background: $color;
+      color: color-pick-contrast($color);
+    }
+  }
 }
 
-@mixin named-label($name, $color: $alert-color, $font-size: 0.9rem) {
-  &:before {
-    @include small-label($color, $font-size);
-    content: $name;
+@mixin named-label($name, $color: $alert-color, $font-size: 0.9rem, $before: true, $invert: false, $transparent: false, $text-transform: false) {
+  @if $before {
+    &:before {
+      @include small-label($color, $font-size, $invert, $transparent, $text-transform);
+      content: $name;
+    }
+  } @else {
+    &:after {
+      @include small-label($color, $font-size, $invert, $transparent, $text-transform);
+      content: $name;
+    }
   }
 }
 

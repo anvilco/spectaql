@@ -11,6 +11,18 @@ var common = require('../lib/common')
  */
 module.exports = function(value, options) {
   value = value + ''
-  var html = common.markdown(value, options.hash ? options.hash.stripParagraph : false)
+  const markdownOpts = {}
+  if (options.hash) {
+    markdownOpts.stripParagraph = options.hash.stripParagraph || false
+    markdownOpts.addClass = options.hash.addClass || false
+  }
+
+  if (markdownOpts.addClass) {
+    console.log({
+      value,
+      addClass: markdownOpts.addClass,
+    })
+  }
+  var html = common.markdown(value, markdownOpts)
   return new Handlebars.SafeString(html)
 };

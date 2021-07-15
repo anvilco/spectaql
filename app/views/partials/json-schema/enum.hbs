@@ -13,16 +13,18 @@
       {{#each anyOf}}
         <tr>
           {{! The Value column }}
-          <td>{{md (codify enum.[0])}}</td>
+          <td>{{md (codify enum.[0]) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}</td>
           {{! The Description column }}
-          <td>
-            {{#if isDeprecated }}
-              Deprecated {{#if deprecationReason }}{{md deprecationReason}}{{/if}}
-            {{/if}}
-            {{#if description}}
-              {{md description}}
-            {{/if}}
-          </td>
+          <td>{{ md (
+              concat
+                (stripTrailing description ".")
+                (ternary (and deprecationReason (not @root.info.x-hideDeprecationReason))
+                  (concat "Deprecation Reason: " deprecationReason)
+                  ""
+                )
+              joiner=". " altJoiner=" " altJoinerRegex="[\?\!]" filterFalsy=true
+            ) stripParagraph=true
+          }}</td>
         </tr>
       {{/each}}
     </table>
