@@ -27,7 +27,7 @@ type SecretType {
 type Query {
   "This is a description of `myQuery`"
   myQuery(
-    "This is a description of a `nonRequiredQueryArg`"
+    "This is a description of a `nonReqQueryArg`"
     nonReqQueryArg: String = "some default string"
     reqQueryArg: String
     reqQueryArrayArg: [String]!
@@ -54,12 +54,14 @@ type Query {
 type Mutation {
   "This Mutation has the same name as a Query"
   stringThing(anArgument: String): String
+
+  "This is a description of `myMutation`"
   myMutation(
-    "This is a description of a `nonRequiredQueryArg`"
-    nonReqQueryArg: String = "some default string"
-    reqQueryArg: String!
-    reqQueryArrayArg: [String]!
-    dblReqQueryArrayArg: [String!]!
+    "This is a description of `nonReqMutationArg`"
+    nonReqMutationArg: String = "some default string"
+    reqMutationArg: String!
+    reqMutationArrayArg: [String]!
+    dblReqMutationArrayArg: [String!]!
   ): String
 }
 

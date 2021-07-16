@@ -10,6 +10,6 @@
       </div>
     {{/if}}
     {{! This really builds out the Queries and Mutations stuff  }}
-    {{>swagger/operations/operations . tagName=name path=path}}
+    {{>swagger/operations/operations . path=path}}
   {{/each}}
 {{/if}}
