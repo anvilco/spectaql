@@ -1950,14 +1950,14 @@ grunt-contrib-handlebars@^2.0.0:
     handlebars "^4.3.4"
     nsdeclare "0.1.0"
 
-grunt-contrib-jshint@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/grunt-contrib-jshint/-/grunt-contrib-jshint-2.1.0.tgz"
-  integrity sha512-65S2/C/6RfjY/umTxfwXXn+wVvaYmykHkHSsW6Q6rhkbv3oudTEgqnFFZvWzWCoHUb+3GMZLbP3oSrNyvshmIQ==
+grunt-contrib-jshint@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/grunt-contrib-jshint/-/grunt-contrib-jshint-3.0.0.tgz#4b52395e78bab122134c99b3b2d8907f17e38cbd"
+  integrity sha512-o0V3HNK54+w2Lss/AP0LsAUCEmPDQIcgsDFvTy0sE8sdPXq/8vHdNdMEitK9Wcfoq7H6v02v6soiiwJ0wavT7A==
   dependencies:
-    chalk "^2.4.2"
+    chalk "^4.1.0"
     hooker "^0.2.3"
-    jshint "~2.10.2"
+    jshint "~2.12.0"
 
 grunt-contrib-uglify@^4.0.0:
   version "4.0.1"
@@ -2508,16 +2508,16 @@ js-yaml@^3.13.1, js-yaml@~3.14.0:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jshint@~2.10.2:
-  version "2.10.3"
-  resolved "https://registry.npmjs.org/jshint/-/jshint-2.10.3.tgz"
-  integrity sha512-d8AoXcNNYzmm7cdmulQ3dQApbrPYArtVBO6n4xOICe4QsXGNHCAKDcFORzqP52LhK61KX0VhY39yYzCsNq+bxQ==
+jshint@~2.12.0:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/jshint/-/jshint-2.12.0.tgz#52e75bd058d587ef81a0e2f95e5cf18eb5dc5c37"
+  integrity sha512-TwuuaUDmra0JMkuqvqy+WGo2xGHSNjv1BA1nTIgtH2K5z1jHuAEeAgp7laaR+hLRmajRjcrM71+vByBDanCyYA==
   dependencies:
     cli "~1.0.0"
     console-browserify "1.1.x"
     exit "0.1.x"
     htmlparser2 "3.8.x"
-    lodash "~4.17.11"
+    lodash "~4.17.19"
     minimatch "~3.0.2"
     shelljs "0.3.x"
     strip-json-comments "1.0.x"
@@ -2707,7 +2707,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.npmjs.org/lodash.truncate/-/lodash.truncate-4.4.2.tgz"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash@^4.17.10, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@~2.4.1, lodash@~4.17.10, lodash@~4.17.11, lodash@~4.17.19, lodash@~4.17.21:
+lodash@^4.17.10, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@~2.4.1, lodash@~4.17.10, lodash@~4.17.19, lodash@~4.17.21:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
