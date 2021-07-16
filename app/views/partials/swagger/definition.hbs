@@ -36,20 +36,25 @@
           {{>json-schema/enum}}
         {{else if (isInputType .)}}
           {{>json-schema/input-type}}
+        {{else if (isUnionType .)}}
+          {{>json-schema/union-type}}
         {{else}}
           {{>json-schema/body}}
         {{/if}}
       {{/if}}
     </div>
 
-    {{! Print examples without whitespace }}
-    {{#ifneq type 'string'}}
+    {{!
+      Print examples without whitespace
+      Some things don't get examples
+    }}
+    {{#if (and (not (isUnionType .)) (notEqual type 'string'))}}
       <div class="doc-examples">
         <section>
           <h5>Example</h5>
           {{>swagger/print-example .}}
         </section>
       </div>
-    {{/ifneq}}
+    {{/if}}
   </div>
 </div>

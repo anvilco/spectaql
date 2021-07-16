@@ -6,16 +6,11 @@ type SimpleTypeTwo {
   simpleTypeTwoField: String
 }
 
-"A union type, yo"
+"A Union of `SimpleTypeOne` and `SimpleTypeTwo`"
 union SimpleTypes =
   SimpleTypeOne
   | SimpleTypeTwo
 
-
-type TypeWithAnotherType {
-  foo: String
-  bar: MyType
-}
 
 "This is a description of `MyType`"
 type MyType {

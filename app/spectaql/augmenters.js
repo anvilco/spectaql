@@ -580,6 +580,7 @@ function addDeprecationThings (args = {}) {
   })
 }
 
+// This should go away if/when graphql-2-json-schema update for Union support gets in
 function _temporaryAddUnionTypes (args = {}) {
   const {
     introspectionResponse,
