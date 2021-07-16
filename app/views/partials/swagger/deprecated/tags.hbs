@@ -6,6 +6,7 @@
 
 <h1 id="swagger-summary-tags">Summary</h1>
 {{#eachSorted tags}}
+  {{ log "you are using a deprecated view" }}
   <div class="panel">
     <h3 id="tag-{{htmlId name}}" class="swagger-summary-tag">Tag: {{name}}</h3>
     {{md description}}
@@ -20,7 +21,7 @@
       <tbody>
         {{#each operations}}
         <tr>
-          <td><a href="#operation-{{htmlId path}}-{{htmlId method}}">{{toUpperCase method}} {{path}}</a></td>
+          <td><a href="#operation-{{htmlId path}}-{{htmlId tags.[0]}}">{{toUpperCase method}} {{path}}</a></td>
           <td>{{md summary}}</td>
         </tr>
         {{/each}}

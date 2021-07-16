@@ -34,7 +34,9 @@ type Query {
     dblReqQueryArrayArg: [String!]!
   ): String @deprecated(reason: "`myQuery` is going away")
 
-  getInt: Int
+  "This Query has the same name as a Mutation"
+  stringThing: String
+
   getInts: [Int]
 
   "I'm the optionals query"
@@ -50,6 +52,8 @@ type Query {
 }
 
 type Mutation {
+  "This Mutation has the same name as a Query"
+  stringThing(anArgument: String): String
   myMutation(
     "This is a description of a `nonRequiredQueryArg`"
     nonReqQueryArg: String = "some default string"
@@ -75,4 +79,6 @@ input FilterType {
   someField: Boolean = false
   "Comment for anotherField"
   anotherField: String
+  "Comment for episodeEnums"
+  episodeEnums: [EpisodeEnum!]
 }

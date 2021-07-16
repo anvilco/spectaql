@@ -9,8 +9,8 @@
   @api public
 --}}
 {{! This displays Queries and Mutations  }}
-<div id="operation-{{htmlId path}}-{{htmlId method}}" class="operation panel"
-  data-traverse-target="operation-{{htmlId path}}-{{htmlId method}}">
+<div id="operation-{{htmlId path}}-{{htmlId tags.[0]}}" class="operation panel"
+  data-traverse-target="operation-{{htmlId path}}-{{htmlId tags.[0]}}">
   {{# unless @first }}
     {{#if tags}}
       <!-- <section class="operation-tags row"> -->

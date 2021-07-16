@@ -11,11 +11,11 @@
   {{#if showTagSummary}}
     <h1>Operations</h1>
   {{else}}
-    {{# if tags.0.name}}
+    {{# if tags.0.name }}
       <h1>{{ tags.0.name }}</h1>
     {{/if}}
   {{/if}}
   {{#each paths}}
-    {{>swagger/path pathItems=. path=post.summary}}
+    {{>swagger/path pathItems=. path=post.operationId}}
   {{/each}}
 {{/if}}

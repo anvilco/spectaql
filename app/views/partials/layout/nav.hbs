@@ -49,7 +49,7 @@
           <ul>
             {{#each operations}}
               <li>
-                <a href="#operation-{{htmlId path}}-{{htmlId method}}">
+                <a href="#operation-{{htmlId path}}-{{htmlId tags.[0] }}">
                   {{#if summary}}
                     {{summary}}
                   {{else}}
@@ -62,7 +62,7 @@
         </section>
     {{else}}
       {{#each operations}}
-        <a href="#operation-{{htmlId path}}-{{htmlId method}}">
+        <a href="#operation-{{htmlId path}}-{{htmlId tags.[0] }}">
           {{#if summary}}
             {{summary}}
           {{else}}
