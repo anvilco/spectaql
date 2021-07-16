@@ -1,3 +1,4 @@
+{{! This really builds out the Queries and Mutations stuff  }}
 {{#if (nempty tags) }}
   {{#each tags}}
     <h1 id="tag-{{htmlId name}}" class="swagger-summary-tag tag-name" data-traverse-target="tag-{{htmlId name}}">{{name}}</h1>
@@ -8,6 +9,7 @@
         </div>
       </div>
     {{/if}}
+    {{! This really builds out the Queries and Mutations stuff  }}
     {{>swagger/operations/operations . method=method path=path}}
   {{/each}}
 {{/if}}

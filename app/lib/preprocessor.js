@@ -16,6 +16,8 @@ module.exports = function(options, specData) {
   specData["x-spec-path"] = options.specFile;
 
   var copy = _.cloneDeep(specData)
+  // "tags" will be "Query" or "Mutation", and all of the individual queries or mutations
+  // will be jammed onto the tag in an "operations" array.
   var tagsByName = _.keyBy(copy.tags, 'name')
 
   copy.tags = copy.tags || [];
@@ -31,8 +33,7 @@ module.exports = function(options, specData) {
   // The "body"-parameter in each operation is stored in a
   // separate field "_request_body".
   if (copy.paths) {
-    Object.keys(copy.paths).forEach(function(pathName) {
-      var path = copy.paths[pathName]
+    copy.paths.forEach(function(path) {
       var pathParameters = path.parameters || []
       Object.keys(path).forEach(function(method) {
         if (httpMethods.indexOf(method) < 0) {
@@ -40,7 +41,7 @@ module.exports = function(options, specData) {
           return
         }
         var operation = path[method]
-        operation.path = pathName
+        operation.path = operation.operationId
         operation.method = method
         // Draw links from tags to operations referencing them
         var operationTags = operation.tags || ['default']
@@ -81,6 +82,13 @@ module.exports = function(options, specData) {
     })
     // If there are multiple tags, we show the tag-based summary
     copy.showTagSummary = copy.tags.length > 1
+
+    // Sort "operations" (read: queries or mutations) by their name
+    Object.values(tagsByName).forEach((tag) => {
+      if (Array.isArray(tag.operations)) {
+        tag.operations = _.sortBy(tag.operations, 'path')
+      }
+    })
   }
 
   var replaceRefs = require("./resolve-references").replaceRefs;
