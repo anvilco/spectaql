@@ -153,5 +153,8 @@ module.exports = function(opts) {
     definitions: jsonSchema.definitions,
   }
 
+  // console.log(JSON.stringify(jsonSchema.definitions))
+  console.log(JSON.stringify(introspectionResponse))
+
   return swaggerSpec
 }

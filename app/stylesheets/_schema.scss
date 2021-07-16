@@ -312,10 +312,10 @@ a > code {
   > dl {
     padding-left: 1em;
     dt:not(:first-child):before {
-      content: "or ";
+      content: "| ";
     }
     dt:first-child:before {
-      content: "either ";
+      content: "UNION ";
     }
   }
 }

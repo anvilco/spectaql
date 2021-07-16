@@ -6,11 +6,12 @@
 --}}
 <section class="json-schema-anyOf">
   {{log "\n\ndoing anyOf partial\n\n" . }}
+
   {{! Display ref (i.e. superclasses)}}
   <dl>
     {{#each .}}
       <dt>
-        {{>json-schema/datatype}}
+        {{md (mdTypeLink . codify=true)}}
       </dt>
       <dd>
         {{>json-schema/body $ref=""}}

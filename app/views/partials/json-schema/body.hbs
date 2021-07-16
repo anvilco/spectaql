@@ -35,5 +35,6 @@
   {{>json-schema/allOf allOf}}
 {{/if}}
 {{#if anyOf}}
-  {{>json-schema/anyOf anyOf}}
+  {{! This would presumably be a UNION }}
+  {{>json-schema/union-type anyOf}}
 {{/if}}

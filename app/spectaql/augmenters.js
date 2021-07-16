@@ -22,6 +22,7 @@ const calculateShouldDocument = ({ undocumented, documented, def }) => {
 }
 
 function augmentData (args) {
+  _temporaryAddUnionTypes(args)
   hideThingsBasedOnMetadata(args)
   addExamplesFromMetadata(args)
   addExamplesDynamically(args)
@@ -576,6 +577,34 @@ function addDeprecationThings (args = {}) {
         }
       )
     }
+  })
+}
+
+function _temporaryAddUnionTypes (args = {}) {
+  const {
+    introspectionResponse,
+    jsonSchema,
+  } = args
+
+  const unionTypes = _.get(introspectionResponse, '__schema.types', []).filter(
+    (type) => type.kind === 'UNION'
+  )
+
+  if (!unionTypes.length) {
+    return
+  }
+
+  unionTypes.forEach((type) => {
+    const { name, description, possibleTypes } = type
+    const  definition = {
+      anyOf: possibleTypes.map(({ name }) => ({ $ref: `#/definitions/${name}`})),
+    }
+
+    if (typeof description !== 'undefined') {
+      definition.description = description
+    }
+
+    jsonSchema.definitions[name] = definition
   })
 }
 
