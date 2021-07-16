@@ -9,6 +9,11 @@
   @api public
 --}}
 {{! This displays Queries and Mutations  }}
+{{!
+  The reality is that each "operation" will only have 1 tag: either the
+  query or mutation type name, so we use that to build a unique ID that allows
+  for a query to have the same name as a mutation
+}}
 <div id="operation-{{htmlId path}}-{{htmlId tags.[0]}}" class="operation panel"
   data-traverse-target="operation-{{htmlId path}}-{{htmlId tags.[0]}}">
   {{# unless @first }}

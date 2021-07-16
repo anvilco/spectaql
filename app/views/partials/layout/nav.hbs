@@ -49,6 +49,10 @@
           <ul>
             {{#each operations}}
               <li>
+                {{!
+                  The reality is that each "operation" will only have 1 tag: either the
+                  query or mutation type name
+                }}
                 <a href="#operation-{{htmlId path}}-{{htmlId tags.[0] }}">
                   {{#if summary}}
                     {{summary}}
@@ -62,6 +66,10 @@
         </section>
     {{else}}
       {{#each operations}}
+        {{!
+          The reality is that each "operation" will only have 1 tag: either the
+          query or mutation type name
+        }}
         <a href="#operation-{{htmlId path}}-{{htmlId tags.[0] }}">
           {{#if summary}}
             {{summary}}
