@@ -591,6 +591,8 @@ function _temporaryAddUnionTypes (args = {}) {
     (type) => type.kind === 'UNION'
   )
 
+  console.log({unionTypes})
+
   if (!unionTypes.length) {
     return
   }
@@ -607,6 +609,8 @@ function _temporaryAddUnionTypes (args = {}) {
 
     jsonSchema.definitions[name] = definition
   })
+
+  return args
 }
 
 // Just a helper function to standardize some looping/processing that will happen
@@ -660,6 +664,7 @@ function _goThroughThings ({
 }
 
 module.exports = {
+  _temporaryAddUnionTypes,
   hideThingsBasedOnMetadata,
   addExamplesFromMetadata,
   addExamplesDynamically,
