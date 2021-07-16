@@ -413,9 +413,9 @@ batch@0.6.1:
   integrity sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
 
 bdd-lazy-var@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.npmjs.org/bdd-lazy-var/-/bdd-lazy-var-2.6.0.tgz"
-  integrity sha512-HJth+pHJlR1W3VAEU4vuDIAK3xRDkOVoo6DHq6rEVDB+Nobr4KKEI4yMRKdPbswifKgA2HttO7YUOLQDnwoM6A==
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/bdd-lazy-var/-/bdd-lazy-var-2.6.1.tgz#ca03fb36d68c5a507c0ba9a4d53160b899e6b7cb"
+  integrity sha512-X3ADwcFji/IHIrYJhTTpaiWhoOx4pl4whdAx1dmvdeUPsMUb7fVYFvf/Q33VEAEAVkEwi5rgNSZ0Y9oOVeQV+A==
 
 binary-extensions@^2.0.0:
   version "2.2.0"
