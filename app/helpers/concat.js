@@ -11,15 +11,39 @@
 module.exports = function(...strings) {
   let joiner = ''
   let filterFalsy = false
+  let altJoiner
+  let altJoinerRegex
 
   if (typeof strings[strings.length - 1] === 'object') {
     const options = strings.pop()
     joiner = options.hash.joiner || joiner
     filterFalsy = options.hash.filterFalsy === true
+    altJoiner = options.hash.altJoiner
+    altJoinerRegex = options.hash.altJoinerRegex
   }
 
   if (filterFalsy) {
     strings = strings.filter((s) => s)
+  }
+
+  if (!strings.length) {
+    return ''
+  }
+
+  if (typeof altJoiner !== 'undefined' && altJoinerRegex) {
+    altJoinerRegex = new RegExp(`${altJoinerRegex}$`)
+    let lastString = strings.shift()
+    let result = lastString
+    for (const string of strings) {
+      if (altJoinerRegex.test(lastString)) {
+        result = result + altJoiner + string
+      } else {
+        result = result + joiner + string
+      }
+      lastString = string
+    }
+
+    return result
   }
 
 

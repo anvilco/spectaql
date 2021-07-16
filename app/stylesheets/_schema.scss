@@ -34,6 +34,10 @@
   @include named-section($msg-swagger-section-operation-description);
 }
 
+.swagger-operation-deprecated {
+  @include named-label($msg-swagger-section-operation-deprecated, $before: false, $transparent: true, $color: $deprecated-color, $text-transform: uppercase);
+}
+
 .swagger-request-params {
   @include named-section($msg-swagger-section-request-params);
 }

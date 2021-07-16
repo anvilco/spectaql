@@ -13,6 +13,8 @@ const {
   addSpecialTags,
 } = require('../lib/common')
 
+const isEnum = require('../helpers/isEnum')
+
 const METADATA_OUTPUT_PATH = 'metadata'
 
 const calculateShouldDocument = ({ undocumented, documented, def }) => {
@@ -23,6 +25,7 @@ function augmentData (args) {
   hideThingsBasedOnMetadata(args)
   addExamplesFromMetadata(args)
   addExamplesDynamically(args)
+  addDeprecationThings(args)
 }
 
 // At this point, the metadata should have been added into the JSON Schema data, so everything
@@ -430,6 +433,9 @@ function hideFields(args = {}) {
       // things,
      typeOfThing, // "Type" | "Query" | "Mutation"
     }) => {
+      if (!typeDefinition.properties) {
+        return
+      }
       typeDefinition.properties = Object.entries(typeDefinition.properties).reduce(
         (acc, [fieldName, fieldDefinition]) => {
           if (thingTypeToHideIfReturnTypeUndocumentedMap[typeOfThing] &&
@@ -488,6 +494,9 @@ function hideArguments(args = {}) {
       defaultShowHide,
       // things,
     }) => {
+      if (!typeDefinition.properties) {
+        return
+      }
       Object.entries(typeDefinition.properties).forEach(
         ([fieldName, fieldDefinition]) => {
           const type = getTypeFromIntrospectionResponse({name: typeName, introspectionResponse})
@@ -528,6 +537,48 @@ function hideArguments(args = {}) {
   return
 }
 
+function addDeprecationThings (args = {}) {
+  const {
+    introspectionResponse,
+    // introspectionOptions,
+  } = args
+
+  _goThroughThings({
+    ...args,
+    fn: ({
+      typeName,
+      typeDefinition,
+      typeOfThing,
+    }) => {
+      if (typeOfThing !== 'Type') {
+        return
+      }
+
+      const type = getTypeFromIntrospectionResponse({ name: typeName, introspectionResponse })
+      if (!type) {
+        return
+      }
+
+      const thingsToIterate = isEnum(typeDefinition)
+        ? typeDefinition.anyOf.map((schema) => [schema.enum[0], schema])
+        : Object.entries(typeDefinition.properties)
+
+      thingsToIterate.forEach(
+        ([fieldName, fieldDefinition]) => {
+          const field = getFieldFromIntrospectionResponseType({ name: fieldName, type })
+          if (!field) {
+            return
+          }
+          if (field.isDeprecated) {
+            fieldDefinition.isDeprecated = field.isDeprecated
+            fieldDefinition.deprecationReason = field.deprecationReason
+          }
+        }
+      )
+    }
+  })
+}
+
 // Just a helper function to standardize some looping/processing that will happen
 // a few times, but slightly different
 function _goThroughThings ({
@@ -563,7 +614,7 @@ function _goThroughThings ({
   ].forEach(([things, defaultShowHide, typeOfThing]) => {
     Object.entries(things).forEach(([typeName, typeDefinition]) => {
       // If it has no "properties" property, then it's a scalar or something
-      if (!Object.hasOwnProperty.call(typeDefinition, 'properties')) {
+      if (!(Object.hasOwnProperty.call(typeDefinition, 'properties') || isEnum(typeDefinition))) {
         return
       }
 

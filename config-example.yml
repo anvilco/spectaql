@@ -203,6 +203,13 @@ info:
   # Default: false
   x-hideIntroItems: false
 
+  # Set to true to not render the deprecated label
+  # Default: false
+  x-hideIsDeprecated: false
+  # Set to true to not render the deprecation reason
+  # Default: false
+  x-hideDeprecationReason: false
+
   #
   ##############################################
 

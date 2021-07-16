@@ -73,7 +73,7 @@ var common = {
    *      If this options is set to true, the <p>-tag is stripped.
    * @returns {string} the markdown rendered as HTML.
    */
-  markdown: function (value, stripParagraph) {
+  markdown: function (value, {stripParagraph = false, addClass = false} = {}) {
     if (!value) {
       return value;
     }
@@ -81,12 +81,21 @@ var common = {
     var html = marked(value)
     // We strip the surrounding <p>-tag, if
     if (stripParagraph) {
-      var $ = cheerio.load("<root>" + html + "</root>")('root')
+      let $ = cheerio.load("<root>" + html + "</root>")('root')
       // Only strip <p>-tags and only if there is just one of them.
       if ($.children().length === 1 && $.children('p').length === 1) {
         html = $.children('p').html()
       }
     }
+
+    if (addClass) {
+      let $ = cheerio.load("<root>" + html + "</root>")('root')
+      if ($.children().length === 1) {
+        $.children().first().addClass(addClass)
+        html = $.html()
+      }
+    }
+
     return html;
   },
 
