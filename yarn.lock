@@ -523,9 +523,9 @@ caseless@^0.12.0, caseless@~0.12.0:
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
 chai-exclude@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/chai-exclude/-/chai-exclude-2.0.2.tgz"
-  integrity sha512-QmNVnvdSw8Huccdjm49mKu3HtoHxvjdavgYkY0KPQ5MI5UWfbc9sX1YqRgaMPf2GGtDXPoF2ram3AeNS4945Xw==
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/chai-exclude/-/chai-exclude-2.0.3.tgz#38c159a5e098971b795cafd492d48ae58d651a23"
+  integrity sha512-6VuTQX25rsh4hKPdLzsOtL20k9+tszksLQrLtsu6szTmSVJP9+gUkqYUsyM+xqCeGZKeRJCsamCMRUQJhWsQ+g==
   dependencies:
     fclone "^1.0.11"
 
