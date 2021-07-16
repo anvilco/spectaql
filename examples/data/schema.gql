@@ -49,6 +49,16 @@ type Query {
   myTypes: [MyType]
 }
 
+type Mutation {
+  myMutation(
+    "This is a description of a `nonRequiredQueryArg`"
+    nonReqQueryArg: String = "some default string"
+    reqQueryArg: String!
+    reqQueryArrayArg: [String]!
+    dblReqQueryArrayArg: [String!]!
+  ): String
+}
+
 "These are very important `enum`s"
 enum EpisodeEnum {
   "Who is Luke?"
