@@ -211,10 +211,10 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
         [],
     )
 
-    const paths = {}
+    const paths = []
 
     domains.forEach(domain => {
-        domain.usecases.forEach(u => Object.assign(paths, composePath(domain.name, u)));
+        domain.usecases.forEach(u => paths.push(composePath(domain.name, u)));
     });
 
     return paths
@@ -230,8 +230,6 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
             examplesByArgName,
             defaultsByArgName,
         } = usecase
-
-        const result = {}
 
         const operationId = name.replace(/ /g, '_').toLowerCase();
 
@@ -329,7 +327,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
 
         args.push(bodyArg);
 
-        result[operationId] = {
+        return {
             post: {
                 tags: [tag],
                 summary: name,
@@ -351,7 +349,5 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                 }
             }
         }
-
-        return result;
     }
 }

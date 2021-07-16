@@ -16,6 +16,10 @@
   {{>swagger/x-spectacle-topics}}
 
   {{#if showTagSummary}}
+    {{!
+      If your schema has both Queries and Mutations defined, this is probably the
+      path that is taken
+    }}
     {{>swagger/tags}}
   {{else}}
     {{>swagger/paths}}

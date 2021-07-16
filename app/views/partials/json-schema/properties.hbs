@@ -24,8 +24,12 @@
             {{#if description}} class="has-description"{{/if}}
           --}}
         >
-          {{! Add in the name and parent since they're unattainable otherwise }}
-          {{~> graphql/name-and-type properties.return name=@key parent=.. }}
+          {{!
+            - firstTruthy because sometimes the properties.return isn't there in the case of an
+              INPUT_OBJECT, for example. FIXME
+            - Add in the name and parent since they're unattainable otherwise
+          }}
+          {{~> graphql/name-and-type (firstTruthy properties.return .) name=@key parent=.. }}
           {{!-- Handled now in name-and-type
             {{#ifcontains ../required @key}}
               <span class="json-property-not-nullable"></span>

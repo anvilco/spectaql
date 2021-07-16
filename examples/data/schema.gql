@@ -27,14 +27,16 @@ type SecretType {
 type Query {
   "This is a description of `myQuery`"
   myQuery(
-    "This is a description of a `nonRequiredQueryArg`"
+    "This is a description of a `nonReqQueryArg`"
     nonReqQueryArg: String = "some default string"
     reqQueryArg: String
     reqQueryArrayArg: [String]!
     dblReqQueryArrayArg: [String!]!
   ): String @deprecated(reason: "`myQuery` is going away")
 
-  getInt: Int
+  "This Query has the same name as a Mutation"
+  stringThing: String
+
   getInts: [Int]
 
   "I'm the optionals query"
@@ -47,6 +49,20 @@ type Query {
   ): [String!]!
 
   myTypes: [MyType]
+}
+
+type Mutation {
+  "This Mutation has the same name as a Query"
+  stringThing(anArgument: String): String
+
+  "This is a description of `myMutation`"
+  myMutation(
+    "This is a description of `nonReqMutationArg`"
+    nonReqMutationArg: String = "some default string"
+    reqMutationArg: String!
+    reqMutationArrayArg: [String]!
+    dblReqMutationArrayArg: [String!]!
+  ): String
 }
 
 "These are very important `enum`s"
@@ -65,4 +81,6 @@ input FilterType {
   someField: Boolean = false
   "Comment for anotherField"
   anotherField: String
+  "Comment for episodeEnums"
+  episodeEnums: [EpisodeEnum!]
 }
