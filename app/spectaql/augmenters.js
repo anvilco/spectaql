@@ -591,8 +591,6 @@ function _temporaryAddUnionTypes (args = {}) {
     (type) => type.kind === 'UNION'
   )
 
-  console.log({unionTypes})
-
   if (!unionTypes.length) {
     return
   }
