@@ -1,3 +1,17 @@
+type SimpleTypeOne {
+  myType: [MyType!]!
+}
+
+type SimpleTypeTwo {
+  simpleTypeTwoField: String
+}
+
+"A Union of `SimpleTypeOne` and `SimpleTypeTwo`"
+union SimpleTypes =
+  SimpleTypeOne
+  | SimpleTypeTwo
+
+
 "This is a description of `MyType`"
 type MyType {
   "This is a description of `nonRequiredField`"
