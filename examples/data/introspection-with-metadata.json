@@ -47,6 +47,14 @@
       },
       {
         "kind": "SCALAR",
+        "name": "DateTime",
+        "description": "foo",
+        "documentation": {
+          "example": "2016-10-07T01:08:03.405Z"
+        }
+      },
+      {
+        "kind": "SCALAR",
         "name": "String",
         "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
         "fields": null,

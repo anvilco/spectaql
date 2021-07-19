@@ -3,16 +3,28 @@
     "SecretType": {
       "documentation": { "undocumented": true }
     },
+    "MyType": {
+      "fields": {
+        "nonRequiredField": {
+          "documentation": { "example": "Metadata example of `nonRequiredField`"}
+        }
+      }
+    },
     "Query": {
       "fields": {
         "myQuery": {
           "args": {
             "nonReqQueryArg": {
-              "documentation": { "example": "I am an example from metadata" }
+              "documentation": { "example": "Metadata example of `nonReqQueryArg`" }
             }
           }
         }
       }
+    }
+  },
+  "SCALAR": {
+    "DateTime": {
+      "documentation": { "example": "\"2016-10-07T01:08:03.420Z\"" }
     }
   }
 }

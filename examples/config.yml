@@ -3,7 +3,9 @@ spectaql:
   faviconFile: ./test/fixtures/favicon.png
 
 introspection:
+  # url: http://localhost:3000/graphql
   schemaFile: ./examples/data/schema.gql
+  # introspectionFile: ./examples/data/introspection-with-metadata.json
   metadataFile: ./examples/data/metadata.json
   dynamicExamplesProcessingModule: ./examples/customizations/examples
 
