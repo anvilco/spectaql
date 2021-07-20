@@ -1,6 +1,6 @@
 const _ = require('lodash')
 /**
- * Accepts a bunch of information about a Field, and allows you to return an example
+ * Accepts a bunch of information about a Scalar, and allows you to return an example
  * to be used in your documentation. If undefined is returned, a default example will
  * be used for you.
  *

@@ -1,7 +1,7 @@
 // Determine if a value is a JSON-schema version of a Scalar
 
 // These are the GraphQL default scalars that map to JSON Schema types
-const typesMapping = {
+const DEFAULT_SCALARS_MAP = {
   Boolean: 'boolean',
   String: 'string',
   Int: 'number',
@@ -21,13 +21,17 @@ module.exports = (value) => {
   //   "description": "The `Boolean` scalar type represents `true` or `false`."
   // },
   // "DateTime": {
-  //   "description": "A custom scalar will look like this.",
+  //   "description": "A custom scalar will look like tfhis.",
   //   "type": "object",
   //   "title": "DateTime",
   // },
+
+  // All Scalars will have a "title"
   return value && value.title && (
-    (typesMapping[value.title] && typesMapping[value.title] === value.type)
+    // GraphQL default scalars will obey this pattern
+    (DEFAULT_SCALARS_MAP[value.title] && DEFAULT_SCALARS_MAP[value.title] === value.type)
     ||
+    // Custom scalars will be "object"
     (value.type === 'object')
   )
 }

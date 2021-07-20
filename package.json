@@ -12,6 +12,7 @@
     "develop": "nodemon -x 'node bin/spectaql' -D",
     "build": "node bin/spectaql",
     "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
+    "generateExampleData": "node bin/generateExampleData.js",
     "test": "mocha --config ./test/mocha-config.js",
     "test:watch": "nodemon -x 'yarn test'"
   },

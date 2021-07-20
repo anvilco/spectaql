@@ -276,6 +276,7 @@ var common = {
         title,
         format,
       } = ref
+
       const replacement = getExampleForScalar(title)
       if (typeof replacement !== 'undefined') {
         type = unwindSpecialTags(replacement)
@@ -301,6 +302,9 @@ var common = {
       markedDown = marked("```json\r\n" + stringified + "\n```")
     }
 
+    // There is an issue with `marked` not formatting a leading quote in a single,
+    // quoted string value. By unwinding the special tags after converting to markdown
+    // we can avoid that issue.
     return cheerio.load(unwindSpecialTags(markedDown)).html();
   },
 
