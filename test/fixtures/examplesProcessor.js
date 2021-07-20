@@ -1,4 +1,16 @@
 
+function scalarProcessor (argz = {}) {
+  const {
+    name,
+  } = argz
+
+  switch (name) {
+    case 'String': {
+      return "42: Life, the Universe and Everything"
+    }
+  }
+}
+
 function fieldProcessor(argz = {}) {
   const {
     parentName,
@@ -91,6 +103,7 @@ function argumentProcessor(argz = {}) {
 }
 
 module.exports = {
+  scalarProcessor,
   fieldProcessor,
   argumentProcessor,
 }

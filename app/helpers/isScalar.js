@@ -27,7 +27,7 @@ module.exports = (value) => {
   // },
 
   // All Scalars will have a "title"
-  return value && value.title && (
+  return !!value && value.title && (
     // GraphQL default scalars will obey this pattern
     (DEFAULT_SCALARS_MAP[value.title] && DEFAULT_SCALARS_MAP[value.title] === value.type)
     ||

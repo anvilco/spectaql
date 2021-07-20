@@ -65,7 +65,7 @@ function addSpecialTags (value, { placeholdQuotes = false } = {}) {
 
 function addQuoteTags (value) {
   // Don't quote it if it's already been quoted or doesn't exist
-  if (!value || value.includes(QUOTE_TAG)) {
+  if (!value || typeof value !== 'string' || value.includes(QUOTE_TAG)) {
     return value
   }
 
