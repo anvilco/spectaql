@@ -73,7 +73,7 @@ function addQuoteTags (value) {
 }
 
 function replaceQuotesWithTags (value) {
-  if (!value) {
+  if (!value || typeof value !== 'string') {
     return value
   }
 
