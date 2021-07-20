@@ -744,6 +744,18 @@ describe('augmenters', function () {
       })
     })
 
+    describe('Scalars', function () {
+      it('adds example when it should', function () {
+        const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
+        const { jsonSchema } = $.result
+        expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+
+        expect(jsonSchema.definitions.String.example).to.eql(
+          addSpecialTags('42: Life, the Universe and Everything')
+        )
+      })
+    })
+
     describe('Fields', function () {
       it('adds example when it should', function () {
         const jsonSchemaBefore = _.cloneDeep($.jsonSchema)

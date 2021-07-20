@@ -103,7 +103,7 @@ Several options are supported via the CLI. Some are exclusive to the CLI, while 
 ## Metadata
 
 In our experience, nearly all of the stuff we need for the content of the documentation comes from things supported in GraphQL and introspection queries...but not everything. To supplement some things that are missing, SpectaQL provides support for including "metadata" about your schema that can be used when generating the output. The following options are currently supported:
-- `example`: When provided for a Field or Argument, this value will be used as an "example" for the Field or Argument. It can be any value supported in JSON.
+- `example`: When provided for a Scalar, Field or Argument, this value will be used as an "example" for the Field or Argument. It can be any value supported in JSON.
 - `examples`: Same as `example`, but allows an Array of examples to be provided, from which one random one will be used during generation.
 - `undocumented`: A Boolean value that can be provided on a Type, Field, Argument, Query or Mutation indicating that this item is _**not**_ to be included in the resulting output. Useful for 1-off hiding of things where the default was to show them.
 - `documented`: Just like `undocumented`, except it _**will**_ include it in the resulting output. Useful for 1-off showing of things where the default was to hide them.
@@ -114,7 +114,7 @@ SpectaQL supports 2 ways to include metadata to be used during processing:
 
 ## Dynamic Example Generators
 
-In addition to being able to use any static examples you've provided, SpectaQL also supports dynamically generating examples for Fields and Arguments. When it comes time to generate an example, SpectaQL can pass all the necessary information about the Field or Argument to your generator in order for it to decide what the example should look like. See the included [example generator](https://github.com/anvilco/spectaql/blob/master/examples/customizations/examples/index.js) to see how it works.
+In addition to being able to use any static examples you've provided, SpectaQL also supports dynamically generating examples for Scalars, Fields and Arguments. When it comes time to generate an example, SpectaQL can pass all the necessary information about the Scalar, Field or Argument to your generator in order for it to decide what the example should look like. See the included [example generator](https://github.com/anvilco/spectaql/blob/master/examples/customizations/examples/index.js) to see how it works.
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata *before* SpectaQL even gets involved. Just a thought.
 
@@ -128,7 +128,7 @@ The best option for customizing your output is to see if what you want to do is 
 
 If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `master` branch. 
 
-Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL.
+Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL. We try to be pretty active about fixing and enhancing the project. Please also consider subscribing to the repo to keep up to date with the goings on.
 
 Alternatively, you can just copy and modify the contents of `app` from the main repo and pass the path from your custom `app` path to the CLI using the `-a` flag.
 

@@ -56,15 +56,43 @@ function addSpecialTags (value, { placeholdQuotes = false } = {}) {
     return replacement
   }
 
-  // Don't quote it if it's already been quoted
-  const maybeQuoteTag = (placeholdQuotes && !value.includes(QUOTE_TAG)) ? QUOTE_TAG : ''
+  if (placeholdQuotes) {
+    value = addQuoteTags(value)
+  }
 
-  return `${SPECIAL_TAG}${maybeQuoteTag}${value}${maybeQuoteTag}${SPECIAL_TAG}`
+  return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
+}
+
+function addQuoteTags (value) {
+  // Don't quote it if it's already been quoted or doesn't exist
+  if (!value || typeof value !== 'string' || value.includes(QUOTE_TAG)) {
+    return value
+  }
+
+  return `${QUOTE_TAG}${value}${QUOTE_TAG}`
+}
+
+function replaceQuotesWithTags (value) {
+  if (!value || typeof value !== 'string') {
+    return value
+  }
+
+  for (const quote of ['"', "'"]) {
+    if (value.startsWith(quote) && value.endsWith(quote)) {
+      return addQuoteTags(value.substring(1, value.length - 1))
+    }
+  }
+
+  return value
 }
 
 var common = {
 
   addSpecialTags,
+
+  addQuoteTags,
+
+  replaceQuotesWithTags,
 
   /**
    * Render a markdown formatted text as HTML.
@@ -248,6 +276,7 @@ var common = {
         title,
         format,
       } = ref
+
       const replacement = getExampleForScalar(title)
       if (typeof replacement !== 'undefined') {
         type = unwindSpecialTags(replacement)
@@ -264,15 +293,19 @@ var common = {
       return '';
     }
 
+    let markedDown
     if (typeof (value) == "string") {
-      return cheerio.load(marked("```gql\r\n" + value + "\n```")).html();
-    } else {
-      const stringified = unwindSpecialTags(
-        stringify(value, { indent: 2, replacer: jsonReplacer }),
-      )
+      markedDown = marked("```gql\r\n" + value + "\n```")
 
-      return cheerio.load(marked("```json\r\n" + stringified + "\n```")).html()
+    } else {
+      const stringified = stringify(value, { indent: 2, replacer: jsonReplacer })
+      markedDown = marked("```json\r\n" + stringified + "\n```")
     }
+
+    // There is an issue with `marked` not formatting a leading quote in a single,
+    // quoted string value. By unwinding the special tags after converting to markdown
+    // we can avoid that issue.
+    return cheerio.load(unwindSpecialTags(markedDown)).html();
   },
 
   getReferencePath: function (reference) {

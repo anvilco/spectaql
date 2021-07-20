@@ -11,9 +11,11 @@ const {
 
 const {
   addSpecialTags,
+  replaceQuotesWithTags,
 } = require('../lib/common')
 
 const isEnum = require('../helpers/isEnum')
+const isScalar = require('../helpers/isScalar')
 
 const METADATA_OUTPUT_PATH = 'metadata'
 
@@ -57,6 +59,10 @@ function addExamplesFromMetadata (args = {}) {
             definition.example = addSpecialTags(example, { placeholdQuotes: true })
             return
           }
+          case 'Scalar': {
+            definition.example = replaceQuotesWithTags(example)
+            return
+          }
         }
       }
     },
@@ -87,16 +93,18 @@ function addExamplesDynamically (args = {}) {
   let {
     fieldProcessor,
     argumentProcessor,
+    scalarProcessor,
   } = processingModule
 
   // If no functions, then don't bother
-  if (!(fieldProcessor || argumentProcessor)) {
+  if (!(fieldProcessor || argumentProcessor || scalarProcessor)) {
     console.warn('\n\n\nNO EXAMPLE PROCESSORS FOUND\n\n\n')
     return args
   }
 
   fieldProcessor = fieldProcessor || (() => {})
   argumentProcessor = argumentProcessor || (() => {})
+  scalarProcessor = scalarProcessor || (() => {})
 
   function massageExample ({
     value,
@@ -182,6 +190,22 @@ function addExamplesDynamically (args = {}) {
           return
         }
 
+        case 'Scalar': {
+          const example = scalarProcessor({
+            name,
+            definition,
+            type,
+            // Give 'em all the args'
+            args,
+          })
+
+          if (typeof example !== 'undefined') {
+            definition.example = massageExample({ value: example, typeName: type })
+          }
+
+          return
+        }
+
         default: {
           console.warn(`Unknown type passed: ${type}`)
           break
@@ -210,6 +234,16 @@ function _addExamplesToThings (args = {}) {
       // If typeOfThing is Type, then parent is a Field, otherwise it's
       // a Query or a Mutation
       const whatDoWeCallAField = typeOfThing === 'Type' ? 'Field' : typeOfThing
+
+      // Scalars get handled differently, then we're done
+      if (isScalar(typeDefinition)) {
+        addExampleToThingFn({
+          name: typeName,
+          type: 'Scalar',
+          definition: typeDefinition
+        })
+        return
+      }
 
       // Go through all the Type fields
       Object.entries(typeDefinition.properties || {}).forEach(
@@ -431,12 +465,13 @@ function hideFields(args = {}) {
       typeName,
       typeDefinition,
       defaultShowHide,
-      // things,
      typeOfThing, // "Type" | "Query" | "Mutation"
     }) => {
+      // Protect against non-Fields this way
       if (!typeDefinition.properties) {
         return
       }
+
       typeDefinition.properties = Object.entries(typeDefinition.properties).reduce(
         (acc, [fieldName, fieldDefinition]) => {
           if (thingTypeToHideIfReturnTypeUndocumentedMap[typeOfThing] &&
@@ -493,11 +528,12 @@ function hideArguments(args = {}) {
       typeName,
       typeDefinition,
       defaultShowHide,
-      // things,
     }) => {
+      // Protect against non-fields this way
       if (!typeDefinition.properties) {
         return
       }
+
       Object.entries(typeDefinition.properties).forEach(
         ([fieldName, fieldDefinition]) => {
           const type = getTypeFromIntrospectionResponse({name: typeName, introspectionResponse})
@@ -551,7 +587,8 @@ function addDeprecationThings (args = {}) {
       typeDefinition,
       typeOfThing,
     }) => {
-      if (typeOfThing !== 'Type') {
+      // Rest of code does not apply and will not work with the following:
+      if (typeOfThing !== 'Type' || isScalar(typeDefinition)) {
         return
       }
 
@@ -646,7 +683,9 @@ function _goThroughThings ({
   ].forEach(([things, defaultShowHide, typeOfThing]) => {
     Object.entries(things).forEach(([typeName, typeDefinition]) => {
       // If it has no "properties" property, then it's a scalar or something
-      if (!(Object.hasOwnProperty.call(typeDefinition, 'properties') || isEnum(typeDefinition))) {
+      // Actually, now most things are gonna make it through, and each
+      // iterator needs to defend.
+      if (!(Object.hasOwnProperty.call(typeDefinition, 'properties') || isEnum(typeDefinition) || isScalar(typeDefinition))) {
         return
       }
 

@@ -1,3 +1,35 @@
+const _ = require('lodash')
+/**
+ * Accepts a bunch of information about a Scalar, and allows you to return an example
+ * to be used in your documentation. If undefined is returned, a default example will
+ * be used for you.
+ *
+ * @param  {Object} argz An object containing the following properties to help you generate your example:
+ *
+ *    {String} name - The name of this Scalar
+ *    {Object} definition - The JSON Schema definition for this Scalar
+ *
+ *    {Object} args - All of the arguments originally passed to the augmentation method:
+ *      {Object} introspectionResponse - The introspection query response Object
+ *      {Object} jsonSchema - The JSON Schema representing the entire GraphQL Schema
+ *      {Object} graphQLSchema - The GraphQL schema object
+ *      {introspectionOptions} - Options from the CLI and YML related to generating the documentation
+ *
+ * @return {Any} The value to use as an example. Return undefined to just use the default.
+ */
+function scalarProcessor (argz = {}) {
+  const {
+    name,
+  } = argz
+
+  switch (name) {
+    case 'Int': {
+      // Life, the Universe and Everything
+      return 42
+    }
+  }
+}
+
 /**
  * Accepts a bunch of information about a Field, and allows you to return an example
  * to be used in your documentation. If undefined is returned, a default example will
@@ -26,11 +58,16 @@ function fieldProcessor (argz = {}) {
     parentName,
     name,
     returnType,
+    definition,
     isArray,
   } = argz
 
-  // All String fields on MyType get an example
-  if (parentName === 'MyType' && returnType === 'String') {
+  if (typeof _.get(definition, 'properties.return.example') !== 'undefined') {
+    return
+  }
+
+  // All String fields on MyType get an example, unless they already had one from somewhere
+  if (parentName === 'MyType' && returnType === 'String' && typeof definition.example === 'undefined') {
     const val = `Generated Field example for ${name}`
     // Might need to be an array
     return isArray ? [val] : val
@@ -71,12 +108,17 @@ function fieldProcessor (argz = {}) {
  */
 function argumentProcessor (argz = {}) {
   const {
+    definition,
     parentType,
     parentName,
     name,
     type,
     isArray,
   } = argz
+
+  if (typeof _.get(definition, 'example') !== 'undefined') {
+    return
+  }
 
   // All String arguments on the myQuery Query get examples
   if (parentType === 'Query' && parentName === 'myQuery' && type === 'String') {
@@ -96,4 +138,5 @@ function argumentProcessor (argz = {}) {
 module.exports = {
   fieldProcessor,
   argumentProcessor,
+  scalarProcessor,
 }

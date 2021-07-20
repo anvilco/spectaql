@@ -1,3 +1,6 @@
+"This is a `DateTime` scalar"
+scalar DateTime
+
 type SimpleTypeOne {
   myType: [MyType!]!
 }
@@ -21,7 +24,6 @@ type MyType {
     reqArg: String!
     reqArrayArg: [String]!
     dblReqArrayArg: [String!]!
-
   ): String
 
   requiredField: String! @deprecated(reason: "`requiredField` is going away")
