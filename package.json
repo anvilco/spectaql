@@ -44,7 +44,7 @@
     "cheerio": "^1.0.0-rc.10",
     "clarify": "^2.1.0",
     "coffeescript": "^2.5.1",
-    "commander": "^7.2.0",
+    "commander": "^8.0.0",
     "foundation-sites": "^6.6.3",
     "graphql": "^14.1.1",
     "graphql-2-json-schema": "0.7.0",
