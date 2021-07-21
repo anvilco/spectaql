@@ -47,7 +47,7 @@
     "commander": "^7.2.0",
     "foundation-sites": "^6.6.3",
     "graphql": "^14.1.1",
-    "graphql-2-json-schema": "0.6.0",
+    "graphql-2-json-schema": "0.7.0",
     "graphql-json-schema": "^0.1.2",
     "grunt": "^1.4.1",
     "grunt-compile-handlebars": "^2.0.2",

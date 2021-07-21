@@ -3,13 +3,13 @@
     {{md description}}
   </section>
 {{/if}}
-{{#if anyOf}}
+{{#if oneOf}}
   <section class="json-schema-properties-blank">
     <table>
       <tr>
         <th>Union Types</th>
       </tr>
-      {{#each anyOf}}
+      {{#each oneOf}}
         <tr>
           {{! The Union Types column }}
           <td>{{md (mdTypeLink . codify=true) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}</td>

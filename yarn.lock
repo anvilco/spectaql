@@ -1839,10 +1839,10 @@ graphlib@^2.1.8:
   dependencies:
     lodash "^4.17.15"
 
-graphql-2-json-schema@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/graphql-2-json-schema/-/graphql-2-json-schema-0.6.0.tgz"
-  integrity sha512-YsEpASUFmnDff/9wtePDHFMqLkNXm9ghTeUFtHgwzpH9E/0qD5lsQ6RKs1O9JsiwjTXkM+4gPokiIxGpzc9Ryw==
+graphql-2-json-schema@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/graphql-2-json-schema/-/graphql-2-json-schema-0.7.0.tgz#538cd78bc7fcec456f8c8c77c5fef0b38a0b7cb0"
+  integrity sha512-lmZAmF9FliOx/FdrWOvqV2+lzHI4l/Pjsm6xdzZ6ZYkQYEARzdrw6YglMf9WEI8fDE1ciwPloM/H6jyuy1CyRQ==
   dependencies:
     lodash "^4.17.20"
 

@@ -14,7 +14,6 @@ const {
 } = require('app/lib/common')
 
 const {
-  _temporaryAddUnionTypes,
   hideThingsBasedOnMetadata,
   addExamplesFromMetadata,
   addExamplesDynamically,
@@ -829,30 +828,6 @@ describe('augmenters', function () {
           expect(jsonSchema[area][typeName].properties[fieldName].properties.arguments.properties).to.eql({})
         })
       })
-    })
-  })
-
-  describe('_temporaryAddUnionTypes', function () {
-    def('result', () => _temporaryAddUnionTypes({
-      introspectionResponse: $.introspectionResponse,
-      jsonSchema: $.jsonSchema,
-      graphQLSchema: $.graphQLSchema,
-      introspectionOptions: $.introspectionOptions,
-    }))
-
-    it('mixes in Union types', function () {
-      const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-      const { jsonSchema } = $.result
-      expect(jsonSchemaBefore).to.not.eql(jsonSchema)
-      expect(jsonSchema.definitions).to.be.an('object').that.has.any.keys('CombinedTypes')
-      const combinedTypes = jsonSchema.definitions.CombinedTypes
-      expect(combinedTypes).to.be.ok
-      expect(combinedTypes.description).to.eql('Some combined types')
-      expect(combinedTypes.anyOf).to.be.an('array').of.length(2)
-      expect(combinedTypes.anyOf).to.eql([
-        { $ref: '#/definitions/MyType'},
-        { $ref: '#/definitions/OtherType'},
-      ])
     })
   })
 })

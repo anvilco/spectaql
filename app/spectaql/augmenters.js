@@ -24,7 +24,6 @@ const calculateShouldDocument = ({ undocumented, documented, def }) => {
 }
 
 function augmentData (args) {
-  _temporaryAddUnionTypes(args)
   hideThingsBasedOnMetadata(args)
   addExamplesFromMetadata(args)
   addExamplesDynamically(args)
@@ -617,37 +616,6 @@ function addDeprecationThings (args = {}) {
   })
 }
 
-// This should go away if/when graphql-2-json-schema update for Union support gets in
-function _temporaryAddUnionTypes (args = {}) {
-  const {
-    introspectionResponse,
-    jsonSchema,
-  } = args
-
-  const unionTypes = _.get(introspectionResponse, '__schema.types', []).filter(
-    (type) => type.kind === 'UNION'
-  )
-
-  if (!unionTypes.length) {
-    return
-  }
-
-  unionTypes.forEach((type) => {
-    const { name, description, possibleTypes } = type
-    const  definition = {
-      anyOf: possibleTypes.map(({ name }) => ({ $ref: `#/definitions/${name}`})),
-    }
-
-    if (typeof description !== 'undefined') {
-      definition.description = description
-    }
-
-    jsonSchema.definitions[name] = definition
-  })
-
-  return args
-}
-
 // Just a helper function to standardize some looping/processing that will happen
 // a few times, but slightly different
 function _goThroughThings ({
@@ -701,7 +669,6 @@ function _goThroughThings ({
 }
 
 module.exports = {
-  _temporaryAddUnionTypes,
   hideThingsBasedOnMetadata,
   addExamplesFromMetadata,
   addExamplesDynamically,
