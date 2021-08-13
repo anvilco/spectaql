@@ -16,6 +16,7 @@ function generateQueryInternal({
     field,
     expandGraph,
     args = [],
+    allowedArgNames = [],
     depth,
     typeCounts = [],
     // examplesByArgName = {},
@@ -34,10 +35,19 @@ function generateQueryInternal({
     // shown on another query's example.
     const fieldArgs = [...args];
 
-    if (field.args.length > 0) {
-        fieldArgs.push(...field.args);
-        const argsStr = field.args.map(arg => `${arg.name}: $${arg.name}`).join(', ');
-        queryStr += `(${argsStr})`;
+    // Only include arguments that should not be filtered out
+    const argsStrPieces = []
+    for (const arg of (field.args || [])) {
+        if (!allowedArgNames.includes(arg.name)) {
+            continue
+        }
+        fieldArgs.push(arg)
+        argsStrPieces.push(`${arg.name}: $${arg.name}`)
+    }
+
+    if (argsStrPieces.length > 0) {
+        const argsStr = argsStrPieces.join(', ')
+        queryStr += `(${argsStr})`
     }
 
     var returnType = field.type;
@@ -228,7 +238,7 @@ function generateResponseSchema({ name, type, expandGraph, examplesByFieldName =
     return defaultResponse
 }
 
-function generateQuery({ parentType, field, expandGraph, examplesByFieldName }) {
+function generateQuery({ parentType, field, allowedArgNames, expandGraph, examplesByFieldName }) {
     const {
         name,
         type,
@@ -240,6 +250,7 @@ function generateQuery({ parentType, field, expandGraph, examplesByFieldName }) 
         field,
         expandGraph,
         args: [],
+        allowedArgNames,
         depth: 1,
     })
 

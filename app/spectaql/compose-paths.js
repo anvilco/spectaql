@@ -120,10 +120,14 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
 
                     // Build up a map of query/mutation arguments to their examples
                     const {
+                        allowedArgNames,
                         examplesByArgName,
                         defaultsByArgName,
                     } = Object.entries(_.get(def, 'properties.arguments.properties') || {}).reduce(
                         (acc, [name, { example, default: dfault }]) => {
+                            // If it's still in the schema, then it's not supposed to be hidden
+                            acc.allowedArgNames.push(name)
+
                             if (typeof example !== 'undefined') {
                                 acc.examplesByArgName[name] = example
                             }
@@ -135,6 +139,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                             return acc
                         },
                         {
+                            allowedArgNames: [],
                             examplesByArgName: {},
                             defaultsByArgName: {},
                         }
@@ -161,30 +166,30 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                     // to make things look "OK"
                     //
                     // eslint-disable-next-line no-unused-vars
-                    const expand = typeof _.get(gqlField, 'type.getFields') === 'function'
-                        ? Object.values(gqlField.type.getFields()).reduce(
-                            (acc, field) => {
-                                const {
-                                    name,
-                                    type,
-                                } = field
+                    // const expand = typeof _.get(gqlField, 'type.getFields') === 'function'
+                    //     ? Object.values(gqlField.type.getFields()).reduce(
+                    //         (acc, field) => {
+                    //             const {
+                    //                 name,
+                    //                 type,
+                    //             } = field
 
-                                if (typeof type.getFields === 'function') {
-                                    // Maybe also filter the 'select' by the fields that are in the returnTypeProperties?
-                                    // They will presumably have already respected the undocumentedness.
-                                    //
-                                    // Note to self on the above statement: I think it is already done.
-                                    acc.push({
-                                        field: name,
-                                        select: Object.keys(type.getFields()),
-                                    })
-                                }
+                    //             if (typeof type.getFields === 'function') {
+                    //                 // Maybe also filter the 'select' by the fields that are in the returnTypeProperties?
+                    //                 // They will presumably have already respected the undocumentedness.
+                    //                 //
+                    //                 // Note to self on the above statement: I think it is already done.
+                    //                 acc.push({
+                    //                     field: name,
+                    //                     select: Object.keys(type.getFields()),
+                    //                 })
+                    //             }
 
-                                return acc
-                            },
-                            [],
-                        )
-                        : []
+                    //             return acc
+                    //         },
+                    //         [],
+                    //     )
+                    //     : []
 
                     // OK, so let's put together this usecase and return it!
                     const usecase = {
@@ -194,6 +199,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
                         // The world is not ready for this, but it will be back some day?
                         // expand,
                         query: [pathName, name].join('.'),
+                        allowedArgNames,
                         examplesByFieldName,
                         examplesByArgName,
                         defaultsByArgName,
@@ -225,7 +231,8 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
             query,
             description,
             select,
-            expand,
+            // expand,
+            allowedArgNames,
             examplesByFieldName,
             examplesByArgName,
             defaultsByArgName,
@@ -253,16 +260,16 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
         const expandFields = []
 
         // This is not currently going to be passed to us yet
-        if (expand) {
-            if (Array.isArray(expand)) {
-                // If we do things, it will be an array already
-                expandFields.push(...expand)
-            } else {
-                // Original code did this below. I cannot understand how the heck getExpandField
-                // did its job properly
-                expandFields.push(...expand.split(",").map(getExpandField))
-            }
-        }
+        // if (expand) {
+        //     if (Array.isArray(expand)) {
+        //         // If we do things, it will be an array already
+        //         expandFields.push(...expand)
+        //     } else {
+        //         // Original code did this below. I cannot understand how the heck getExpandField
+        //         // did its job properly
+        //         expandFields.push(...expand.split(",").map(getExpandField))
+        //     }
+        // }
 
         // What fields to put into the select example? Original code split a string, but we can do
         // better...but will still leave this supporting code for now.
@@ -288,6 +295,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
             field: target,
             expandGraph: expandFields,
             examplesByFieldName,
+            allowedArgNames,
         })
 
         const responseSchema = {

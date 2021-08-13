@@ -61,7 +61,7 @@
         {{>swagger/request-body consumes=consumes body=_request_body}}
       {{/if}}
 
-      {{>swagger/parameters parameters=parameters}}
+      {{>graphql/query-mutation-arguments arguments=parameters}}
     </div>
 
     {{! Print examples without whitespace }}
