@@ -30,14 +30,14 @@
   <br>
 {{/if}}
 
-{{#if parameters}}
+{{#if arguments}}
   <section class="swagger-request-params">
     <table>
       <tr>
         <th>Name</th>
         <th>Description</th>
       </tr>
-      {{#each parameters}}
+      {{#each arguments}}
         {{!--
           I have no clue what this was supposed to do
           {{#schemaReferenceContext $ref}}
