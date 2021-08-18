@@ -398,6 +398,7 @@ function hideTypes ({
     metadatasPath,
     typesDocumented,
     typeDocumentedDefault: documentedDefault,
+    typeDocumentedOnlyIfPartOfDocumentedQueryOrMuatation,
   } = introspectionOptions
 
   jsonSchema.definitions =
@@ -406,8 +407,10 @@ function hideTypes ({
     Object.entries(jsonSchema.definitions).reduce(
       (acc, [name, definition]) => {
         const type = getTypeFromIntrospectionResponse({name, introspectionResponse})
-        const metadata = _.get(type, metadatasPath, {})
-        const shouldDocument = !!definition && calculateShouldDocument({ ...metadata, def: documentedDefault })
+        const metadata = _.get(type, metadatasPath, {});
+        const shouldDocument = !!definition
+          && calculateShouldDocument({ ...metadata, def: documentedDefault })
+          && calculateIsTypeWithDocumentedParent({type, introspectionResponse, typeDocumentedOnlyIfPartOfDocumentedQueryOrMuatation})
 
         if (shouldDocument) {
           acc[name] = definition
@@ -422,6 +425,48 @@ function hideTypes ({
     )
 
   return
+}
+
+
+const typeIsPartOfTypeFields = (fieldType, typeToMatch, checkedTypes, allTypes) => {
+  if (!fieldType
+    || checkedTypes.includes(fieldType.name)
+    || fieldType.kind === 'SCALAR') {
+    return false
+  }
+  if (fieldType.name === typeToMatch.name) {
+    return true
+  }
+  checkedTypes.push(fieldType.name)
+
+  const typesOfType = fieldType.fields?.map(field => allTypes.find(type => type.name === (field.type.name || field.type.ofType.name))) || []
+  const inputTypesOfType = fieldType.inputFields?.map(field => allTypes.find(type => type.name === (field.type.name || field.type.ofType.name))) || []
+
+  return [...typesOfType, ...inputTypesOfType].some(nestedFieldType => typeIsPartOfTypeFields(nestedFieldType, typeToMatch, checkedTypes, allTypes))
+};
+
+
+const calculateIsTypeWithDocumentedParent = ({type, introspectionResponse, typeDocumentedOnlyIfPartOfDocumentedQueryOrMuatation}) => {
+  if (!type || type.kind === 'SCALAR' || !typeDocumentedOnlyIfPartOfDocumentedQueryOrMuatation) {
+    return true;
+  }
+
+  const { types: allTypes } = introspectionResponse['__schema'];
+
+  const mutations = allTypes.find(type => type.name === 'Mutation').fields || [];
+  const queries = allTypes.find(type => type.name === 'Query').fields || [];
+
+  return [...mutations, ...queries].some((mOrQ) => {
+    const checkedTypes = []
+    if (!mOrQ.documentation?.documented){ return false }
+
+    const mOrQRetType = allTypes.find(type => type.name === (mOrQ.type.name || mOrQ.type.ofType.name) )
+    const mOrQInputTypes = mOrQ.args.map(arg => allTypes.find(type => type.name === (arg.type.name || arg.type.ofType.name) ))
+
+    return typeIsPartOfTypeFields(mOrQRetType, type, checkedTypes, allTypes)
+      || mOrQInputTypes.some(inputType => typeIsPartOfTypeFields(inputType, type, checkedTypes, allTypes) );
+  });
+
 }
 
 // This handles fields on Types, as well as individual queries
