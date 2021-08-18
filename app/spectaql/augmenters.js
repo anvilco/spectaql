@@ -428,6 +428,8 @@ function hideTypes ({
 }
 
 
+const extractFieldType = (types, field) => types.find(type => type.name === (field.type.name || field.type.ofType?.name)) || {}
+
 const typeIsPartOfTypeFields = (fieldType, typeToMatch, checkedTypes, allTypes) => {
   if (!fieldType
     || checkedTypes.includes(fieldType.name)
@@ -439,8 +441,8 @@ const typeIsPartOfTypeFields = (fieldType, typeToMatch, checkedTypes, allTypes) 
   }
   checkedTypes.push(fieldType.name)
 
-  const typesOfType = fieldType.fields?.map(field => allTypes.find(type => type.name === (field.type.name || field.type.ofType.name))) || []
-  const inputTypesOfType = fieldType.inputFields?.map(field => allTypes.find(type => type.name === (field.type.name || field.type.ofType.name))) || []
+  const typesOfType = fieldType.fields?.map(field => extractFieldType(allTypes, field)) || []
+  const inputTypesOfType = fieldType.inputFields?.map(field => extractFieldType(allTypes, field)) || []
 
   return [...typesOfType, ...inputTypesOfType].some(nestedFieldType => typeIsPartOfTypeFields(nestedFieldType, typeToMatch, checkedTypes, allTypes))
 };
@@ -453,15 +455,15 @@ const calculateIsTypeWithDocumentedParent = ({type, introspectionResponse, typeD
 
   const { types: allTypes } = introspectionResponse['__schema'];
 
-  const mutations = allTypes.find(type => type.name === 'Mutation').fields || [];
-  const queries = allTypes.find(type => type.name === 'Query').fields || [];
+  const mutations = allTypes.find(type => type.name === 'Mutation')?.fields || [];
+  const queries = allTypes.find(type => type.name === 'Query')?.fields || [];
 
   return [...mutations, ...queries].some((mOrQ) => {
     const checkedTypes = []
     if (!mOrQ.documentation?.documented){ return false }
 
-    const mOrQRetType = allTypes.find(type => type.name === (mOrQ.type.name || mOrQ.type.ofType.name) )
-    const mOrQInputTypes = mOrQ.args.map(arg => allTypes.find(type => type.name === (arg.type.name || arg.type.ofType.name) ))
+    const mOrQRetType = extractFieldType(allTypes, mOrQ)
+    const mOrQInputTypes = mOrQ.args.map(arg => extractFieldType(allTypes, arg))
 
     return typeIsPartOfTypeFields(mOrQRetType, type, checkedTypes, allTypes)
       || mOrQInputTypes.some(inputType => typeIsPartOfTypeFields(inputType, type, checkedTypes, allTypes) );
