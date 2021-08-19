@@ -92,6 +92,7 @@
     "grunt-compile-handlebars/lodash.merge": "^4.6.2",
     "grunt-prettify/globby": "^11.0.4",
     "grunt-prettify/underscore.string": "^3.3.5",
-    "**/lodash": "^4.17.20"
+    "**/lodash": "^4.17.20",
+    "**/resolve/path-parse": "^1.0.7"
   }
 }
