@@ -1897,14 +1897,14 @@ grunt-contrib-handlebars@^2.0.0:
     handlebars "^4.3.4"
     nsdeclare "0.1.0"
 
-grunt-contrib-uglify@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/grunt-contrib-uglify/-/grunt-contrib-uglify-4.0.1.tgz"
-  integrity sha512-dwf8/+4uW1+7pH72WButOEnzErPGmtUvc8p08B0eQS/6ON0WdeQu0+WFeafaPTbbY1GqtS25lsHWaDeiTQNWPg==
+grunt-contrib-uglify@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/grunt-contrib-uglify/-/grunt-contrib-uglify-5.0.1.tgz#d1eeccafdfedc27353e5f610415d18340c568c51"
+  integrity sha512-T/aXZ4WIpAtoswZqb6HROKg7uq9QbKwl+lUuOwK4eoFj3tFv9/a/oMyd3/qvetV29Pbf8P1YYda1gDwZppr60A==
   dependencies:
     chalk "^2.4.1"
     maxmin "^2.1.0"
-    uglify-js "^3.5.0"
+    uglify-js "^3.13.3"
     uri-path "^1.0.0"
 
 grunt-contrib-watch@^1.1.0:
@@ -4074,10 +4074,10 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-uglify-js@^3.1.4, uglify-js@^3.5.0:
-  version "3.13.1"
-  resolved "https://registry.npmjs.org/uglify-js/-/uglify-js-3.13.1.tgz"
-  integrity sha512-EWhx3fHy3M9JbaeTnO+rEqzCe1wtyQClv6q3YWq0voOj4E+bMZBErVS1GAHPDiRGONYq34M1/d8KuQMgvi6Gjw==
+uglify-js@^3.1.4, uglify-js@^3.13.3:
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.14.1.tgz#e2cb9fe34db9cb4cf7e35d1d26dfea28e09a7d06"
+  integrity sha512-JhS3hmcVaXlp/xSo3PKY5R0JqKs5M3IV+exdLHW99qKvKivPO4Z8qbej6mte17SOPqAOVMjt/XGgWacnFSzM3g==
 
 ultron@~1.1.0:
   version "1.1.1"
