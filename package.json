@@ -57,7 +57,6 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^3.0.0",
     "grunt-contrib-handlebars": "^2.0.0",
-    "grunt-contrib-jshint": "^2.0.0",
     "grunt-contrib-uglify": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-embed": "^0.2.1",
@@ -93,6 +92,7 @@
     "grunt-compile-handlebars/lodash.merge": "^4.6.2",
     "grunt-prettify/globby": "^11.0.4",
     "grunt-prettify/underscore.string": "^3.3.5",
-    "**/lodash": "^4.17.20"
+    "**/lodash": "^4.17.20",
+    "**/resolve/path-parse": "^1.0.7"
   }
 }
