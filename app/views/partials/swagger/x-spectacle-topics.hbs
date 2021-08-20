@@ -4,7 +4,7 @@
     <div class="panel">
       <div class="doc-row">
         <div class="doc-copy">
-          {{md description}}
+          {{md (interpolateReferences description)}}
         </div>
         {{#if example}}
         <div class="doc-examples">

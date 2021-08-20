@@ -1,7 +1,9 @@
 "This is a `DateTime` scalar"
 scalar DateTime
 
+"`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 type SimpleTypeOne {
+  "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myType: [MyType!]!
 }
 
@@ -9,17 +11,17 @@ type SimpleTypeTwo {
   simpleTypeTwoField: String
 }
 
-"A Union of `SimpleTypeOne` and `SimpleTypeTwo`"
+"A Union of `SimpleTypeOne` and `SimpleTypeTwo`. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 union SimpleTypes =
   SimpleTypeOne
   | SimpleTypeTwo
 
 
-"This is a description of `MyType`"
+"`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 type MyType {
-  "This is a description of `nonRequiredField`"
+  "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   nonRequiredField(
-    "This is a description of a `nonRequiredArg`"
+    "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
     nonRequiredArg: String = "some default string"
     reqArg: String!
     reqArrayArg: [String]!
@@ -41,9 +43,9 @@ type SecretType {
 }
 
 type Query {
-  "This is a description of `myQuery`"
+  "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myQuery(
-    "This is a description of a `nonReqQueryArg`"
+    "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
     nonReqQueryArg: String = "some default string"
     reqQueryArg: String
     reqQueryArrayArg: [String]!
@@ -71,9 +73,9 @@ type Mutation {
   "This Mutation has the same name as a Query"
   stringThing(anArgument: String): String
 
-  "This is a description of `myMutation`"
+  "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myMutation(
-    "This is a description of `nonReqMutationArg`"
+    "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
     nonReqMutationArg: String = "some default string"
     reqMutationArg: String!
     reqMutationArrayArg: [String]!
@@ -81,9 +83,9 @@ type Mutation {
   ): String
 }
 
-"These are very important `enum`s"
+"These are very important `enum`s. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 enum EpisodeEnum {
-  "Who is Luke?"
+  "Who is Luke? `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   NEWHOPE @deprecated(reason: "`NEWHOPE` is going away")
   "Who is Darth?"
   EMPIRE
@@ -91,9 +93,9 @@ enum EpisodeEnum {
   JEDI
 }
 
-"An Input Type for filtering things"
+"An Input Type for filtering things. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 input FilterType {
-  "Comment for someField"
+  "Comment for someField. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   someField: Boolean = false
   "Comment for anotherField"
   anotherField: String

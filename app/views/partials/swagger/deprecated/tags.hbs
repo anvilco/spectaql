@@ -9,7 +9,7 @@
   {{ log "you are using a deprecated view" }}
   <div class="panel">
     <h3 id="tag-{{htmlId name}}" class="swagger-summary-tag">Tag: {{name}}</h3>
-    {{md description}}
+    {{md (interpolateReferences description)}}
 
     <table class="table table-bordered table-condensed swagger-summary">
       <thead>

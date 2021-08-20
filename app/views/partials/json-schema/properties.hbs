@@ -50,7 +50,7 @@
         {{! The Description column }}
         <td>
           {{#if description}}
-            {{md description stripParagraph=true}}
+            {{md (interpolateReferences description) stripParagraph=true}}
           {{/if}}
           {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
             <span class="properties-deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>

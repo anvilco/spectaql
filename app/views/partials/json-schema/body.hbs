@@ -7,7 +7,7 @@
 --}}
 {{#if description}}
   <section class="json-schema-description">
-    {{md description}}
+    {{md (interpolateReferences description)}}
   </section>
 {{/if}}
 {{!--

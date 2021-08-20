@@ -118,6 +118,15 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata *before* SpectaQL even gets involved. Just a thought.
 
+## Reference Interpolation
+
+All `decription`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Types].<Query, Mutation, or Type name>}}`
+
+Examples:
+ - ``I'm a description with a simple reference to [String]({{Types.String}})``
+ - ``I'm a description with a cool looking reference to [`[String!]`]({{Types.String}})``
+ - ``I'm a description with a simple reference to [myQuery]({{Queries.myQuery}})``
+
 ## Custom Builds
 
 The best option for customizing your output is to see if what you want to do is already supported out of the box:

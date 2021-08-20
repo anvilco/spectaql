@@ -48,7 +48,7 @@
     <div class="doc-row">
       <div class="doc-copy">
         <section class="swagger-operation-description operation-description">
-          {{ md (stripTrailing description ".") stripParagraph=true }}
+          {{ md (stripTrailing (interpolateReferences description) ".") stripParagraph=true }}
         </section>
       </div>
     </div>
