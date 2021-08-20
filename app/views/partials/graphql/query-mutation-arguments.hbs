@@ -22,7 +22,7 @@
 
       {{#if description}}
         <div class="prop-value">
-          {{md description}}
+          {{md (interpolateReferences description)}}
         </div>
       {{/if}}
     {{/each}}
@@ -51,7 +51,7 @@
           <td>
             {{ md (
                 concat
-                  (stripTrailing description ".")
+                  (stripTrailing (interpolateReferences description) ".")
                   (ternary schema.default
                     (concat "Default = "  (codify schema.default stringify=true))
                     ""

@@ -21,7 +21,7 @@
           </h3>
           {{#if description}}
             <section class="security-definition-description">
-              {{md description}}
+              {{md (interpolateReferences description)}}
             </section>
           {{/if}}
           <section class="swagger-security-definition-properties">

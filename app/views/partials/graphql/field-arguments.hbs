@@ -6,7 +6,7 @@
     {{# each properties }}
       <div class="field-argument">
         <p class="field-argument-name">{{~>graphql/name-and-type name=@key parent=.. }}</p>
-        {{# if description}}<p>{{ md description }}</p>{{/if}}
+        {{# if description}}<p>{{ md (interpolateReferences description) }}</p>{{/if}}
       </div>
     {{/each}}
 </div>

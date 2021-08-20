@@ -5,7 +5,7 @@
     {{#if description}}
       <div class="tag-description doc-row">
         <div class="doc-copy">
-          {{md description}}
+          {{md (interpolateReferences description)}}
         </div>
       </div>
     {{/if}}

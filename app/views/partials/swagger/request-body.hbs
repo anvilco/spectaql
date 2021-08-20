@@ -30,13 +30,13 @@
           </div>
           <div class="prop-value columns small-6">
             <!-- <div class="swagger-request-description"> -->
-              {{md description}}
+              {{md (interpolateReferences description)}}
             <!-- </div> -->
           </div>
         </div>
       {{else if schema.type}}
         {{#if description}}
-          {{md description}}
+          {{md (interpolateReferences description)}}
         {{else if schema.description}}
           {{md schema.description}}
         {{/if}}
