@@ -61,6 +61,7 @@ const introspectionOptionDefaults = {
 
   typesDocumented: true,
   typeDocumentedDefault: true,
+  typeDocumentedOnlyIfPartOfDocumentedQueryOrMuatation: false,
   fieldDocumentedDefault: true,
   argDocumentedDefault: true,
   hideFieldsWithUndocumentedReturnType: true,

@@ -157,6 +157,11 @@ introspection:
   # Whether to document an individual Type, in the absence of a metadata directive
   # Default: true
   typeDocumentedDefault: true
+  # Wether to document an individual Type/InputType/Enum, only if its part of a documented Mutation or Query that uses it recursively
+  # as either a return type or as an input type.
+  # A mutation or query must explicitly set {documented: true} for this setting to work.
+  # Default: false
+  typeDocumentedOnlyIfPartOfDocumentedQueryOrMuatation: true
   # Whether to document an individual Field, in the absence of a metadata directive
   # Default: true
   fieldDocumentedDefault: true
