@@ -2676,10 +2676,10 @@ map-cache@^0.2.0:
   resolved "https://registry.npmjs.org/map-cache/-/map-cache-0.2.2.tgz"
   integrity sha1-wyq9C9ZSXZsFFkW7TyasXcmKDb8=
 
-marked@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.npmjs.org/marked/-/marked-2.0.3.tgz"
-  integrity sha512-5otztIIcJfPc2qGTN8cVtOJEjNJZ0jwa46INMagrYfk0EvqtRuEHLsEe0LrFS0/q+ZRKT0+kXK7P2T1AN5lWRA==
+marked@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-3.0.3.tgz#d81ff0f9e29cef0a177327fe009b460f31aa5862"
+  integrity sha512-4oIDhVSQ2s+xNCfek9OnZgCQR/WykGCom02JzIIvi4Pme+MIwPYqvGVW8CQWOXeoZu0TtVB6pTxIuoLm+dKqDA==
 
 maxmin@^2.1.0:
   version "2.1.0"
