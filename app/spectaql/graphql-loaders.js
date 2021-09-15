@@ -1,4 +1,6 @@
 const isEmpty = require('lodash/isEmpty')
+const get = require('lodash/get')
+const set = require('lodash/set')
 
 const {
   buildClientSchema,
@@ -89,7 +91,30 @@ const jsonSchemaFromIntrospectionResponse = (introspectionResponse) => {
 }
 
 const graphQLSchemaFromIntrospectionResponse = (introspectionResponse) => {
-  return buildClientSchema(introspectionResponse, { assumeValid: true })
+  return buildClientSchema(
+    normalizeIntrospectionQueryResult(introspectionResponse),
+    { assumeValid: true },
+  )
+}
+
+// For some reason, if there's a non-standard queryType or mutationType
+// they may get re-named to Query and Mutation in the introspectionResponse
+// but not get re-named in the queryType or mutationType definition
+const normalizeIntrospectionQueryResult = (introspectionResponse) => {
+  for (const [key, defaultTypeName] of [['queryType', 'Query'], ['mutationType', 'Mutation']]) {
+    const queryOrMutationTypeName = get(introspectionResponse, `__schema.${key}.name`)
+    if (queryOrMutationTypeName && !findType({ introspectionResponse, typeName: queryOrMutationTypeName })) {
+      set(introspectionResponse, `__schema.${key}`, { name: defaultTypeName })
+    }
+  }
+
+  return introspectionResponse
+}
+
+function findType ({ introspectionResponse, typeName }) {
+  return get(introspectionResponse, '__schema.types', []).find(
+    (type) => type.kind === 'OBJECT' && type.name === typeName
+  )
 }
 
 module.exports = {
