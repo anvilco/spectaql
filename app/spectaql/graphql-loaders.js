@@ -11,7 +11,7 @@ const {
 } = require('graphql')
 const { loadFilesSync } = require('@graphql-tools/load-files');
 const { mergeTypeDefs } = require('@graphql-tools/merge');
-const converter = require('graphql-2-json-schema')
+const converter = require('@anvilco/graphql-2-json-schema')
 const request = require('sync-request')
 
 const {

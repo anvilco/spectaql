@@ -67,6 +67,10 @@ type Query {
   ): [String!]!
 
   myTypes: [MyType]
+
+  enumsQuery(
+    enums: [EpisodeEnum!]! = [EMPIRE, JEDI]
+  ): String
 }
 
 type Mutation {
