@@ -9,6 +9,14 @@
 
 > A nice enhancement of [DociQL](https://github.com/wayfair/dociql)
 
+<hr />
+
+### NOTICE
+
+I'm considering a major (internal) change to SpectaQL and would like to hear any feedback that Users may have on the idea. Please feel free to chime in on [this issue](https://github.com/anvilco/spectaql/issues/111).
+
+<hr />
+
 
 SpectaQL is a Node.js library that generates static documentation for a [GraphQL](https://graphql.org) schema using a variety of options:
 1. From a live endpoint using the introspection query.
