@@ -1,0 +1,16 @@
+schema {
+  query: RootQueryType
+  mutation: RootMutationType
+}
+
+type RootQueryType {
+  "A query"
+  queryThing: String
+}
+
+type RootMutationType {
+  "A mutation"
+  deleteThing(
+    thingName: String!
+  ): Boolean
+}
