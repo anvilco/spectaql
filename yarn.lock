@@ -10,6 +10,13 @@
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
 
+"@anvilco/graphql-2-json-schema@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@anvilco/graphql-2-json-schema/-/graphql-2-json-schema-0.0.2.tgz#f59a90a3360ccc6935b09cd752dc9e3cfce82fc8"
+  integrity sha512-oxw9rdWo/IPvWNjrYV0pK8DDkhsUtNTV+qBwH7h8KjzbhAONtR7dEmYVnQ02bKOFGg/N79rurora3CLDDheNqw==
+  dependencies:
+    lodash "^4.17.20"
+
 "@ardatan/aggregate-error@0.0.6":
   version "0.0.6"
   resolved "https://registry.npmjs.org/@ardatan/aggregate-error/-/aggregate-error-0.0.6.tgz"
@@ -1785,13 +1792,6 @@ graphlib@^2.1.8:
   integrity sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==
   dependencies:
     lodash "^4.17.15"
-
-graphql-2-json-schema@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/graphql-2-json-schema/-/graphql-2-json-schema-0.7.0.tgz#538cd78bc7fcec456f8c8c77c5fef0b38a0b7cb0"
-  integrity sha512-lmZAmF9FliOx/FdrWOvqV2+lzHI4l/Pjsm6xdzZ6ZYkQYEARzdrw6YglMf9WEI8fDE1ciwPloM/H6jyuy1CyRQ==
-  dependencies:
-    lodash "^4.17.20"
 
 graphql-json-schema@^0.1.2:
   version "0.1.2"

@@ -39,6 +39,7 @@
   "homepage": "https://github.com/anvilco/spectaql",
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.0",
+    "@anvilco/graphql-2-json-schema": "^0.0.2",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^6.2.14",
     "cheerio": "^1.0.0-rc.10",
@@ -47,7 +48,6 @@
     "commander": "^7.2.0",
     "foundation-sites": "^6.6.3",
     "graphql": "^14.1.1",
-    "graphql-2-json-schema": "0.7.0",
     "graphql-json-schema": "^0.1.2",
     "grunt": "^1.4.1",
     "grunt-compile-handlebars": "^2.0.2",
