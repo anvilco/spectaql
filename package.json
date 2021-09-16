@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/anvilco/spectaql",
   "dependencies": {
-    "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.0",
+    "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.1",
     "@anvilco/graphql-2-json-schema": "^0.0.2",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^6.2.14",
