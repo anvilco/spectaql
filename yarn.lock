@@ -1889,14 +1889,14 @@ grunt-contrib-handlebars@^2.0.0:
     handlebars "^4.3.4"
     nsdeclare "0.1.0"
 
-grunt-contrib-uglify@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/grunt-contrib-uglify/-/grunt-contrib-uglify-4.0.1.tgz#68a7b62fa045ce8e2c7574d1bdcd3b96b8a686b1"
-  integrity sha512-dwf8/+4uW1+7pH72WButOEnzErPGmtUvc8p08B0eQS/6ON0WdeQu0+WFeafaPTbbY1GqtS25lsHWaDeiTQNWPg==
+grunt-contrib-uglify@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/grunt-contrib-uglify/-/grunt-contrib-uglify-5.0.1.tgz#d1eeccafdfedc27353e5f610415d18340c568c51"
+  integrity sha512-T/aXZ4WIpAtoswZqb6HROKg7uq9QbKwl+lUuOwK4eoFj3tFv9/a/oMyd3/qvetV29Pbf8P1YYda1gDwZppr60A==
   dependencies:
     chalk "^2.4.1"
     maxmin "^2.1.0"
-    uglify-js "^3.5.0"
+    uglify-js "^3.13.3"
     uri-path "^1.0.0"
 
 grunt-contrib-watch@^1.1.0:
@@ -4029,7 +4029,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-uglify-js@^3.1.4, uglify-js@^3.5.0:
+uglify-js@^3.1.4, uglify-js@^3.13.3:
   version "3.14.2"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.14.2.tgz#d7dd6a46ca57214f54a2d0a43cad0f35db82ac99"
   integrity sha512-rtPMlmcO4agTUfz10CbgJ1k6UAoXM2gWb3GoMPPZB/+/Ackf8lNWk11K4rYi2D0apgoFRLtQOZhb+/iGNJq26A==
