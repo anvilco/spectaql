@@ -540,7 +540,7 @@ chalk@^1.0.0, chalk@^1.1.1:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chalk@^2.0.0, chalk@^2.1.0, chalk@^2.4.1, chalk@^2.4.2:
+chalk@^2.0.0, chalk@^2.1.0, chalk@^2.4.1:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
   integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
@@ -557,7 +557,7 @@ chalk@^3.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chalk@^4.0.0, chalk@^4.1.0, chalk@~4.1.0:
+chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1, chalk@~4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -1859,13 +1859,13 @@ grunt-contrib-cssmin@^4.0.0:
     clean-css "^5.0.1"
     maxmin "^3.0.0"
 
-grunt-contrib-handlebars@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/grunt-contrib-handlebars/-/grunt-contrib-handlebars-2.0.0.tgz#70b41fbf26cf450a2834f479092f556d607c31e3"
-  integrity sha512-ByX5jC897HxpkBCtbm9m415hQwxp6FFAlNeSzUVJX1UX0KDpl4LNd5fH7cvWjEv46RSs4wEwAE32G1Ae0CqYyw==
+grunt-contrib-handlebars@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/grunt-contrib-handlebars/-/grunt-contrib-handlebars-3.0.0.tgz#b0a91d8cf33ea000b3adc97e5eaed6a9dea3f94f"
+  integrity sha512-Zh5fSnyhfOGIDieFNy1eVEqmdB0y2cGkFaceKkfJM4v5OEZP880+SGjbmmuriaVZsG7bOnj0Fg7wP4722GUBSw==
   dependencies:
-    chalk "^2.4.2"
-    handlebars "^4.3.4"
+    chalk "^4.1.1"
+    handlebars "^4.7.7"
     nsdeclare "0.1.0"
 
 grunt-contrib-uglify@^5.0.1:
@@ -1983,7 +1983,7 @@ gzip-size@^5.1.1:
     duplexer "^0.1.1"
     pify "^4.0.1"
 
-"handlebars@>= 1", handlebars@^4.3.0, handlebars@^4.3.4:
+"handlebars@>= 1", handlebars@^4.3.0, handlebars@^4.7.7:
   version "4.7.7"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.7.tgz#9ce33416aad02dbd6c8fafa8240d5d98004945a1"
   integrity sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
