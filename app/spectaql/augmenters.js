@@ -213,6 +213,11 @@ function addExamplesDynamically (args = {}) {
           return
         }
 
+        case 'InputField': {
+          // NOOP for now
+          return
+        }
+
         default: {
           console.warn(`Unknown type passed: ${type}`)
           break
@@ -473,7 +478,7 @@ function hideFields(args = {}) {
       typeName,
       typeDefinition,
       defaultShowHide,
-     typeOfThing, // "Type" | "Query" | "Mutation"
+      typeOfThing, // "Type" | "Query" | "Mutation"
     }) => {
       // Protect against non-Fields this way
       if (!typeDefinition.properties) {

@@ -1,6 +1,7 @@
 const spectaql = require('app/spectaql')
 const {
   pathToSimpleSchema,
+  pathToComplexSchema,
 } = require('test/helpers')
 
 
@@ -66,6 +67,17 @@ describe('index', function () {
           return expect(result).to.be.ok
         })
       })
+    })
+  })
+
+  describe('e2e sanity check', function () {
+    def('schemaFile', () => pathToComplexSchema)
+    it('does not blow up', async function () {
+      const result = spectaql($.opts)
+      expect(result).be.an('object').that.includes.keys(
+        'paths',
+        'definitions',
+      )
     })
   })
 
