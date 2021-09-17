@@ -30,6 +30,10 @@ function augmentData (args) {
   addDeprecationThings(args)
 }
 
+const isInputType = ({ name, introspectionResponse }) => {
+  return !!getTypeFromIntrospectionResponse({ name, kind: 'INPUT_OBJECT', introspectionResponse })
+}
+
 // At this point, the metadata should have been added into the JSON Schema data, so everything
 // we need is already there
 function addExamplesFromMetadata (args = {}) {
@@ -60,6 +64,10 @@ function addExamplesFromMetadata (args = {}) {
           }
           case 'Scalar': {
             definition.example = replaceQuotesWithTags(example)
+            return
+          }
+          case 'InputField': {
+            definition.example = addSpecialTags(example, { placeholdQuotes: true })
             return
           }
         }
@@ -218,6 +226,7 @@ function addExamplesDynamically (args = {}) {
 function _addExamplesToThings (args = {}) {
   const {
     fn: addExampleToThingFn,
+    introspectionResponse,
     ...otherArgs
   } = args
 
@@ -252,12 +261,12 @@ function _addExamplesToThings (args = {}) {
           // FYI: If this is not a Type, then "field"
           // here is really an individual Query or Mutation...
           if (typeOfThing === 'Type') {
+            const fieldOrInputField = isInputType({ name: typeName, introspectionResponse }) ? 'InputField' : 'Field'
 
             addExampleToThingFn({
               parentName: typeName,
-
               name: fieldName,
-              type: 'Field',
+              type: fieldOrInputField,
               definition: fieldDefinition
             })
           }

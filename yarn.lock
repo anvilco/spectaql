@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anvilco/apollo-server-plugin-introspection-metadata@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-1.1.0.tgz"
-  integrity sha512-q7o/kZ4MIhHj0K5ZhBRJ1h8eGpe3dukL1u2pQlNUEAV31HojaNMOh4ZSH/U/yxpRqyz6J6F/V4dc5wOyQX0qTg==
+"@anvilco/apollo-server-plugin-introspection-metadata@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-1.1.1.tgz#f4b3d0c817e9cc25125973e6ba55a51d37e73f10"
+  integrity sha512-GhcaXjBYsf61n3cCQiO9sJXGmfVxvh1GD1xWsDPiN8TUo0UKJK2E6XbTXlUq5hFKWpZAa71e8dRwsyrAsG3vxw==
   dependencies:
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"

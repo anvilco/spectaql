@@ -59,7 +59,13 @@ describe('augmenters', function () {
       ): String
 
       myOtherMutation: MyType
-    }`
+    }
+
+    input MyInput {
+      inputOne: String
+      inputTwo: Int
+    }
+  `
   )
   def('schemaSDL', () => $.schemaSDLBase)
 
@@ -77,6 +83,11 @@ describe('augmenters', function () {
       Mutation: {
 
       }
+    },
+    'INPUT_OBJECT': {
+      MyInput: {
+
+      },
     }
   }))
   def('metadata', () => $.metadataBase)
@@ -604,6 +615,20 @@ describe('augmenters', function () {
             }
           }
         }
+      },
+      'INPUT_OBJECT': {
+        MyInput: {
+          // Should have no impact, example-wise
+          metadata: $.theMetadata,
+          inputFields: {
+            inputOne: {
+              metadata: $.theMetadata,
+            },
+            inputTwo: {
+              metadata: $.theMetadata,
+            },
+          },
+        },
       }
     }))
 
@@ -633,11 +658,14 @@ describe('augmenters', function () {
 
         // No top-level example
         expect(jsonSchema.definitions.MyType).be.an('object').that.does.not.have.any.keys('example')
+        expect(jsonSchema.definitions.MyInput).be.an('object').that.does.not.have.any.keys('example')
         expect(jsonSchema.properties.Query).be.an('object').that.does.not.have.any.keys('example')
         expect(jsonSchema.properties.Mutation).be.an('object').that.does.not.have.any.keys('example')
 
         // Type Fields have example...
         expect(jsonSchema.definitions.MyType.properties.myField.properties.return.example).to.eql($.processedExample)
+        // Input Fields have example...
+        expect(jsonSchema.definitions.MyInput.properties.inputOne.example).to.eql($.processedExample)
         // ...queries and mutations DO NOT
         expect(jsonSchema.properties.Query.properties.myQuery).be.an('object').that.does.not.have.any.keys('example')
         expect(jsonSchema.properties.Mutation.properties.myMutation).be.an('object').that.does.not.have.any.keys('example')
@@ -664,11 +692,14 @@ describe('augmenters', function () {
 
           // No top-level example
           expect(jsonSchema.definitions.MyType).be.an('object').that.does.not.have.any.keys('example')
+          expect(jsonSchema.definitions.MyInput).be.an('object').that.does.not.have.any.keys('example')
           expect(jsonSchema.properties.Query).be.an('object').that.does.not.have.any.keys('example')
           expect(jsonSchema.properties.Mutation).be.an('object').that.does.not.have.any.keys('example')
 
           // Type Fields have example...
           expect(jsonSchema.definitions.MyType.properties.myField.properties.return.example).to.eql($.processedExample)
+          // Input Fields have example...
+          expect(jsonSchema.definitions.MyInput.properties.inputOne.example).to.eql($.processedExample)
           // ...queries and mutations DO NOT
           expect(jsonSchema.properties.Query.properties.myQuery).be.an('object').that.does.not.have.any.keys('example')
           expect(jsonSchema.properties.Mutation.properties.myMutation).be.an('object').that.does.not.have.any.keys('example')
@@ -694,11 +725,14 @@ describe('augmenters', function () {
 
         // No top-level example
         expect(jsonSchema.definitions.MyType).be.an('object').that.does.not.have.any.keys('example')
+        expect(jsonSchema.definitions.MyInput).be.an('object').that.does.not.have.any.keys('example')
         expect(jsonSchema.properties.Query).be.an('object').that.does.not.have.any.keys('example')
         expect(jsonSchema.properties.Mutation).be.an('object').that.does.not.have.any.keys('example')
 
         // Type Fields have example...
         expect(jsonSchema.definitions.MyType.properties.myField.properties.return.example).to.eql($.processedExample)
+        // Input Fields have example...
+        expect(jsonSchema.definitions.MyInput.properties.inputOne.example).to.eql($.processedExample)
         // ...queries and mutations DO NOT
         expect(jsonSchema.properties.Query.properties.myQuery).be.an('object').that.does.not.have.any.keys('example')
         expect(jsonSchema.properties.Mutation.properties.myMutation).be.an('object').that.does.not.have.any.keys('example')
