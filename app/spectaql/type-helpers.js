@@ -199,7 +199,7 @@ function digNonNullType(schema) {
 function getTypeFromIntrospectionResponse ({
   name,
   kind,
-  kinds = ['OBJECT', 'SCALAR', 'ENUM', 'INPUT_OBJECT'],
+  kinds = ['OBJECT', 'SCALAR', 'ENUM', 'INPUT_OBJECT', 'INTERFACE'],
   introspectionResponse,
 } = {}) {
   kinds = kind ? [kind] : kinds

@@ -1,8 +1,15 @@
+"Anything with an ID can be a node"
+interface Node {
+  "A unique identifier"
+  id: String!
+}
+
 "This is a `DateTime` scalar"
 scalar DateTime
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-type SimpleTypeOne {
+type SimpleTypeOne implements Node {
+  id: String!
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myType: [MyType!]!
 }
@@ -71,6 +78,10 @@ type Query {
   enumsQuery(
     enums: [EpisodeEnum!]! = [EMPIRE, JEDI]
   ): String
+
+  nodeQuery(
+    id: String!
+  ): Node
 }
 
 type Mutation {

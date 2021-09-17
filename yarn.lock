@@ -10,10 +10,10 @@
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
 
-"@anvilco/graphql-2-json-schema@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@anvilco/graphql-2-json-schema/-/graphql-2-json-schema-0.0.2.tgz#f59a90a3360ccc6935b09cd752dc9e3cfce82fc8"
-  integrity sha512-oxw9rdWo/IPvWNjrYV0pK8DDkhsUtNTV+qBwH7h8KjzbhAONtR7dEmYVnQ02bKOFGg/N79rurora3CLDDheNqw==
+"@anvilco/graphql-2-json-schema@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@anvilco/graphql-2-json-schema/-/graphql-2-json-schema-0.0.3.tgz#6df0e9f89585efa09e0cf38b0321cd2b9c4c883e"
+  integrity sha512-7x49xeOT9BCshgPok+Q+79p9XrS4Nxyjjk7NAz0TcsAzgWH86L9hpqpvJL8YqWk7+m9VyBemZVoVCUgI5t3KFQ==
   dependencies:
     lodash "^4.17.20"
 
