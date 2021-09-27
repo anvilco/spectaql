@@ -70,6 +70,39 @@ describe('common', function () {
     })
   })
 
+  describe('formatExample', function () {
+    const { formatExample } = common
+
+    it('BigInt', function () {
+        expect(formatExample( {
+          type : 'BigInt',
+          title: 'BigInt',
+          format: 'BigInt',
+        }, {}, {depth: 1})).to.eql('9007199254740991 (BigInt)')
+    })
+    it('Byte', function () {
+      expect(formatExample( {
+        type : 'Byte',
+        title: 'Byte',
+        format: 'Byte',
+      }, {}, {depth: 1})).to.eql('196,189,173,171,167,163 (Byte)')
+  })
+  it('Time', function () {
+    expect(formatExample( {
+      type : 'Time',
+      title: 'Time',
+      format: 'Time',
+    }, {}, {depth: 1})).to.eql('10:15:30Z (Time)')
+})
+it('EmailAddress', function () {
+  expect(formatExample( {
+    type : 'EmailAddress',
+    title: 'EmailAddress',
+    format: 'EmailAddress',
+  }, {}, {depth: 1})).to.eql('test@test.com (EmailAddress)')
+})
+  })
+
   describe('printSchema', function () {
     const { printSchema } = common
 

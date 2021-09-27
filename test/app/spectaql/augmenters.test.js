@@ -749,6 +749,8 @@ describe('augmenters', function () {
     def('schemaSDL', () => `
       ${$.schemaSDLBase}
 
+      scalar EmailAddress
+
       type YetAnotherType {
         fieldWithExample(
           argWithExample: String,

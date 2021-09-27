@@ -3,6 +3,8 @@ const stringify = require('json-stringify-pretty-compact')
 const cheerio = require('cheerio')
 const marked = require('marked')
 const highlight = require('highlight.js')
+const GraphQLScalar = require('graphql-scalars');
+
 
 const highlightGraphQl = require('../spectaql/graphql-hl')
 const {
@@ -19,7 +21,7 @@ const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, "g")
 const QUOTE_TAG = 'QUOTETAG'
 const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, "g")
 
-// Map Scalar types to example data to use fro them
+// Map Scalar types to example data to use from them
 const SCALAR_TO_EXAMPLE = {
   String: ['abc123', 'xyz789'],
   Int: [123, 987],
@@ -28,6 +30,59 @@ const SCALAR_TO_EXAMPLE = {
   Date: [new Date(), new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf())].map((date) => date.toISOString()),
   JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
 }
+
+// Map GraphQL Scalar types to example data to use from them
+const GRAPHQL_SCALAR_TO_EXAMPLE = {
+  BigInt: [GraphQLScalar.BigIntMock()],
+  Byte:  [GraphQLScalar.ByteMock()],
+  Time:  [GraphQLScalar.TimeMock()],
+  Timestamp:  [GraphQLScalar.TimestampMock()],
+  DateTime:  [GraphQLScalar.DateTimeMock()],
+  UtcOffset: [GraphQLScalar.UtcOffsetMock()],
+  Duration: [GraphQLScalar.DurationMock()],
+  ISO8601Duration:  [GraphQLScalar.ISO8601DurationMock()],
+  LocalDate: [GraphQLScalar.LocalDateMock()],
+  LocalTime: [GraphQLScalar.LocalTimeMock()],
+  LocalEndTime: [GraphQLScalar.LocalEndTimeMock()],
+  EmailAddress: [GraphQLScalar.EmailAddressMock()],
+  UUID: [GraphQLScalar.UUIDMock()],
+  Hexadecimal: [GraphQLScalar.BigIntMock()],
+  HexColorCode: [GraphQLScalar.BigIntMock()],
+  HSL: [GraphQLScalar.HSLMock()],
+  HSLA:[GraphQLScalar.HSLAMock()],
+  IBAN: [GraphQLScalar.IBANMock()],
+  IPv4 :[GraphQLScalar.BigIntMock()],
+  IPv6:[GraphQLScalar.BigIntMock],
+  ISBN :[GraphQLScalar.BigIntMock],
+  JWT : [GraphQLScalar.BigIntMock],
+  Latitude : [GraphQLScalar.LatitudeMock],
+  Longitude: [GraphQLScalar.LongitudeMock],
+  JSONObject: [GraphQLScalar.JSONObjectMock],
+  MAC: [GraphQLScalar.JSONObjectMock],
+  NegativeFloat: [GraphQLScalar.JSONObjectMock],
+  NegativeInt: [GraphQLScalar.NegativeIntMock()],
+  NonEmptyString: [GraphQLScalar.NegativeIntMock()],
+  NonNegativeFloat: [GraphQLScalar.NegativeIntMock()],
+  NonNegativeInt: [GraphQLScalar.NegativeIntMock()],
+  NonPositiveFloat : [GraphQLScalar.NegativeIntMock()],
+  NonPositiveInt: [GraphQLScalar.JSONObjectMock],
+  PhoneNumber: [GraphQLScalar.JSONObjectMock],
+  Port: [GraphQLScalar.JSONObjectMock],
+  PositiveFloat : [parseFloat('4.567'), parseFloat('6.53')],
+  PositiveInt: [GraphQLScalar.JSONObjectMock],
+  PostalCode: [GraphQLScalar.JSONObjectMock],
+  RGB: [GraphQLScalar.JSONObjectMock],
+  RGBA: [GraphQLScalar.RGBAMock()],
+  SafeInt: [GraphQLScalar.SafeIntMock()],
+  URL: [GraphQLScalar.NegativeIntMock()],
+  USCurrency : ['string'],
+  Currency : ['string'],
+  UnsignedFloat: ['string'],
+  UnsignedInt:['string'],
+  GUID: [GraphQLScalar.JSONObjectMock],
+  ObjectID: [GraphQLScalar.JSONObjectMock]
+}
+
 
 function unwindSpecialTags (str) {
   if (typeof str !== 'string') {
@@ -38,8 +93,13 @@ function unwindSpecialTags (str) {
 }
 
 function getExampleForScalar (value) {
-  const replacement = SCALAR_TO_EXAMPLE[value]
+  let replacement = SCALAR_TO_EXAMPLE[value]
+  if(!replacement) {
+    replacement = GRAPHQL_SCALAR_TO_EXAMPLE[value];
+  }
   if (typeof replacement !== 'undefined') {
+    console.log('Louisa getExampleForScalar', replacement, value);
+
     return Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
   }
 }
@@ -50,6 +110,8 @@ function jsonReplacer (name, value) {
 
 function addSpecialTags (value, { placeholdQuotes = false } = {}) {
   if (typeof value !== 'string') return value
+
+  console.log('getExampleForScalar', value);
 
   const replacement = getExampleForScalar(value)
   if (typeof replacement !== 'undefined') {
@@ -276,6 +338,8 @@ var common = {
         title,
         format,
       } = ref
+
+      console.log('getExampleForScalar', title);
 
       const replacement = getExampleForScalar(title)
       if (typeof replacement !== 'undefined') {
