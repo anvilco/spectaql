@@ -1554,9 +1554,9 @@ formidable@^1.2.0:
   integrity sha512-V8gLm+41I/8kguQ4/o1D3RIHRmhYFG4pnNyonvua+40rqcEmT4+V71yaZ3B457xbbgCsCfjSPi65u/W6vK1U5Q==
 
 foundation-sites@^6.7.2:
-  version "6.7.2"
-  resolved "https://registry.yarnpkg.com/foundation-sites/-/foundation-sites-6.7.2.tgz#b54d5a8ccef3804f39cf11c4ed771de5de14761f"
-  integrity sha512-repCBMRNi3JnYKVYwOUSnfxSMHPEQwNHcaHchlyHvx6s7CyFg7Ha+cAh6VsD32XWnkKZBpa/iz7kP8/FN43waQ==
+  version "6.7.3"
+  resolved "https://registry.yarnpkg.com/foundation-sites/-/foundation-sites-6.7.3.tgz#e6e298ef720a7569d874c48ee83fd855409333c2"
+  integrity sha512-HgQA6iUQTEkRSeNwiRQH2PvTXkXGBfBpRS6CTm2auhKpyU4Tea7so3IPKrazSciE7nyv1Vp9WNKdH9fBPLbGeA==
 
 fresh@0.5.2:
   version "0.5.2"
