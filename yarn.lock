@@ -54,9 +54,9 @@
     strip-json-comments "^3.1.1"
 
 "@graphql-tools/load-files@^6.3.2":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/load-files/-/load-files-6.4.0.tgz#59f982a22794e1db064248b5776e650e8c33d215"
-  integrity sha512-Dl/3mhFDXWRHhEyVY0nABw+yOFcxfU0iKsLrX0E/wlTiqHRQJORGmxLFRbSGpwcP694dvpujsp/SCt+qz//PkA==
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/load-files/-/load-files-6.5.0.tgz#e654456c81ca0129aa847c83dcbf65d41be7dbc8"
+  integrity sha512-/Q4Mrnv8QdJ+5dUKTAAW/pqsNengBJvA8FluwUXNTpx2D4X6/bDIAHef0xpNzSSEO4zFnRy5hi9sCEYvFvFIdA==
   dependencies:
     globby "11.0.4"
     tslib "~2.3.0"
