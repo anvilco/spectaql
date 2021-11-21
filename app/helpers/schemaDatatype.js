@@ -27,7 +27,7 @@ module.exports = function schemaDatatype (value) {
       return 'array'
     }
     if (value.items.type) {
-      return dataType(value.items) + '[]'
+      return schemaDatatype(value.items) + '[]'
     } else {
       return 'object[]'
     }
