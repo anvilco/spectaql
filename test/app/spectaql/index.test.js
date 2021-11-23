@@ -22,6 +22,22 @@ describe('index', function () {
     schemaFile: $.schemaFile,
     introspectionFile: $.introspectionFile,
     metadataFile: $.metadataFile,
+    removeTrailingPeriodFromDescriptions: $.removeTrailingPeriodFromDescriptions,
+    queriesDocumentedDefault: true,
+    queryDocumentedDefault: true,
+    queryArgDocumentedDefault: true,
+    hideQueriesWithUndocumentedReturnType: true,
+
+    mutationsDocumentedDefault: true,
+    mutationDocumentedDefault: true,
+    mutationArgDocumentedDefault: true,
+    hideMutationsWithUndocumentedReturnType: true,
+
+    typesDocumented: true,
+    typeDocumentedDefault: true,
+    fieldDocumentedDefault: true,
+    argDocumentedDefault: true,
+    hideFieldsWithUndocumentedReturnType: true,
   }))
 
   def('schemaFile', () => pathToSimpleSchema)
@@ -78,6 +94,63 @@ describe('index', function () {
         'paths',
         'definitions',
       )
+
+      expect(result.paths).to.have.length.gt(0)
+      expect(result.definitions).to.be.an('object').that.includes.keys(
+        'SimpleTypeOne'
+      )
+    })
+  })
+
+  describe('trailing period removal', function () {
+    def('schemaFile', () => pathToSimpleSchema)
+    it('does not strip trailing periods by default', async function () {
+      const result = spectaql($.opts)
+      expect(result).be.an('object').that.includes.keys(
+        'paths',
+        'definitions',
+      )
+
+      expect(result.paths).to.have.length.gt(0)
+      expect(result.definitions).to.be.an('object').that.includes.keys(
+        'MyType'
+      )
+
+      const { paths, definitions } = result
+      const myQuery = paths[0].post
+      expect(myQuery.description).to.eql("A query.")
+      expect(myQuery.parameters[0].description).to.eql("An argument to a query.")
+
+      const myType = definitions.MyType
+      expect(myType.description).to.eql('A type.')
+      expect(myType.properties.myField.description).to.eql('A field on a type.')
+      expect(myType.properties.myField.properties.arguments.properties.myArg.description).to.eql('An argument on a field on a type.')
+    })
+
+    context('removeTrailingPeriodFromDescriptions is true', function () {
+      def('removeTrailingPeriodFromDescriptions', () => true)
+      it('does strip trailing periods when asked', async function () {
+        const result = spectaql($.opts)
+        expect(result).be.an('object').that.includes.keys(
+          'paths',
+          'definitions',
+        )
+
+        expect(result.paths).to.have.length.gt(0)
+        expect(result.definitions).to.be.an('object').that.includes.keys(
+          'MyType'
+        )
+
+        const { paths, definitions } = result
+        const myQuery = paths[0].post
+        expect(myQuery.description).to.eql("A query")
+        expect(myQuery.parameters[0].description).to.eql("An argument to a query")
+
+        const myType = definitions.MyType
+        expect(myType.description).to.eql('A type')
+        expect(myType.properties.myField.description).to.eql('A field on a type')
+        expect(myType.properties.myField.properties.arguments.properties.myArg.description).to.eql('An argument on a field on a type')
+      })
     })
   })
 

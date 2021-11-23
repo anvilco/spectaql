@@ -32,6 +32,11 @@ introspection:
   # to satisfy the URL Swagger requirement.
   url: https://yoursite.com/graphql
 
+  # If using the "url" option above, any headers (such as Authorization) can be added here. This
+  # can also be added via the CLI options
+  headers:
+    Authorization: Bearer s3cretT0k2n
+
   # File containing a GraphQL Schema Definition written in SDL.
   # Can also pass an array of paths (or glob supported by @graphql-tools/load-files)
   # like so:
@@ -47,10 +52,20 @@ introspection:
   #
   ##############################################
 
-  # If using the "url" option above, any headers (such as Authorization) can be added here. This
-  # can also be added via the CLI options
-  headers:
-    Authorization: Bearer s3cretT0k2n
+  ##############################################
+  #
+  #
+
+  # Whether you would like to strip any trailing commas from the descriptions to keep
+  # things fresh and clean.
+  #
+  # Default: false
+  removeTrailingPeriodFromDescriptions: false
+
+  #
+  #
+  ##############################################
+
 
   ##############################################
   # These options specify how, where and if any "metadata" information is to be added to your Introspection

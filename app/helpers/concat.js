@@ -1,3 +1,5 @@
+const stripTrailing = require('./stripTrailing')
+
 /**
  * A simple helper to concatenate strings
  * @param  {...string[, object]} strings - Any number of strings that you want to
@@ -11,6 +13,7 @@
 module.exports = function(...strings) {
   let joiner = ''
   let filterFalsy = false
+  let fixDoublePeriods = true
   let altJoiner
   let altJoinerRegex
 
@@ -44,6 +47,12 @@ module.exports = function(...strings) {
     }
 
     return result
+  }
+
+  // If there are more than 1 string, strip off any trailing "." from all
+  // but the last one.
+  if (fixDoublePeriods && joiner.startsWith('.') && strings.length > 1) {
+    strings = strings.map((string, idx, strings) => idx === strings.length - 1 ? string : stripTrailing(string, '.', {}))
   }
 
 

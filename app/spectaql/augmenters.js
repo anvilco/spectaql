@@ -16,6 +16,7 @@ const {
 
 const isEnum = require('../helpers/isEnum')
 const isScalar = require('../helpers/isScalar')
+const stripTrailing = require('../helpers/stripTrailing')
 
 const METADATA_OUTPUT_PATH = 'metadata'
 
@@ -682,10 +683,44 @@ function _goThroughThings ({
   })
 }
 
+
+function iterateOverObject (obj, fn) {
+  for (const key in obj) {
+    const val = obj[key]
+
+    if (typeof val !== 'undefined') {
+      const newVal = fn({ key, val, parent: obj })
+      if (typeof newVal !== 'undefined') {
+        obj[key] = newVal
+        continue
+      } else if (typeof val === 'object') {
+        iterateOverObject (val, fn)
+        continue
+      }
+    }
+  }
+}
+
+function removeTrailingPeriodsFromDescriptions (obj) {
+  iterateOverObject(
+    obj,
+    ({ key, val }) => {
+      if (key === 'description' && typeof val === 'string') {
+        return stripTrailing(val, '.', {})
+      }
+    },
+  )
+
+  return obj
+}
+
+
 module.exports = {
   hideThingsBasedOnMetadata,
   addExamplesFromMetadata,
   addExamplesDynamically,
   calculateShouldDocument,
   augmentData,
+  iterateOverObject,
+  removeTrailingPeriodsFromDescriptions,
 }
