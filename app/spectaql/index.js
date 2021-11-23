@@ -151,6 +151,7 @@ module.exports = function(opts) {
     paths,
     securityDefinitions,
     definitions: jsonSchema.definitions,
+    jsonSchema,
   }
 
   return swaggerSpec

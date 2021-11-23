@@ -49,6 +49,7 @@ type SecretType {
   secret: String!
 }
 
+"Something interesting about my `Queries`."
 type Query {
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myQuery(
