@@ -129,6 +129,7 @@ describe('index', function () {
 
     context('removeTrailingPeriodFromDescriptions is true', function () {
       def('removeTrailingPeriodFromDescriptions', () => true)
+
       it('does strip trailing periods when asked', async function () {
         const result = spectaql($.opts)
         expect(result).be.an('object').that.includes.keys(

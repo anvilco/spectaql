@@ -51,6 +51,7 @@ module.exports = function(...strings) {
 
   // If there are more than 1 string, strip off any trailing "." from all
   // but the last one.
+  // Checking for startsWith('.') because sometimes the joiner might be ". "
   if (fixDoublePeriods && joiner.startsWith('.') && strings.length > 1) {
     strings = strings.map((string, idx, strings) => idx === strings.length - 1 ? string : stripTrailing(string, '.', {}))
   }

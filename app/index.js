@@ -43,7 +43,7 @@ const spectaqlOptionDefaults = {
 const introspectionOptionDefaults = {
   dynamicExamplesProcessingModule: path.resolve('./customizations/examples'),
 
-  removeTrailingPeriodFromDescriptions: true,
+  removeTrailingPeriodFromDescriptions: false,
 
   metadatasReadPath: 'documentation',
   metadatasWritePath: 'documentation',

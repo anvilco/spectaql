@@ -53,7 +53,8 @@ introspection:
   ##############################################
 
   ##############################################
-  #
+  # These options are for random display or augmentation related things that didn't
+  # really fit anywhere else.
   #
 
   # Whether you would like to strip any trailing commas from the descriptions to keep
