@@ -51,7 +51,7 @@
           <td>
             {{ md (
                 concat
-                  (stripTrailing (interpolateReferences description) ".")
+                  (interpolateReferences description)
                   (ternary schema.default
                     (concat "Default = "  (codify schema.default stringify=true))
                     ""

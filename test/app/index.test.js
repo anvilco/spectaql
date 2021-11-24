@@ -11,6 +11,32 @@ describe('index', function () {
 
       expect(options.oneFile).to.be.false
       expect(options.cssBuildMode).to.be.eql('full')
+
+      expect(options.specData.introspection).to.include({
+        removeTrailingPeriodFromDescriptions: false,
+
+        metadatasReadPath: 'documentation',
+        metadatasWritePath: 'documentation',
+
+        metadatasPath: 'documentation',
+        metadatas: true,
+
+        queriesDocumentedDefault: true,
+        queryDocumentedDefault: true,
+        queryArgDocumentedDefault: true,
+        hideQueriesWithUndocumentedReturnType: true,
+
+        mutationsDocumentedDefault: true,
+        mutationDocumentedDefault: true,
+        mutationArgDocumentedDefault: true,
+        hideMutationsWithUndocumentedReturnType: true,
+
+        typesDocumented: true,
+        typeDocumentedDefault: true,
+        fieldDocumentedDefault: true,
+        argDocumentedDefault: true,
+        hideFieldsWithUndocumentedReturnType: true,
+      })
     })
 
     context('config yaml specifies some options', function () {
