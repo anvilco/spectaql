@@ -166,8 +166,8 @@ module.exports = function (options) {
   //= Load the specification and init configuration
 
   function loadData() {
-    var specData = require(path.resolve(opts.appDir + '/spectaql/index'))(opts)
-    return require(path.resolve(opts.appDir + '/lib/preprocessor'))(opts, specData)
+    const { jsonSchema, ...specData } = require(path.resolve(opts.appDir + '/spectaql/index'))(opts)
+    return require(path.resolve(opts.appDir + '/lib/preprocessor'))(opts, specData, { jsonSchema })
   }
 
   const gruntConfig = require(path.resolve(opts.gruntConfigFile))(grunt, opts, loadData())
