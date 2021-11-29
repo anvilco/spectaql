@@ -21,7 +21,7 @@ module.exports = (value) => {
   //   "description": "The `Boolean` scalar type represents `true` or `false`."
   // },
   // "DateTime": {
-  //   "description": "A custom scalar will look like tfhis.",
+  //   "description": "A custom scalar will look like this.",
   //   "type": "object",
   //   "title": "DateTime",
   // },
