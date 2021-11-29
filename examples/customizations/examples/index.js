@@ -1,4 +1,7 @@
 const _ = require('lodash')
+
+const LIFE_THE_UNIVERSE_AND_EVERYTHING = 42
+
 /**
  * Accepts a bunch of information about a Scalar, and allows you to return an example
  * to be used in your documentation. If undefined is returned, a default example will
@@ -24,14 +27,13 @@ function scalarProcessor (argz = {}) {
 
   switch (name) {
     case 'Int': {
-      // Life, the Universe and Everything
-      return 42
+      return LIFE_THE_UNIVERSE_AND_EVERYTHING
     }
   }
 }
 
 /**
- * Accepts a bunch of information about a Field, and allows you to return an example
+ * Accepts a bunch of information about a Type Field, and allows you to return an example
  * to be used in your documentation. If undefined is returned, a default example will
  * be used for you.
  *
@@ -71,6 +73,40 @@ function fieldProcessor (argz = {}) {
     const val = `Generated Field example for ${name}`
     // Might need to be an array
     return isArray ? [val] : val
+  }
+}
+
+/**
+ * Accepts a bunch of information about an InputType Field, and allows you to return an example
+ * to be used in your documentation. If undefined is returned, a default example will
+ * be used for you.
+ *
+ * @param  {Object} argz An object containing the following properties to help you generate your example:
+ *    {String} parentName - The name of the InputType this Field is part of
+ *
+ *    {String} name - The name of this Field
+ *    {String} type - The singular, when-non-null return Type of the Field (e.g. `[Foo!]!` would be `Foo` here)
+ *    {Object} definition - The JSON Schema definition for this Field
+ *
+ *    {Boolean} isArray - Boolean indicating if the return Type is an array/list
+ *    {Boolean} itemsRequired - Boolean indicating if the items in the array/list are required
+ *
+ *    {Object} args - All of the arguments originally passed to the augmentation method:
+ *      {Object} introspectionResponse - The introspection query response Object
+ *      {Object} jsonSchema - The JSON Schema representing the entire GraphQL Schema
+ *      {Object} graphQLSchema - The GraphQL schema object
+ *      {introspectionOptions} - Options from the CLI and YML related to generating the documentation
+ *
+ * @return {Any} The value to use as an example. Return undefined to just use the default.
+ */
+function inputFieldProcessor (argz = {}) {
+  const {
+    type,
+    isArray,
+  } = argz
+
+  if (type === 'Int') {
+    return isArray ? [LIFE_THE_UNIVERSE_AND_EVERYTHING] : LIFE_THE_UNIVERSE_AND_EVERYTHING
   }
 }
 
@@ -137,6 +173,7 @@ function argumentProcessor (argz = {}) {
 
 module.exports = {
   fieldProcessor,
+  inputFieldProcessor,
   argumentProcessor,
   scalarProcessor,
 }

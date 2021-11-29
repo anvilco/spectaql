@@ -2,5 +2,6 @@
 module.exports = {
   // scalarProcessor: () => {},
   // fieldProcessor: () => {},
+  // inputFieldProcessor: () = {},
   // argumentProcessor: () => {},
 }
