@@ -77,7 +77,7 @@ function fieldProcessor (argz = {}) {
 }
 
 /**
- * Accepts a bunch of information about an InputType Field, and allows you to return an example
+ * Accepts a bunch of information about an Input Type Field, and allows you to return an example
  * to be used in your documentation. If undefined is returned, a default example will
  * be used for you.
  *

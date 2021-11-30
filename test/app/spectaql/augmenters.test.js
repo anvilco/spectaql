@@ -760,6 +760,14 @@ describe('augmenters', function () {
           argWithoutExample: String,
         ): String
       }
+
+      input AnotherInput {
+        inputOne: Int,
+        inputTwo: [Int],
+        inputThree: Int!,
+        inputFour: [Int!]
+        inputFive: [Int!]!
+      }
     `)
 
     // This from-the-root path works due to appModulePath in testing setup
@@ -817,6 +825,35 @@ describe('augmenters', function () {
         expect(jsonSchema.definitions.YetAnotherType.properties.fieldWithoutExample)
           .to.be.an('object')
           .that.does.not.have.any.keys('example')
+      })
+    })
+
+    describe('Input Fields', function () {
+      it('adds example when it should', function () {
+        const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
+        const { jsonSchema } = $.result
+        expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+
+        ;[
+          ['AnotherInput', 'inputOne', 'Int', false, false],
+          ['AnotherInput', 'inputTwo', 'Int', true, false],
+          ['AnotherInput', 'inputThree', 'Int', false, false],
+          ['AnotherInput', 'inputFour', 'Int', true, true],
+          ['AnotherInput', 'inputFive', 'Int', true, true],
+        ].forEach(([inputTypeName, field, type, isArray, itemsRequired]) => {
+          expect(jsonSchema.definitions[inputTypeName].properties[field].example).to.eql(
+            addSpecialTags(
+              [inputTypeName, field, type, isArray, itemsRequired, 'example'].join('.'),
+            )
+          )
+        })
+
+        ;['inputOne', 'inputTwo'].forEach((fieldWithoutExample) => {
+          // This field should NOT have an example
+          expect(jsonSchema.definitions.MyInput.properties[fieldWithoutExample])
+            .to.be.an('object')
+            .that.does.not.have.any.keys('example')
+        })
       })
     })
 
