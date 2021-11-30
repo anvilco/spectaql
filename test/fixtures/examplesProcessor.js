@@ -43,6 +43,21 @@ function fieldProcessor(argz = {}) {
   }
 }
 
+function inputFieldProcessor(argz = {}) {
+  const {
+    parentName,
+    name,
+    type,
+    // definition,
+    isArray,
+    itemsRequired,
+  } = argz
+
+  if (parentName === 'AnotherInput') {
+    return `${parentName}.${name}.${type}.${isArray}.${itemsRequired}.example`
+  }
+}
+
 function argumentProcessor(argz = {}) {
   const {
     grandParentName,
@@ -105,5 +120,6 @@ function argumentProcessor(argz = {}) {
 module.exports = {
   scalarProcessor,
   fieldProcessor,
+  inputFieldProcessor,
   argumentProcessor,
 }

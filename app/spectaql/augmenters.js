@@ -5,7 +5,8 @@ const {
   getFieldFromIntrospectionResponseType,
   getArgFromIntrospectionResponseField,
   returnTypeExistsForJsonSchemaField,
-  analayzeJsonSchemaFieldDefinition,
+  analyzeJsonSchemaFieldDefinition,
+  analyzeJsonSchemaInputFieldDefinition,
   analyzeJsonSchemaArgDefinition,
 } = require('./type-helpers')
 
@@ -100,6 +101,7 @@ function addExamplesDynamically (args = {}) {
 
   let {
     fieldProcessor,
+    inputFieldProcessor,
     argumentProcessor,
     scalarProcessor,
   } = processingModule
@@ -111,6 +113,7 @@ function addExamplesDynamically (args = {}) {
   }
 
   fieldProcessor = fieldProcessor || (() => {})
+  inputFieldProcessor = inputFieldProcessor || (() => {})
   argumentProcessor = argumentProcessor || (() => {})
   scalarProcessor = scalarProcessor || (() => {})
 
@@ -147,7 +150,7 @@ function addExamplesDynamically (args = {}) {
             returnType,
             isArray,
             itemsRequired,
-          } = analayzeJsonSchemaFieldDefinition(definition)
+          } = analyzeJsonSchemaFieldDefinition(definition)
 
           // TODO: provide isRequired here
           const example = fieldProcessor({
@@ -215,7 +218,27 @@ function addExamplesDynamically (args = {}) {
         }
 
         case 'InputField': {
-          // NOOP for now
+          const {
+            type: inputFieldType,
+            isArray,
+            itemsRequired,
+          } = analyzeJsonSchemaInputFieldDefinition(definition)
+
+          const example = inputFieldProcessor({
+            parentName,
+            name,
+            type: inputFieldType,
+            definition,
+            isArray,
+            itemsRequired,
+            // Give 'em all the args'
+            args,
+          })
+
+          if (typeof example !== 'undefined') {
+            definition.example = massageExample({ value: example, typeName: type })
+          }
+
           return
         }
 
