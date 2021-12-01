@@ -7,6 +7,13 @@ const node_modules_dependency = path.resolve(root, '..')
 
 
 module.exports = function(grunt, options, spec) {
+  // The basic JS paths
+  const jsSrcPaths = [options.appDir + '/javascripts/**/*.js', '!' + options.appDir + '/javascripts/jquery*.js']
+  // Add in the additional path if needed
+  if (options.additionalJsFile) {
+    jsSrcPaths.push(options.additionalJsFile)
+  }
+
   return {
     // Compile SCSS source files into the cache directory
     sass: {
@@ -40,7 +47,7 @@ module.exports = function(grunt, options, spec) {
     // Concatenate files into 1
     concat: {
       js: {
-        src: [options.appDir + '/javascripts/**/*.js', '!' + options.appDir + '/javascripts/jquery*.js'],
+        src: jsSrcPaths,
         dest: options.cacheDir + '/javascripts/spectaql.js',
       },
       css: {
