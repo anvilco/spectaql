@@ -46,7 +46,7 @@
     "coffeescript": "^2.6.0",
     "commander": "^8.2.0",
     "foundation-sites": "^6.7.2",
-    "graphql": "^15.6.0",
+    "graphql": "^16.0.1",
     "graphql-2-json-schema": "^0.9.0",
     "graphql-json-schema": "^0.1.2",
     "grunt": "^1.4.1",
