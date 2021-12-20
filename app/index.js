@@ -43,6 +43,8 @@ const spectaqlOptionDefaults = {
 const introspectionOptionDefaults = {
   dynamicExamplesProcessingModule: path.resolve('./customizations/examples'),
 
+  removeTrailingPeriodFromDescriptions: false,
+
   metadatasReadPath: 'documentation',
   metadatasWritePath: 'documentation',
 
@@ -77,9 +79,10 @@ const introspectionOptionsMap = {
   headers: 'headers',
 }
 
-function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'faviconFile', 'specFile']) {
+function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'additionalJsFile', 'faviconFile', 'specFile']) {
   keys.forEach((key) => {
     const val = options[key]
+    // TODO: make this "!val.startsWith('/')"?
     if (typeof val === 'string' && val.startsWith('.')) {
       options[key] = path.resolve(val)
     }
@@ -166,8 +169,8 @@ module.exports = function (options) {
   //= Load the specification and init configuration
 
   function loadData() {
-    var specData = require(path.resolve(opts.appDir + '/spectaql/index'))(opts)
-    return require(path.resolve(opts.appDir + '/lib/preprocessor'))(opts, specData)
+    const { jsonSchema, ...specData } = require(path.resolve(opts.appDir + '/spectaql/index'))(opts)
+    return require(path.resolve(opts.appDir + '/lib/preprocessor'))(opts, specData, { jsonSchema })
   }
 
   const gruntConfig = require(path.resolve(opts.gruntConfigFile))(grunt, opts, loadData())

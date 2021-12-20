@@ -236,6 +236,10 @@ function getReturnTypeNameFromJsonSchemaFieldDefinition (fieldDefinition = {}) {
   return returnSchema && getReturnTypeNameFromJsonSchemaReturnSchema(returnSchema)
 }
 
+function getTypeNameFromJsonSchemaInputFieldDefinition (inputFieldDefinition = {}) {
+  return getReturnTypeNameFromJsonSchemaReturnSchema(inputFieldDefinition)
+}
+
 function getTypeNameFromJsonSchemaArgDefinition (argDefinition = {}) {
   return getReturnTypeNameFromJsonSchemaReturnSchema(argDefinition)
 }
@@ -250,12 +254,20 @@ function getReturnTypeNameFromJsonSchemaReturnSchema(schema = {}) {
 }
 
 // Provide some basic analysis of a type Field from JSON Schema
-function analayzeJsonSchemaFieldDefinition (fieldDefinition = {}) {
+function analyzeJsonSchemaFieldDefinition (fieldDefinition = {}) {
   const returnSchema = _.get(fieldDefinition, 'properties.return')
   const returnType = getReturnTypeNameFromJsonSchemaReturnSchema(returnSchema)
   return {
     ..._analyzeJsonSchemaDefinition(returnSchema),
     returnType,
+  }
+}
+
+function analyzeJsonSchemaInputFieldDefinition (inputFieldDefinition = {}) {
+  const type = getTypeNameFromJsonSchemaInputFieldDefinition(inputFieldDefinition)
+  return {
+    ..._analyzeJsonSchemaDefinition(inputFieldDefinition),
+    type,
   }
 }
 
@@ -336,7 +348,8 @@ module.exports = {
   getReturnTypeNameFromJsonSchemaFieldDefinition,
   getTypeNameFromJsonSchemaArgDefinition,
   getReturnTypeNameFromJsonSchemaReturnSchema,
-  analayzeJsonSchemaFieldDefinition,
+  analyzeJsonSchemaFieldDefinition,
+  analyzeJsonSchemaInputFieldDefinition,
   analyzeJsonSchemaArgDefinition,
   analyzeTypeSchema,
 }

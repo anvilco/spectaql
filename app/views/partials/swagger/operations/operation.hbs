@@ -48,7 +48,7 @@
     <div class="doc-row">
       <div class="doc-copy">
         <section class="swagger-operation-description operation-description">
-          {{ md (stripTrailing (interpolateReferences description) ".") stripParagraph=true }}
+          {{ md (interpolateReferences description) stripParagraph=true }}
         </section>
       </div>
     </div>
@@ -67,7 +67,7 @@
     {{! Print examples without whitespace }}
     <div class="doc-examples">{{#if _show_requst_body_section}}
       <section>
-        <h4>Example</h3>
+        <h4>Example</h4>
         {{#if consumes}}
           <h5>Request Content-Types:
             <span>{{#each consumes}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}</span>

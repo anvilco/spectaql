@@ -15,6 +15,7 @@ const {
 
 const {
   augmentData,
+  removeTrailingPeriodsFromDescriptions,
 } = require('./augmenters')
 
 const composePaths = require('./compose-paths')
@@ -39,6 +40,7 @@ module.exports = function(opts) {
       metadataFile,
       authHeader,
       headers,
+      removeTrailingPeriodFromDescriptions,
     },
     domains = [],
     servers = [],
@@ -133,6 +135,12 @@ module.exports = function(opts) {
   } = url.parse(urlToParse)
 
   const paths = composePaths({ domains, graphQLSchema, jsonSchema })
+  const definitions = jsonSchema.definitions
+
+  if (removeTrailingPeriodFromDescriptions) {
+    removeTrailingPeriodsFromDescriptions(paths)
+    removeTrailingPeriodsFromDescriptions(definitions)
+  }
 
   // generate specification
   const swaggerSpec = {
@@ -150,7 +158,8 @@ module.exports = function(opts) {
     })),
     paths,
     securityDefinitions,
-    definitions: jsonSchema.definitions,
+    definitions,
+    jsonSchema,
   }
 
   return swaggerSpec

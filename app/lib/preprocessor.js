@@ -3,10 +3,15 @@ const _ = require('lodash')
 
 var httpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', '$ref'];
 
+const tagToQueryOrMutation = {
+  'Queries': 'Query',
+  'Mutations': 'Mutation',
+}
+
 // Preprocessor for the Swagger JSON so that some of the logic can be taken
 // out of the template.
 
-module.exports = function(options, specData) {
+module.exports = function(options, specData, { jsonSchema } = {}) {
   if (!options.specFile) {
     console.warn("[WARNING] preprocessor must be given 'options.specFile'.  Defaulting to 'cwd'.")
     options.specFile = process.cwd()
@@ -50,10 +55,20 @@ module.exports = function(options, specData) {
           if (!tagsByName[tag]) {
             // New implicit declaration of tag not defined in global "tags"-object
             // https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#user-content-swaggerTags
-            var tagDefinition = {
+            const tagDefinition = {
               name: tag,
               operations: []
             }
+
+            const queryOrMutationPropertyName = tagToQueryOrMutation[tag]
+
+            if (queryOrMutationPropertyName) {
+              const queryOrMutationDescription = _.get(jsonSchema, `properties.${queryOrMutationPropertyName}.description`)
+              if (queryOrMutationDescription) {
+                tagDefinition.description = queryOrMutationDescription
+              }
+            }
+
             tagsByName[tag] = tagDefinition
             copy.tags.push(tagDefinition)
           }

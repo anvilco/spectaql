@@ -11,6 +11,32 @@ describe('index', function () {
 
       expect(options.oneFile).to.be.false
       expect(options.cssBuildMode).to.be.eql('full')
+
+      expect(options.specData.introspection).to.include({
+        removeTrailingPeriodFromDescriptions: false,
+
+        metadatasReadPath: 'documentation',
+        metadatasWritePath: 'documentation',
+
+        metadatasPath: 'documentation',
+        metadatas: true,
+
+        queriesDocumentedDefault: true,
+        queryDocumentedDefault: true,
+        queryArgDocumentedDefault: true,
+        hideQueriesWithUndocumentedReturnType: true,
+
+        mutationsDocumentedDefault: true,
+        mutationDocumentedDefault: true,
+        mutationArgDocumentedDefault: true,
+        hideMutationsWithUndocumentedReturnType: true,
+
+        typesDocumented: true,
+        typeDocumentedDefault: true,
+        fieldDocumentedDefault: true,
+        argDocumentedDefault: true,
+        hideFieldsWithUndocumentedReturnType: true,
+      })
     })
 
     context('config yaml specifies some options', function () {
@@ -34,7 +60,8 @@ describe('index', function () {
       def('config', () => ({
         spectaql: {
           oneFile: true,
-          cssBuildMode: 'basic'
+          cssBuildMode: 'basic',
+          additionalJsFile: './foo.js',
         }
       }))
 
@@ -43,7 +70,8 @@ describe('index', function () {
         const options = resolveOptions($.options)
 
         expect(options.oneFile).to.be.true
-        expect(options.cssBuildMode).to.be.eql('basic')
+        expect(options.cssBuildMode).to.eql('basic')
+        expect(options.additionalJsFile.endsWith('foo.js')).to.be.true
       })
 
       context('CLI specifies some options', function () {
@@ -51,6 +79,7 @@ describe('index', function () {
           ...$._options,
           oneFile: false,
           cssBuildMode: 'ridiculous',
+          additionalJsFile: 'bar.js'
         }))
 
 
@@ -60,6 +89,7 @@ describe('index', function () {
 
           expect(options.oneFile).to.be.false
           expect(options.cssBuildMode).to.be.eql('ridiculous')
+          expect(options.additionalJsFile.endsWith('bar.js')).to.be.true
         })
       })
     })
