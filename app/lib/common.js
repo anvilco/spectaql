@@ -46,41 +46,41 @@ const GRAPHQL_SCALAR_TO_EXAMPLE = {
   LocalEndTime: [GraphQLScalar.LocalEndTimeMock()],
   EmailAddress: [GraphQLScalar.EmailAddressMock()],
   UUID: [GraphQLScalar.UUIDMock()],
-  Hexadecimal: [GraphQLScalar.BigIntMock()],
-  HexColorCode: [GraphQLScalar.BigIntMock()],
+  Hexadecimal: [GraphQLScalar.HexadecimalMock()],
+  HexColorCode: [GraphQLScalar.HexColorCodeMock()],
   HSL: [GraphQLScalar.HSLMock()],
   HSLA:[GraphQLScalar.HSLAMock()],
   IBAN: [GraphQLScalar.IBANMock()],
-  IPv4 :[GraphQLScalar.BigIntMock()],
-  IPv6:[GraphQLScalar.BigIntMock],
-  ISBN :[GraphQLScalar.BigIntMock],
-  JWT : [GraphQLScalar.BigIntMock],
-  Latitude : [GraphQLScalar.LatitudeMock],
-  Longitude: [GraphQLScalar.LongitudeMock],
-  JSONObject: [GraphQLScalar.JSONObjectMock],
-  MAC: [GraphQLScalar.JSONObjectMock],
-  NegativeFloat: [GraphQLScalar.JSONObjectMock],
+  IPv4 :[GraphQLScalar.IPv4Mock()],
+  IPv6:[GraphQLScalar.IPv6Mock()],
+  ISBN :[GraphQLScalar.ISBNMock()],
+  JWT : [GraphQLScalar.JWTMock()],
+  Latitude : [GraphQLScalar.LatitudeMock()],
+  Longitude: [GraphQLScalar.LongitudeMock()],
+  JSONObject: [GraphQLScalar.JSONObjectMock()],
+  MAC: [GraphQLScalar.MACMock()],
+  NegativeFloat: [GraphQLScalar.NegativeFloatMock()],
   NegativeInt: [GraphQLScalar.NegativeIntMock()],
-  NonEmptyString: [GraphQLScalar.NegativeIntMock()],
-  NonNegativeFloat: [GraphQLScalar.NegativeIntMock()],
-  NonNegativeInt: [GraphQLScalar.NegativeIntMock()],
-  NonPositiveFloat : [GraphQLScalar.NegativeIntMock()],
-  NonPositiveInt: [GraphQLScalar.JSONObjectMock],
-  PhoneNumber: [GraphQLScalar.JSONObjectMock],
-  Port: [GraphQLScalar.JSONObjectMock],
-  PositiveFloat : [parseFloat('4.567'), parseFloat('6.53')],
-  PositiveInt: [GraphQLScalar.JSONObjectMock],
-  PostalCode: [GraphQLScalar.JSONObjectMock],
-  RGB: [GraphQLScalar.JSONObjectMock],
+  NonEmptyString: [GraphQLScalar.NonEmptyStringMock()],
+  NonNegativeFloat: [GraphQLScalar.NonNegativeFloatMock()],
+  NonNegativeInt: [GraphQLScalar.NonNegativeIntMock()],
+  NonPositiveFloat : [GraphQLScalar.NonPositiveFloatMock()],
+  NonPositiveInt: [GraphQLScalar.NonPositiveIntMock()],
+  PhoneNumber: [GraphQLScalar.PhoneNumberMock()],
+  Port: [GraphQLScalar.PortMock()],
+  PositiveFloat : [GraphQLScalar.PositiveFloatMock()],
+  PositiveInt: [GraphQLScalar.PositiveIntMock()],
+  PostalCode: [GraphQLScalar.PostalCodeMock()],
+  RGB: [GraphQLScalar.JSONObjectMock()],
   RGBA: [GraphQLScalar.RGBAMock()],
   SafeInt: [GraphQLScalar.SafeIntMock()],
-  URL: [GraphQLScalar.NegativeIntMock()],
-  USCurrency : ['string'],
-  Currency : ['string'],
-  UnsignedFloat: ['string'],
-  UnsignedInt:['string'],
-  GUID: [GraphQLScalar.JSONObjectMock],
-  ObjectID: [GraphQLScalar.JSONObjectMock]
+  URL: [GraphQLScalar.URLMock()],
+  USCurrency: [GraphQLScalar.USCurrencyMock()],
+  Currency: [GraphQLScalar.CurrencyMock()],
+  UnsignedFloat: [GraphQLScalar.UnsignedFloatMock()],
+  UnsignedInt: [GraphQLScalar.UnsignedIntMock()],
+  GUID: [GraphQLScalar.GUIDMock],
+  ObjectID: [GraphQLScalar.ObjectIDMock]
 }
 
 
@@ -98,8 +98,6 @@ function getExampleForScalar (value) {
     replacement = GRAPHQL_SCALAR_TO_EXAMPLE[value];
   }
   if (typeof replacement !== 'undefined') {
-    console.log('Louisa getExampleForScalar', replacement, value);
-
     return Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
   }
 }
@@ -110,8 +108,6 @@ function jsonReplacer (name, value) {
 
 function addSpecialTags (value, { placeholdQuotes = false } = {}) {
   if (typeof value !== 'string') return value
-
-  console.log('getExampleForScalar', value);
 
   const replacement = getExampleForScalar(value)
   if (typeof replacement !== 'undefined') {
@@ -338,8 +334,6 @@ var common = {
         title,
         format,
       } = ref
-
-      console.log('getExampleForScalar', title);
 
       const replacement = getExampleForScalar(title)
       if (typeof replacement !== 'undefined') {

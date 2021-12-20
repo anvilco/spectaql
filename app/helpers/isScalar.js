@@ -49,7 +49,7 @@ const GRAPHQL_SCALAR_MAP = {
   PhoneNumber : 'string',
   Port : 'number',
   PositiveFloat : 'string',
-  PositiveInt : 'string',
+  PositiveInt : 'number',
   PostalCode : 'string',
   RGB : 'string',
   RGBA : 'string',
