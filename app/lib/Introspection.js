@@ -181,6 +181,15 @@ class Introspection {
     return false
   }
 
+  getField({ typeKind, typeName, fieldName }) {
+    const type = this.getType({ kind: typeKind, name: typeName })
+    if (!(type && type.fields)) {
+      return
+    }
+
+    return type.fields.find((field) => field.name === fieldName)
+  }
+
   fixQueryAndMutationTypes(response) {
     for (const [key, defaultTypeName] of [['queryType', 'Query'], ['mutationType', 'Mutation']]) {
       const queryOrMutationTypeName = get(response, `__schema.${key}.name`)
@@ -233,6 +242,35 @@ class Introspection {
     }
   }
 
+  removeField({ typeKind, typeName, fieldName, cleanup = CLEANUP_DEFAULT }) {
+    const type = this.getType({ kind: typeKind, name: typeName })
+    if (!(type && type.fields)) {
+      return false
+    }
+
+    // TODO: build a map for the locations of fields on types?
+    type.fields = type.fields.filter((field) => field.name !== fieldName)
+
+    if (cleanup) {
+      this._cleanSchema()
+    }
+  }
+
+  removeArg({ typeKind, typeName, fieldName, argName, cleanup = CLEANUP_DEFAULT }) {
+    const field = this.getField({ typeKind, typeName, fieldName })
+    // field.args should alwys be an array, never null
+    if (!field) {
+      return false
+    }
+
+    // TODO: build a map for the locations of args on fields?
+    field.args = field.args.filter((arg) => arg.name !== argName)
+
+    if (cleanup) {
+      this._cleanSchema()
+    }
+  }
+
   removeFieldsOfType({ kind, name, cleanup = CLEANUP_DEFAULT }) {
     const fieldKey = buildKey({ kind, name })
     for (const fieldPath of (this.fieldsOfTypeMap[fieldKey] || [])) {
@@ -267,6 +305,16 @@ class Introspection {
     if (cleanup) {
       this._cleanSchema()
     }
+  }
+
+  // Remove just a single possible value for an Enum, but not the whole Enum
+  removeEnumValue({ name, value }) {
+    const type = this.getType({ kind: KIND_ENUM, name })
+    if (!(type && type.enumValues)) {
+      return false
+    }
+
+    type.enumValues = type.enumValues.filter((enumValue) => enumValue.name !== value)
   }
 
   // private
