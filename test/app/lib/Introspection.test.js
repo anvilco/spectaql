@@ -7,6 +7,7 @@ const {
   KIND_SCALAR,
   KIND_OBJECT,
   KIND_INPUT_OBJECT,
+  KIND_UNION,
   KIND_ENUM,
 } = Introspection
 
@@ -35,21 +36,25 @@ describe.only('Introspection', function () {
 
     scalar SecretScalar
 
-    input InputWithSecretScalar {
-      string: String
-      secretScalar: [SecretScalar]
-    }
-
     enum SecretEnum {
       ENUM1
       ENUM2
       ENUM3
     }
 
+    input InputWithSecretScalar {
+      string: String
+      secretScalar: [SecretScalar]
+    }
+
     input InputWithSecretEnum {
       string: String
       secretEnum: [SecretEnum]
     }
+
+    union SecretUnion =
+      MyType
+      | MyOtherType
 
     ${$.QueryType}
 
@@ -119,6 +124,18 @@ describe.only('Introspection', function () {
         argSecretEnum: [SecretEnum!]!
       ): String
 
+
+      # SecretUnion stuff
+
+      # Fields returning SecretUnion
+      fieldSecretUnion: SecretUnion
+      fieldSecretUnionArray: [SecretUnion]
+      fieldSecretUnionNonNullArray: [SecretUnion]!
+      fieldSecretUnionNonNullArrayOfNonNulls: [SecretUnion!]!
+    }
+
+    type MyOtherType {
+      fieldString(argString: String): String
     }
   `
   )
@@ -210,6 +227,13 @@ describe.only('Introspection', function () {
     expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldStringWithSecretEnumNonNullArrayArg', argName: 'argSecretEnum', response })).to.be.ok
     expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldStringWithSecretEnumNonNullArrayOfNonNullsArg', argName: 'argSecretEnum', response })).to.be.ok
 
+
+    expect(findType({ kind: KIND_UNION, name: 'SecretUnion', response})).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnion', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionArray', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArray', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArrayOfNonNulls', response })).to.be.ok
+
     // OK, let's do some things
 
     // Remove SecretScalar
@@ -231,25 +255,13 @@ describe.only('Introspection', function () {
 
     expect(findInputFieldOnInputType({ typeName: 'InputWithSecretScalar', inputFieldName: 'secretScalar', response })).to.not.be.ok
 
-    // SecretEnum should be unaffected
+    // Remove a specific SecretEnum value
+
     secretEnum = findType({ kind: KIND_ENUM, name: 'SecretEnum', response })
     expect(secretEnum).to.be.ok
     expect(secretEnum.enumValues).to.be.an('array').of.length(3)
 
-    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretEnum', response })).to.be.ok
-    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretEnumArray', response })).to.be.ok
-    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretEnumNonNullArray', response })).to.be.ok
-    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretEnumNonNullArrayOfNonNulls', response })).to.be.ok
-
-    expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldStringWithSecretEnumArg', argName: 'argSecretEnum', response })).to.be.ok
-    expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldStringWithSecretEnumArrayArg', argName: 'argSecretEnum', response })).to.be.ok
-    expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldStringWithSecretEnumNonNullArrayArg', argName: 'argSecretEnum', response })).to.be.ok
-    expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldStringWithSecretEnumNonNullArrayOfNonNullsArg', argName: 'argSecretEnum', response })).to.be.ok
-
-
-    // Remove a specific SecretEnum value
-
-    introspection.removeEnumValue({ name: 'SecretEnum', value: 'ENUM2'})
+    introspection.removeEnumValue({ name: 'SecretEnum', value: 'ENUM2' })
     response = introspection.getResponse()
 
     // Removed that value so only 2 left
@@ -299,6 +311,42 @@ describe.only('Introspection', function () {
     response = introspection.getResponse()
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', response })).to.not.be.ok
 
+    // Remove possible type from a Union Type
+
+    let unionType = findType({ kind: KIND_UNION, name: 'SecretUnion', response })
+    expect(unionType).to.be.ok
+    expect(unionType.possibleTypes).to.be.an('array').of.length(2)
+
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnion', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionArray', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArray', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArrayOfNonNulls', response })).to.be.ok
+
+    introspection.removePossibleTypesOfType({ kind: KIND_OBJECT, name: 'MyType' })
+    response = introspection.getResponse()
+
+    unionType = findType({ kind: KIND_UNION, name: 'SecretUnion', response })
+    expect(unionType).to.be.ok
+    expect(unionType.possibleTypes).to.be.an('array').of.length(1)
+    // Only MyOtherType is left
+    expect(unionType.possibleTypes.map((possibleType) => possibleType.name)).to.eql(['MyOtherType'])
+
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnion', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionArray', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArray', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArrayOfNonNulls', response })).to.be.ok
+
+    // Remove a Union Type completely
+
+    introspection.removeType({ kind: KIND_UNION, name: 'SecretUnion' })
+    response = introspection.getResponse()
+
+    expect(findType({ kind: KIND_UNION, name: 'SecretUnion', response})).to.not.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnion', response })).to.not.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionArray', response })).to.not.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArray', response })).to.not.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArrayOfNonNulls', response })).to.not.be.ok
+
     // console.log(introspection.inputFieldsOfTypeMap)
     // console.log(JSON.stringify(response))
   })
@@ -332,4 +380,13 @@ function findInputFieldOnInputType({ typeName, inputFieldName, response }) {
   }
 
   return (type.inputFields || []).find((inputField => inputField.name === inputFieldName ))
+}
+
+function findPossibleTypedOnUnionType({ typeName, possibleTypeKind, possibleTypeName, response }) {
+  const type = findType({ kind: KIND_UNION, name: typeName, response })
+  if (!type) {
+    return false
+  }
+
+  return (type.possibleTypes || []).find((possibleType => possibleType.name === possibleTypeName && possibleType.kind === possibleTypeKind ))
 }
