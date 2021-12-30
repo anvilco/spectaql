@@ -92,7 +92,8 @@ Your generated documentation will be located in the `public` directory by defaul
 
 The best way to figure out what SpectaQL can do is to clone this repository (or mimic the [`/examples`](https://github.com/anvilco/spectaql/blob/master/examples) directory) and play around with the example build and its data:
   ```sh
-  npm develop ./examples/config.yml
+  npm install
+  npm run develop ./examples/config.yml
   ```
 
 That config will direct a build that flexes the most interesting parts of SpectaQL, so dig in a little and it should be a rewarding exercise.
