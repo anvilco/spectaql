@@ -11,6 +11,7 @@ const NORMALIZE_DEFAULT = true
 const FIX_QUERY_MUTATION_TYPES_DEFAULT = true
 const REMOVE_FIELDS_OF_TYPE_DEFAULT = true
 const REMOVE_INPUT_FIELDS_OF_TYPE_DEFAULT = true
+const REMOVE_POSSIBLE_TYPES_OF_TYPE_DEFAULT = true
 const REMOVE_ARGUMENTS_OF_TYPE_DEFAULT = true
 const CLEANUP_DEFAULT = true
 
@@ -84,6 +85,8 @@ class Introspection {
     this.typeToIndexMap = {}
     this.fieldsOfTypeMap = {}
     this.inputFieldsOfTypeMap = {}
+    // AKA Unions
+    this.possibleTypesOfTypeMap = {}
     this.argsOfTypeMap = {}
 
     for (let typesIdx = 0; typesIdx < this.schema.types.length; typesIdx++) {
@@ -99,6 +102,7 @@ class Introspection {
       // These come in as null, not undefined
       const fields = type.fields || []
       const inputFields = type.inputFields || []
+      const possibleTypes = type.possibleTypes || []
 
       const typesKey = buildKey({ kind, name })
       this.typeToIndexMap[typesKey] = typesIdx
@@ -150,6 +154,21 @@ class Introspection {
         }
         const inputFieldPath = `types.${typesIdx}.inputFields.${inputFieldsIdx}`
         this.inputFieldsOfTypeMap[inputFieldsKey].push(inputFieldPath)
+      }
+
+      for (let possibleTypesIdx = 0; possibleTypesIdx < possibleTypes.length; possibleTypesIdx++) {
+        const possibleType = possibleTypes[possibleTypesIdx]
+        if (isUndef(possibleType)) {
+          continue
+        }
+
+        const possibleTypeType = digUnderlyingType(possibleType)
+        const possibleTypeKey = buildKey(possibleTypeType)
+        if (!this.possibleTypesOfTypeMap[possibleTypeKey]) {
+          this.possibleTypesOfTypeMap[possibleTypeKey] = []
+        }
+        const possibleTypePath = `types.${typesIdx}.possibleTypes.${possibleTypesIdx}`
+        this.possibleTypesOfTypeMap[possibleTypeKey].push(possibleTypePath)
       }
     }
   }
@@ -204,6 +223,7 @@ class Introspection {
     name,
     removeFieldsOfType = REMOVE_FIELDS_OF_TYPE_DEFAULT,
     removeInputFieldsOfType = REMOVE_INPUT_FIELDS_OF_TYPE_DEFAULT,
+    removePossibleTypesOfType = REMOVE_POSSIBLE_TYPES_OF_TYPE_DEFAULT,
     removeArgumentsOfType = REMOVE_ARGUMENTS_OF_TYPE_DEFAULT,
     cleanup = CLEANUP_DEFAULT,
   }) {
@@ -229,6 +249,11 @@ class Introspection {
 
       if (removeInputFieldsOfType) {
         this.removeInputFieldsOfType({ kind, name, cleanup: shouldOthersClean })
+      }
+
+      // AKA Unions
+      if (removePossibleTypesOfType) {
+        this.removePossibleTypesOfType({ kind, name, cleanup: shouldOthersClean })
       }
 
       if (cleanup) {
@@ -272,39 +297,20 @@ class Introspection {
   }
 
   removeFieldsOfType({ kind, name, cleanup = CLEANUP_DEFAULT }) {
-    const fieldKey = buildKey({ kind, name })
-    for (const fieldPath of (this.fieldsOfTypeMap[fieldKey] || [])) {
-      unset(this.schema, fieldPath)
-    }
-
-    delete this.fieldsOfTypeMap[fieldKey]
-    if (cleanup) {
-      this._cleanSchema()
-    }
+    return this._removeThingsOfType({ kind, name, map: this.fieldsOfTypeMap, cleanup })
   }
 
   removeInputFieldsOfType({ kind, name, cleanup = CLEANUP_DEFAULT }) {
-    const inputFieldKey = buildKey({ kind, name })
-    for (const inputFieldPath of (this.inputFieldsOfTypeMap[inputFieldKey] || [])) {
-      unset(this.schema, inputFieldPath)
-    }
+    return this._removeThingsOfType({ kind, name, map: this.inputFieldsOfTypeMap, cleanup })
+  }
 
-    delete this.inputFieldsOfTypeMap[inputFieldKey]
-    if (cleanup) {
-      this._cleanSchema()
-    }
+  // AKA Unions
+  removePossibleTypesOfType({ kind, name, cleanup = CLEANUP_DEFAULT }) {
+    return this._removeThingsOfType({ kind, name, map: this.possibleTypesOfTypeMap, cleanup })
   }
 
   removeArgumentsOfType({ kind, name, cleanup = CLEANUP_DEFAULT }) {
-    const argKey = buildKey({ kind, name })
-    for (const argPath of (this.argsOfTypeMap[argKey] || [])) {
-      unset(this.schema, argPath)
-    }
-
-    delete this.argsOfTypeMap[argKey]
-    if (cleanup) {
-      this._cleanSchema()
-    }
+    return this._removeThingsOfType({ kind, name, map: this.argsOfTypeMap, cleanup })
   }
 
   // Remove just a single possible value for an Enum, but not the whole Enum
@@ -318,6 +324,21 @@ class Introspection {
   }
 
   // private
+
+  _removeThingsOfType({ kind, name, map, cleanup = CLEANUP_DEFAULT }) {
+    const key = buildKey({ kind, name })
+    for (const path of (map[key] || [])) {
+      unset(this.schema, path)
+    }
+
+    delete map[key]
+
+    if (cleanup) {
+      this._cleanSchema()
+    }
+
+  }
+
   _cloneSchema() {
     return JSON.parse(JSON.stringify(this.schema))
   }
@@ -363,6 +384,17 @@ class Introspection {
 
       // InputFields will be null rather than empty array if no inputFields
       type.inputFields = inputFields.length ? inputFields : null
+
+      const possibleTypes = []
+      for (const possibleType of (type.possibleTypes || [])) {
+        if (isUndef(possibleType)) {
+          continue
+        }
+        possibleTypes.push(possibleType)
+      }
+
+      // PossibleTypes will be null rather than emptry array if no possibleTypes
+      type.possibleTypes = possibleTypes.length ? possibleTypes : null
     }
 
     // Replace the Schema
