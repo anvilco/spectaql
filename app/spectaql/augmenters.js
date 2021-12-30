@@ -1,7 +1,10 @@
 const _ = require('lodash')
 
+const Introspection = require('../lib/Introspection')
+
 const {
   getTypeFromIntrospectionResponse,
+  removeTypeFromIntrospectionResponse,
   getFieldFromIntrospectionResponseType,
   getArgFromIntrospectionResponseField,
   returnTypeExistsForJsonSchemaField,
@@ -27,9 +30,9 @@ const calculateShouldDocument = ({ undocumented, documented, def }) => {
 
 function augmentData (args) {
   hideThingsBasedOnMetadata(args)
-  addExamplesFromMetadata(args)
-  addExamplesDynamically(args)
-  addDeprecationThings(args)
+  // addExamplesFromMetadata(args)
+  // addExamplesDynamically(args)
+  // addDeprecationThings(args)
 }
 
 const isInputType = ({ name, introspectionResponse }) => {
@@ -343,29 +346,28 @@ function hideThingsBasedOnMetadata ({
   // Hide them Query/Mutation Properties
   hideQueriesAndMutations({
     introspectionResponse,
-    jsonSchema,
     graphQLSchema,
     introspectionOptions,
   })
 
   // Hide the Type Definitions
-  hideTypes({
-    introspectionResponse,
-    jsonSchema,
-    graphQLSchema,
-    introspectionOptions,
-  })
+  // hideTypes({
+  //   introspectionResponse,
+  //   jsonSchema,
+  //   graphQLSchema,
+  //   introspectionOptions,
+  // })
 
   // This hides fields on Types as well as individual queries and mutations.
   //
   // ** Should be called after hideTypes so that fields can be hidden
   // if their return Type is also hidden - if the options say to do that **
-  hideFields({
-    introspectionResponse,
-    jsonSchema,
-    graphQLSchema,
-    introspectionOptions,
-  })
+  // hideFields({
+  //   introspectionResponse,
+  //   jsonSchema,
+  //   graphQLSchema,
+  //   introspectionOptions,
+  // })
 
 
   // This hides arguments on Type Fields as well as on individual queries and mutationsa.
@@ -375,12 +377,12 @@ function hideThingsBasedOnMetadata ({
   //
   // Actually, the return Type based Arg hiding is not yet implemented, but this should still
   // run after hideTypes
-  hideArguments({
-    introspectionResponse,
-    jsonSchema,
-    graphQLSchema,
-    introspectionOptions,
-  })
+  // hideArguments({
+  //   introspectionResponse,
+  //   jsonSchema,
+  //   graphQLSchema,
+  //   introspectionOptions,
+  // })
 
   return {
     introspectionResponse,
@@ -392,8 +394,6 @@ function hideThingsBasedOnMetadata ({
 
 function hideQueriesAndMutations ({
   introspectionResponse,
-  jsonSchema,
-  graphQLSchema,
   introspectionOptions,
 }) {
   const {
@@ -402,29 +402,77 @@ function hideQueriesAndMutations ({
     mutationsDocumentedDefault,
   } = introspectionOptions
 
-  jsonSchema.properties = [
-    [(graphQLSchema.getQueryType() || {}).name, queriesDocumentedDefault],
-    [(graphQLSchema.getMutationType() || {}).name, mutationsDocumentedDefault],
-  ].reduce(
-    (acc, [name, documentedDefault]) => {
-      const type = getTypeFromIntrospectionResponse({name, introspectionResponse})
-      const metadata = _.get(type, metadatasPath, {})
-      const property = jsonSchema.properties[name]
-      const shouldDocument = property && calculateShouldDocument({ ...metadata, def: documentedDefault })
+  const schema = introspectionResponse.__schema
 
-      if (shouldDocument) {
-        acc[name] = property
-        if (!_.isEmpty(metadata)) {
-          _.set(property, METADATA_OUTPUT_PATH, metadata)
-        }
-      }
+  console.log(schema)
 
-      return acc
+  const introspection = new Introspection({ response: introspectionResponse })
+  // console.log({
+  //   query: introspection.getType({ kind: 'OBJECT', name: 'Query'})
+  // })
+  // console.log({introspection})
+  console.log({fieldsOfTypeMap: introspection.fieldsOfTypeMap})
+
+  const {
+    queryType: {
+      name: queryTypeName,
     },
-    {}
-  )
+    mutationType: {
+      name: mutationTypeName,
+    },
+  } = schema
 
-  return
+  ;[
+    [queryTypeName, queriesDocumentedDefault],
+    [mutationTypeName, mutationsDocumentedDefault],
+  ].forEach((name, documentedDefault) => {
+    const type = getTypeFromIntrospectionResponse({name, introspectionResponse})
+    console.log({
+      name,
+      type,
+    })
+    if (!type) {
+      return
+    }
+    const metadata = _.get(type, metadatasPath, {})
+    const shouldDocument = calculateShouldDocument({ ...metadata, def: documentedDefault })
+    if (true || !shouldDocument) {
+      console.log('should not document\n\n\n')
+      console.log({
+        name,
+        type,
+      })
+      removeTypeFromIntrospectionResponse({
+        name,
+        kind: type.kind,
+        introspectionResponse,
+      })
+    }
+  })
+
+  // jsonSchema.properties = [
+  //   [(graphQLSchema.getQueryType() || {}).name, queriesDocumentedDefault],
+  //   [(graphQLSchema.getMutationType() || {}).name, mutationsDocumentedDefault],
+  // ].reduce(
+  //   (acc, [name, documentedDefault]) => {
+  //     const type = getTypeFromIntrospectionResponse({name, introspectionResponse})
+  //     const metadata = _.get(type, metadatasPath, {})
+  //     const property = jsonSchema.properties[name]
+  //     const shouldDocument = property && calculateShouldDocument({ ...metadata, def: documentedDefault })
+
+  //     if (shouldDocument) {
+  //       acc[name] = property
+  //       if (!_.isEmpty(metadata)) {
+  //         _.set(property, METADATA_OUTPUT_PATH, metadata)
+  //       }
+  //     }
+
+  //     return acc
+  //   },
+  //   {}
+  // )
+
+  // return
 }
 
 function hideTypes ({

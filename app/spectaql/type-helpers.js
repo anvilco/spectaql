@@ -206,6 +206,18 @@ function getTypeFromIntrospectionResponse ({
   return name && _.get(introspectionResponse, '__schema.types', []).find((type) => type.name === name && kinds.includes(type.kind))
 }
 
+function removeTypeFromIntrospectionResponse ({
+  name,
+  kind,
+  introspectionResponse,
+} = {}) {
+  const types = _.get(introspectionResponse, '__schema.types', [])
+  const idx = types.findIndex((e) => e.name === name && e.type === kind)
+  if (idx > -1) {
+    types.splice(idx, 1)
+  }
+}
+
 function getFieldFromIntrospectionResponseType ({
   name,
   type: introspectionResponseTypeObject,
@@ -342,6 +354,7 @@ module.exports = {
   getNonNullType,
   digNonNullType,
   getTypeFromIntrospectionResponse,
+  removeTypeFromIntrospectionResponse,
   getFieldFromIntrospectionResponseType,
   getArgFromIntrospectionResponseField,
   returnTypeExistsForJsonSchemaField,
