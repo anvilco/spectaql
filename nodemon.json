@@ -1,5 +1,5 @@
 {
-  "delay": 2000,
+  "delay": 1000,
   "verbose": true,
   "ext": "js,json,yaml,yml,css,scss,hbs,txt,gql,graphql,graphqls",
   "ignore": [

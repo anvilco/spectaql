@@ -107,15 +107,16 @@ module.exports = function(opts) {
     throw new Error('Problem with Introspection Query Response')
   }
 
-  const jsonSchema = jsonSchemaFromIntrospectionResponse(introspectionResponse)
-  const graphQLSchema = graphQLSchemaFromIntrospectionResponse(introspectionResponse)
+  // const jsonSchema = jsonSchemaFromIntrospectionResponse(introspectionResponse)
 
   augmentData({
     introspectionResponse,
-    jsonSchema,
-    graphQLSchema,
+    // jsonSchema,
+    // graphQLSchema,
     introspectionOptions,
   })
+
+  const graphQLSchema = graphQLSchemaFromIntrospectionResponse(introspectionResponse)
 
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
@@ -128,19 +129,21 @@ module.exports = function(opts) {
     throw new Error('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
   }
 
+  // console.log(JSON.stringify(introspectionResponse))
+
   const {
     protocol,
     host,
     pathname,
   } = url.parse(urlToParse)
 
-  const paths = composePaths({ domains, graphQLSchema, jsonSchema })
-  const definitions = jsonSchema.definitions
+  // const paths = composePaths({ domains, graphQLSchema, jsonSchema })
+  // const definitions = jsonSchema.definitions
 
-  if (removeTrailingPeriodFromDescriptions) {
-    removeTrailingPeriodsFromDescriptions(paths)
-    removeTrailingPeriodsFromDescriptions(definitions)
-  }
+  // if (removeTrailingPeriodFromDescriptions) {
+  //   removeTrailingPeriodsFromDescriptions(paths)
+  //   removeTrailingPeriodsFromDescriptions(definitions)
+  // }
 
   // generate specification
   const swaggerSpec = {
@@ -156,10 +159,10 @@ module.exports = function(opts) {
       description: domain.description,
       externalDocs: domain.externalDocs,
     })),
-    paths,
+    // paths,
     securityDefinitions,
-    definitions,
-    jsonSchema,
+    // definitions,
+    // jsonSchema,
   }
 
   return swaggerSpec
