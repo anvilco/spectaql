@@ -1,20 +1,25 @@
 const get = require('lodash.get')
-const set = require('lodash.set')
+// const set = require('lodash.set')
 const unset = require('lodash/unset')
 // const unset = require('lodash.unset')
 const defaults = require('lodash/defaults')
 // const defaults = require('lodash.defaults')
 
 
+// Constructor Options
 const ANALYZE_DEFAULT = true
 const NORMALIZE_DEFAULT = true
 const FIX_QUERY_MUTATION_TYPES_DEFAULT = true
+const REMOVE_UNUSED_TYPES_DEFAULT = true
+
+// Method options
 const REMOVE_FIELDS_OF_TYPE_DEFAULT = true
 const REMOVE_INPUT_FIELDS_OF_TYPE_DEFAULT = true
 const REMOVE_POSSIBLE_TYPES_OF_TYPE_DEFAULT = true
 const REMOVE_ARGUMENTS_OF_TYPE_DEFAULT = true
 const CLEANUP_DEFAULT = true
 
+// GraphQL constants
 const KIND_SCALAR = 'SCALAR'
 const KIND_OBJECT = 'OBJECT'
 const KIND_INTERFACE = 'INTERFACE'
@@ -23,6 +28,12 @@ const KIND_ENUM = 'ENUM'
 const KIND_INPUT_OBJECT = 'INPUT_OBJECT'
 const KIND_LIST = 'LIST'
 const KIND_NON_NULL = 'NON_NULL'
+
+// TODO:
+//
+// interfaces
+//
+// optimize to only clean if "dirty" and when pulling schema out
 
 class Introspection {
 
@@ -35,6 +46,7 @@ class Introspection {
       analyze: ANALYZE_DEFAULT,
       normalize: NORMALIZE_DEFAULT,
       fixQueryAndMutationTypes: FIX_QUERY_MUTATION_TYPES_DEFAULT,
+      removeUnusedTypes: REMOVE_UNUSED_TYPES_DEFAULT,
     })
 
     const response = JSON.parse(JSON.stringify(responseIn))
@@ -88,6 +100,10 @@ class Introspection {
     // AKA Unions
     this.possibleTypesOfTypeMap = {}
     this.argsOfTypeMap = {}
+
+    // Need to keep track of these so that we never remove them for not being referenced
+    this.queryTypeName = get(this.schema, 'queryType.name')
+    this.mutationTypeName = get(this.schema, 'mutationType.name')
 
     for (let typesIdx = 0; typesIdx < this.schema.types.length; typesIdx++) {
       const type = this.schema.types[typesIdx]
@@ -281,6 +297,22 @@ class Introspection {
     }
   }
 
+  removeQuery({ name, cleanup = CLEANUP_DEFAULT }) {
+    if (!this.queryTypeName) {
+      return false
+    }
+
+    this.removeField({ typeKind: KIND_OBJECT, typeName: this.queryTypeName, fieldName: name, cleanup })
+  }
+
+  removeMutation({ name, cleanup = CLEANUP_DEFAULT }) {
+    if (!this.mutationTypeName) {
+      return false
+    }
+
+    this.removeField({ typeKind: KIND_OBJECT, typeName: this.mutationTypeName, fieldName: name, cleanup })
+  }
+
   removeArg({ typeKind, typeName, fieldName, argName, cleanup = CLEANUP_DEFAULT }) {
     const field = this.getField({ typeKind, typeName, fieldName })
     // field.args should alwys be an array, never null
@@ -343,8 +375,20 @@ class Introspection {
     return JSON.parse(JSON.stringify(this.schema))
   }
 
+  // Removes all the undefined gaps created by various removals
   _cleanSchema() {
+    const typesEncountered = new Set()
     const types = []
+
+    // The Query and Mutation Types should never be removed due to not being referenced
+    // by anything
+    if (this.queryTypeName) {
+      typesEncountered.add(buildKey({ kind: KIND_OBJECT, name: this.queryTypeName }))
+    }
+    if (this.mutationTypeName) {
+      typesEncountered.add(buildKey({ kind: KIND_OBJECT, name: this.mutationTypeName }))
+    }
+
     for (const type of this.schema.types) {
       if (!type) {
         continue
@@ -358,11 +402,30 @@ class Introspection {
           continue
         }
 
+        const fieldType = digUnderlyingType(field.type)
+        // Don't add it if its return type does not exist
+        if (!this._hasType(fieldType)) {
+          continue
+        }
+
+        // Keep track of this so we know what we can remove
+        typesEncountered.add(buildKey(fieldType))
+
         const args = []
         for (const arg of (field.args || [])) {
           if (isUndef(arg)) {
             continue
           }
+
+          const argType = digUnderlyingType(arg.type)
+          // Don't add it if its return type does not exist
+          if (!this._hasType(argType)) {
+            continue
+          }
+
+          // Keep track of this so we know what we can remove
+          typesEncountered.add(buildKey(argType))
+
           args.push(arg)
         }
 
@@ -375,10 +438,21 @@ class Introspection {
       type.fields = fields.length ? fields : null
 
       const inputFields = []
+      // Don't add it in if it's undefined, or the type is gone
       for (const inputField of (type.inputFields || [])) {
         if (isUndef(inputField)) {
           continue
         }
+
+        const inputFieldType = digUnderlyingType(inputField.type)
+        // Don't add it if its return type does not exist
+        if (!this._hasType(inputFieldType)) {
+          continue
+        }
+
+        // Keep track of this so we know what we can remove
+        typesEncountered.add(buildKey(inputFieldType))
+
         inputFields.push(inputField)
       }
 
@@ -390,6 +464,18 @@ class Introspection {
         if (isUndef(possibleType)) {
           continue
         }
+
+        // possibleTypes array entries have no envelope for the type
+        // so do not do possibleType.type here
+        const possibleTypeType = digUnderlyingType(possibleType)
+        // Don't add it if its return type does not exist
+        if (!this._hasType(possibleTypeType)) {
+          continue
+        }
+
+        // Keep track of this so we know what we can remove
+        typesEncountered.add(buildKey(possibleTypeType))
+
         possibleTypes.push(possibleType)
       }
 
@@ -397,14 +483,22 @@ class Introspection {
       type.possibleTypes = possibleTypes.length ? possibleTypes : null
     }
 
+    // Only include Types that we encountered - if the options say to do so
+    const possiblyFilteredTypes = this.opts.removeUnusedTypes ? types.filter((type) => typesEncountered.has(buildKey(type))) : types
+
     // Replace the Schema
     this.schema = {
       ...this.schema,
-      types,
+      types: possiblyFilteredTypes,
     }
 
     // Need to re-analyze it, too
     this.analyze()
+  }
+
+  _hasType({ kind, name }) {
+    const key = buildKey({ kind, name })
+    return Object.prototype.hasOwnProperty.call(this.typeToIndexMap, key)
   }
 }
 

@@ -26,6 +26,10 @@ describe.only('Introspection', function () {
       myTypes: [MyType!]
     }`)
 
+  def('MutationType', () => `type Mutation {
+      createYetAnotherType(name: String!): YetAnotherType!
+    }`)
+
   def('schemaSDLBase', () => `
 
     # From the GraphQL docs:
@@ -57,6 +61,8 @@ describe.only('Introspection', function () {
       | MyOtherType
 
     ${$.QueryType}
+
+    ${$.MutationType}
 
     type MyType {
       # The control
@@ -137,6 +143,10 @@ describe.only('Introspection', function () {
     type MyOtherType {
       fieldString(argString: String): String
     }
+
+    type YetAnotherType {
+      fieldString: String
+    }
   `
   )
   def('schemaSDL', () => $.schemaSDLBase)
@@ -198,6 +208,9 @@ describe.only('Introspection', function () {
 
     // Sanity checks
     expect(isEqual($.response, response)).to.be.true
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
+
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', response })).to.be.ok
     expect(findType({ kind: KIND_SCALAR, name: 'SecretScalar', response })).to.be.ok
 
@@ -240,6 +253,8 @@ describe.only('Introspection', function () {
     introspection.removeType({ kind: KIND_SCALAR, name: 'SecretScalar' })
     response = introspection.getResponse()
     expect(isEqual($.response, response)).to.be.false
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
 
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', response })).to.be.ok
     expect(findType({ kind: KIND_SCALAR, name: 'SecretScalar', response })).to.not.be.ok
@@ -263,6 +278,8 @@ describe.only('Introspection', function () {
 
     introspection.removeEnumValue({ name: 'SecretEnum', value: 'ENUM2' })
     response = introspection.getResponse()
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
 
     // Removed that value so only 2 left
     secretEnum = findType({ kind: KIND_ENUM, name: 'SecretEnum', response })
@@ -284,6 +301,8 @@ describe.only('Introspection', function () {
 
     introspection.removeType({ kind: KIND_ENUM, name: 'SecretEnum' })
     response = introspection.getResponse()
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
 
     expect(findType({ kind: KIND_ENUM, name: 'SecretEnum', response })).to.not.be.ok
 
@@ -302,6 +321,8 @@ describe.only('Introspection', function () {
     expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', argName: 'argString', response })).to.be.ok
     introspection.removeArg({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', argName: 'argString' })
     response = introspection.getResponse()
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
     expect(findArgOnFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', argName: 'argString', response })).to.not.be.ok
 
     // Remove a Field from a Type
@@ -309,7 +330,12 @@ describe.only('Introspection', function () {
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', response })).to.be.ok
     introspection.removeField({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString' })
     response = introspection.getResponse()
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', response })).to.not.be.ok
+
+    // console.log(introspection)
+    // console.log(JSON.stringify(response))
 
     // Remove possible type from a Union Type
 
@@ -324,6 +350,8 @@ describe.only('Introspection', function () {
 
     introspection.removePossibleTypesOfType({ kind: KIND_OBJECT, name: 'MyType' })
     response = introspection.getResponse()
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
 
     unionType = findType({ kind: KIND_UNION, name: 'SecretUnion', response })
     expect(unionType).to.be.ok
@@ -340,12 +368,38 @@ describe.only('Introspection', function () {
 
     introspection.removeType({ kind: KIND_UNION, name: 'SecretUnion' })
     response = introspection.getResponse()
+    expect(findType({ kind: KIND_OBJECT, name: 'Query', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
 
     expect(findType({ kind: KIND_UNION, name: 'SecretUnion', response})).to.not.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnion', response })).to.not.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionArray', response })).to.not.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArray', response })).to.not.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArrayOfNonNulls', response })).to.not.be.ok
+
+
+    // Remove the myTypes Query...which should remove MyType as well now that there are no references to it
+
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'Query', fieldName: 'myTypes', response })).to.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'MyType', response })).to.be.ok
+
+    introspection.removeQuery({ name: 'myTypes' })
+    response = introspection.getResponse()
+
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'Query', fieldName: 'myTypes', response })).to.not.be.ok
+    expect(findType({ kind: KIND_OBJECT, name: 'MyType', response })).to.not.be.ok
+
+    // Remove YetAnotherType...which should remove the createYetAnotherType Mutation as well now that there are no
+    // references to it
+
+    expect(findType({ kind: KIND_OBJECT, name: 'YetAnotherType', response })).to.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'Mutation', fieldName: 'createYetAnotherType', response })).to.be.ok
+
+    introspection.removeType({ kind: KIND_OBJECT, name: 'YetAnotherType' })
+    response = introspection.getResponse()
+
+    expect(findType({ kind: KIND_OBJECT, name: 'YetAnotherType', response })).to.not.be.ok
+    expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'Mutation', fieldName: 'createYetAnotherType', response })).to.not.be.ok
 
     // console.log(introspection.inputFieldsOfTypeMap)
     // console.log(JSON.stringify(response))
@@ -380,13 +434,4 @@ function findInputFieldOnInputType({ typeName, inputFieldName, response }) {
   }
 
   return (type.inputFields || []).find((inputField => inputField.name === inputFieldName ))
-}
-
-function findPossibleTypedOnUnionType({ typeName, possibleTypeKind, possibleTypeName, response }) {
-  const type = findType({ kind: KIND_UNION, name: typeName, response })
-  if (!type) {
-    return false
-  }
-
-  return (type.possibleTypes || []).find((possibleType => possibleType.name === possibleTypeName && possibleType.kind === possibleTypeKind ))
 }
