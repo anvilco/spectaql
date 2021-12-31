@@ -203,7 +203,7 @@ class Introspection {
     return clonedResponse
   }
 
-  getType({ kind, name }) {
+  getType({ kind = KIND_OBJECT, name }) {
     return this.schema.types[this.getTypeIndex({ kind, name })]
   }
 
@@ -214,6 +214,22 @@ class Introspection {
     }
 
     return false
+  }
+
+  getQueryType() {
+    if (!this.queryTypeName) {
+      return false
+    }
+
+    return this.getType({ kind: KIND_OBJECT, name: this.queryTypeName })
+  }
+
+  getMutationType() {
+    if (!this.mutationTypeName) {
+      return false
+    }
+
+    return this.getType({ kind: KIND_OBJECT, name: this.mutationTypeName })
   }
 
   getField({ typeKind, typeName, fieldName }) {
@@ -235,7 +251,7 @@ class Introspection {
   }
 
   removeType({
-    kind,
+    kind = KIND_OBJECT,
     name,
     removeFieldsOfType = REMOVE_FIELDS_OF_TYPE_DEFAULT,
     removeInputFieldsOfType = REMOVE_INPUT_FIELDS_OF_TYPE_DEFAULT,
@@ -297,6 +313,21 @@ class Introspection {
     }
   }
 
+  removeArg({ typeKind, typeName, fieldName, argName, cleanup = CLEANUP_DEFAULT }) {
+    const field = this.getField({ typeKind, typeName, fieldName })
+    // field.args should alwys be an array, never null
+    if (!field) {
+      return false
+    }
+
+    // TODO: build a map for the locations of args on fields?
+    field.args = field.args.filter((arg) => arg.name !== argName)
+
+    if (cleanup) {
+      this._cleanSchema()
+    }
+  }
+
   removeQuery({ name, cleanup = CLEANUP_DEFAULT }) {
     if (!this.queryTypeName) {
       return false
@@ -311,21 +342,6 @@ class Introspection {
     }
 
     this.removeField({ typeKind: KIND_OBJECT, typeName: this.mutationTypeName, fieldName: name, cleanup })
-  }
-
-  removeArg({ typeKind, typeName, fieldName, argName, cleanup = CLEANUP_DEFAULT }) {
-    const field = this.getField({ typeKind, typeName, fieldName })
-    // field.args should alwys be an array, never null
-    if (!field) {
-      return false
-    }
-
-    // TODO: build a map for the locations of args on fields?
-    field.args = field.args.filter((arg) => arg.name !== argName)
-
-    if (cleanup) {
-      this._cleanSchema()
-    }
   }
 
   removeFieldsOfType({ kind, name, cleanup = CLEANUP_DEFAULT }) {

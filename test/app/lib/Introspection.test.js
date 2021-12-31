@@ -1,5 +1,3 @@
-// const util = require('util')
-const get = require('lodash.get')
 const isEqual = require('lodash/isEqual')
 
 const Introspection = require('app/lib/Introspection')
@@ -13,7 +11,6 @@ const {
 
 const {
   introspectionResponseFromSchemaSDL,
-  graphQLSchemaFromIntrospectionResponse,
 } = require('app/spectaql/graphql-loaders')
 
 const {
@@ -196,15 +193,8 @@ describe.only('Introspection', function () {
   })
 
   it('works', function () {
-    // const response = $.response
-    console.log(JSON.stringify($.response))
     const introspection = new Introspection($.response)
-    console.log(introspection.inputFieldsOfTypeMap)
     let response = introspection.getResponse()
-    // console.log(util.inspect(response, {depth: null}))
-    // console.log(JSON.stringify(response))
-    // let result = introspection.removeType({ kind: })
-    // delete response.__schema.queryType
 
     // Sanity checks
     expect(isEqual($.response, response)).to.be.true
@@ -334,9 +324,6 @@ describe.only('Introspection', function () {
     expect(findType({ kind: KIND_OBJECT, name: 'Mutation', response })).to.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldString', response })).to.not.be.ok
 
-    // console.log(introspection)
-    // console.log(JSON.stringify(response))
-
     // Remove possible type from a Union Type
 
     let unionType = findType({ kind: KIND_UNION, name: 'SecretUnion', response })
@@ -376,7 +363,6 @@ describe.only('Introspection', function () {
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionArray', response })).to.not.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArray', response })).to.not.be.ok
     expect(findFieldOnType({ typeKind: KIND_OBJECT, typeName: 'MyType', fieldName: 'fieldSecretUnionNonNullArrayOfNonNulls', response })).to.not.be.ok
-
 
     // Remove the myTypes Query...which should remove MyType as well now that there are no references to it
 
