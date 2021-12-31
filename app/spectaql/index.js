@@ -109,12 +109,14 @@ module.exports = function(opts) {
 
   // const jsonSchema = jsonSchemaFromIntrospectionResponse(introspectionResponse)
 
-  augmentData({
+  introspectionResponse = augmentData({
     introspectionResponse,
     // jsonSchema,
     // graphQLSchema,
     introspectionOptions,
   })
+
+  // console.log(JSON.stringify({introspectionResponse}))
 
   const graphQLSchema = graphQLSchemaFromIntrospectionResponse(introspectionResponse)
 

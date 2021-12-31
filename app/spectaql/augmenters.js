@@ -1,6 +1,6 @@
 const _ = require('lodash')
 
-const Introspection = require('../lib/Introspection')
+const IntrospectionManipulator = require('../lib/Introspection')
 
 const {
   getTypeFromIntrospectionResponse,
@@ -29,10 +29,17 @@ const calculateShouldDocument = ({ undocumented, documented, def }) => {
 }
 
 function augmentData (args) {
+  const introspectionManipulator = new IntrospectionManipulator(args.introspectionResponse)
+  args = {
+    ...args,
+    introspectionManipulator,
+  }
   hideThingsBasedOnMetadata(args)
   // addExamplesFromMetadata(args)
   // addExamplesDynamically(args)
   // addDeprecationThings(args)
+
+  return introspectionManipulator.getResponse()
 }
 
 const isInputType = ({ name, introspectionResponse }) => {
@@ -337,37 +344,30 @@ function _addExamplesToThings (args = {}) {
 
 // TODO: Separate out the metadata copying into JSON Schema results into its own thing?
 function hideThingsBasedOnMetadata ({
-  introspectionResponse,
-  jsonSchema,
-  graphQLSchema,
+  introspectionManipulator,
   introspectionOptions,
 }) {
 
   // Hide them Query/Mutation Properties
   hideQueriesAndMutations({
-    introspectionResponse,
-    graphQLSchema,
+    introspectionManipulator,
     introspectionOptions,
   })
 
   // Hide the Type Definitions
-  // hideTypes({
-  //   introspectionResponse,
-  //   jsonSchema,
-  //   graphQLSchema,
-  //   introspectionOptions,
-  // })
+  hideTypes({
+    introspectionManipulator,
+    introspectionOptions,
+  })
 
   // This hides fields on Types as well as individual queries and mutations.
   //
   // ** Should be called after hideTypes so that fields can be hidden
   // if their return Type is also hidden - if the options say to do that **
-  // hideFields({
-  //   introspectionResponse,
-  //   jsonSchema,
-  //   graphQLSchema,
-  //   introspectionOptions,
-  // })
+  hideFields({
+    introspectionManipulator,
+    introspectionOptions,
+  })
 
 
   // This hides arguments on Type Fields as well as on individual queries and mutationsa.
@@ -377,23 +377,19 @@ function hideThingsBasedOnMetadata ({
   //
   // Actually, the return Type based Arg hiding is not yet implemented, but this should still
   // run after hideTypes
-  // hideArguments({
-  //   introspectionResponse,
-  //   jsonSchema,
-  //   graphQLSchema,
-  //   introspectionOptions,
-  // })
+  hideArguments({
+    introspectionManipulator,
+    introspectionOptions,
+  })
 
   return {
-    introspectionResponse,
-    jsonSchema,
-    graphQLSchema,
+    introspectionManipulator,
     introspectionOptions,
   }
 }
 
 function hideQueriesAndMutations ({
-  introspectionResponse,
+  introspectionManipulator,
   introspectionOptions,
 }) {
   const {
@@ -402,17 +398,6 @@ function hideQueriesAndMutations ({
     mutationsDocumentedDefault,
   } = introspectionOptions
 
-  const schema = introspectionResponse.__schema
-
-  console.log(schema)
-
-  const introspection = new Introspection({ response: introspectionResponse })
-  // console.log({
-  //   query: introspection.getType({ kind: 'OBJECT', name: 'Query'})
-  // })
-  // console.log({introspection})
-  console.log({fieldsOfTypeMap: introspection.fieldsOfTypeMap})
-
   const {
     queryType: {
       name: queryTypeName,
@@ -420,64 +405,26 @@ function hideQueriesAndMutations ({
     mutationType: {
       name: mutationTypeName,
     },
-  } = schema
+  } = introspectionManipulator.getResponse().__schema
 
   ;[
     [queryTypeName, queriesDocumentedDefault],
     [mutationTypeName, mutationsDocumentedDefault],
-  ].forEach((name, documentedDefault) => {
-    const type = getTypeFromIntrospectionResponse({name, introspectionResponse})
-    console.log({
-      name,
-      type,
-    })
+  ].forEach(([name, documentedDefault]) => {
+    const type = introspectionManipulator.getType({ name })
     if (!type) {
       return
     }
     const metadata = _.get(type, metadatasPath, {})
     const shouldDocument = calculateShouldDocument({ ...metadata, def: documentedDefault })
-    if (true || !shouldDocument) {
-      console.log('should not document\n\n\n')
-      console.log({
-        name,
-        type,
-      })
-      removeTypeFromIntrospectionResponse({
-        name,
-        kind: type.kind,
-        introspectionResponse,
-      })
+    if (!shouldDocument) {
+      introspectionManipulator.removeType({ name })
     }
   })
-
-  // jsonSchema.properties = [
-  //   [(graphQLSchema.getQueryType() || {}).name, queriesDocumentedDefault],
-  //   [(graphQLSchema.getMutationType() || {}).name, mutationsDocumentedDefault],
-  // ].reduce(
-  //   (acc, [name, documentedDefault]) => {
-  //     const type = getTypeFromIntrospectionResponse({name, introspectionResponse})
-  //     const metadata = _.get(type, metadatasPath, {})
-  //     const property = jsonSchema.properties[name]
-  //     const shouldDocument = property && calculateShouldDocument({ ...metadata, def: documentedDefault })
-
-  //     if (shouldDocument) {
-  //       acc[name] = property
-  //       if (!_.isEmpty(metadata)) {
-  //         _.set(property, METADATA_OUTPUT_PATH, metadata)
-  //       }
-  //     }
-
-  //     return acc
-  //   },
-  //   {}
-  // )
-
-  // return
 }
 
 function hideTypes ({
-  introspectionResponse,
-  jsonSchema,
+  introspectionManipulator,
   introspectionOptions,
 }) {
   const {
@@ -486,28 +433,17 @@ function hideTypes ({
     typeDocumentedDefault: documentedDefault,
   } = introspectionOptions
 
-  jsonSchema.definitions =
-    !typesDocumented ?
-    {} :
-    Object.entries(jsonSchema.definitions).reduce(
-      (acc, [name, definition]) => {
-        const type = getTypeFromIntrospectionResponse({name, introspectionResponse})
-        const metadata = _.get(type, metadatasPath, {})
-        const shouldDocument = !!definition && calculateShouldDocument({ ...metadata, def: documentedDefault })
 
-        if (shouldDocument) {
-          acc[name] = definition
-          if (!_.isEmpty(metadata)) {
-            _.set(definition, METADATA_OUTPUT_PATH, metadata)
-          }
-        }
+  const types = introspectionManipulator.getResponse().__schema.types
 
-        return acc
-      },
-      {}
-    )
+  for (const type of types) {
+    const metadata = _.get(type, metadatasPath, {})
+    const shouldDocument = !!typesDocumented && calculateShouldDocument({ ...metadata, def: documentedDefault })
 
-  return
+    if (!shouldDocument) {
+      introspectionManipulator.removeType({ kind: type.kind, name: type.name, })
+    }
+  }
 }
 
 // This handles fields on Types, as well as individual queries
@@ -517,8 +453,9 @@ function hideTypes ({
 // if their return Type is also hidden - if the options say to do that **
 function hideFields(args = {}) {
   const {
-    jsonSchema,
-    introspectionResponse,
+    introspectionManipulator,
+    // jsonSchema,
+    // introspectionResponse,
     introspectionOptions,
   } = args
 
@@ -540,60 +477,32 @@ function hideFields(args = {}) {
     'Mutation': hideMutationsWithUndocumentedReturnType,
   }
 
-  _goThroughThings({
-    ...args,
-    queryDefault: queryDocumentedDefault,
-    mutationDefault: mutationDocumentedDefault,
-    typeDefault: fieldDocumentedDefault,
+  const queryType = introspectionManipulator.getQueryType()
+  const mutationType = introspectionManipulator.getMutationType()
 
-    fn: ({
-      typeName,
-      typeDefinition,
-      defaultShowHide,
-      typeOfThing, // "Type" | "Query" | "Mutation"
-    }) => {
-      // Protect against non-Fields this way
-      if (!typeDefinition.properties) {
-        return
+  const types = introspectionManipulator.getResponse().__schema.types
+
+  for (const type of types) {
+    let defaultShowHide = fieldDocumentedDefault
+    if (queryType && type === queryType) {
+      defaultShowHide = queryDocumentedDefault
+    } else if (mutationType && type === mutationType) {
+      defaultShowHide = mutationDocumentedDefault
+    }
+
+    for (const field of (type.fields || [])) {
+      const metadata = _.get(field, metadatasPath, {})
+      const shouldDocument = calculateShouldDocument({ ...metadata, def: defaultShowHide })
+      if (!shouldDocument) {
+        introspectionManipulator.removeField({ typeKind: type.kind, typeName: type.name, fieldName: field.name })
       }
-
-      typeDefinition.properties = Object.entries(typeDefinition.properties).reduce(
-        (acc, [fieldName, fieldDefinition]) => {
-          if (thingTypeToHideIfReturnTypeUndocumentedMap[typeOfThing] &&
-            !returnTypeExistsForJsonSchemaField({
-              jsonSchema,
-              fieldDefinition,
-            })
-          ) {
-
-            return acc
-          }
-
-          const type = getTypeFromIntrospectionResponse({name: typeName, introspectionResponse})
-          const field = getFieldFromIntrospectionResponseType({ name: fieldName, type })
-          const metadata = _.get(field, metadatasPath, {})
-          const shouldDocument = !!fieldDefinition && calculateShouldDocument({ ...metadata, def: defaultShowHide })
-
-          if (shouldDocument) {
-            acc[fieldName] = fieldDefinition
-            if (!_.isEmpty(metadata)) {
-              _.set(fieldDefinition, METADATA_OUTPUT_PATH, metadata)
-            }
-          }
-
-          return acc
-        },
-        {}
-      )
-    },
-   })
-
-  return
+    }
+  }
 }
 
 function hideArguments(args = {}) {
   const {
-    introspectionResponse,
+    introspectionManipulator,
     introspectionOptions,
   } = args
 
@@ -604,59 +513,30 @@ function hideArguments(args = {}) {
     argDocumentedDefault,
   } = introspectionOptions
 
-  _goThroughThings({
-    ...args,
-    queryDefault: queryArgDocumentedDefault,
-    mutationDefault: mutationArgDocumentedDefault,
-    typeDefault: argDocumentedDefault,
-    fn: ({
-      typeName,
-      typeDefinition,
-      defaultShowHide,
-    }) => {
-      // Protect against non-fields this way
-      if (!typeDefinition.properties) {
-        return
-      }
 
-      Object.entries(typeDefinition.properties).forEach(
-        ([fieldName, fieldDefinition]) => {
-          const type = getTypeFromIntrospectionResponse({name: typeName, introspectionResponse})
-          const field = getFieldFromIntrospectionResponseType({ name: fieldName, type })
+  const queryType = introspectionManipulator.getQueryType()
+  const mutationType = introspectionManipulator.getMutationType()
 
-          // If no field or no arguments, just move on
-          if (
-            !field ||
-            _.isEmpty(
-              _.get(fieldDefinition, 'properties.arguments.properties')
-            )
-          ) {
-            return
-          }
+  const types = introspectionManipulator.getResponse().__schema.types
 
-          fieldDefinition.properties.arguments.properties = Object.entries(fieldDefinition.properties.arguments.properties).reduce(
-            (acc, [name, definition]) => {
-              const arg = getArgFromIntrospectionResponseField({ name, field })
-              const metadata = _.get(arg, metadatasPath, {})
-
-              const shouldDocument = !!definition && calculateShouldDocument({ ...metadata, def: defaultShowHide })
-              if (shouldDocument) {
-                acc[name] = definition
-                if (!_.isEmpty(metadata)) {
-                  _.set(definition, METADATA_OUTPUT_PATH, metadata)
-                }
-              }
-
-              return acc
-            },
-            {}
-          )
-        },
-      )
+  for (const type of types) {
+    let defaultShowHide = argDocumentedDefault
+    if (queryType && type === queryType) {
+      defaultShowHide = queryArgDocumentedDefault
+    } else if (mutationType && type === mutationType) {
+      defaultShowHide = mutationArgDocumentedDefault
     }
-  })
 
-  return
+    for (const field of (type.fields || [])) {
+      for (const arg of (field.args || [])) {
+        const metadata = _.get(arg, metadatasPath, {})
+        const shouldDocument = calculateShouldDocument({ ...metadata, def: defaultShowHide })
+        if (!shouldDocument) {
+          introspectionManipulator.removeArg({ typeKind: type.kind, typeName: type.name, fieldName: field.name, argName: arg.name })
+        }
+      }
+    }
+  }
 }
 
 function addDeprecationThings (args = {}) {
