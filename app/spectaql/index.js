@@ -49,8 +49,25 @@ module.exports = function(opts) {
     securityDefinitions,
   } = spec
 
+  // Find the 1 marked Production. Or take the first one if there are any. Or use
+  // the URL provided
+  const urlToParse =
+    info['x-swaggerUrl']
+    || (servers.find((server) => server.production === true) || servers[0] || {}).url
+    || introspectionUrl
+
+  if (!urlToParse) {
+    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
+  }
+
   let done = false
   let introspectionResponse
+
+  const {
+    protocol,
+    host,
+    pathname,
+  } = url.parse(urlToParse)
 
   if (schemaFile) {
     const schema = loadSchemaFromSDLFile({ pathToFile: schemaFile })
@@ -109,43 +126,27 @@ module.exports = function(opts) {
 
   // const jsonSchema = jsonSchemaFromIntrospectionResponse(introspectionResponse)
 
-  introspectionResponse = augmentData({
+  const augmentedIntrospectionResponse = augmentData({
     introspectionResponse,
     // jsonSchema,
     // graphQLSchema,
     introspectionOptions,
   })
 
-  // console.log(JSON.stringify({introspectionResponse}))
-
-  const graphQLSchema = graphQLSchemaFromIntrospectionResponse(introspectionResponse)
-
-  // Find the 1 marked Production. Or take the first one if there are any. Or use
-  // the URL provided
-  const urlToParse =
-    info['x-swaggerUrl']
-    || (servers.find((server) => server.production === true) || servers[0] || {}).url
-    || introspectionUrl
-
-  if (!urlToParse) {
-    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
-  }
-
-  // console.log(JSON.stringify(introspectionResponse))
-
-  const {
-    protocol,
-    host,
-    pathname,
-  } = url.parse(urlToParse)
-
   // const paths = composePaths({ domains, graphQLSchema, jsonSchema })
   // const definitions = jsonSchema.definitions
 
-  // if (removeTrailingPeriodFromDescriptions) {
-  //   removeTrailingPeriodsFromDescriptions(paths)
-  //   removeTrailingPeriodsFromDescriptions(definitions)
-  // }
+  if (removeTrailingPeriodFromDescriptions) {
+    removeTrailingPeriodsFromDescriptions(augmentedIntrospectionResponse)
+    // removeTrailingPeriodsFromDescriptions(definitions)
+  }
+
+
+  const graphQLSchema = graphQLSchemaFromIntrospectionResponse(augmentedIntrospectionResponse)
+
+  console.log(JSON.stringify({augmentedIntrospectionResponse, graphQLSchema}))
+
+
 
   // generate specification
   const swaggerSpec = {

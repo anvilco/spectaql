@@ -1,4 +1,7 @@
 const _ = require('lodash')
+
+const IntrospectionManipulator = require('app/lib/Introspection')
+
 const {
   introspectionResponseFromSchemaSDL,
   jsonSchemaFromIntrospectionResponse,
@@ -19,7 +22,7 @@ const {
   addExamplesDynamically,
 } = require('app/spectaql/augmenters')
 
-describe('augmenters', function () {
+describe.only('augmenters', function () {
   def('schemaSDLBase', () => `
     type MyType {
       myField(
@@ -144,126 +147,40 @@ describe('augmenters', function () {
     metadatasWritePath: $.metadatasPath,
   }))
 
-  def('jsonSchema', () => jsonSchemaFromIntrospectionResponse($.introspectionResponse))
+  def('introspectionManipulator', () => new IntrospectionManipulator($.introspectionResponse, $.introspectionManipulatorOptions))
+
   def('graphQLSchema', () => graphQLSchemaFromIntrospectionResponse($.introspectionResponse))
 
   describe('hideThingsBasedOnMetadata', function () {
     def('result', () => hideThingsBasedOnMetadata({
-      introspectionResponse: $.introspectionResponse,
-      jsonSchema: $.jsonSchema,
-      graphQLSchema: $.graphQLSchema,
-      introspectionOptions: $.introspectionOptions,
+        introspectionManipulator: $.introspectionManipulator,
+        introspectionOptions: $.introspectionOptions,
     }))
 
-    it('shows everything when it should', function () {
-      const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-      const { jsonSchema: jsonSchemaAfter } = $.result
-      // Removes the 'documentation' property from every level before comparing - yay!
-      expect(jsonSchemaAfter).excludingEvery('documentation').to.eql(jsonSchemaBefore)
+    def('response', () => $.result.introspectionManipulator.getResponse())
+
+    it('shows everything when nothing was told to be hidden', function () {
+      const responseBefore = _.cloneDeep($.introspectionResponse)
+      const response = $.response
+      expect(response).to.eql(responseBefore)
     })
 
-    describe('metadata transformation', function () {
-      // A nested path to the documentation-related metadata
-      def('metadatasPath', 'metadata.documentation')
-      def('theMetadata', () => ({ foo: 'bar' }))
-      def('metadata', () => ({
-        'OBJECT': {
-          MyType: {
-            metadata: { documentation: $.theMetadata },
-            fields: {
-              myField: {
-                metadata: { documentation: $.theMetadata },
-                args: {
-                  myArg: {
-                    metadata: { documentation: $.theMetadata }
-                  }
-                }
-              }
-            }
-          },
-          Query: {
-            metadata: { documentation: $.theMetadata },
-            fields: {
-              myQuery: {
-                metadata: { documentation: $.theMetadata },
-                args: {
-                  myArg: {
-                    metadata: { documentation: $.theMetadata }
-                  }
-                }
-              }
-            }
-          },
-          Mutation: {
-            metadata: { documentation: $.theMetadata },
-            fields: {
-              myMutation: {
-                metadata: { documentation: $.theMetadata },
-                args: {
-                  myArg: {
-                    metadata: { documentation: $.theMetadata }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }))
-
-      it('passes metadata through properly', function () {
-        const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-        const { jsonSchema } = $.result
-        expect(jsonSchemaBefore).to.not.eql(jsonSchema)
-
-        ;[
-          [
-            'definitions.MyType',
-            'properties.myField',
-            'properties.arguments.properties.myArg'
-          ],
-          [
-            'properties.Query',
-            'properties.myQuery',
-            'properties.arguments.properties.myArg'
-          ],
-          [
-            'properties.Mutation',
-            'properties.myMutation',
-            'properties.arguments.properties.myArg'
-          ]
-        ].forEach((pathSet) => {
-          pathSet.reduce(
-            (paths, nextPath) => {
-              paths.push(nextPath)
-              const resolvedPath = paths.join('.')
-              expect(
-                // Despite the key the metadata was in before, it comes out in the "metadata" key
-                _.get(jsonSchema, resolvedPath + '.metadata')
-              ).to.eql($.theMetadata)
-
-              return paths
-            },
-            []
-          )
-        })
-      })
-    })
-
-    describe('Types', function () {
+    describe.only('Types', function () {
       it('shows at least some things by default', function () {
-        const { jsonSchema } = $.result
-        expect(jsonSchema.definitions).to.be.an('object').that.has.any.keys('MyType')
+        expect($.introspectionManipulator.getType({ name: 'MyType' })).to.be.ok
+        expect($.introspectionManipulator.getField({ typeName: 'MyType', fieldName: 'myField' })).to.be.ok
+        expect($.introspectionManipulator.getArg({ typeName: 'MyType', fieldName: 'myField', argName: 'myArg' })).to.be.ok
       })
 
       context('typesDocumented is false', function () {
         def('typesDocumented', false)
 
         it('does not show any types', function () {
-          const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-          const { jsonSchema } = $.result
-          expect(jsonSchemaBefore).to.not.eql(jsonSchema)
-
-          expect(jsonSchema.definitions).to.eql({})
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.not.eql(responseBefore)
+          expect(response.__schema.types).to.eql([])
+          expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
         })
 
         context('metadata says MyType should be documented', function () {
@@ -272,11 +189,11 @@ describe('augmenters', function () {
           })
 
           it('still does not show any types', function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
-
-            expect(jsonSchema.definitions).to.eql({})
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
+            expect(response.__schema.types).to.eql([])
+            expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
           })
         })
       })
@@ -285,11 +202,12 @@ describe('augmenters', function () {
         def('typeDocumentedDefault', false)
 
         it('does not show any types', function () {
-          const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-          const { jsonSchema } = $.result
-          expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.not.eql(responseBefore)
 
-          expect(jsonSchema.definitions).to.eql({})
+          expect(response.__schema.types).to.eql([])
+          expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
         })
 
         context('metadata directive says MyType should be documented', function () {
@@ -297,13 +215,13 @@ describe('augmenters', function () {
             return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, { documented: true })
           })
 
-          it('only documents MyType', function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+          it.only('only documents MyType', function () {
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
 
-            // Chai says this means only the provided keys, and no more.
-            expect(jsonSchema.definitions).to.be.an('object').that.has.all.keys('MyType')
+            expect(response.__schema.types).to.be.an('array').of.length(1)
+            expect($.introspectionManipulator.getType({ name: 'MyType' })).to.be.ok
           })
         })
       })

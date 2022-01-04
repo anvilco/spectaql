@@ -16,7 +16,7 @@ const REMOVE_UNUSED_TYPES_DEFAULT = true
 const REMOVE_FIELDS_OF_TYPE_DEFAULT = true
 const REMOVE_INPUT_FIELDS_OF_TYPE_DEFAULT = true
 const REMOVE_POSSIBLE_TYPES_OF_TYPE_DEFAULT = true
-const REMOVE_ARGUMENTS_OF_TYPE_DEFAULT = true
+const REMOVE_ARGS_OF_TYPE_DEFAULT = true
 const CLEANUP_DEFAULT = true
 
 // GraphQL constants
@@ -37,8 +37,8 @@ const KIND_NON_NULL = 'NON_NULL'
 
 class Introspection {
 
-  constructor(responseIn, opts = {}) {
-    if (!responseIn) {
+  constructor(response, opts = {}) {
+    if (!response) {
       throw new Error('No response provided!')
     }
 
@@ -47,8 +47,18 @@ class Introspection {
       normalize: NORMALIZE_DEFAULT,
       fixQueryAndMutationTypes: FIX_QUERY_MUTATION_TYPES_DEFAULT,
       removeUnusedTypes: REMOVE_UNUSED_TYPES_DEFAULT,
+      removeFieldsWithMissingTypes: true,
+      removeArgsWithMissingTypes: true,
+      removeInputFieldsWithMissingTypes: true,
+      removePossibleTypesOfMissingTypes: true,
     })
 
+    // The rest of the initialization can be handled by this public method
+    this.setResponse(response)
+  }
+
+  // Set/change the response on the instance
+  setResponse(responseIn) {
     const response = JSON.parse(JSON.stringify(responseIn))
 
     const normalizedResponse = Introspection.normalizeIntrospectionResponse(response)
@@ -241,6 +251,16 @@ class Introspection {
     return type.fields.find((field) => field.name === fieldName)
   }
 
+  // TODO: add test
+  getArg({ typeKind, typeName, fieldName, argName }) {
+    const field = this.getField({ typeKind, typeName, fieldName })
+    if (!(field && field.args.length)) {
+      return
+    }
+
+    return field.args.find((arg) => arg.name === argName)
+  }
+
   fixQueryAndMutationTypes(response) {
     for (const [key, defaultTypeName] of [['queryType', 'Query'], ['mutationType', 'Mutation']]) {
       const queryOrMutationTypeName = get(response, `__schema.${key}.name`)
@@ -253,10 +273,11 @@ class Introspection {
   removeType({
     kind = KIND_OBJECT,
     name,
+    opts = {},
     removeFieldsOfType = REMOVE_FIELDS_OF_TYPE_DEFAULT,
     removeInputFieldsOfType = REMOVE_INPUT_FIELDS_OF_TYPE_DEFAULT,
     removePossibleTypesOfType = REMOVE_POSSIBLE_TYPES_OF_TYPE_DEFAULT,
-    removeArgumentsOfType = REMOVE_ARGUMENTS_OF_TYPE_DEFAULT,
+    removeArgsOfType = REMOVE_ARGS_OF_TYPE_DEFAULT,
     cleanup = CLEANUP_DEFAULT,
   }) {
     const typeKey = buildKey({ kind, name })
@@ -265,13 +286,17 @@ class Introspection {
     }
     const typeIndex =  this.typeToIndexMap[typeKey]
     const originalSchema = this._cloneSchema()
+    const originalOpts = this.opts
+    const newOpts = defaults(opts, this.opts)
+    this.setOpts(newOpts)
+
     // If we are going to clean up afterwards, then the others should not have to
     const shouldOthersClean = !cleanup
     try {
       delete this.schema.types[typeIndex]
       delete this.typeToIndexMap[typeKey]
 
-      if (removeArgumentsOfType) {
+      if (removeArgsOfType) {
         this.removeArgumentsOfType({ kind, name, cleanup: shouldOthersClean })
       }
 
@@ -296,6 +321,8 @@ class Introspection {
     } catch (err) {
       this.schema = originalSchema
       throw err
+    } finally {
+      this.setOpts(originalOpts)
     }
   }
 
@@ -534,6 +561,7 @@ function isUndef(item) {
 }
 
 module.exports = Introspection
+module.exports.digUnderlyingType = digUnderlyingType
 module.exports.KIND_SCALAR = KIND_SCALAR
 module.exports.KIND_OBJECT = KIND_OBJECT
 module.exports.KIND_INTERFACE = KIND_INTERFACE

@@ -176,16 +176,34 @@ introspection:
   # Whether to document an individual Type, in the absence of a metadata directive
   # Default: true
   typeDocumentedDefault: true
+
   # Whether to document an individual Field, in the absence of a metadata directive
   # Default: true
   fieldDocumentedDefault: true
+  # Hide any fields of undocumented types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideFieldsOfUndocumentedType: true
+
   # Whether to document an individual Argument, in the absence of a metadata directive
   # Default: true
   argDocumentedDefault: true
-  # Hide any fields with undocumented return types so as not to reference something
+  # Hide any args of undocumented types so as not to reference something
   # that seemingly does not exist.
   # Default: true
-  hideFieldsWithUndocumentedReturnType: true
+  hideArgsOfUndocumentedType: true
+
+
+  # Hide any inputFields of undocumented types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideInputFieldsOfUndocumentedType: true
+
+  # Hide Union possibleTypes that are not documented so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideUnionTypesOfUndocumentedType: true
+
 
   #
   #

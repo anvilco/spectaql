@@ -1,346 +1,57 @@
 const _ = require('lodash')
 
 const IntrospectionManipulator = require('../lib/Introspection')
+const {
+  KIND_SCALAR,
+} = IntrospectionManipulator
 
 const {
-  getTypeFromIntrospectionResponse,
-  removeTypeFromIntrospectionResponse,
-  getFieldFromIntrospectionResponseType,
-  getArgFromIntrospectionResponseField,
-  returnTypeExistsForJsonSchemaField,
-  analyzeJsonSchemaFieldDefinition,
-  analyzeJsonSchemaInputFieldDefinition,
-  analyzeJsonSchemaArgDefinition,
+  analyzeTypeIntrospection,
 } = require('./type-helpers')
 
 const {
   addSpecialTags,
-  replaceQuotesWithTags,
+  // replaceQuotesWithTags,
 } = require('../lib/common')
 
-const isEnum = require('../helpers/isEnum')
-const isScalar = require('../helpers/isScalar')
 const stripTrailing = require('../helpers/stripTrailing')
 
-const METADATA_OUTPUT_PATH = 'metadata'
+// const METADATA_OUTPUT_PATH = 'metadata'
 
 const calculateShouldDocument = ({ undocumented, documented, def }) => {
   return undocumented !== true && (documented === true || def === true)
 }
 
 function augmentData (args) {
-  const introspectionManipulator = new IntrospectionManipulator(args.introspectionResponse)
+  // const {
+  //   introspectionOptions
+  // } = args
+
+  // const {
+  //   hideFieldsWithUndocumentedReturnType,
+  //   hideQueriesWithUndocumentedReturnType,
+  //   hideMutationsWithUndocumentedReturnType,
+  // } = introspectionOptions
+
+  const introspectionManipulator = new IntrospectionManipulator(
+    args.introspectionResponse,
+    // Get this from options? More granular from options?
+    { removeUnusedTypes: false },
+  )
+
   args = {
     ...args,
     introspectionManipulator,
   }
+
   hideThingsBasedOnMetadata(args)
-  // addExamplesFromMetadata(args)
-  // addExamplesDynamically(args)
-  // addDeprecationThings(args)
+
+  addExamples(args)
+
+  removeMetadata(args)
 
   return introspectionManipulator.getResponse()
 }
-
-const isInputType = ({ name, introspectionResponse }) => {
-  return !!getTypeFromIntrospectionResponse({ name, kind: 'INPUT_OBJECT', introspectionResponse })
-}
-
-// At this point, the metadata should have been added into the JSON Schema data, so everything
-// we need is already there
-function addExamplesFromMetadata (args = {}) {
-  return _addExamplesToThings({
-    ...args,
-    fn: ({
-      type,
-      definition,
-    }) => {
-      let {
-        example,
-        examples,
-      } = _.get(definition, 'metadata', {})
-
-      if (examples && examples.length) {
-        example = examples[Math.floor(Math.random() * examples.length)]
-      }
-
-      if (example) {
-        switch (type) {
-          case 'Field': {
-            definition.properties.return.example = addSpecialTags(example, { placeholdQuotes: true })
-            return
-          }
-          case 'Argument': {
-            definition.example = addSpecialTags(example, { placeholdQuotes: true })
-            return
-          }
-          case 'Scalar': {
-            definition.example = replaceQuotesWithTags(example)
-            return
-          }
-          case 'InputField': {
-            definition.example = addSpecialTags(example, { placeholdQuotes: true })
-            return
-          }
-        }
-      }
-    },
-  })
-}
-
-function addExamplesDynamically (args = {}) {
-  const dynamicExamplesProcessingModule = _.get(args, 'introspectionOptions.dynamicExamplesProcessingModule')
-
-  if (!dynamicExamplesProcessingModule) {
-    console.warn('\n\n\nNO EXAMPLE PROCESSOR PATH PROVIDED\n\n\n')
-    return args
-  }
-
-  let processingModule
-  try {
-    processingModule = require(dynamicExamplesProcessingModule)
-  } catch(e) {
-    if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
-      console.warn('\n\n\nCOULD NOT LOAD EXAMPLE PROCESSOR\n\n\n')
-      return args
-    }
-    else {
-      throw e
-    }
-  }
-
-  let {
-    fieldProcessor,
-    inputFieldProcessor,
-    argumentProcessor,
-    scalarProcessor,
-  } = processingModule
-
-  // If no functions, then don't bother
-  if (!(fieldProcessor || argumentProcessor || scalarProcessor)) {
-    console.warn('\n\n\nNO EXAMPLE PROCESSORS FOUND\n\n\n')
-    return args
-  }
-
-  fieldProcessor = fieldProcessor || (() => {})
-  inputFieldProcessor = inputFieldProcessor || (() => {})
-  argumentProcessor = argumentProcessor || (() => {})
-  scalarProcessor = scalarProcessor || (() => {})
-
-  function massageExample ({
-    value,
-    typeName,
-  }) {
-    if (typeof value === 'undefined') {
-      return
-    }
-
-    const placeholdQuotes = ['String', 'Date'].includes(typeName)
-
-    return Array.isArray(value)
-      ? value.map((val) => addSpecialTags(val, { placeholdQuotes }))
-      : addSpecialTags(value, { placeholdQuotes })
-  }
-
-  return _addExamplesToThings({
-    ...args,
-    fn: ({
-      grandParentName,
-      grandParentType,
-      parentName,
-      parentType,
-      parentDefinition,
-      type,
-      name,
-      definition,
-    }) => {
-      switch (type) {
-        case 'Field': {
-          const {
-            returnType,
-            isArray,
-            itemsRequired,
-          } = analyzeJsonSchemaFieldDefinition(definition)
-
-          // TODO: provide isRequired here
-          const example = fieldProcessor({
-            parentName,
-            name,
-            definition,
-            returnType,
-            isArray,
-            itemsRequired,
-            // Give 'em all the args'
-            args,
-          })
-
-          if (typeof example !== 'undefined') {
-            definition.properties.return.example = massageExample({ value: example, typeName: returnType })
-          }
-
-          return
-        }
-
-        case 'Argument': {
-          const {
-            type,
-            isArray,
-            itemsRequired,
-          } = analyzeJsonSchemaArgDefinition(definition)
-
-          // TODO: provide isRequired here
-          const example = argumentProcessor({
-            grandParentName,
-            grandParentType,
-            parentName,
-            parentType,
-            parentDefinition,
-            name,
-            definition,
-            type,
-            isArray,
-            itemsRequired,
-            // Give 'em all the args'
-            args,
-          })
-
-          if (typeof example !== 'undefined') {
-            definition.example = massageExample({ value: example, typeName: type })
-          }
-
-          return
-        }
-
-        case 'Scalar': {
-          const example = scalarProcessor({
-            name,
-            definition,
-            type,
-            // Give 'em all the args'
-            args,
-          })
-
-          if (typeof example !== 'undefined') {
-            definition.example = massageExample({ value: example, typeName: type })
-          }
-
-          return
-        }
-
-        case 'InputField': {
-          const {
-            type: inputFieldType,
-            isArray,
-            itemsRequired,
-          } = analyzeJsonSchemaInputFieldDefinition(definition)
-
-          const example = inputFieldProcessor({
-            parentName,
-            name,
-            type: inputFieldType,
-            definition,
-            isArray,
-            itemsRequired,
-            // Give 'em all the args'
-            args,
-          })
-
-          if (typeof example !== 'undefined') {
-            definition.example = massageExample({ value: example, typeName: type })
-          }
-
-          return
-        }
-
-        default: {
-          console.warn(`Unknown type passed: ${type}`)
-          break
-        }
-      }
-    },
-  })
-}
-
-// A re-usable algorithm/processor for adding examples to things in various ways
-function _addExamplesToThings (args = {}) {
-  const {
-    fn: addExampleToThingFn,
-    introspectionResponse,
-    ...otherArgs
-  } = args
-
-  _goThroughThings({
-    ...otherArgs,
-    fn: ({
-      typeName,
-      typeDefinition,
-      // defaultShowHide,
-      // things,
-      typeOfThing,
-    }) => {
-      // If typeOfThing is Type, then parent is a Field, otherwise it's
-      // a Query or a Mutation
-      const whatDoWeCallAField = typeOfThing === 'Type' ? 'Field' : typeOfThing
-
-      // Scalars get handled differently, then we're done
-      if (isScalar(typeDefinition)) {
-        addExampleToThingFn({
-          name: typeName,
-          type: 'Scalar',
-          definition: typeDefinition
-        })
-        return
-      }
-
-      // Go through all the Type fields
-      Object.entries(typeDefinition.properties || {}).forEach(
-        ([fieldName, fieldDefinition]) => {
-          // Add examples fields only if we are looking at a proper Type
-          //
-          // FYI: If this is not a Type, then "field"
-          // here is really an individual Query or Mutation...
-          if (typeOfThing === 'Type') {
-            const fieldOrInputField = isInputType({ name: typeName, introspectionResponse }) ? 'InputField' : 'Field'
-
-            addExampleToThingFn({
-              parentName: typeName,
-              name: fieldName,
-              type: fieldOrInputField,
-              definition: fieldDefinition
-            })
-          }
-
-          // Add examples for arguments for fields on every typeOfThing (e.g. Type, Query, Mutation)
-          Object.entries(
-            _.get(fieldDefinition, 'properties.arguments.properties', {})
-          ).forEach(
-            ([argName, argDefinition]) => {
-
-              addExampleToThingFn({
-
-                grandParentName: typeName,
-                grandParentType: typeOfThing,
-
-                parentName: fieldName,
-                parentType: whatDoWeCallAField,
-                parentDefinition: fieldDefinition,
-
-                name: argName,
-                type: 'Argument',
-                definition: argDefinition,
-              })
-            }
-          )
-        }
-      )
-
-      return
-    }
-  })
-
-  return args
-}
-
 
 // TODO: Separate out the metadata copying into JSON Schema results into its own thing?
 function hideThingsBasedOnMetadata ({
@@ -368,7 +79,6 @@ function hideThingsBasedOnMetadata ({
     introspectionManipulator,
     introspectionOptions,
   })
-
 
   // This hides arguments on Type Fields as well as on individual queries and mutationsa.
   //
@@ -431,6 +141,15 @@ function hideTypes ({
     metadatasPath,
     typesDocumented,
     typeDocumentedDefault: documentedDefault,
+    hideFieldsOfUndocumentedType: removeFieldsOfType,
+    // I'm new
+    hideArgsOfUndocumentedType: removeArgsOfType,
+    hideInputFieldsOfUndocumentedType: removeInputFieldsOfType,
+    // I'm new
+    hideUnionTypesOfUndocumentedType: removePossibleTypesOfType,
+    hideQueriesWithUndocumentedReturnType,
+    hideMutationsWithUndocumentedReturnType,
+  // } = introspectionOptions
   } = introspectionOptions
 
 
@@ -441,7 +160,14 @@ function hideTypes ({
     const shouldDocument = !!typesDocumented && calculateShouldDocument({ ...metadata, def: documentedDefault })
 
     if (!shouldDocument) {
-      introspectionManipulator.removeType({ kind: type.kind, name: type.name, })
+      introspectionManipulator.removeType({
+        kind: type.kind,
+        name: type.name,
+        removeFieldsOfType,
+        removeArgsOfType,
+        removeInputFieldsOfType,
+        removePossibleTypesOfType,
+      })
     }
   }
 }
@@ -454,28 +180,15 @@ function hideTypes ({
 function hideFields(args = {}) {
   const {
     introspectionManipulator,
-    // jsonSchema,
-    // introspectionResponse,
     introspectionOptions,
   } = args
 
   const {
     metadatasPath,
-
-    hideFieldsWithUndocumentedReturnType,
-    hideQueriesWithUndocumentedReturnType,
-    hideMutationsWithUndocumentedReturnType,
-
     queryDocumentedDefault,
     mutationDocumentedDefault,
     fieldDocumentedDefault,
   } = introspectionOptions
-
-  const thingTypeToHideIfReturnTypeUndocumentedMap = {
-    'Type': hideFieldsWithUndocumentedReturnType,
-    'Query': hideQueriesWithUndocumentedReturnType,
-    'Mutation': hideMutationsWithUndocumentedReturnType,
-  }
 
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
@@ -539,99 +252,149 @@ function hideArguments(args = {}) {
   }
 }
 
-function addDeprecationThings (args = {}) {
+function addExamples (args = {}) {
+  const dynamicExamplesProcessingModule = _.get(args, 'introspectionOptions.dynamicExamplesProcessingModule')
+
+  let processor = (() => {})
+  if (!dynamicExamplesProcessingModule) {
+    console.warn('\n\n\nNO EXAMPLE PROCESSOR PATH PROVIDED\n\n\n')
+    // return args
+  } else {
+    try {
+      processor = require(dynamicExamplesProcessingModule)
+      if (!processor) {
+        console.warn('\n\n\nNO EXAMPLE PROCESSOR FOUND AT PATH\n\n\n')
+        return args
+      }
+
+      if (typeof processor !== 'function') {
+        console.warn('\n\n\nPROCESSOR EXPORT MUST BE A FUNCTION\n\n\n')
+        return args
+      }
+    } catch(e) {
+      if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
+        console.warn('\n\n\nCOULD NOT LOAD EXAMPLE PROCESSOR\n\n\n')
+        return args
+      }
+      else {
+        throw e
+      }
+    }
+  }
+
   const {
-    introspectionResponse,
-    // introspectionOptions,
+    introspectionManipulator,
+    introspectionOptions,
   } = args
 
-  _goThroughThings({
-    ...args,
-    fn: ({
-      typeName,
-      typeDefinition,
-      typeOfThing,
-    }) => {
-      // Rest of code does not apply and will not work with the following:
-      if (typeOfThing !== 'Type' || isScalar(typeDefinition)) {
-        return
+  const {
+    metadatasPath,
+  } = introspectionOptions
+
+  const introspectionResponse = introspectionManipulator.getResponse()
+
+  const types = introspectionResponse.__schema.types
+
+  for (const type of types) {
+    handleExamples({ type })
+
+    for (const field of (type.fields || [])) {
+      handleExamples({ type, field })
+
+      for (const arg of (field.args || [])) {
+        handleExamples({ type, field, arg })
       }
-
-      const type = getTypeFromIntrospectionResponse({ name: typeName, introspectionResponse })
-      if (!type) {
-        return
-      }
-
-      const thingsToIterate = isEnum(typeDefinition)
-        ? typeDefinition.anyOf.map((schema) => [schema.enum[0], schema])
-        : Object.entries(typeDefinition.properties)
-
-      thingsToIterate.forEach(
-        ([fieldName, fieldDefinition]) => {
-          const field = getFieldFromIntrospectionResponseType({ name: fieldName, type })
-          if (!field) {
-            return
-          }
-          if (field.isDeprecated) {
-            fieldDefinition.isDeprecated = field.isDeprecated
-            fieldDefinition.deprecationReason = field.deprecationReason
-          }
-        }
-      )
     }
-  })
+
+    for (const inputField of (type.inputFields || [])) {
+      handleExamples({ type, inputField })
+    }
+  }
+
+  // Update the manipulator for other parts of the process that will use the manipulator
+  // as the source of truth
+  introspectionManipulator.setResponse(introspectionResponse)
+
+  function getExistingExample (thing) {
+    let {
+      example,
+      examples,
+    } = _.get(thing, metadatasPath, {})
+
+    if (examples && examples.length) {
+      example = examples[Math.floor(Math.random() * examples.length)]
+    }
+
+    return example
+  }
+
+  function massageExample ({
+    example,
+    type,
+  }) {
+    if (isUndef(example)) {
+      return example
+    }
+
+    const placeholdQuotes = type.kind === KIND_SCALAR && ['String', 'Date'].includes(type.name)
+
+    return Array.isArray(example)
+      ? example.map((val) => addSpecialTags(val, { placeholdQuotes }))
+      : addSpecialTags(example, { placeholdQuotes })
+  }
+
+  function handleExamples ({ type, field, arg, inputField }) {
+    const thing = arg || inputField || field || type
+    const typeForAnalysis = (thing === type) ? type : thing.type
+    const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
+
+    let example = getExistingExample(thing)
+    if (!isUndef(example)) {
+      thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
+    }
+
+    example = processor({ ...typeAnalysis, type, field, arg, inputField })
+    if (!isUndef(example)) {
+      thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
+    }
+  }
 }
 
-// Just a helper function to standardize some looping/processing that will happen
-// a few times, but slightly different
-function _goThroughThings ({
-  jsonSchema,
-  graphQLSchema,
-  fn,
-  queryDefault,
-  mutationDefault,
-  typeDefault
-} = {}) {
-  const queryTypeName = (graphQLSchema.getQueryType() || {}).name
-  const mutationTypeName = (graphQLSchema.getMutationType() || {}).name
 
-  ;[
-    [
-      // An object containing only the Query type
-      _.pick(jsonSchema.properties, queryTypeName),
-      queryDefault,
-      'Query',
-    ],
-    [
-      // An object containing only the Mutation type
-      _.pick(jsonSchema.properties, mutationTypeName),
-      mutationDefault,
-      'Mutation',
-    ],
-    [
-      // All the other types
-      jsonSchema.definitions,
-      typeDefault,
-      'Type'
-    ]
-  ].forEach(([things, defaultShowHide, typeOfThing]) => {
-    Object.entries(things).forEach(([typeName, typeDefinition]) => {
-      // If it has no "properties" property, then it's a scalar or something
-      // Actually, now most things are gonna make it through, and each
-      // iterator needs to defend.
-      if (!(Object.hasOwnProperty.call(typeDefinition, 'properties') || isEnum(typeDefinition) || isScalar(typeDefinition))) {
-        return
+// Get rid of all the metadata entries
+function removeMetadata (args = {}) {
+  const {
+    introspectionManipulator,
+    introspectionOptions,
+  } = args
+
+  const {
+    metadatasPath,
+  } = introspectionOptions
+
+  const introspectionResponse = introspectionManipulator.getResponse()
+
+  const types = introspectionResponse.__schema.types
+
+  for (const type of types) {
+    _.unset(type, metadatasPath)
+
+    for (const field of (type.fields || [])) {
+      _.unset(field, metadatasPath)
+
+      for (const arg of (field.args || [])) {
+        _.unset(arg, metadatasPath)
       }
+    }
 
-      fn({
-        typeName,
-        typeDefinition,
-        defaultShowHide,
-        things,
-        typeOfThing,
-      })
-    })
-  })
+    for (const inputField of (type.inputFields || [])) {
+      _.unset(inputField, metadatasPath)
+    }
+  }
+
+  // Update the manipulator for other parts of the process that will use the manipulator
+  // as the source of truth
+  introspectionManipulator.setResponse(introspectionResponse)
 }
 
 
@@ -666,12 +429,14 @@ function removeTrailingPeriodsFromDescriptions (obj) {
 }
 
 
+function isUndef(item) {
+  return typeof item === 'undefined'
+}
+
 module.exports = {
   hideThingsBasedOnMetadata,
-  addExamplesFromMetadata,
-  addExamplesDynamically,
+  addExamples,
   calculateShouldDocument,
   augmentData,
-  iterateOverObject,
   removeTrailingPeriodsFromDescriptions,
 }
