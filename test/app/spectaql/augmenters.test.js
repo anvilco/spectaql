@@ -1,10 +1,10 @@
 const _ = require('lodash')
 
-const IntrospectionManipulator = require('app/lib/Introspection')
+// const IntrospectionManipulator = require('app/lib/Introspection')
 
 const {
   introspectionResponseFromSchemaSDL,
-  jsonSchemaFromIntrospectionResponse,
+  // jsonSchemaFromIntrospectionResponse,
   graphQLSchemaFromIntrospectionResponse,
 } = require('app/spectaql/graphql-loaders')
 
@@ -17,6 +17,7 @@ const {
 } = require('app/lib/common')
 
 const {
+  createIntrospectionManipulator,
   hideThingsBasedOnMetadata,
   addExamplesFromMetadata,
   addExamplesDynamically,
@@ -98,7 +99,7 @@ describe.only('augmenters', function () {
   def('doMetadata', true)
   def('metadatasPath', 'metadata')
 
-  def('typesDocumented', true)
+  def('typesDocumentedDefault', true)
   def('typeDocumentedDefault', true)
   def('fieldDocumentedDefault', true)
   def('argDocumentedDefault', true)
@@ -118,8 +119,9 @@ describe.only('augmenters', function () {
     metadata: $.doMetadata,
     metadatasPath: $.metadatasPath,
 
-    typesDocumented: $.typesDocumented,
+    typesDocumentedDefault: $.typesDocumentedDefault,
     typeDocumentedDefault: $.typeDocumentedDefault,
+
     fieldDocumentedDefault: $.fieldDocumentedDefault,
     argDocumentedDefault: $.argDocumentedDefault,
     hideFieldsWithUndocumentedReturnType: $.hideFieldsWithUndocumentedReturnType,
@@ -147,9 +149,22 @@ describe.only('augmenters', function () {
     metadatasWritePath: $.metadatasPath,
   }))
 
-  def('introspectionManipulator', () => new IntrospectionManipulator($.introspectionResponse, $.introspectionManipulatorOptions))
+  def('introspectionManipulatorOptions', () => ({
+    removeUnusedTypes: false,
+    // removeFieldsWithMissingTypes: false,
+    // removeArgsWithMissingTypes: false,
+    // removeInputFieldsWithMissingTypes: false,
+    // removePossibleTypesOfMissingTypes: false,
+  }))
 
   def('graphQLSchema', () => graphQLSchemaFromIntrospectionResponse($.introspectionResponse))
+
+  def('args', () => ({
+    introspectionResponse: $.introspectionResponse,
+    introspectionOptions: $.introspectionOptions
+  }))
+
+  def('introspectionManipulator', () => createIntrospectionManipulator($.args))
 
   describe('hideThingsBasedOnMetadata', function () {
     def('result', () => hideThingsBasedOnMetadata({
@@ -172,14 +187,15 @@ describe.only('augmenters', function () {
         expect($.introspectionManipulator.getArg({ typeName: 'MyType', fieldName: 'myField', argName: 'myArg' })).to.be.ok
       })
 
-      context('typesDocumented is false', function () {
-        def('typesDocumented', false)
+      context('typesDocumentedDefault is false', function () {
+        def('typesDocumentedDefault', false)
 
         it('does not show any types', function () {
           const responseBefore = _.cloneDeep($.introspectionResponse)
           const response = $.response
           expect(response).to.not.eql(responseBefore)
-          expect(response.__schema.types).to.eql([])
+
+          expect($.introspectionManipulator.getAllTypes()).to.eql([])
           expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
         })
 
@@ -192,7 +208,7 @@ describe.only('augmenters', function () {
             const responseBefore = _.cloneDeep($.introspectionResponse)
             const response = $.response
             expect(response).to.not.eql(responseBefore)
-            expect(response.__schema.types).to.eql([])
+            expect($.introspectionManipulator.getAllTypes()).to.eql([])
             expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
           })
         })
@@ -206,7 +222,7 @@ describe.only('augmenters', function () {
           const response = $.response
           expect(response).to.not.eql(responseBefore)
 
-          expect(response.__schema.types).to.eql([])
+          expect($.introspectionManipulator.getAllTypes()).to.eql([])
           expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
         })
 
@@ -215,12 +231,12 @@ describe.only('augmenters', function () {
             return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, { documented: true })
           })
 
-          it.only('only documents MyType', function () {
+          it('only documents MyType', function () {
             const responseBefore = _.cloneDeep($.introspectionResponse)
             const response = $.response
             expect(response).to.not.eql(responseBefore)
 
-            expect(response.__schema.types).to.be.an('array').of.length(1)
+            expect($.introspectionManipulator.getAllTypes()).to.be.an('array').of.length(1)
             expect($.introspectionManipulator.getType({ name: 'MyType' })).to.be.ok
           })
         })
@@ -233,68 +249,81 @@ describe.only('augmenters', function () {
           })
 
           it('does not document MyType', function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
 
-            expect(jsonSchema.definitions).to.be.an('object').that.does.not.have.any.keys('MyType')
+            expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
           })
 
           // Removal of Types fields, Mutations and Queries that have a return type that is not
           // documented.
 
           it('removes some Type Fields, Queries and Mutations due to MyType not existing', function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
 
             // myField is gone b/c it was MyType
-            expect(jsonSchema.definitions.OtherType.properties).to.be.an('object').that.has.all.keys(
-              'myOtherField',
-              'nonRequiredArrayOfNonNullables',
-              'nonRequiredArrayOfNullables',
-              'requiredArrayOfNonNullables',
-              'requiredArrayOfNullables',
-            )
+            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myField' })).to.not.be.ok
+
+            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myOtherField' })).to.be.ok
+            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNonNullables' })).to.be.ok
+            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNullables' })).to.be.ok
+            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNonNullables' })).to.be.ok
+            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNullables' })).to.be.ok
+
             // myOtherQuery is gone b/c its return type was MyType
-            expect(jsonSchema.properties.Query.properties).to.be.an('object').that.has.all.keys('myQuery')
+            expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to.not.be.ok
+
+            expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be.ok
+
             // myOtherMutation is gone b/c its return type was MyType
-            expect(jsonSchema.properties.Mutation.properties).to.be.an('object').that.has.all.keys('myMutation')
+            expect($.introspectionManipulator.getMutation({ name: 'myOtherMutation' })).to.not.be.ok
+
+            expect($.introspectionManipulator.getMutation({ name: 'myMutation' })).to.be.ok
           })
         })
       })
     })
 
-    describe('Fields', function () {
-      it('shows at least some things by default', function () {
-        const { jsonSchema } = $.result
-        expect(jsonSchema.definitions.MyType.properties).to.be.an('object').that.has.all.keys('myField', 'myOtherField')
-        expect(jsonSchema.definitions.OtherType.properties).to.be.an('object').that.has.all.keys(
-          'myField',
-          'myOtherField',
-          'nonRequiredArrayOfNonNullables',
-          'nonRequiredArrayOfNullables',
-          'requiredArrayOfNonNullables',
-          'requiredArrayOfNullables',
-        )
+    describe.only('Fields', function () {
+      afterEach(() => {
         // Make sure it does not mess up Query or Mutation
-        expect(jsonSchema.properties.Query.properties).to.not.be.empty
-        expect(jsonSchema.properties.Mutation.properties).to.not.be.empty
+        expect($.introspectionManipulator.getQueryType()).to.be.ok
+        expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to.be.ok
+        expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be.ok
+        expect($.introspectionManipulator.getMutationType()).to.be.ok
+        expect($.introspectionManipulator.getMutation({ name: 'myOtherMutation' })).to.be.ok
+        expect($.introspectionManipulator.getMutation({ name: 'myMutation' })).to.be.ok
+      })
+
+      it('shows at least some things by default', function () {
+        expect($.introspectionManipulator.getField({ typeName: 'MyType', fieldName: 'myField' })).to.be.ok
+        expect($.introspectionManipulator.getField({ typeName: 'MyType', fieldName: 'myOtherField' })).to.be.ok
+
+
+        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myField' })).to.be.ok
+        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myOtherField' })).to.be.ok
+        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNonNullables' })).to.be.ok
+        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNullables' })).to.be.ok
+        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNonNullables' })).to.be.ok
+        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNullables' })).to.be.ok
       })
 
       context('fieldDocumentedDefault is false', function () {
         def('fieldDocumentedDefault', false)
 
-        it('does not show any fields', function () {
-          const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-          const { jsonSchema } = $.result
-          expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+        it('does not show any fields on types', function () {
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.not.eql(responseBefore)
 
-          expect(jsonSchema.definitions.MyType.properties).to.eql({})
+          let fields = $.introspectionManipulator.getType({ name: 'MyType' }).fields
+          expect(fields).to.be.null
 
-          // Make sure it does not mess up Query or Mutation
-          expect(jsonSchema.properties.Query.properties).to.not.be.empty
-          expect(jsonSchema.properties.Mutation.properties).to.not.be.empty
+          fields = $.introspectionManipulator.getType({ name: 'OtherType' }).fields
+          expect(fields).to.be.null
         })
 
         context('metadata directive says MyType should be documented', function () {
@@ -303,24 +332,35 @@ describe.only('augmenters', function () {
           })
 
           it('only documents myField', function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
 
-            // Chai says this means only the provided keys, and no more.
-            expect(jsonSchema.definitions.MyType.properties).to.be.an('object').that.has.all.keys('myField')
+            let fields = $.introspectionManipulator.getType({ name: 'MyType' }).fields
+            // myField is the only one there
+            expect(fields).to.be.an('array').of.length(1)
+            expect(fields[0].name).to.eql('myField')
+
+            // No fields on OtherType
+            fields = $.introspectionManipulator.getType({ name: 'OtherType' }).fields
+            expect(fields).to.be.null
           })
         })
       })
     })
 
-    describe('Queries and Mutations', function () {
-      it('shows at least some things by default', function () {
-        const { jsonSchema } = $.result
-        expect(jsonSchema.properties.Query.properties).to.be.an('object').that.has.all.keys('myQuery', 'myOtherQuery')
-        expect(jsonSchema.properties.Mutation.properties).to.be.an('object').that.has.all.keys('myMutation', 'myOtherMutation')
+    describe.only('Queries and Mutations', function () {
+      afterEach(() => {
         // Make sure it does not mess up Types
-        expect(jsonSchema.definitions.MyType.properties).to.not.be.empty
+        expect($.introspectionManipulator.getAllTypes()).to.be.an('array').of.length.gt(4)
+      })
+
+      it('shows at least some things by default', function () {
+        expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be.ok
+        expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to.be.ok
+
+        expect($.introspectionManipulator.getMutation({ name: 'myMutation' })).to.be.ok
+        expect($.introspectionManipulator.getMutation({ name: 'myOtherMutation' })).to.be.ok
       })
 
       // Tests for top-level "should we document this at all" options
@@ -332,14 +372,12 @@ describe.only('augmenters', function () {
           def(option, false)
 
           it(`does not show any ${thing}s`, function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
 
-            // Only the other type of thing should be left
-            expect(jsonSchema.properties).to.be.an('object').that.has.all.keys(otherThing)
-            // Make sure it does not mess up Types
-            expect(jsonSchema.definitions).to.not.be.empty
+            expect($.introspectionManipulator[`get${thing}Type`]()).to.not.be.ok
+            expect($.introspectionManipulator[`get${otherThing}Type`]()).to.be.ok
           })
         })
       })
@@ -347,25 +385,32 @@ describe.only('augmenters', function () {
 
       // Tests for 1-by-1 undocumentedness
       ;[
-        ['queryDocumentedDefault', 'Query', 'Mutation', 'myOtherQuery'],
-        ['mutationDocumentedDefault', 'Mutation', 'Query', 'myOtherMutation'],
-      ].forEach(([option, thing, otherThing, exceptionName]) => {
+        ['queryDocumentedDefault', 'Query', 'Mutation', 'myOtherQuery', 'myMutation'],
+        ['mutationDocumentedDefault', 'Mutation', 'Query', 'myOtherMutation', 'myQuery'],
+      ].forEach(([option, thing, otherThing, exceptionName, otherThingTest]) => {
         context(`${option} is false`, function () {
           def(option, false)
 
+          afterEach(() => {
+            // Make sure that at least 1 thing from the other thing is OK
+            expect($.introspectionManipulator[`get${otherThing}`]({ name: otherThingTest })).to.be.ok
+          })
+
           it(`does not show any ${thing}s`, function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
+
+            const thingType = $.introspectionManipulator[`get${thing}Type`]()
+            const otherThingType = $.introspectionManipulator[`get${otherThing}Type`]()
 
             // Both things should be there
-            expect(jsonSchema.properties).to.be.an('object').that.has.all.keys(thing, otherThing)
-            // But only 1 should have any properties
-            expect(jsonSchema.properties[thing].properties).to.be.an('object').that.is.empty
-            expect(jsonSchema.properties[otherThing].properties).to.be.an('object').that.is.not.empty
+            expect(thingType).to.be.ok
+            expect(otherThingType).to.be.ok
 
-            // Make sure it does not mess up Types
-            expect(jsonSchema.definitions).to.not.be.empty
+            // But only 1 should have any fields
+            expect(thingType.fields).to.be.null
+            expect(otherThingType.fields).to.be.an('array').of.length(2)
           })
 
           context(`metadata directive says ${exceptionName} should be documented`, function () {
@@ -374,16 +419,23 @@ describe.only('augmenters', function () {
             })
 
             it(`only documents ${exceptionName}`, function () {
-              const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-              const { jsonSchema } = $.result
-              expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+              const responseBefore = _.cloneDeep($.introspectionResponse)
+              const response = $.response
+              expect(response).to.not.eql(responseBefore)
 
-              // Chai says this means only the provided keys, and no more.
-              expect(jsonSchema.properties[thing].properties).to.be.an('object').that.has.all.keys(exceptionName)
-              // Makes sure other thing is OK
-              expect(jsonSchema.properties[otherThing].properties).to.be.an('object').that.is.not.empty
-              // Make sure Types are OK
-              expect(jsonSchema.definitions).to.not.be.empty
+              const thingType = $.introspectionManipulator[`get${thing}Type`]()
+              const otherThingType = $.introspectionManipulator[`get${otherThing}Type`]()
+
+              // Both things should be there
+              expect(thingType).to.be.ok
+              expect(otherThingType).to.be.ok
+
+              // Thing should have just the 1 field, and it should be the exception
+              expect(thingType.fields).to.be.an('array').of.length(1)
+              expect($.introspectionManipulator[`get${thing}`]({ name: exceptionName })).to.be.ok
+
+              // OtherThing should be normal
+              expect(otherThingType.fields).to.be.an('array').of.length(2)
             })
           })
         })
@@ -391,93 +443,90 @@ describe.only('augmenters', function () {
     })
 
     // Same code for Types and [Queries / Mutations]?
-    describe('Arguments', function () {
+    describe.only('Arguments', function () {
       it('shows at least some things by default', function () {
-        const { jsonSchema } = $.result
-        ;[
-          jsonSchema.properties.Query.properties.myQuery.properties.arguments.properties,
-          jsonSchema.properties.Mutation.properties.myMutation.properties.arguments.properties,
-          jsonSchema.definitions.MyType.properties.myField.properties.arguments.properties
-        ].forEach((thing) => {
-          expect(thing).to.be.an('object').that.has.all.keys('myArg', 'myOtherArg')
+        [
+          ['Query', 'myQuery'],
+          ['Mutation', 'myMutation'],
+          ['MyType', 'myField'],
+        ].forEach(([typeName, fieldName]) => {
+          ['myArg', 'myOtherArg'].forEach((argName) => {
+            expect($.introspectionManipulator.getArg({ typeName, fieldName, argName })).to.be.ok
+          })
+
         })
       })
 
       ;[
         [
           'argDocumentedDefault',
-          'Types',
-          'definitions.MyType.properties.myField.properties.arguments.properties',
+          'Type',
+          { typeName: 'MyType', fieldName: 'myField' },
           [
-            'properties.Query.properties.myQuery.properties.arguments.properties',
-            'properties.Mutation.properties.myMutation.properties.arguments.properties',
+            { typeName: 'Query', fieldName: 'myQuery' },
+            { typeName: 'Mutation', fieldName: 'myMutation' },
           ],
         ],
         [
           'queryArgDocumentedDefault',
-          'Queries',
-          'properties.Query.properties.myQuery.properties.arguments.properties',
+          'Query',
+          { typeName: 'Query', fieldName: 'myQuery' },
           [
-            'definitions.MyType.properties.myField.properties.arguments.properties',
-            'properties.Mutation.properties.myMutation.properties.arguments.properties',
+            { typeName: 'MyType', fieldName: 'myField' },
+            { typeName: 'Mutation', fieldName: 'myMutation' },
           ],
         ],
         [
           'mutationArgDocumentedDefault',
-          'Mutations',
-          'properties.Mutation.properties.myMutation.properties.arguments.properties',
+          'Mutation',
+          { typeName: 'Mutation', fieldName: 'myMutation' },
           [
-            'definitions.MyType.properties.myField.properties.arguments.properties',
-            'properties.Query.properties.myQuery.properties.arguments.properties',
+            { typeName: 'MyType', fieldName: 'myField' },
+            { typeName: 'Query', fieldName: 'myQuery' },
           ],
         ],
       ].forEach(([option, name, affected, notAffecteds]) => {
         context(`${option} is false`, function () {
           def(option, false)
 
-          it(`does not show any ${name}`, function () {
-            const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-            const { jsonSchema } = $.result
-            expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+          afterEach(() => {
+            // Unaffecteds should still have all their arguments
+            for (const notAffected of notAffecteds) {
+              expect($.introspectionManipulator.getField(notAffected).args).to.be.an('array').of.length(2)
+              for (const argName of ['myArg', 'myOtherArg']) {
+                expect($.introspectionManipulator.getArg({ ...notAffected, argName })).to.be.ok
+              }
+            }
+          })
+
+          it(`does not show any ${name}s`, function () {
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
 
             // Affected thing should be empty of arguments
-            expect(
-              _.get(jsonSchema, affected)
-            ).to.be.an('object').that.is.empty
-
-            // Unaffecteds should still have all their arguments
-            notAffecteds.forEach((path) => {
-              const thing = _.get(jsonSchema, path)
-              expect(thing).to.be.an('object').that.has.all.keys('myArg', 'myOtherArg')
-            })
+            expect($.introspectionManipulator.getField(affected).args).to.eql([])
           })
 
           context(`metadata directive says myOtherArg should be documented`, function () {
             // Split something like definitions.MyType.properties.myField.properties.arguments.properties
-            const splitskies = affected.split('.')
-            const typeName = splitskies[1]
-            const fieldName = splitskies[3]
+            // const splitskies = affected.split('.')
+            // const typeName = splitskies[1]
+            // const fieldName = splitskies[3]
             const exceptionName = 'myOtherArg'
 
             def('metadata', () => {
-              return _.set($.metadataBase, `OBJECT.${typeName}.fields.${fieldName}.args.${exceptionName}.${$.metadatasPath}`, { documented: true })
+              return _.set($.metadataBase, `OBJECT.${affected.typeName}.fields.${affected.fieldName}.args.${exceptionName}.${$.metadatasPath}`, { documented: true })
             })
 
             it(`only documents ${exceptionName}`, function () {
-              const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-              const { jsonSchema } = $.result
-              expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+              const responseBefore = _.cloneDeep($.introspectionResponse)
+              const response = $.response
+              expect(response).to.not.eql(responseBefore)
 
               // Affected thing should have just the exceptional argument
-              expect(
-                _.get(jsonSchema, affected)
-              ).to.be.an('object').that.has.all.keys('myOtherArg')
-
-              // Unaffecteds should still have all their arguments
-              notAffecteds.forEach((path) => {
-                const thing = _.get(jsonSchema, path)
-                expect(thing).to.be.an('object').that.has.all.keys('myArg', 'myOtherArg')
-              })
+              expect($.introspectionManipulator.getField(affected).args).to.be.an('array').of.length(1)
+              expect($.introspectionManipulator.getArg({ ...affected, argName: exceptionName })).to.be.ok
             })
           })
         })

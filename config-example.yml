@@ -172,7 +172,7 @@ introspection:
 
   # Whether to document any Types at all
   # Default: true
-  typesDocumented: true
+  typesDocumentedDefault: true
   # Whether to document an individual Type, in the absence of a metadata directive
   # Default: true
   typeDocumentedDefault: true

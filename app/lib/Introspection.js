@@ -35,6 +35,33 @@ const KIND_NON_NULL = 'NON_NULL'
 //
 // optimize to only clean if "dirty" and when pulling schema out
 
+const defaultOpts = Object.freeze({
+  analyze: ANALYZE_DEFAULT,
+  normalize: NORMALIZE_DEFAULT,
+  fixQueryAndMutationTypes: FIX_QUERY_MUTATION_TYPES_DEFAULT,
+
+  // Remove Types that are not referenced anywhere by anything
+  removeUnusedTypes: REMOVE_UNUSED_TYPES_DEFAULT,
+
+  // Remove things whose Types are not found due to being removed
+  removeFieldsWithMissingTypes: true,
+  removeArgsWithMissingTypes: true,
+  removeInputFieldsWithMissingTypes: true,
+  removePossibleTypesOfMissingTypes: true,
+})
+
+// Map some opts to their corresponding removeType params for proper defaulting
+const optsToRemoveTypeParamsMap = Object.freeze({
+  // removeFieldsOfType: 'removeFieldsWithMissingTypes',
+  // removeArgsOfType: 'removeArgsWithMissingTypes',
+  // removeInputFieldsOfType: 'removeInputFieldsWithMissingTypes',
+  // removePossibleTypesOfType: 'removePossibleTypesOfMissingTypes',
+  removeFieldsWithMissingTypes: 'removeFieldsOfType',
+  removeArgsWithMissingTypes: 'removeArgsOfType',
+  removeInputFieldsWithMissingTypes: 'removeInputFieldsOfType',
+  removePossibleTypesOfMissingTypes: 'removePossibleTypesOfType'
+})
+
 class Introspection {
 
   constructor(response, opts = {}) {
@@ -42,19 +69,15 @@ class Introspection {
       throw new Error('No response provided!')
     }
 
-    this.opts = defaults(opts, {
-      analyze: ANALYZE_DEFAULT,
-      normalize: NORMALIZE_DEFAULT,
-      fixQueryAndMutationTypes: FIX_QUERY_MUTATION_TYPES_DEFAULT,
-      removeUnusedTypes: REMOVE_UNUSED_TYPES_DEFAULT,
-      removeFieldsWithMissingTypes: true,
-      removeArgsWithMissingTypes: true,
-      removeInputFieldsWithMissingTypes: true,
-      removePossibleTypesOfMissingTypes: true,
-    })
+    opts = defaults({}, opts, defaultOpts)
+    this.setOpts(opts)
 
     // The rest of the initialization can be handled by this public method
     this.setResponse(response)
+  }
+
+  setOpts(opts) {
+    this.opts = opts || {}
   }
 
   // Set/change the response on the instance
@@ -217,6 +240,25 @@ class Introspection {
     return this.schema.types[this.getTypeIndex({ kind, name })]
   }
 
+  getAllTypes({ includeReserved = false, includeQuery = false, includeMutation = false } = {}) {
+    const queryType = this.getQueryType()
+    const mutationType = this.getMutationType()
+
+    return this.schema.types.filter((type) => {
+      if (!includeReserved && isReservedType(type)) {
+        return false
+      }
+      if (queryType && !includeQuery && typesAreSame(type, queryType)) {
+        return false
+      }
+      if (mutationType && !includeMutation && typesAreSame(type, mutationType)) {
+        return false
+      }
+
+      return true
+    })
+  }
+
   getTypeIndex({ kind, name }) {
     const key = buildKey({ kind, name })
     if (Object.prototype.hasOwnProperty.call(this.typeToIndexMap, key)) {
@@ -234,6 +276,15 @@ class Introspection {
     return this.getType({ kind: KIND_OBJECT, name: this.queryTypeName })
   }
 
+  getQuery({ name }) {
+    const queryType = this.getQueryType()
+    if (!queryType) {
+      return false
+    }
+
+    return this.getField({ typeKind: queryType.kind, typeName: queryType.name, fieldName: name })
+  }
+
   getMutationType() {
     if (!this.mutationTypeName) {
       return false
@@ -242,7 +293,16 @@ class Introspection {
     return this.getType({ kind: KIND_OBJECT, name: this.mutationTypeName })
   }
 
-  getField({ typeKind, typeName, fieldName }) {
+  getMutation({ name }) {
+    const mutationType = this.getMutationType()
+    if (!mutationType) {
+      return false
+    }
+
+    return this.getField({ typeKind: mutationType.kind, typeName: mutationType.name, fieldName: name })
+  }
+
+  getField({ typeKind = KIND_OBJECT, typeName, fieldName }) {
     const type = this.getType({ kind: typeKind, name: typeName })
     if (!(type && type.fields)) {
       return
@@ -273,43 +333,59 @@ class Introspection {
   removeType({
     kind = KIND_OBJECT,
     name,
-    opts = {},
-    removeFieldsOfType = REMOVE_FIELDS_OF_TYPE_DEFAULT,
-    removeInputFieldsOfType = REMOVE_INPUT_FIELDS_OF_TYPE_DEFAULT,
-    removePossibleTypesOfType = REMOVE_POSSIBLE_TYPES_OF_TYPE_DEFAULT,
-    removeArgsOfType = REMOVE_ARGS_OF_TYPE_DEFAULT,
+    removeFieldsOfType,
+    removeInputFieldsOfType,
+    removePossibleTypesOfType,
+    removeArgsOfType,
     cleanup = CLEANUP_DEFAULT,
   }) {
     const typeKey = buildKey({ kind, name })
     if (!Object.prototype.hasOwnProperty.call(this.typeToIndexMap, typeKey)) {
       return false
     }
-    const typeIndex =  this.typeToIndexMap[typeKey]
-    const originalSchema = this._cloneSchema()
-    const originalOpts = this.opts
-    const newOpts = defaults(opts, this.opts)
-    this.setOpts(newOpts)
+    const typeIndex = this.typeToIndexMap[typeKey]
+    if (isUndef(typeIndex)) {
+      return false
+    }
+
+    // Create an object of some of the opts, but mapped to keys that match the params
+    // of this method. They will then be used as the default value for the params
+    // so that constructor opts will be the default, but they can be overridden in
+    // the call.
+    const mappedOpts = mapProps({ props: this.opts, map: optsToRemoveTypeParamsMap })
+    const mergedOpts = defaults(
+      {
+        removeFieldsOfType,
+        removeInputFieldsOfType,
+        removePossibleTypesOfType,
+        removeArgsOfType,
+      },
+      mappedOpts,
+    )
 
     // If we are going to clean up afterwards, then the others should not have to
     const shouldOthersClean = !cleanup
+
+    const originalSchema = this._cloneSchema()
+
     try {
       delete this.schema.types[typeIndex]
       delete this.typeToIndexMap[typeKey]
 
-      if (removeArgsOfType) {
+      if (mergedOpts.removeArgsOfType) {
         this.removeArgumentsOfType({ kind, name, cleanup: shouldOthersClean })
       }
 
-      if (removeFieldsOfType) {
+      if (mergedOpts.removeFieldsOfType) {
         this.removeFieldsOfType({ kind, name, cleanup: shouldOthersClean })
       }
 
-      if (removeInputFieldsOfType) {
+      if (mergedOpts.removeInputFieldsOfType) {
         this.removeInputFieldsOfType({ kind, name, cleanup: shouldOthersClean })
       }
 
       // AKA Unions
-      if (removePossibleTypesOfType) {
+      if (mergedOpts.removePossibleTypesOfType) {
         this.removePossibleTypesOfType({ kind, name, cleanup: shouldOthersClean })
       }
 
@@ -321,8 +397,6 @@ class Introspection {
     } catch (err) {
       this.schema = originalSchema
       throw err
-    } finally {
-      this.setOpts(originalOpts)
     }
   }
 
@@ -527,7 +601,7 @@ class Introspection {
     }
 
     // Only include Types that we encountered - if the options say to do so
-    const possiblyFilteredTypes = this.opts.removeUnusedTypes ? types.filter((type) => typesEncountered.has(buildKey(type))) : types
+    const possiblyFilteredTypes = this.opts.removeUnusedTypes ? types.filter((type) => isReservedType(type) || typesEncountered.has(buildKey(type))) : types
 
     // Replace the Schema
     this.schema = {
@@ -552,12 +626,32 @@ function digUnderlyingType(type) {
   return type
 }
 
+function isReservedType(type) {
+  return type.name.startsWith('__')
+}
+
 function buildKey({ kind, name }) {
   return kind + ':' + name
 }
 
 function isUndef(item) {
   return typeof item === 'undefined'
+}
+
+function typesAreSame (typeA, typeB) {
+  return typeA.kind === typeB.kind && typeA.name === typeB.name
+}
+
+function mapProps({ props, map }) {
+  return Object.entries(map).reduce(
+    (acc, [from, to]) => {
+      if (Object.prototype.hasOwnProperty.call(props, from)) {
+        acc[to] = props[to]
+      }
+      return acc
+    },
+    {},
+  )
 }
 
 module.exports = Introspection

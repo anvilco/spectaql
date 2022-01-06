@@ -392,6 +392,14 @@ function analyzeTypeIntrospection (type) {
   }
 }
 
+function isReservedType (type) {
+  return type.name.startsWith('__')
+}
+
+function typesAreSame (typeA, typeB) {
+  return typeA.kind === typeB.kind && typeA.name === typeB.name
+}
+
 module.exports = {
   digNonNullTypeGraphQL,
   convertGraphQLType,
@@ -413,4 +421,6 @@ module.exports = {
   analyzeJsonSchemaArgDefinition,
   analyzeTypeSchema,
   analyzeTypeIntrospection,
+  isReservedType,
+  typesAreSame,
 }
