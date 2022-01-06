@@ -131,7 +131,7 @@ describe('compose-paths', function () {
 
   def('doMetadata', true)
 
-  def('typesDocumented', true)
+  def('typesDocumentedDefault', true)
   def('typeDocumentedDefault', true)
   def('fieldDocumentedDefault', true)
   def('argDocumentedDefault', true)
@@ -150,7 +150,7 @@ describe('compose-paths', function () {
     metadata: $.doMetadata,
     metadatasPath: $.metadatasPath,
 
-    typesDocumented: $.typesDocumented,
+    typesDocumentedDefault: $.typesDocumentedDefault,
     typeDocumentedDefault: $.typeDocumentedDefault,
     fieldDocumentedDefault: $.fieldDocumentedDefault,
     argDocumentedDefault: $.argDocumentedDefault,

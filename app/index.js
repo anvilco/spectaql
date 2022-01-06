@@ -61,7 +61,7 @@ const introspectionOptionDefaults = {
   mutationArgDocumentedDefault: true,
   hideMutationsWithUndocumentedReturnType: true,
 
-  typesDocumented: true,
+  typesDocumentedDefault: true,
   typeDocumentedDefault: true,
   fieldDocumentedDefault: true,
   argDocumentedDefault: true,

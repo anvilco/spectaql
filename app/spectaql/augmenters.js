@@ -7,6 +7,8 @@ const {
 
 const {
   analyzeTypeIntrospection,
+  isReservedType,
+  typesAreSame,
 } = require('./type-helpers')
 
 const {
@@ -23,21 +25,8 @@ const calculateShouldDocument = ({ undocumented, documented, def }) => {
 }
 
 function augmentData (args) {
-  // const {
-  //   introspectionOptions
-  // } = args
 
-  // const {
-  //   hideFieldsWithUndocumentedReturnType,
-  //   hideQueriesWithUndocumentedReturnType,
-  //   hideMutationsWithUndocumentedReturnType,
-  // } = introspectionOptions
-
-  const introspectionManipulator = new IntrospectionManipulator(
-    args.introspectionResponse,
-    // Get this from options? More granular from options?
-    { removeUnusedTypes: false },
-  )
+  const introspectionManipulator = createIntrospectionManipulator(args)
 
   args = {
     ...args,
@@ -53,6 +42,45 @@ function augmentData (args) {
   return introspectionManipulator.getResponse()
 }
 
+function createIntrospectionManipulator(args) {
+  const {
+    introspectionResponse,
+    introspectionOptions,
+  } = args
+
+  const {
+    hideFieldsOfUndocumentedType: removeFieldsWithMissingTypes,
+    // I'm new
+    hideArgsOfUndocumentedType: removeArgsWithMissingTypes,
+    hideInputFieldsOfUndocumentedType: removeInputFieldsWithMissingTypes,
+    // I'm new
+    hideUnionTypesOfUndocumentedType: removePossibleTypesOfMissingTypes,
+    hideQueriesWithUndocumentedReturnType: removeQueriesWithMissingTypes,
+    hideMutationsWithUndocumentedReturnType: removeMutationsWithMissingTypes,
+  // } = introspectionOptions
+  } = introspectionOptions
+
+  // const {
+  //   hideFieldsWithUndocumentedReturnType,
+  //   hideQueriesWithUndocumentedReturnType,
+  //   hideMutationsWithUndocumentedReturnType,
+  // } = introspectionOptions
+
+  return new IntrospectionManipulator(
+    introspectionResponse,
+    // Get this from options? More granular from options?
+    {
+      removeUnusedTypes: false,
+      removeFieldsWithMissingTypes,
+      removeArgsWithMissingTypes,
+      removeInputFieldsWithMissingTypes,
+      removePossibleTypesOfMissingTypes,
+      removeQueriesWithMissingTypes,
+      removeMutationsWithMissingTypes,
+    },
+  )
+}
+
 // TODO: Separate out the metadata copying into JSON Schema results into its own thing?
 function hideThingsBasedOnMetadata ({
   introspectionManipulator,
@@ -60,10 +88,10 @@ function hideThingsBasedOnMetadata ({
 }) {
 
   // Hide them Query/Mutation Properties
-  hideQueriesAndMutations({
-    introspectionManipulator,
-    introspectionOptions,
-  })
+  // hideQueriesAndMutations({
+  //   introspectionManipulator,
+  //   introspectionOptions,
+  // })
 
   // Hide the Type Definitions
   hideTypes({
@@ -98,40 +126,39 @@ function hideThingsBasedOnMetadata ({
   }
 }
 
-function hideQueriesAndMutations ({
-  introspectionManipulator,
-  introspectionOptions,
-}) {
-  const {
-    metadatasPath,
-    queriesDocumentedDefault,
-    mutationsDocumentedDefault,
-  } = introspectionOptions
+// function hideQueriesAndMutations ({
+//   introspectionManipulator,
+//   introspectionOptions,
+// }) {
+//   const {
+//     metadatasPath,
+//     queriesDocumentedDefault,
+//     mutationsDocumentedDefault,
+//   } = introspectionOptions
 
-  const {
-    queryType: {
-      name: queryTypeName,
-    },
-    mutationType: {
-      name: mutationTypeName,
-    },
-  } = introspectionManipulator.getResponse().__schema
+//   const {
+//     queryType: {
+//       name: queryTypeName,
+//     },
+//     mutationType: {
+//       name: mutationTypeName,
+//     },
+//   } = introspectionManipulator.getResponse().__schema
 
-  ;[
-    [queryTypeName, queriesDocumentedDefault],
-    [mutationTypeName, mutationsDocumentedDefault],
-  ].forEach(([name, documentedDefault]) => {
-    const type = introspectionManipulator.getType({ name })
-    if (!type) {
-      return
-    }
-    const metadata = _.get(type, metadatasPath, {})
-    const shouldDocument = calculateShouldDocument({ ...metadata, def: documentedDefault })
-    if (!shouldDocument) {
-      introspectionManipulator.removeType({ name })
-    }
-  })
-}
+//   ;[
+//     [introspectionManipulator.getQueryType(), queriesDocumentedDefault],
+//     [introspectionManipulator.getMutationType(), mutationsDocumentedDefault],
+//   ].forEach(([type, documentedDefault]) => {
+//     if (!type) {
+//       return
+//     }
+//     const metadata = _.get(type, metadatasPath, {})
+//     const shouldDocument = calculateShouldDocument({ ...metadata, def: documentedDefault })
+//     if (!shouldDocument) {
+//       introspectionManipulator.removeType({ kind: type.kind, name: type.name })
+//     }
+//   })
+// }
 
 function hideTypes ({
   introspectionManipulator,
@@ -139,34 +166,40 @@ function hideTypes ({
 }) {
   const {
     metadatasPath,
-    typesDocumented,
-    typeDocumentedDefault: documentedDefault,
-    hideFieldsOfUndocumentedType: removeFieldsOfType,
-    // I'm new
-    hideArgsOfUndocumentedType: removeArgsOfType,
-    hideInputFieldsOfUndocumentedType: removeInputFieldsOfType,
-    // I'm new
-    hideUnionTypesOfUndocumentedType: removePossibleTypesOfType,
-    hideQueriesWithUndocumentedReturnType,
-    hideMutationsWithUndocumentedReturnType,
-  // } = introspectionOptions
+    queriesDocumentedDefault,
+    mutationsDocumentedDefault,
+    typesDocumentedDefault,
+    typeDocumentedDefault,
+
   } = introspectionOptions
 
-
+  const queryType = introspectionManipulator.getQueryType()
+  const mutationType = introspectionManipulator.getMutationType()
   const types = introspectionManipulator.getResponse().__schema.types
 
   for (const type of types) {
+    // Don't mess with reserved GraphQL types
+    if (isReservedType(type)) {
+      continue
+    }
+
+    let allThingsDocumentedDefault = typesDocumentedDefault
+    let individualThingsDocumentedDefault = typeDocumentedDefault
+    if (typesAreSame(type, queryType)) {
+      allThingsDocumentedDefault = queriesDocumentedDefault
+      individualThingsDocumentedDefault = true
+    } else if (typesAreSame(type, mutationType)) {
+      allThingsDocumentedDefault = !!mutationsDocumentedDefault
+      individualThingsDocumentedDefault = true
+    }
+
     const metadata = _.get(type, metadatasPath, {})
-    const shouldDocument = !!typesDocumented && calculateShouldDocument({ ...metadata, def: documentedDefault })
+    const shouldDocument = !!allThingsDocumentedDefault && calculateShouldDocument({ ...metadata, def: !!individualThingsDocumentedDefault })
 
     if (!shouldDocument) {
       introspectionManipulator.removeType({
         kind: type.kind,
         name: type.name,
-        removeFieldsOfType,
-        removeArgsOfType,
-        removeInputFieldsOfType,
-        removePossibleTypesOfType,
       })
     }
   }
@@ -196,12 +229,17 @@ function hideFields(args = {}) {
   const types = introspectionManipulator.getResponse().__schema.types
 
   for (const type of types) {
-    let defaultShowHide = fieldDocumentedDefault
-    if (queryType && type === queryType) {
-      defaultShowHide = queryDocumentedDefault
-    } else if (mutationType && type === mutationType) {
-      defaultShowHide = mutationDocumentedDefault
+    // Don't mess with reserved GraphQL types
+    if (isReservedType(type)) {
+      continue
     }
+
+    let defaultShowHide = fieldDocumentedDefault
+    if (queryType && typesAreSame(type, queryType)) {
+      defaultShowHide = queryDocumentedDefault
+    } else if (mutationType && typesAreSame(type, mutationType)) {
+      defaultShowHide = mutationDocumentedDefault
+    }typesAreSame
 
     for (const field of (type.fields || [])) {
       const metadata = _.get(field, metadatasPath, {})
@@ -233,10 +271,15 @@ function hideArguments(args = {}) {
   const types = introspectionManipulator.getResponse().__schema.types
 
   for (const type of types) {
+    // Don't mess with reserved GraphQL types
+    if (isReservedType(type)) {
+      continue
+    }
+
     let defaultShowHide = argDocumentedDefault
-    if (queryType && type === queryType) {
+    if (queryType && typesAreSame(type, queryType)) {
       defaultShowHide = queryArgDocumentedDefault
-    } else if (mutationType && type === mutationType) {
+    } else if (mutationType && typesAreSame(type, mutationType)) {
       defaultShowHide = mutationArgDocumentedDefault
     }
 
@@ -296,6 +339,11 @@ function addExamples (args = {}) {
   const types = introspectionResponse.__schema.types
 
   for (const type of types) {
+    // Don't mess with reserved GraphQL types
+    if (isReservedType(type)) {
+      continue
+    }
+
     handleExamples({ type })
 
     for (const field of (type.fields || [])) {
@@ -377,6 +425,11 @@ function removeMetadata (args = {}) {
   const types = introspectionResponse.__schema.types
 
   for (const type of types) {
+    // Don't mess with reserved GraphQL types
+    if (isReservedType(type)) {
+      continue
+    }
+
     _.unset(type, metadatasPath)
 
     for (const field of (type.fields || [])) {
@@ -434,6 +487,7 @@ function isUndef(item) {
 }
 
 module.exports = {
+  createIntrospectionManipulator,
   hideThingsBasedOnMetadata,
   addExamples,
   calculateShouldDocument,
