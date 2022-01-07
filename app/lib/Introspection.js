@@ -62,6 +62,13 @@ const optsToRemoveTypeParamsMap = Object.freeze({
   removePossibleTypesOfMissingTypes: 'removePossibleTypesOfType'
 })
 
+
+const kindToFieldPropertyMap = Object.freeze({
+  [KIND_OBJECT]: 'fields',
+  [KIND_INPUT_OBJECT]: 'inputFields',
+  // [KIND_INTERFACE]: 'interfaces',
+})
+
 class Introspection {
 
   constructor(response, opts = {}) {
@@ -304,11 +311,19 @@ class Introspection {
 
   getField({ typeKind = KIND_OBJECT, typeName, fieldName }) {
     const type = this.getType({ kind: typeKind, name: typeName })
-    if (!(type && type.fields)) {
+    if (!type) {
+      return
+    }
+    const fieldsProperty = kindToFieldPropertyMap[typeKind]
+    if (!(fieldsProperty && type[fieldsProperty])) {
       return
     }
 
-    return type.fields.find((field) => field.name === fieldName)
+    return type[fieldsProperty].find((field) => field.name === fieldName)
+  }
+
+  getInputField({ inputName, inputFieldName }) {
+    return this.getField({ typeName: inputName, typeKind: KIND_INPUT_OBJECT, fieldName: inputFieldName })
   }
 
   // TODO: add test

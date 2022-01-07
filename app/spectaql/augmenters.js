@@ -299,10 +299,7 @@ function addExamples (args = {}) {
   const dynamicExamplesProcessingModule = _.get(args, 'introspectionOptions.dynamicExamplesProcessingModule')
 
   let processor = (() => {})
-  if (!dynamicExamplesProcessingModule) {
-    console.warn('\n\n\nNO EXAMPLE PROCESSOR PATH PROVIDED\n\n\n')
-    // return args
-  } else {
+  if (dynamicExamplesProcessingModule) {
     try {
       processor = require(dynamicExamplesProcessingModule)
       if (!processor) {
@@ -338,16 +335,26 @@ function addExamples (args = {}) {
 
   const types = introspectionResponse.__schema.types
 
+  const queryType = introspectionManipulator.getQueryType()
+  const mutationType = introspectionManipulator.getMutationType()
+
   for (const type of types) {
-    // Don't mess with reserved GraphQL types
+    // Don't mess with reserved GraphQL types at all
     if (isReservedType(type)) {
       continue
     }
 
-    handleExamples({ type })
+    const isQueryOrMutation = !!(queryType && typesAreSame(type, queryType)) || !!(mutationType && typesAreSame(type, mutationType))
+
+    // We don't put examples on top-level types
+    // handleExamples({ type })
 
     for (const field of (type.fields || [])) {
-      handleExamples({ type, field })
+      // Don't add examples to fields on the Query or Mutation types...because they are actually
+      // queries or mutations, and we don't support that.
+      if (!isQueryOrMutation) {
+        handleExamples({ type, field })
+      }
 
       for (const arg of (field.args || [])) {
         handleExamples({ type, field, arg })
@@ -362,6 +369,11 @@ function addExamples (args = {}) {
   // Update the manipulator for other parts of the process that will use the manipulator
   // as the source of truth
   introspectionManipulator.setResponse(introspectionResponse)
+
+  return {
+    introspectionManipulator,
+    introspectionOptions,
+  }
 
   function getExistingExample (thing) {
     let {
@@ -395,6 +407,16 @@ function addExamples (args = {}) {
     const thing = arg || inputField || field || type
     const typeForAnalysis = (thing === type) ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
+
+    // console.log({
+    //   // type,
+    //   // field,
+    //   // arg,
+    //   // inputField,
+    //   thing,
+    //   typeForAnalysis,
+    //   typeAnalysis,
+    // })
 
     let example = getExistingExample(thing)
     if (!isUndef(example)) {
