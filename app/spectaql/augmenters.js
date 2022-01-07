@@ -346,8 +346,7 @@ function addExamples (args = {}) {
 
     const isQueryOrMutation = !!(queryType && typesAreSame(type, queryType)) || !!(mutationType && typesAreSame(type, mutationType))
 
-    // We don't put examples on top-level types
-    // handleExamples({ type })
+    handleExamples({ type, skipStatic: true })
 
     for (const field of (type.fields || [])) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
@@ -403,7 +402,7 @@ function addExamples (args = {}) {
       : addSpecialTags(example, { placeholdQuotes })
   }
 
-  function handleExamples ({ type, field, arg, inputField }) {
+  function handleExamples ({ type, field, arg, inputField, skipStatic = false }) {
     const thing = arg || inputField || field || type
     const typeForAnalysis = (thing === type) ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
@@ -419,11 +418,23 @@ function addExamples (args = {}) {
     // })
 
     let example = getExistingExample(thing)
-    if (!isUndef(example)) {
+    // We don't put static examples on top-level types for some reason...should we allow that? Only for
+    // certain "kinds" like scalars?
+    // Would be BREAKING CHANGE
+    if (!(skipStatic || isUndef(example))) {
       thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
+    // if (type.name === 'String') {
+    //   console.log({
+    //     ...typeAnalysis,
+    //     type,
+    //     field,
+    //     arg,
+    //     inputField,
+    //   })
+    // }
     if (!isUndef(example)) {
       thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
     }

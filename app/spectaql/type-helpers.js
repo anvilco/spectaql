@@ -360,7 +360,7 @@ function analyzeTypeSchema (thing) {
 // Analyze a Type that's part of an Introspection object
 function analyzeTypeIntrospection (type) {
   let isRequired = false
-  let itemsAreRequired = false
+  let itemsRequired = false
   let isArray = false
 
   // eslint-disable-next-line no-constant-condition
@@ -369,7 +369,7 @@ function analyzeTypeIntrospection (type) {
       // If we already know this is an array, then this NonNull means that the
       // "items" are required
       if (isArray) {
-        itemsAreRequired = true
+        itemsRequired = true
       } else {
         // Otherwise, we are just saying that the outer thing (which may
         // not be an array) is required
@@ -388,7 +388,7 @@ function analyzeTypeIntrospection (type) {
     underlyingType: type,
     isRequired,
     isArray,
-    itemsAreRequired,
+    itemsRequired,
   }
 }
 

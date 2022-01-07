@@ -18,7 +18,7 @@ const {
 } = require('app/spectaql/metadata-loaders')
 
 
-describe.only('Introspection', function () {
+describe('Introspection', function () {
   def('QueryType', () => `type Query {
       myTypes: [MyType!]
     }`)
@@ -192,7 +192,7 @@ describe.only('Introspection', function () {
     // console.log($.schemaSDLBase)
   })
 
-  it.only('works', function () {
+  it('works', function () {
     const introspection = new Introspection($.response)
     let response = introspection.getResponse()
 
