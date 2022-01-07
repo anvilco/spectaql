@@ -26,9 +26,10 @@ const {
 
 const {
   KIND_INPUT_OBJECT,
+  KIND_SCALAR,
 } = require('app/lib/Introspection')
 
-describe.only('augmenters', function () {
+describe('augmenters', function () {
   def('schemaSDLBase', () => `
     type MyType {
       myField(
@@ -603,18 +604,6 @@ describe.only('augmenters', function () {
 
     def('metadata', () => $.metadataBase)
 
-    // def('result', () => {
-    //   return addExamplesFromMetadata(
-    //     // Need to call hideThingsBasedOnMetadata so that metadata gets copied
-    //     hideThingsBasedOnMetadata({
-    //       introspectionResponse: $.introspectionResponse,
-    //       jsonSchema: $.jsonSchema,
-    //       graphQLSchema: $.graphQLSchema,
-    //       introspectionOptions: $.introspectionOptions,
-    //     })
-    //   )
-    // })
-
     def('result', () => addExamples({
       introspectionManipulator: $.introspectionManipulator,
       introspectionOptions: $.introspectionOptions,
@@ -682,160 +671,152 @@ describe.only('augmenters', function () {
         commonTests()
       })
     })
-  })
 
-  describe('addExamplesDynamically', function () {
-    def('schemaSDL', () => `
-      ${$.schemaSDLBase}
+    context('example added by processor', function () {
+      def('schemaSDL', () => `
+        ${$.schemaSDLBase}
 
-      type YetAnotherType {
-        fieldWithExample(
-          argWithExample: String,
-          argWithoutExample: String,
-        ): String
+        type YetAnotherType {
+          fieldWithExample(
+            argWithExample: String,
+            argWithoutExample: String,
+          ): String
 
-        fieldWithoutExample(
-          argWithExample: Boolean,
-          argWithoutExample: String,
-        ): String
-      }
+          fieldWithoutExample(
+            argWithExample: Boolean,
+            argWithoutExample: String,
+          ): String
+        }
 
-      input AnotherInput {
-        inputOne: Int,
-        inputTwo: [Int],
-        inputThree: Int!,
-        inputFour: [Int!]
-        inputFive: [Int!]!
-      }
-    `)
+        input AnotherInput {
+          inputOne: Int,
+          inputTwo: [Int],
+          inputThree: Int!,
+          inputFour: [Int!]
+          inputFive: [Int!]!
+        }
+      `)
 
-    // This from-the-root path works due to appModulePath in testing setup
-    def('dynamicExamplesProcessingModule', 'test/fixtures/examplesProcessor')
-    def('introspectionOptions', () => ({
-      ...$.introspectionOptionsBase,
-      dynamicExamplesProcessingModule: $.dynamicExamplesProcessingModule,
-    }))
-    def('result', () => {
-      return addExamplesDynamically({
-        introspectionResponse: $.introspectionResponse,
-        jsonSchema: $.jsonSchema,
-        graphQLSchema: $.graphQLSchema,
-        introspectionOptions: $.introspectionOptions,
-      })
-    })
+      def('metadata', () => ({}))
 
-    describe('Scalars', function () {
-      it('adds example when it should', function () {
-        const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-        const { jsonSchema } = $.result
-        expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+      // This from-the-root path works due to appModulePath in testing setup
+      def('dynamicExamplesProcessingModule', 'test/fixtures/examplesProcessor')
+      def('introspectionOptions', () => ({
+        ...$.introspectionOptionsBase,
+        dynamicExamplesProcessingModule: $.dynamicExamplesProcessingModule,
+      }))
 
-        expect(jsonSchema.definitions.String.example).to.eql(
-          addSpecialTags('42: Life, the Universe and Everything')
-        )
-      })
-    })
+      describe('Scalars', function () {
+        it('adds example when it should', function () {
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.not.eql(responseBefore)
 
-    describe('Fields', function () {
-      it('adds example when it should', function () {
-        const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-        const { jsonSchema } = $.result
-        expect(jsonSchemaBefore).to.not.eql(jsonSchema)
-
-        ;[
-          ['MyType', 'myField', 'String', true],
-          ['MyType', 'myOtherField', 'OtherType', false],
-
-          ['OtherType', 'myField', 'MyType', false],
-          ['OtherType', 'myOtherField', 'String', true],
-
-          // This field should have an example
-          ['YetAnotherType', 'fieldWithExample', 'String', true],
-        ].forEach(([type, field, returnTypeName, placeholdQuotes]) => {
-          expect(jsonSchema.definitions[type].properties[field].properties.return.example).to.eql(
-            addSpecialTags(
-              [type, field, returnTypeName, 'example'].join('.'),
-              { placeholdQuotes }
-            )
-          )
+          // OK, WTF were special tags again? And placeholding quotes?
+          expect($.introspectionManipulator.getType({ kind: KIND_SCALAR, name: 'String' }).example).to.eql(addSpecialTags('42: Life, the Universe and Everything', { placeholdQuotes: true }))
         })
-
-        // This field should NOT have an example
-        expect(jsonSchema.definitions.YetAnotherType.properties.fieldWithoutExample)
-          .to.be.an('object')
-          .that.does.not.have.any.keys('example')
       })
-    })
 
-    describe('Input Fields', function () {
-      it('adds example when it should', function () {
-        const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-        const { jsonSchema } = $.result
-        expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+      describe('Fields', function () {
+        it('adds example when it should', function () {
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.not.eql(responseBefore)
 
-        ;[
-          ['AnotherInput', 'inputOne', 'Int', false, false],
-          ['AnotherInput', 'inputTwo', 'Int', true, false],
-          ['AnotherInput', 'inputThree', 'Int', false, false],
-          ['AnotherInput', 'inputFour', 'Int', true, true],
-          ['AnotherInput', 'inputFive', 'Int', true, true],
-        ].forEach(([inputTypeName, field, type, isArray, itemsRequired]) => {
-          expect(jsonSchema.definitions[inputTypeName].properties[field].example).to.eql(
-            addSpecialTags(
-              [inputTypeName, field, type, isArray, itemsRequired, 'example'].join('.'),
+          ;[
+            ['MyType', 'myField', 'String', true],
+            ['MyType', 'myOtherField', 'OtherType', false],
+
+            ['OtherType', 'myField', 'MyType', false],
+            ['OtherType', 'myOtherField', 'String', true],
+
+            // This field should have an example
+            ['YetAnotherType', 'fieldWithExample', 'String', true],
+          ].forEach(([typeName, fieldName, returnTypeName, placeholdQuotes]) => {
+            expect($.introspectionManipulator.getField({ typeName, fieldName }).example).to.eql(
+              addSpecialTags(
+                [typeName, fieldName, returnTypeName, 'example'].join('.'),
+                { placeholdQuotes }
+              )
             )
-          )
-        })
+          })
 
-        ;['inputOne', 'inputTwo'].forEach((fieldWithoutExample) => {
           // This field should NOT have an example
-          expect(jsonSchema.definitions.MyInput.properties[fieldWithoutExample])
-            .to.be.an('object')
-            .that.does.not.have.any.keys('example')
+          const fieldWithoutExample = $.introspectionManipulator.getField({ typeName: 'YetAnotherType', fieldName: 'fieldWithoutExample' })
+          expect(fieldWithoutExample).to.be.ok
+          expect(fieldWithoutExample.example).to.not.be.ok
         })
       })
-    })
 
-    describe('Arguments', function () {
-      it('adds example when it should', function () {
-        const jsonSchemaBefore = _.cloneDeep($.jsonSchema)
-        const { jsonSchema } = $.result
-        expect(jsonSchemaBefore).to.not.eql(jsonSchema)
+      describe('Input Fields', function () {
+        it('adds example when it should', function () {
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.not.eql(responseBefore)
 
-        ;[
-          ['Type', 'MyType', 'myField', 'myArg', 'String', true],
-          ['Type', 'MyType', 'myField', 'myOtherArg', 'String', true],
+          ;[
+            ['AnotherInput', 'inputOne', 'Int', false, false],
+            ['AnotherInput', 'inputTwo', 'Int', true, false],
+            ['AnotherInput', 'inputThree', 'Int', false, false],
+            ['AnotherInput', 'inputFour', 'Int', true, true],
+            ['AnotherInput', 'inputFive', 'Int', true, true],
+          ].forEach(([inputName, inputFieldName, inputFieldType, isArray, itemsRequired]) => {
 
-          ['Type', 'YetAnotherType', 'fieldWithExample', 'argWithExample', 'String', true],
-          ['Type', 'YetAnotherType', 'fieldWithoutExample', 'argWithExample', 'Boolean', false],
-
-          ['Query', 'Query', 'myQuery', 'myArg', 'String', true],
-          ['Query', 'Query', 'myQuery', 'myOtherArg', 'String', true],
-
-          ['Mutation', 'Mutation', 'myMutation', 'myArg', 'String', true],
-          ['Mutation', 'Mutation', 'myMutation', 'myOtherArg', 'String', true],
-        ].forEach(([typeType, typeName, fieldName, argName, argType, placeholdQuotes]) => {
-          const area = typeType === 'Type' ? 'definitions' : 'properties'
-          const whatDoWeCallAField = typeType === 'Type' ? 'Field' : typeType
-
-          expect(jsonSchema[area][typeName].properties[fieldName].properties.arguments.properties[argName].example).to.eql(
-            addSpecialTags(
-              [typeName, typeType, fieldName, whatDoWeCallAField, argName, argType, 'example'].join('.'),
-              { placeholdQuotes }
+            expect($.introspectionManipulator.getInputField({ inputName, inputFieldName }).example).to.eql(
+              addSpecialTags(
+                [inputName, inputFieldName, inputFieldType, isArray, itemsRequired, 'example'].join('.'),
+              )
             )
-          )
-        })
+          })
 
-        // There are no arguments on these, so they should not have examples
-        ;[
-          ['Type', 'MyType', 'myOtherField'],
-          ['Type', 'OtherType', 'myField'],
-          ['Type', 'OtherType', 'myOtherField'],
-          ['Query', 'Query', 'myOtherQuery'],
-          ['Mutation', 'Mutation', 'myOtherMutation'],
-        ].forEach(([typeType, typeName, fieldName]) => {
-          const area = typeType === 'Type' ? 'definitions' : 'properties'
-          expect(jsonSchema[area][typeName].properties[fieldName].properties.arguments.properties).to.eql({})
+          ;['inputOne', 'inputTwo'].forEach((fieldWithoutExample) => {
+            // This field should NOT have an example
+            const inputField = $.introspectionManipulator.getInputField({ inputName: 'MyInput', inputFieldName: fieldWithoutExample })
+            expect(inputField).to.be.ok
+            expect(inputField.example).to.not.be.ok
+          })
+        })
+      })
+
+      describe('Arguments', function () {
+        it('adds example when it should', function () {
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.not.eql(responseBefore)
+
+          ;[
+            ['MyType', 'myField', 'myArg', 'String', true],
+            ['MyType', 'myField', 'myOtherArg', 'String', true],
+
+            ['YetAnotherType', 'fieldWithExample', 'argWithExample', 'String', true],
+            ['YetAnotherType', 'fieldWithoutExample', 'argWithExample', 'Boolean', false],
+
+            ['Query', 'myQuery', 'myArg', 'String', true],
+            ['Query', 'myQuery', 'myOtherArg', 'String', true],
+
+            ['Mutation', 'myMutation', 'myArg', 'String', true],
+            ['Mutation', 'myMutation', 'myOtherArg', 'String', true],
+          ].forEach(([typeName, fieldName, argName, argType, placeholdQuotes]) => {
+            expect($.introspectionManipulator.getArg({ typeName, fieldName, argName }).example).to.eql(
+              addSpecialTags(
+                [typeName, fieldName, argName, argType, 'example'].join('.'),
+                { placeholdQuotes }
+              )
+            )
+          })
+
+          // There are no arguments on these, so they should not have arguments, nor examples
+          ;[
+            ['MyType', 'myOtherField'],
+            ['OtherType', 'myField'],
+            ['OtherType', 'myOtherField'],
+            ['Query', 'myOtherQuery'],
+            ['Mutation', 'myOtherMutation'],
+          ].forEach(([typeName, fieldName]) => {
+            const field = $.introspectionManipulator.getField({ typeName, fieldName })
+            expect(field).to.be.ok
+            expect(field.args).to.eql([])
+          })
         })
       })
     })
