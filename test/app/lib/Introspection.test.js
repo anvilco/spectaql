@@ -185,13 +185,6 @@ describe('Introspection', function () {
 
   def('schema', () => $.response.__schema)
 
-  beforeEach(function () {
-    // const schema = $.schema
-
-    // console.log({schema})
-    // console.log($.schemaSDLBase)
-  })
-
   it('works', function () {
     const introspection = new Introspection($.response)
     let response = introspection.getResponse()

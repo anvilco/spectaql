@@ -14,3 +14,6 @@ dynamic examples will only have "processor"?
 
 acts on Introspection entry, not JSON Schema entry
 
+
+expose all the stuff that happens up to the point of handlebarring in case someone would like to
+use this thing just for that

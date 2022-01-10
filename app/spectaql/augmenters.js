@@ -13,7 +13,6 @@ const {
 
 const {
   addSpecialTags,
-  // replaceQuotesWithTags,
 } = require('../lib/common')
 
 const stripTrailing = require('../helpers/stripTrailing')
@@ -60,12 +59,6 @@ function createIntrospectionManipulator(args) {
   // } = introspectionOptions
   } = introspectionOptions
 
-  // const {
-  //   hideFieldsWithUndocumentedReturnType,
-  //   hideQueriesWithUndocumentedReturnType,
-  //   hideMutationsWithUndocumentedReturnType,
-  // } = introspectionOptions
-
   return new IntrospectionManipulator(
     introspectionResponse,
     // Get this from options? More granular from options?
@@ -86,12 +79,6 @@ function hideThingsBasedOnMetadata ({
   introspectionManipulator,
   introspectionOptions,
 }) {
-
-  // Hide them Query/Mutation Properties
-  // hideQueriesAndMutations({
-  //   introspectionManipulator,
-  //   introspectionOptions,
-  // })
 
   // Hide the Type Definitions
   hideTypes({
@@ -125,40 +112,6 @@ function hideThingsBasedOnMetadata ({
     introspectionOptions,
   }
 }
-
-// function hideQueriesAndMutations ({
-//   introspectionManipulator,
-//   introspectionOptions,
-// }) {
-//   const {
-//     metadatasPath,
-//     queriesDocumentedDefault,
-//     mutationsDocumentedDefault,
-//   } = introspectionOptions
-
-//   const {
-//     queryType: {
-//       name: queryTypeName,
-//     },
-//     mutationType: {
-//       name: mutationTypeName,
-//     },
-//   } = introspectionManipulator.getResponse().__schema
-
-//   ;[
-//     [introspectionManipulator.getQueryType(), queriesDocumentedDefault],
-//     [introspectionManipulator.getMutationType(), mutationsDocumentedDefault],
-//   ].forEach(([type, documentedDefault]) => {
-//     if (!type) {
-//       return
-//     }
-//     const metadata = _.get(type, metadatasPath, {})
-//     const shouldDocument = calculateShouldDocument({ ...metadata, def: documentedDefault })
-//     if (!shouldDocument) {
-//       introspectionManipulator.removeType({ kind: type.kind, name: type.name })
-//     }
-//   })
-// }
 
 function hideTypes ({
   introspectionManipulator,
@@ -407,16 +360,6 @@ function addExamples (args = {}) {
     const typeForAnalysis = (thing === type) ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
 
-    // console.log({
-    //   // type,
-    //   // field,
-    //   // arg,
-    //   // inputField,
-    //   thing,
-    //   typeForAnalysis,
-    //   typeAnalysis,
-    // })
-
     let example = getExistingExample(thing)
     // We don't put static examples on top-level types for some reason...should we allow that? Only for
     // certain "kinds" like scalars?
@@ -426,21 +369,11 @@ function addExamples (args = {}) {
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
-    // if (type.name === 'String') {
-    //   console.log({
-    //     ...typeAnalysis,
-    //     type,
-    //     field,
-    //     arg,
-    //     inputField,
-    //   })
-    // }
     if (!isUndef(example)) {
       thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
     }
   }
 }
-
 
 // Get rid of all the metadata entries
 function removeMetadata (args = {}) {
@@ -520,10 +453,10 @@ function isUndef(item) {
 }
 
 module.exports = {
+  augmentData,
   createIntrospectionManipulator,
   hideThingsBasedOnMetadata,
   addExamples,
   calculateShouldDocument,
-  augmentData,
   removeTrailingPeriodsFromDescriptions,
 }
