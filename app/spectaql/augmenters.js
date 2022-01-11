@@ -61,8 +61,8 @@ function createIntrospectionManipulator(args) {
 
   return new IntrospectionManipulator(
     introspectionResponse,
-    // Get this from options? More granular from options?
     {
+      // Get this from options?
       removeUnusedTypes: false,
       removeFieldsWithMissingTypes,
       removeArgsWithMissingTypes,

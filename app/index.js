@@ -11,6 +11,7 @@ const grunt = require('grunt')
 const package = require('../package.json')
 const _ = require('lodash')
 const loadYaml = require('./lib/loadYaml')
+const cliOptions = require('./cli')
 
 
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
@@ -98,13 +99,24 @@ function resolveOptions(options) {
     options.specFile = path.resolve(options.specFile)
   }
 
+  const introspectionCliOptions = Object.entries(introspectionOptionsMap).reduce(
+    (acc, [fromKey, toKey]) => {
+      if (typeof opts[fromKey] !== 'undefined') {
+        acc[toKey] = opts[fromKey]
+      }
+
+      return acc
+    },
+    {},
+  )
+
   if (options.specFile) {
     // Add the loaded YAML to the options
     const spec = opts.specData = loadYaml(options.specFile)
 
     const {
       spectaql: spectaqlYaml,
-      introspection: introspectionYaml,
+      // introspection: introspectionYaml,
     } = spec
 
     if (spectaqlYaml) {
@@ -112,15 +124,15 @@ function resolveOptions(options) {
       opts = _.defaults({}, opts, spectaqlYaml)
     }
 
-    if (introspectionYaml) {
-      // Move the provided Introspection-related CLI options into the Introspection
-      // data from the YAML config. CLI opts take precedent
-      Object.entries(introspectionOptionsMap).forEach(([fromKey, toKey]) => {
-        if (typeof opts[fromKey] !== 'undefined') {
-          introspectionYaml[toKey] = opts[fromKey]
-        }
-      })
-    }
+    // if (introspectionYaml) {
+    //   // Move the provided Introspection-related CLI options into the Introspection
+    //   // data from the YAML config. CLI opts take precedent
+    //   Object.entries(introspectionOptionsMap).forEach(([fromKey, toKey]) => {
+    //     if (typeof opts[fromKey] !== 'undefined') {
+    //       introspectionYaml[toKey] = opts[fromKey]
+    //     }
+    //   })
+    // }
   }
 
   // Add in defaults for things that were not set via CLI or YAML config
@@ -134,7 +146,7 @@ function resolveOptions(options) {
   }
 
   // Add in some defaults here
-  opts.specData.introspection = _.defaults({}, opts.specData.introspection, introspectionOptionDefaults)
+  opts.specData.introspection = _.defaults({}, introspectionCliOptions, opts.specData.introspection, introspectionOptionDefaults)
 
   // Resolve the introspection options paths
   resolvePaths(opts.specData.introspection, Object.values(introspectionOptionsMap))
@@ -159,21 +171,28 @@ function resolveOptions(options) {
   return opts
 }
 
+function loadData(options) {
+  const { jsonSchema, ...specData } = require(path.resolve(options.appDir + '/spectaql/index'))(options)
+  return require(path.resolve(options.appDir + '/lib/preprocessor'))(options, specData, { jsonSchema })
+}
+
+function buildSchemas(options) {
+  console.log(options)
+  // process.exit()
+  const { buildSchemas } = require(path.resolve(options.appDir + '/spectaql/index'))
+  return buildSchemas(options)
+}
+
 /**
  * Run SpectaQL and configured tasks
  **/
-module.exports = function (options) {
+function run (options = {}) {
   const opts = resolveOptions(options)
 
   //
   //= Load the specification and init configuration
 
-  function loadData() {
-    const { jsonSchema, ...specData } = require(path.resolve(opts.appDir + '/spectaql/index'))(opts)
-    return require(path.resolve(opts.appDir + '/lib/preprocessor'))(opts, specData, { jsonSchema })
-  }
-
-  const gruntConfig = require(path.resolve(opts.gruntConfigFile))(grunt, opts, loadData())
+  const gruntConfig = require(path.resolve(opts.gruntConfigFile))(grunt, opts, loadData(opts))
 
   //
   //= Setup Grunt to do the heavy lifting
@@ -277,7 +296,7 @@ module.exports = function (options) {
   // Reload template data when watch files change
   grunt.event.on('watch', function() {
     try {
-      grunt.config.set('compile-handlebars.compile.templateData', loadData())
+      grunt.config.set('compile-handlebars.compile.templateData', loadData(opts))
     } catch (e) {
       grunt.fatal(e);
     }
@@ -358,5 +377,17 @@ module.exports = function (options) {
 
   grunt.task.start()
 
-  return donePromise;
-};
+  return donePromise
+}
+
+module.exports = run
+module.exports.run = run
+module.exports.parseCliOptions = cliOptions
+module.exports.loadData = function (options = {}) {
+  const opts = resolveOptions(options)
+  return loadData(opts)
+}
+module.exports.buildSchemas = function (options = {}) {
+  const opts = resolveOptions(options)
+  return buildSchemas(opts)
+}

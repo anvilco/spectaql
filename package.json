@@ -3,25 +3,11 @@
   "version": "0.12.0",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
+  "homepage": "https://github.com/anvilco/spectaql",
   "license": "MIT",
-  "main": "app/index.js",
-  "bin": {
-    "spectaql": "./bin/spectaql.js"
-  },
-  "scripts": {
-    "develop": "nodemon -x 'node bin/spectaql' -D",
-    "build": "node bin/spectaql",
-    "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
-    "generateExampleData": "node bin/generateExampleData.js",
-    "test": "mocha --config ./test/mocha-config.js",
-    "test:watch": "nodemon -x 'yarn test'"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/anvilco/spectaql.git"
-  },
-  "engines": {
-    "node": ">=12"
   },
   "keywords": [
     "graphql",
@@ -36,7 +22,21 @@
   "bugs": {
     "url": "https://github.com/anvilco/spectaql/issues"
   },
-  "homepage": "https://github.com/anvilco/spectaql",
+  "main": "app/index.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "bin": {
+    "spectaql": "./bin/spectaql.js"
+  },
+  "scripts": {
+    "develop": "nodemon -x 'node bin/spectaql' -D",
+    "build": "node bin/spectaql",
+    "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
+    "generateExampleData": "node bin/generateExampleData.js",
+    "test": "mocha --config ./test/mocha-config.js",
+    "test:watch": "nodemon -x 'yarn test'"
+  },
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.1",
     "@anvilco/graphql-2-json-schema": "^0.0.4",
