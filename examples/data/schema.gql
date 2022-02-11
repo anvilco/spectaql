@@ -65,6 +65,9 @@ type Query {
 
   getInts: [Int]
 
+  "I return a list of the SimpleType Union"
+  simpleTypes: [SimpleTypes]
+
   "I'm the optionals query"
   optionalsQuery(
     optionalArg: [String]
