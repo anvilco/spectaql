@@ -18,7 +18,9 @@ const {
   removeTrailingPeriodsFromDescriptions,
 } = require('./augmenters')
 
+const arrangeData = require('./arrange-data')
 const composePaths = require('./compose-paths')
+const preProcessData = require('./pre-process')
 
 function errorThingDone ({ trying, done }) {
   const msg = `Cannot try to ${trying} while also having ${done}`
@@ -111,8 +113,6 @@ function buildSchemas (opts) {
     introspectionOptions,
   })
 
-  // const paths = composePaths({ domains, graphQLSchema, jsonSchema })
-  // const definitions = jsonSchema.definitions
 
   if (removeTrailingPeriodFromDescriptions) {
     removeTrailingPeriodsFromDescriptions(augmentedIntrospectionResponse)
@@ -121,7 +121,6 @@ function buildSchemas (opts) {
 
 
   const graphQLSchema = graphQLSchemaFromIntrospectionResponse(augmentedIntrospectionResponse)
-
   return {
     introspectionResponse: augmentedIntrospectionResponse,
     graphQLSchema,
@@ -169,6 +168,27 @@ function run (opts) {
     graphQLSchema,
   } = buildSchemas(opts)
 
+  const orderedDataWithHeaders = arrangeData({
+    introspectionResponse,
+    graphQLSchema,
+  })
+
+  // console.log(JSON.stringify({
+  //   orderedDataWithHeaders,
+  // }))
+
+  // console.log(JSON.stringify({
+  //   introspectionResponse,
+  //   graphQLSchema,
+  // }))
+
+  // Side-effects
+  preProcessData({ orderedDataWithHeaders, introspectionResponse, graphQLSchema })
+
+
+  // console.log(JSON.stringify({
+  //   orderedDataWithHeaders,
+  // }))
 
   // generate specification
   const swaggerSpec = {
@@ -186,6 +206,7 @@ function run (opts) {
       description: domain.description,
       externalDocs: domain.externalDocs,
     })),
+    orderedDataWithHeaders,
     // paths,
     securityDefinitions,
     // definitions,

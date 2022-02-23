@@ -40,6 +40,12 @@
     {{/each}}
   {{/if}}
 
+  {{#if (nempty orderedDataWithHeaders)}}
+    {{#each orderedDataWithHeaders}}
+      {{>layout/nav/item}}
+    {{/each}}
+  {{/if}}
+
   {{#if (nempty tags) }}
     <h5>Operations</h5>
     {{#each tags}}
