@@ -45,29 +45,31 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
   if (item.isQuery) {
     addQueryToItem({ item, introspectionResponse, graphQLSchema })
   } else if (item.isMutation) {
-    addMutationToItem(item)
+    addMutationToItem({ item, introspectionResponse, graphQLSchema })
   } else {
 
   }
 }
 
 function addQueryToItem ({ item, introspectionResponse, graphQLSchema }) {
-  console.log({addQueryToItem: true, introspectionResponse})
-  const stuff = generateQueryExample({ prefix: 'query', field: item, introspectionResponse, graphQLSchema })
+  return addQueryOrMutationToItem({ item, queryOrMutationIndicator: 'query', introspectionResponse, graphQLSchema })
+}
+
+function addMutationToItem ({ item, introspectionResponse, graphQLSchema }) {
+  return addQueryOrMutationToItem({ item, queryOrMutationIndicator: 'mutation', introspectionResponse, graphQLSchema })
+}
+
+function addQueryOrMutationToItem ({ item, queryOrMutationIndicator, introspectionResponse, graphQLSchema }) {
+  const stuff = generateQueryExample({ prefix: queryOrMutationIndicator, field: item, introspectionResponse, graphQLSchema })
   const {
     query,
     variables,
     response,
   } = stuff
-  console.log({stuff})
 
-  item.query = query
+  item[queryOrMutationIndicator] = query
   item.variables = variables
   item.response = response
-}
-
-function addMutationToItem ({ item, introspectionResponse, graphQLSchema }) {
-  // item.mutation = generateQueryExample({ name: 'query', field: item, introspectionResponse })
 }
 
 module.exports = preProcess
