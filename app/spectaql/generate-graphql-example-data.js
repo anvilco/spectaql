@@ -5,13 +5,14 @@ const {
 } = require("graphql")
 
 const {
-  introspectionTypeToString
+  introspectionTypeToString,
 } = require('./type-helpers')
 
 const IntrospectionManipulator = require('../lib/Introspection')
 
 const {
-  introspectionArgToVariable
+  introspectionArgsToVariables,
+  introspectionQueryOrMutationToResponse,
 } = require('../lib/common')
 
 function generateQueryInternal({
@@ -169,38 +170,14 @@ function generateResponseSchema({
 }
 
 function generateQuery({ prefix, field, introspectionResponse, graphQLSchema }) {
-  console.log({
-    prefix,
-    field,
-    introspectionResponse,
-  })
-  const {
-    name,
-    type,
-  } = field
-
   const introspectionManipulator = new IntrospectionManipulator(introspectionResponse)
-
-  // const responseDataSchema = generateResponseSchema({
-  //   name,
-  //   type,
-  //   // expandGraph,
-  //   // examplesByFieldName,
-  //   depth: 1,
-  // })
-
   const queryResult = generateQueryInternal({
     field,
-    // expandGraph,
-    // args: [],
-    // allowedArgNames,
-    depth: 1,
     introspectionManipulator,
     introspectionResponse,
     graphQLSchema,
+    depth: 1,
   })
-
-  console.log(JSON.stringify(queryResult))
 
   const argStr = queryResult.args
     .filter((item, pos) => queryResult.args.indexOf(item) === pos)
@@ -211,30 +188,18 @@ function generateQuery({ prefix, field, introspectionResponse, graphQLSchema }) 
 
   const query = `${prefix} ${field.name}${argStr ? `(${argStr})` : ''} {\n${cleanedQuery}}`
 
-  const variables = queryResult.args.length ? queryResult.args.reduce(
-    (acc, arg) => {
-      acc[arg.name] = introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator })
-      return acc
-    },
-    {},
-  ) : null
+  const variables = introspectionArgsToVariables({ args: queryResult.args, introspectionResponse, introspectionManipulator })
 
-  const responseSchema = {
-    type: "object",
-    properties: {
-      data: {
-        type: "object",
-        properties: {
-          // [field.name]: responseDataSchema,
-        },
-      },
+  const response = {
+    data: {
+      [field.name]: introspectionQueryOrMutationToResponse({ field, introspectionResponse, introspectionManipulator }),
     },
   }
 
   return {
     query, // The Query/Mutation sring/markdown
     variables, // The Variables
-    response: responseSchema, // The Response
+    response, // The Response
   };
 }
 

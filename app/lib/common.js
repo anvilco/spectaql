@@ -291,6 +291,20 @@ var common = {
     console.error('Cannot format example on property ', ref, ref.$ref)
   },
 
+  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator }) {
+    if (!(args && args.length)) {
+      return null
+    }
+
+    return args.reduce(
+      (acc, arg) => {
+        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator })
+        return acc
+      },
+      {},
+    )
+  },
+
 
   // Take an Arg from the Introspection JSON, and figure out it's example variable representation
   introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator }) {
@@ -309,13 +323,43 @@ var common = {
 
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
 
-    const underlyingArgType = IntrospectionManipulator.digUnderlyingType(arg.type)
-    const underlyingType = introspectionManipulator.getType(underlyingArgType)
-    let example = underlyingType.example || getExampleForScalar(underlyingType.name)
+    const underlyingTypeDefinition = introspectionManipulator.getType(
+      IntrospectionManipulator.digUnderlyingType(arg.type)
+    )
+
+    return common.generateIntrospectionReturnTypeExample({ underlyingTypeDefinition, originalType: arg.type })
+  },
+
+  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator }) {
+    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+    const underlyingTypeDefinition = introspectionManipulator.getType(
+      IntrospectionManipulator.digUnderlyingType(field.type)
+    )
+
+    // No fields? Just a Scalar then, so return a single value.
+    if (!underlyingTypeDefinition.fields) {
+      return common.generateIntrospectionReturnTypeExample({ underlyingTypeDefinition, originalType: field.type })
+    }
+
+    // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
+    return underlyingTypeDefinition.fields.reduce(
+      (acc, field) => {
+        const underlyingTypeDefinition = introspectionManipulator.getType(
+          IntrospectionManipulator.digUnderlyingType(field.type)
+        )
+        acc[field.name] = common.generateIntrospectionReturnTypeExample({ underlyingTypeDefinition, originalType: field.type })
+        return acc
+      },
+      {}
+    )
+  },
+
+  generateIntrospectionReturnTypeExample: function ({ underlyingTypeDefinition, originalType }) {
+    let example = underlyingTypeDefinition.example || getExampleForScalar(underlyingTypeDefinition.name)
     if (typeof example !== 'undefined') {
       example = unwindSpecialTags(example)
     } else {
-      example = underlyingType.name
+      example = underlyingTypeDefinition.name
     }
 
     const {
@@ -323,7 +367,7 @@ var common = {
       // isRequired,
       isArray,
       // itemsRequired,
-    } = analyzeTypeIntrospection(arg.type)
+    } = analyzeTypeIntrospection(originalType)
 
     return isArray ? [example] : example
   },
