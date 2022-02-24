@@ -7,7 +7,10 @@ const highlight = require('highlight.js')
 const highlightGraphQl = require('../spectaql/graphql-hl')
 const {
   typeIsArray,
+  analyzeTypeIntrospection,
 } = require('../spectaql/type-helpers')
+
+const IntrospectionManipulator = require('./Introspection')
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround
@@ -37,8 +40,8 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
-function getExampleForScalar (value) {
-  const replacement = SCALAR_TO_EXAMPLE[value]
+function getExampleForScalar (scalarName) {
+  const replacement = SCALAR_TO_EXAMPLE[scalarName]
   if (typeof replacement !== 'undefined') {
     return Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
   }
@@ -286,6 +289,43 @@ var common = {
     }
 
     console.error('Cannot format example on property ', ref, ref.$ref)
+  },
+
+
+  // Take an Arg from the Introspection JSON, and figure out it's example variable representation
+  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator }) {
+    if (!arg) {
+      return null
+    }
+
+    // If there is an example, use it.
+    if (arg.example) {
+      return arg.example
+    }
+    // If there is a default, use it.
+    if (arg.defaultValue) {
+      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true })
+    }
+
+    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+
+    const underlyingArgType = IntrospectionManipulator.digUnderlyingType(arg.type)
+    const underlyingType = introspectionManipulator.getType(underlyingArgType)
+    let example = underlyingType.example || getExampleForScalar(underlyingType.name)
+    if (typeof example !== 'undefined') {
+      example = unwindSpecialTags(example)
+    } else {
+      example = underlyingType.name
+    }
+
+    const {
+      // underlyingType,
+      // isRequired,
+      isArray,
+      // itemsRequired,
+    } = analyzeTypeIntrospection(arg.type)
+
+    return isArray ? [example] : example
   },
 
   printSchema: function (value, _root) {

@@ -9,6 +9,7 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
   return [
     {
       name: 'Operations',
+      hideInContent: true,
       items: [
         {
           name: 'Queries',

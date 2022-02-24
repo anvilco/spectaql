@@ -117,6 +117,10 @@ class Introspection {
     return response
   }
 
+  static digUnderlyingType(type) {
+    return digUnderlyingType(type)
+  }
+
   validate() {
     if (!this.schema) {
       throw new Error('No schema property detected!')

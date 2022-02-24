@@ -15,6 +15,12 @@
 
   {{>swagger/x-spectacle-topics}}
 
+  {{#if (nempty orderedDataWithHeaders)}}
+    {{#each orderedDataWithHeaders}}
+      {{>layout/content/item}}
+    {{/each}}
+  {{/if}}
+
   {{#if showTagSummary}}
     {{!
       If your schema has both Queries and Mutations defined, this is probably the

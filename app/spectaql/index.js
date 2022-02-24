@@ -186,9 +186,9 @@ function run (opts) {
   preProcessData({ orderedDataWithHeaders, introspectionResponse, graphQLSchema })
 
 
-  // console.log(JSON.stringify({
-  //   orderedDataWithHeaders,
-  // }))
+  console.log(JSON.stringify({
+    orderedDataWithHeaders,
+  }))
 
   // generate specification
   const swaggerSpec = {

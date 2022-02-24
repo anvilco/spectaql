@@ -1,0 +1,67 @@
+{{! This displays Queries and Mutations  }}
+{{!
+  The reality is that each "operation" will only have 1 tag: either the
+  query or mutation type name, so we use that to build a unique ID that allows
+  for a query to have the same name as a mutation
+}}
+<div id="{{./htmlId}}" class="operation panel"
+  data-traverse-target="{{./htmlId}}">
+  {{# unless @first }}
+    {{#if parentHtmlId }}
+      <div class="operation-tags">
+        <a class="label" href="#{{./parentHtmlId}}">{{./parentName}}</a>
+      </div>
+    {{/if}}
+  {{/unless}}
+
+  <h2 class="operation-name {{#if (and isDeprecated (not @root.info.x-hideIsDeprecated)) }}swagger-operation-deprecated{{/if}}">
+    {{md (codify name) stripParagraph="true"}}
+  </h2>
+
+  {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+    <div class="doc-row">
+      <div class="doc-copy">
+        <section class="operation-deprecation-reason">
+          {{ md deprecationReason stripParagraph=true }}
+        </section>
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if description}}
+    <div class="doc-row">
+      <div class="doc-copy">
+        <section class="swagger-operation-description operation-description">
+          {{ md (interpolateReferences description) stripParagraph=true }}
+        </section>
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="doc-row">
+    <div class="doc-copy">
+      {{! The _request_body variable is filled with the parameter `body` by the preprocessor. }}
+      {{#if _show_requst_body_section}}
+        {{>swagger/request-body consumes=consumes body=_request_body}}
+      {{/if}}
+
+      {{>graphql/query-mutation-arguments arguments=parameters}}
+    </div>
+
+    {{! Print examples without whitespace }}
+    <div class="doc-examples">{{#if query}}
+      <section>
+        <h4>Example</h4>
+        <h5>Query</h5>
+          {{printGraphQL query}}
+          {{#if variables}}
+            <h5>Variables</h5>
+            {{printJSON variables}}
+          {{/if}}
+      </section>
+    {{/if}}</div>
+  </div>
+
+  {{>swagger/responses}}
+  {{>swagger/security}}
+</div>

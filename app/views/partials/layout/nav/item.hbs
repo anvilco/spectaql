@@ -3,10 +3,8 @@
 {{/if}}
 {{#if (equal depth 0)}}
   <h5>{{name}}</h5>
-{{else if (equal depth 1)}}
-  <a href="#tag-{{name}}">{{name}}</a>
 {{else}}
-  <a href="#operation-{{name}}">{{ name }}</a>
+  <a href="#{{./htmlId}}">{{name}}</a>
 {{/if}}
 {{#if makeSection}}
   <ul>
