@@ -1,45 +1,29 @@
 const {
-  analyzeTypeSchema,
+  analyzeTypeIntrospection,
+  introspectionTypeToString,
 } = require('../spectaql/type-helpers')
 const mdLink = require('./mdLink')
 const schemaReferenceHref = require('./schemaReferenceHref')
-const schemaSubschemaName = require('./schemaSubschemaName')
-const schemaDatatype = require('./schemaDatatype')
 
 // Creates a markdown link for the provided Type. Options are passed along to mdLink
 module.exports = function mdTypeLink (thing, options) {
   const {
-    isRequired,
-    isArray,
-    itemsRequired,
-    ref,
-  } = analyzeTypeSchema(thing)
+    underlyingType,
+    // isRequired,
+    // isArray,
+    // itemsRequired,
+  } = (thing.response || analyzeTypeIntrospection(thing.type))
 
-  if (!ref) {
+  if (!underlyingType) {
     console.warn(JSON.stringify({
-      msg: 'no ref found',
+      msg: 'no underlyingType found',
       name: thing.name,
     }))
 
-    return schemaDatatype(thing)
+    return thing.name
   }
 
-  const url = schemaReferenceHref(ref)
-  const texts = [schemaSubschemaName(ref)]
-
-  if (isArray) {
-    if (itemsRequired) {
-      texts.push('!')
-    }
-    texts.unshift('[')
-    texts.push(']')
-  }
-
-  if (isRequired) {
-    texts.push('!')
-  }
-
-  const text = texts.join('')
-
+  const url = schemaReferenceHref(underlyingType.name)
+  const text = introspectionTypeToString(thing.type)
   return mdLink(text, url, options)
 }

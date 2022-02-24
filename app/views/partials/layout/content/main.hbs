@@ -1,7 +1,4 @@
-{{!--
-  This partial renders the documentation content
-  @api public
---}}
+{{! DO THE CONTENT }}
 <article id="content">
   <h1 class="doc-title">{{info.title}}</h1>
   {{! Check if there is effectively nothing to do }}
@@ -15,6 +12,7 @@
 
   {{>swagger/x-spectacle-topics}}
 
+  {{! DO THE CONTENT }}
   {{#if (nempty orderedDataWithHeaders)}}
     {{#each orderedDataWithHeaders}}
       {{>layout/content/item}}

@@ -1,6 +1,9 @@
 const htmlId = require('../helpers/htmlId')
 const generateQueryExample = require('./generate-graphql-example-data')
 
+const {
+  analyzeTypeIntrospection,
+} = require('./type-helpers')
 
 function preProcess ({ orderedDataWithHeaders, introspectionResponse, graphQLSchema }) {
   console.log({introspectionResponse})
@@ -27,14 +30,14 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
     item.parentName = names[names.length - 1]
     item.parentHtmlId = htmlId(names.join('-'))
   }
-  names.push(item.name)
-  item.htmlId = htmlId(names.join('-'))
 
   item.makeSection = false
   item.depth = depth
 
-
   if (Array.isArray(item.items)) {
+    // If we're still on a branch of the tree, we assign our own ID to it
+    names.push(item.name)
+    item.htmlId = htmlId(names.join('-'))
     if (depth > 0) {
       item.makeSection = true
     }
@@ -42,13 +45,21 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
     return handleItems(item.items, { depth: depth + 1, names, introspectionResponse, graphQLSchema })
   }
 
+  // It's a leaf node
+
+  let anchorPrefix
   if (item.isQuery) {
+    anchorPrefix = 'query'
     addQueryToItem({ item, introspectionResponse, graphQLSchema })
   } else if (item.isMutation) {
+    anchorPrefix = 'mutation'
     addMutationToItem({ item, introspectionResponse, graphQLSchema })
   } else {
-
+    // It's a definition
+    anchorPrefix = 'definition'
   }
+  // Assign a standardized ID to it
+  item.htmlId = htmlId([anchorPrefix, item.name].join('-'))
 }
 
 function addQueryToItem ({ item, introspectionResponse, graphQLSchema }) {
@@ -69,7 +80,21 @@ function addQueryOrMutationToItem ({ item, queryOrMutationIndicator, introspecti
 
   item[queryOrMutationIndicator] = query
   item.variables = variables
-  item.response = response
+
+  const {
+      underlyingType,
+      isRequired,
+      isArray,
+      itemsRequired,
+    } = analyzeTypeIntrospection(item.type)
+
+  item.response = {
+    underlyingType,
+    isRequired,
+    isArray,
+    itemsRequired,
+    data: response
+  }
 }
 
 module.exports = preProcess

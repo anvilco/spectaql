@@ -34,13 +34,18 @@
 
   <div class="doc-row">
     <div class="doc-copy">
-      {{! The _request_body variable is filled with the parameter `body` by the preprocessor. }}
-      {{#if _show_requst_body_section}}
-        {{log "consumeds" consumes _request_body }}
-        {{>swagger/request-body consumes=consumes body=_request_body}}
+      {{#if response}}
+        <section class="swagger-responses">
+          Returns
+          {{! If it's got items, then it's an array, and we don't care about the indefiniteArticle }}
+          {{#unless response.isArray }}
+            {{ indefiniteArticle response.underlyingType.name }}
+          {{/unless}}
+          {{~ md (mdTypeLink . codify=true) stripParagraph=true }}
+        </section>
+        <br>
       {{/if}}
-
-      {{>graphql/query-mutation-arguments arguments=parameters}}
+      {{>graphql/_query-or-mutation-args}}
     </div>
 
     <div class="doc-examples">{{#if (firstTruthy query mutation)}}
@@ -52,9 +57,9 @@
             <h5>Variables</h5>
             {{printJSON variables}}
           {{/if}}
-          {{#if response}}
+          {{#if response.data}}
             <h5>Response</h5>
-            {{printJSON response}}
+            {{printJSON response.data}}
           {{/if}}
       </section>
     {{/if}}</div>

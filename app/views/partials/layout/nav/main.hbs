@@ -1,8 +1,3 @@
-{{!--
-  Renders the sidebar navigation
-  @param {object} $context$ the whole swagger definition
-  @api public
---}}
 <nav id="nav" role="navigation">
   {{! Check if there is effectively nothing to do }}
   {{#unless (or info.x-hideIntroduction (and info.x-hideWelcome (or info.x-hideIntroItems (empty info.x-introItems)))) }}
@@ -45,56 +40,4 @@
       {{>layout/nav/item}}
     {{/each}}
   {{/if}}
-
-  {{#if (nempty tags) }}
-    <h5>Operations</h5>
-    {{#each tags}}
-      {{#if ../showTagSummary}}
-        <section>
-          <a href="#tag-{{htmlId name}}">{{name}}</a>
-          <ul>
-            {{#each operations}}
-              <li>
-                {{!
-                  The reality is that each "operation" will only have 1 tag: either the
-                  query or mutation type name
-                }}
-                <a href="#operation-{{htmlId path}}-{{htmlId tags.[0] }}">
-                  {{#if summary}}
-                    {{summary}}
-                  {{else}}
-                    {{toUpperCase method}} {{path}}
-                  {{/if}}
-                </a>
-              </li>
-            {{/each}}
-          </ul>
-        </section>
-    {{else}}
-      {{#each operations}}
-        {{!
-          The reality is that each "operation" will only have 1 tag: either the
-          query or mutation type name
-        }}
-        <a href="#operation-{{htmlId path}}-{{htmlId tags.[0] }}">
-          {{#if summary}}
-            {{summary}}
-          {{else}}
-            {{toUpperCase method}} {{path}}
-          {{/if}}
-        </a>
-      {{/each}}
-    {{/if}}
-    {{/each}}
-  {{/if}}
-
-  {{#if (nempty definitions)}}
-    <h5>Types</h5>
-    {{#each definitions}}
-      <a href="#definition-{{htmlId @key}}">
-        {{@key}}
-      </a>
-    {{/each}}
-  {{/if}}
-
 </nav>

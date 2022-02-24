@@ -1,0 +1,46 @@
+{{#if arguments}}
+  <section class="swagger-request-params">
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      {{#each arguments}}
+        {{!--
+          I have no clue what this was supposed to do
+          {{#schemaReferenceContext $ref}}
+        --}}
+        <tr>
+          {{! The Name column }}
+          <td>
+            {{~> graphql/name-and-type }}
+          </td>
+          {{! The Description column }}
+          <td>
+            {{ md (
+                concat
+                  (interpolateReferences description)
+                  (ternary schema.default
+                    (concat "Default = "  (codify schema.default stringify=true))
+                    ""
+                    undefOnly=true
+                  )
+                joiner=". " filterFalsy=true
+              ) stripParagraph=true
+            }}
+            {{~#if collectionFormat ~}}
+              {{! No clue what this does block does }}
+              <div class="prop-row prop-inner">
+                {{md (swaggerCollectionFormat collectionFormat name) stripParagraph=true}}
+              </div>
+            {{~/if}}
+          </td>
+        </tr>
+        {{!--
+          I have no clue what this was supposed to have done
+          {{/schemaReferenceContext}}
+        --}}
+      {{/each}}
+    </table>
+  </section>
+{{/if}}
