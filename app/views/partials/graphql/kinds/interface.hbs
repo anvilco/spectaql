@@ -28,8 +28,10 @@
   {{/if}}
 </div>
 <div class="doc-examples">
-  <section>
-    <h5>Example</h5>
-    {{>swagger/print-example .}}
-  </section>
+  {{#if example }}
+    <section>
+      <h5>Example</h5>
+      {{printJSON example}}
+    </section>
+  {{/if}}
 </div>
