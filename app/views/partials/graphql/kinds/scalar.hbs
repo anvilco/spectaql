@@ -1,0 +1,13 @@
+<div class="doc-copy">
+  {{#if description}}
+    <section class="json-schema-description">
+      {{md (interpolateReferences description)}}
+    </section>
+  {{/if}}
+</div>
+<div class="doc-examples">
+  <section>
+    <h5>Example</h5>
+    {{>swagger/print-example .}}
+  </section>
+</div>
