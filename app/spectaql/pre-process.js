@@ -34,16 +34,16 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
     item.parentHtmlId = htmlId(names.join('-'))
   }
 
-  item.makeSection = false
+  // item.makeSection = false
   item.depth = depth
 
   if (Array.isArray(item.items)) {
     // If we're still on a branch of the tree, we assign our own ID to it
     names.push(item.name)
     item.htmlId = htmlId(names.join('-'))
-    if (depth > 0) {
-      item.makeSection = true
-    }
+    // if (depth > 0) {
+    //   item.makeSection = true
+    // }
 
     return handleItems(item.items, { depth: depth + 1, names, introspectionResponse, graphQLSchema })
   }

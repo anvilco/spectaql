@@ -14,6 +14,7 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
       items: [
         {
           name: 'Queries',
+          makeSection: true,
           items: sortBy(
             queryType.fields.map((query) => ({
               ...query,
@@ -24,6 +25,7 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
         },
         {
           name: 'Mutations',
+          makeSection: true,
           items: sortBy(
             mutationType.fields.map((query) => ({
               ...query,
@@ -36,7 +38,12 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
     },
     {
       name: 'Types',
-      items: sortBy(otherTypes, 'name'),
+      items: sortBy(
+        otherTypes.map((type) => ({
+          ...type,
+          isType: true,
+        })),
+      'name'),
     },
   ]
 }
