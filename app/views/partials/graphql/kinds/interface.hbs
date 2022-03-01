@@ -4,15 +4,20 @@
       {{md (interpolateReferences description)}}
     </section>
   {{/if}}
+  {{#if fields}}
+    <section class="json-schema-properties-blank">
+      {{>graphql/kinds/_fields .}}
+    </section>
+  {{/if}}
   {{#if possibleTypes}}
     <section class="json-schema-properties-blank">
       <table>
         <tr>
-          <th>Node Types</th>
+          <th>{{name}} Types</th>
         </tr>
         {{#each possibleTypes}}
           <tr>
-            {{! The Node Types column }}
+            {{! The INTERFACE Types column }}
             <td>
               {{md (mdTypeLink . codify=true) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}
             </td>
