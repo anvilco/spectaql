@@ -19,18 +19,6 @@
     {{/each}}
   {{/if}}
 
-  {{#if showTagSummary}}
-    {{!
-      If your schema has both Queries and Mutations defined, this is probably the
-      path that is taken
-    }}
-    {{>swagger/tags}}
-  {{else}}
-    {{>swagger/paths}}
-  {{/if}}
-
-  {{>swagger/definitions definitions=definitions}}
-
   {{! Powered by link }}
   <div class="doc-row no-margin">
     <div class="doc-copy doc-separator">

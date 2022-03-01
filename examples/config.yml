@@ -3,10 +3,10 @@ spectaql:
   faviconFile: ./test/fixtures/favicon.png
 
 introspection:
-  url: http://localhost:3000/graphql
+  # url: http://localhost:3000/graphql
   removeTrailingPeriodFromDescriptions: false
-  # schemaFile: ./examples/data/schema.gql
-  # metadataFile: ./examples/data/metadata.json
+  schemaFile: ./examples/data/schema.gql
+  metadataFile: ./examples/data/metadata.json
   dynamicExamplesProcessingModule: ./examples/customizations/examples
 
 info:

@@ -327,7 +327,7 @@ var common = {
       IntrospectionManipulator.digUnderlyingType(arg.type)
     )
 
-    return common.generateIntrospectionReturnTypeExample({ underlyingTypeDefinition, originalType: arg.type })
+    return common.generateIntrospectionReturnTypeExample({ thing: arg, underlyingTypeDefinition, originalType: arg.type })
   },
 
   introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator }) {
@@ -338,7 +338,7 @@ var common = {
 
     // No fields? Just a Scalar then, so return a single value.
     if (!underlyingTypeDefinition.fields) {
-      return common.generateIntrospectionReturnTypeExample({ underlyingTypeDefinition, originalType: field.type })
+      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
@@ -347,15 +347,15 @@ var common = {
         const underlyingTypeDefinition = introspectionManipulator.getType(
           IntrospectionManipulator.digUnderlyingType(field.type)
         )
-        acc[field.name] = common.generateIntrospectionReturnTypeExample({ underlyingTypeDefinition, originalType: field.type })
+        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
         return acc
       },
       {}
     )
   },
 
-  generateIntrospectionReturnTypeExample: function ({ underlyingTypeDefinition, originalType }) {
-    let example = underlyingTypeDefinition.example || getExampleForScalar(underlyingTypeDefinition.name)
+  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType }) {
+    let example = thing.example || originalType.example || underlyingTypeDefinition.example || getExampleForScalar(underlyingTypeDefinition.name)
     if (typeof example !== 'undefined') {
       example = unwindSpecialTags(example)
     } else {

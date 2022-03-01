@@ -1,3 +1,4 @@
+const sortBy = require('lodash/sortBy')
 const IntrospectionManipulator = require('../lib/Introspection')
 
 const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
@@ -13,23 +14,29 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
       items: [
         {
           name: 'Queries',
-          items: queryType.fields.map((query) => ({
-            ...query,
-            isQuery: true,
-          })),
+          items: sortBy(
+            queryType.fields.map((query) => ({
+              ...query,
+              isQuery: true,
+            })),
+            'name',
+          ),
         },
         {
           name: 'Mutations',
-          items: mutationType.fields.map((query) => ({
-            ...query,
-            isMutation: true,
-          })),
+          items: sortBy(
+            mutationType.fields.map((query) => ({
+              ...query,
+              isMutation: true,
+            })),
+            'name',
+          ),
         },
       ]
     },
     {
       name: 'Types',
-      items: otherTypes,
+      items: sortBy(otherTypes, 'name'),
     },
   ]
 }

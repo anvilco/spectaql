@@ -43,7 +43,8 @@ function generateQueryInternal({
     argsStrPieces.push(`${arg.name}: $${arg.name}`)
   }
 
-  if (argsStrPieces.length > 0) {
+  // Only if top-level for now
+  if (argsStrPieces.length > 0 && depth === 1) {
     const argsStr = argsStrPieces.join(', ')
     queryStr += `(${argsStr})`
   }

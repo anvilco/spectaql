@@ -1,18 +1,14 @@
-{{#if arguments}}
+{{#if args}}
   <section class="swagger-request-params">
     <table>
       <tr>
         <th>Name</th>
         <th>Description</th>
       </tr>
-      {{#each arguments}}
-        {{!--
-          I have no clue what this was supposed to do
-          {{#schemaReferenceContext $ref}}
-        --}}
+      {{#each args}}
         <tr>
-          {{! The Name column }}
           <td>
+            {{! The Name column }}
             {{~> graphql/name-and-type }}
           </td>
           {{! The Description column }}
@@ -20,26 +16,15 @@
             {{ md (
                 concat
                   (interpolateReferences description)
-                  (ternary schema.default
-                    (concat "Default = "  (codify schema.default stringify=true))
+                  (ternary defaultValue
+                    (concat "Default = "  (codify defaultValue stringify=true))
                     ""
-                    undefOnly=true
                   )
                 joiner=". " filterFalsy=true
               ) stripParagraph=true
             }}
-            {{~#if collectionFormat ~}}
-              {{! No clue what this does block does }}
-              <div class="prop-row prop-inner">
-                {{md (swaggerCollectionFormat collectionFormat name) stripParagraph=true}}
-              </div>
-            {{~/if}}
           </td>
         </tr>
-        {{!--
-          I have no clue what this was supposed to have done
-          {{/schemaReferenceContext}}
-        --}}
       {{/each}}
     </table>
   </section>
