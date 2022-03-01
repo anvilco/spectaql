@@ -2,8 +2,9 @@
   data-traverse-target="{{./htmlId}}">
   {{#unless @first }}
     {{#if parentHtmlId }}
+      {{ log "tags" . }}
       <div class="definition-tags">
-        <a class="label" href="{{parentHtmlId}}">{{./parentName}}</a>
+        <a class="label" href="#{{parentHtmlId}}">{{./parentName}}</a>
       </div>
     {{/if}}
   {{/unless}}
