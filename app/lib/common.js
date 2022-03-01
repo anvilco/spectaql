@@ -372,6 +372,26 @@ var common = {
     return isArray ? [example] : example
   },
 
+  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator }) {
+    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+    // No fields? Just a Scalar then, so return a single value.
+    if (!type.fields) {
+      return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, originalType: type })
+    }
+
+    // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
+    return type.fields.reduce(
+      (acc, field) => {
+        const underlyingTypeDefinition = introspectionManipulator.getType(
+          IntrospectionManipulator.digUnderlyingType(field.type)
+        )
+        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+        return acc
+      },
+      {}
+    )
+  },
+
   printSchema: function (value, _root) {
     if (!value) {
       return '';

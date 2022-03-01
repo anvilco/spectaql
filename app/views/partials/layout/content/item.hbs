@@ -14,8 +14,8 @@
     {{>graphql/query}}
   {{else if isMutation }}
     {{>graphql/mutation}}
-  {{ else }}
-    {{!-- {{>graphql/type}} --}}
+  {{else }}
+    {{>graphql/type}}
   {{/if}}
 {{/unless}}
 {{#each items}}

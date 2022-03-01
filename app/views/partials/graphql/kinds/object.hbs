@@ -1,0 +1,34 @@
+{{#if fields}}
+<section class="json-schema-properties-blank">
+  <table>
+    <tr>
+      <th>Field Name</th>
+      <th>Description</th>
+    </tr>
+    {{#each fields}}
+      <tr>
+        {{! The Name column }}
+        <td data-property-name="{{./htmlId}}"
+          {{#if (and isDeprecated (not @root.info.x-hideIsDeprecated)) }}class="swagger-operation-deprecated"{{/if}}
+        >
+          {{~> graphql/name-and-type . }}
+        </td>
+        {{! The Description column }}
+        <td>
+          {{#if description}}
+            {{md (interpolateReferences description) stripParagraph=true}}
+          {{/if}}
+          {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+            <span class="properties-deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>
+          {{/if}}
+        </td>
+      </tr>
+      {{#if (nempty args)}}
+        <tr><td colspan="2" class="no-top-border">
+          {{>graphql/field-arguments . }}
+        </td></tr>
+      {{/if}}
+    {{/each}}
+  </table>
+</section>
+{{/if}}

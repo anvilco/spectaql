@@ -1,5 +1,8 @@
 const htmlId = require('../helpers/htmlId')
 const generateQueryExample = require('./generate-graphql-example-data')
+const {
+  generateIntrospectionTypeExample,
+} = require('../lib/common')
 
 const {
   analyzeTypeIntrospection,
@@ -57,6 +60,8 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
   } else {
     // It's a definition
     anchorPrefix = 'definition'
+    addDefinitionToItem({ item, introspectionResponse, graphQLSchema })
+    console.log({ item })
   }
   // Assign a standardized ID to it
   item.htmlId = htmlId([anchorPrefix, item.name].join('-'))
@@ -95,6 +100,10 @@ function addQueryOrMutationToItem ({ item, queryOrMutationIndicator, introspecti
     itemsRequired,
     data: response
   }
+}
+
+function addDefinitionToItem ({ item, introspectionResponse, graphQLSchema }) {
+  item.example = generateIntrospectionTypeExample({ type: item, introspectionResponse, graphQLSchema })
 }
 
 module.exports = preProcess

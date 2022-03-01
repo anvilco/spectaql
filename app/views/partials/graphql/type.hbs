@@ -1,0 +1,45 @@
+<div id="{{./htmlId}}" class="definition panel"
+  data-traverse-target="{{./htmlId}}">
+  {{#unless @first }}
+    {{#if parentHtmlId }}
+      <div class="definition-tags">
+        <a class="label" href="{{parentHtmlId}}">{{./parentName}}</a>
+      </div>
+    {{/if}}
+  {{/unless}}
+  {{#if name}}
+    <h2 class="panel-title">{{name}}</h2>
+  {{/if}}
+
+  <div class="doc-row">
+    <div class="doc-copy">
+      {{#if description}}
+        <section class="json-schema-description">
+          {{md (interpolateReferences description)}}
+        </section>
+      {{/if}}
+      {{#if (equal ./kind "OBJECT")}}
+        {{>graphql/kinds/object .}}
+      {{else if (equal ./kind "ENUM")}}
+        {{>graphql/kinds/enum .}}
+      {{else if (equal ./kind "INPUT_OBJECT")}}
+        {{>graphql/kinds/input-object .}}
+      {{else if (equal ./kind "UNION")}}
+        {{>graphql/kinds/union .}}
+      {{/if}}
+    </div>
+
+    {{!
+      Print examples without whitespace
+      Some things don't get examples
+    }}
+    {{#if (and (not (isUnionType .)) (notEqual type 'string'))}}
+      <div class="doc-examples">
+        <section>
+          <h5>Example</h5>
+          {{>swagger/print-example .}}
+        </section>
+      </div>
+    {{/if}}
+  </div>
+</div>
