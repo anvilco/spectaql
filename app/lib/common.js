@@ -10,7 +10,10 @@ const {
   analyzeTypeIntrospection,
 } = require('../spectaql/type-helpers')
 
-const IntrospectionManipulator = require('./Introspection')
+const IntrospectionManipulatorModule = require('../../../introspection-tools')
+const {
+  default: IntrospectionManipulator,
+} = IntrospectionManipulatorModule
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround

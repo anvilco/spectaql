@@ -1,6 +1,9 @@
 const get = require('lodash/get')
 const sortBy = require('lodash/sortBy')
-const IntrospectionManipulator = require('../lib/Introspection')
+const IntrospectionManipulatorModule = require('../../../introspection-tools')
+const {
+  default: IntrospectionManipulator,
+} = IntrospectionManipulatorModule
 
 const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
   const introspectionManipulator = new IntrospectionManipulator(introspectionResponse)

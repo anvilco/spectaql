@@ -1,7 +1,5 @@
 const _ = require('lodash')
 
-// const IntrospectionManipulator = require('app/lib/Introspection')
-
 const {
   introspectionResponseFromSchemaSDL,
   // jsonSchemaFromIntrospectionResponse,
@@ -27,7 +25,7 @@ const {
 const {
   KIND_INPUT_OBJECT,
   KIND_SCALAR,
-} = require('app/lib/Introspection')
+} = require('../../../../introspection-tools')
 
 describe('augmenters', function () {
   def('schemaSDLBase', () => `

@@ -8,8 +8,10 @@ const {
   introspectionTypeToString,
 } = require('./type-helpers')
 
-const IntrospectionManipulator = require('../lib/Introspection')
-
+const IntrospectionManipulatorModule = require('../../../introspection-tools')
+const {
+  default: IntrospectionManipulator,
+} = IntrospectionManipulatorModule
 const {
   introspectionArgsToVariables,
   introspectionQueryOrMutationToResponse,

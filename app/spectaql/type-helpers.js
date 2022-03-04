@@ -14,7 +14,7 @@ const {
   KIND_LIST,
   KIND_NON_NULL,
   KIND_INTERFACE,
-} = require('../lib/Introspection')
+} = require('../../../introspection-tools')
 
 
 const SCALARS = {

@@ -1,9 +1,10 @@
 const _ = require('lodash')
 
-const IntrospectionManipulator = require('../lib/Introspection')
+const IntrospectionManipulatorModule = require('../../../introspection-tools')
 const {
+  default: IntrospectionManipulator,
   KIND_SCALAR,
-} = IntrospectionManipulator
+} = IntrospectionManipulatorModule
 
 const {
   analyzeTypeIntrospection,
