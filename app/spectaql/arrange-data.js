@@ -1,3 +1,4 @@
+const get = require('lodash/get')
 const sortBy = require('lodash/sortBy')
 const IntrospectionManipulator = require('../lib/Introspection')
 
@@ -7,12 +8,17 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
   const mutationType = introspectionManipulator.getMutationType()
   const otherTypes = introspectionManipulator.getAllTypes({ includeQuery: false, includeMutation: false })
 
+  const hasQueries = get(queryType, 'fields.length')
+  const hasMutations = get(mutationType, 'fields.length')
+  const hasQueriesOrMutations = hasQueries || hasMutations
+  const hasOtherTypes = get(otherTypes, 'length')
+
   return [
-    {
+    hasQueriesOrMutations ? {
       name: 'Operations',
       hideInContent: true,
       items: [
-        {
+         hasQueries ? {
           name: 'Queries',
           makeNavSection: true,
           makeContentSection: true,
@@ -23,8 +29,8 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
             })),
             'name',
           ),
-        },
-        {
+        } : null,
+        hasMutations ? {
           name: 'Mutations',
           makeNavSection: true,
           makeContentSection: true,
@@ -35,10 +41,10 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
             })),
             'name',
           ),
-        },
+        } : null,
       ]
-    },
-    {
+    } : null,
+    hasOtherTypes ? {
       name: 'Types',
       makeContentSection: true,
       items: sortBy(
@@ -47,8 +53,8 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
           isType: true,
         })),
       'name'),
-    },
-  ]
+    } : null,
+  ].filter(Boolean)
 }
 
 module.exports = arrangeData
