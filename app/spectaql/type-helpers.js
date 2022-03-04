@@ -392,6 +392,29 @@ function analyzeTypeIntrospection (type) {
   }
 }
 
+function introspectionTypeToString (type, { joiner = '' } = {}) {
+  const {
+    underlyingType,
+    isRequired,
+    isArray,
+    itemsRequired,
+  } = analyzeTypeIntrospection(type)
+
+  const pieces = [underlyingType.name]
+  if (isArray) {
+    if (itemsRequired) {
+      pieces.push('!')
+    }
+    pieces.unshift('[')
+    pieces.push(']')
+  }
+  if (isRequired) {
+    pieces.push('!')
+  }
+
+  return pieces.join(joiner)
+}
+
 function isReservedType (type) {
   return type.name.startsWith('__')
 }
@@ -421,6 +444,7 @@ module.exports = {
   analyzeJsonSchemaArgDefinition,
   analyzeTypeSchema,
   analyzeTypeIntrospection,
+  introspectionTypeToString,
   isReservedType,
   typesAreSame,
 }

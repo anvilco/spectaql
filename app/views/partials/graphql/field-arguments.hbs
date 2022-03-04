@@ -1,12 +1,11 @@
-{{! Context here is definitions.SomeType.properties.someField.properties.arguments }}
 <div class="field-arguments">
   <p class="field-arguments-header">
     Arguments
   </p>
-    {{# each properties }}
+    {{#each args }}
       <div class="field-argument">
-        <p class="field-argument-name">{{~>graphql/name-and-type name=@key parent=.. }}</p>
-        {{# if description}}<p>{{ md (interpolateReferences description) }}</p>{{/if}}
+        <p class="field-argument-name">{{~>graphql/name-and-type . }}</p>
+        {{#if description}}<p>{{ md (interpolateReferences description) }}</p>{{/if}}
       </div>
     {{/each}}
 </div>

@@ -1,0 +1,32 @@
+<div class="doc-copy">
+  {{#if description}}
+    <section class="json-schema-description">
+      {{md (interpolateReferences description)}}
+    </section>
+  {{/if}}
+  {{#if possibleTypes}}
+    <section class="json-schema-properties-blank">
+      <table>
+        <tr>
+          <th>Union Types</th>
+        </tr>
+        {{#each possibleTypes}}
+          <tr>
+            {{! The Union Types column }}
+            <td>
+              {{md (mdTypeLink . codify=true) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    </section>
+  {{/if}}
+</div>
+<div class="doc-examples">
+  {{#if example }}
+    <section>
+      <h5>Example</h5>
+      {{printJSON example}}
+    </section>
+  {{/if}}
+</div>

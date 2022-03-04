@@ -1,0 +1,40 @@
+<div class="doc-copy">
+  {{#if description}}
+    <section class="json-schema-description">
+      {{md (interpolateReferences description)}}
+    </section>
+  {{/if}}
+  {{#if enumValues}}
+    <section class="json-schema-properties-blank">
+      <table>
+        <tr>
+          <th>Enum Value</th>
+          <th>Description</th>
+        </tr>
+        {{#each enumValues}}
+          <tr>
+            {{! The Value column }}
+            <td>{{md (codify name) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}</td>
+            {{! The Description column }}
+            <td>
+              {{#if description}}
+                {{md (interpolateReferences description) stripParagraph=true}}
+              {{/if}}
+              {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+                <span class="enum-deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    </section>
+  {{/if}}
+</div>
+<div class="doc-examples">
+  {{#if example }}
+    <section>
+      <h5>Example</h5>
+      {{printJSON example}}
+    </section>
+  {{/if}}
+</div>

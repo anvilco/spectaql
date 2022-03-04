@@ -1,0 +1,23 @@
+{{#unless hideInContent }}
+  {{#if makeContentSection }}
+    <h1 id="{{./htmlId}}" class="swagger-summary-tag tag-name" data-traverse-target="tag-{{./htmlId}}">{{name}}</h1>
+    {{#if description}}
+      <div class="tag-description doc-row">
+        <div class="doc-copy">
+          {{md (interpolateReferences description)}}
+        </div>
+      </div>
+    {{/if}}
+  {{else}}
+  {{/if}}
+  {{#if isQuery }}
+    {{>graphql/query}}
+  {{else if isMutation }}
+    {{>graphql/mutation}}
+  {{else if isType }}
+    {{>graphql/type}}
+  {{/if}}
+{{/unless}}
+{{#each items}}
+  {{>layout/content/item}}
+{{/each}}
