@@ -65,6 +65,9 @@ type Query {
 
   getInts: [Int]
 
+  "I return a list of the SimpleType Union"
+  simpleTypes: [SimpleTypes]
+
   "I'm the optionals query"
   optionalsQuery(
     optionalArg: [String]
@@ -110,11 +113,24 @@ enum EpisodeEnum {
 }
 
 "An Input Type for filtering things. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-input FilterType {
+input FilterInput {
   "Comment for someField. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   someField: Boolean = false
   "Comment for anotherField"
   anotherField: String
   "Comment for episodeEnums"
   episodeEnums: [EpisodeEnum!]
+}
+
+"ContactInfoInput description"
+input ContactInfoInput {
+  email: String
+  address: AddressInput = { planet: "Earth" }
+}
+
+"AddresInput description"
+input AddressInput {
+  lat: String
+  lon: String
+  planet: String
 }
