@@ -9,11 +9,13 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
   const introspectionManipulator = new IntrospectionManipulator(introspectionResponse)
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
-  const otherTypes = introspectionManipulator.getAllTypes({ includeQuery: false, includeMutation: false })
+  const subscriptionType = introspectionManipulator.getSubscriptionType()
+  const otherTypes = introspectionManipulator.getAllTypes({ includeQuery: false, includeMutation: false, includeSubscription: false })
 
   const hasQueries = get(queryType, 'fields.length')
   const hasMutations = get(mutationType, 'fields.length')
   const hasQueriesOrMutations = hasQueries || hasMutations
+  const hasSubscriptions = get(subscriptionType, 'fields.length')
   const hasOtherTypes = get(otherTypes, 'length')
 
   return [
@@ -57,6 +59,16 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
         })),
       'name'),
     } : null,
+    hasSubscriptions ? {
+      name: 'Subscriptions',
+      makeContentSection: true,
+      items: sortBy(
+        subscriptionType.fields.map((type) => ({
+          ...type,
+          isSubscription: true,
+        })),
+      'name'),
+    } : null
   ].filter(Boolean)
 }
 

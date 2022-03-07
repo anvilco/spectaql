@@ -48,11 +48,11 @@
       {{>graphql/_query-or-mutation-args}}
     </div>
 
-    <div class="doc-examples">{{#if (firstTruthy query mutation)}}
+    <div class="doc-examples">{{#if (firstTruthy query mutation subscription)}}
       <section>
         <h4>Example</h4>
         <h5>Query</h5>
-          {{printGraphQL (firstTruthy query mutation)}}
+          {{printGraphQL (firstTruthy query mutation subscription)}}
           {{#if variables}}
             <h5>Variables</h5>
             {{printJSON variables}}

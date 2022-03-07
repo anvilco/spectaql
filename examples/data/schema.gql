@@ -134,3 +134,8 @@ input AddressInput {
   lon: String
   planet: String
 }
+
+type Subscription {
+  "The `myTypeUpdatedSubscription`, baby!"
+  myTypeUpdatedSubscription(input: ID): MyType!
+}
