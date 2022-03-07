@@ -14,6 +14,8 @@
     {{>graphql/query}}
   {{else if isMutation }}
     {{>graphql/mutation}}
+  {{else if isSubscription }}
+    {{>graphql/subscription}}
   {{else if isType }}
     {{>graphql/type}}
   {{/if}}

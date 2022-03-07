@@ -43,6 +43,10 @@ function run (opts) {
     graphQLSchema,
   } = buildSchemas(opts)
 
+  // console.log(JSON.stringify({
+  //   introspectionResponse,
+  // }))
+
   const orderedDataWithHeaders = arrangeData({
     introspectionResponse,
     graphQLSchema,
