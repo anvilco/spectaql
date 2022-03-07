@@ -10,7 +10,7 @@ const {
   analyzeTypeIntrospection,
 } = require('../spectaql/type-helpers')
 
-const IntrospectionManipulatorModule = require('../../../introspection-tools')
+const IntrospectionManipulatorModule = require('microfiber')
 const {
   default: IntrospectionManipulator,
 } = IntrospectionManipulatorModule

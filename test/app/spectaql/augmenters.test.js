@@ -25,7 +25,7 @@ const {
 const {
   KIND_INPUT_OBJECT,
   KIND_SCALAR,
-} = require('../../../../introspection-tools')
+} = require('microfiber')
 
 describe('augmenters', function () {
   def('schemaSDLBase', () => `

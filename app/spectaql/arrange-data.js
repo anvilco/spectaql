@@ -1,6 +1,6 @@
 const get = require('lodash/get')
 const sortBy = require('lodash/sortBy')
-const IntrospectionManipulatorModule = require('../../../introspection-tools')
+const IntrospectionManipulatorModule = require('microfiber')
 const {
   default: IntrospectionManipulator,
 } = IntrospectionManipulatorModule
