@@ -9,7 +9,6 @@ const {
 } = require('./type-helpers')
 
 function preProcess ({ orderedDataWithHeaders, introspectionResponse, graphQLSchema }) {
-  console.log({introspectionResponse})
   handleItems(orderedDataWithHeaders, { introspectionResponse, graphQLSchema })
 }
 
