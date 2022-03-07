@@ -10,7 +10,7 @@
         {{! If it has a description, then it's a mini-section to be rendered, and needs an anchor ref
           to there
         }}
-        {{#if description }}
+        {{#if (firstTruthy description file)}}
           <a href="#intro-item-{{@index}}">{{title}}</a>
         {{else}}{{#if url }}
           {{!

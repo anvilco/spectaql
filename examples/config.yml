@@ -20,6 +20,15 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-introItems:
+    # Can be a Title (for the Nav panel) + URL to simply add a link to somewhere
+    - title: A silly link to our website!
+      url: http://yoursite.com
+    # Can be a Title (for the Nav panel) + description (for the Content panel)
+    - title: Important thing 1
+      description: Some important stuff we wanted you to know. Supports `markdown`
+    - title: Some content that comes from a markdown file
+      file: ./examples/data/intro-items-markdown.md
 
 servers:
   - url: https://example.com/graphql

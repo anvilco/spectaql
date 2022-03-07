@@ -47,6 +47,7 @@ const loadSchemaFromSDLFile = ({
   const typesArray = []
   for (const path of paths) {
     if (!fileExists(path)) {
+      console.log({path})
       throw new Error(`GraphQL schema file does not exist at ${path}`)
     }
     let types
