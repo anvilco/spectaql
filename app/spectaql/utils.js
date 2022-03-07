@@ -1,29 +1,69 @@
 const path = require('path')
 const fs = require('fs')
 
-function fileExists (path) {
-  return fs.existsSync(path)
-}
+// How far is this file from the Root?
+const numDirsToRoot = 2
+const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
 
-function readTextFile (path, options = {}) {
-  options = {
-    encoding: 'utf-8',
-    ...options
+function normalizePathFn (pth) {
+  if (pth.startsWith('.')) {
+    pth = pathToRoot + '/' + pth
   }
 
-  return fs.readFileSync(path, options)
+  return path.resolve(pth)
 }
 
-function fileToObject (pathToFile, options) {
-  return path.extname(pathToFile) === '.js' ? readJSFile(pathToFile, options) : readJSONFile(pathToFile, options)
+function fileExists (pth, { normalizePath = true } = {}) {
+  if (normalizePath) {
+    pth = normalizePathFn(pth)
+  }
+  return fs.existsSync(pth)
 }
 
-function readJSONFile (path, options) {
-  return JSON.parse(readTextFile(path, options))
+function readTextFile (pth, options = {}) {
+  let {
+    normalizePath = true,
+    ...optionsForReadFileSync
+  } = options
+
+  optionsForReadFileSync = {
+    encoding: 'utf-8',
+    ...optionsForReadFileSync
+  }
+  if (normalizePath) {
+    pth = normalizePathFn(pth)
+  }
+
+  return fs.readFileSync(pth, optionsForReadFileSync)
 }
 
-function readJSFile (path, _options) {
-  return require(path)
+function fileToObject (pathToFile, options = {}) {
+  let {
+    normalizePath = true,
+    ...otherOptions
+  } = options
+  if (normalizePath) {
+    pathToFile = normalizePathFn(pathToFile)
+  }
+  return path.extname(pathToFile) === '.js' ? readJSFile(pathToFile, otherOptions) : readJSONFile(pathToFile, otherOptions)
+}
+
+function readJSONFile (pth, options = {}) {
+  let {
+    normalizePath = true,
+    ...optionsForReadJSONParse
+  } = options
+  if (normalizePath) {
+    pth = normalizePathFn(pth)
+  }
+  return JSON.parse(readTextFile(pth, optionsForReadJSONParse))
+}
+
+function readJSFile (pth, { normalizePath = true } = {}) {
+  if (normalizePath) {
+    pth = normalizePathFn(pth)
+  }
+  return require(pth)
 }
 
 function fileExtensionIs (fileNameOrPath, extensionOrExtensions) {
@@ -39,6 +79,7 @@ function fileExtensionIs (fileNameOrPath, extensionOrExtensions) {
 }
 
 module.exports = {
+  normalizePath: normalizePathFn,
   fileExists,
   fileExtensionIs,
   readTextFile,

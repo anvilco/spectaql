@@ -273,6 +273,9 @@ info:
     # Can be a Title (for the Nav panel) + description (for the Content panel)
     - title: Important thing 1
       description: Some important stuff we wanted you to know. Supports `markdown`
+    # Can be a Title (for the Nav panel) + file that gets loaded (for the Content panel)
+    - title: Content from file that supports markdown
+      file: ./examples/data/intro-items-markdown.md
 
   # If you really want to hide the "Documentation by" at the bottom of your output, you can do so here
   # Default: false

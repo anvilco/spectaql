@@ -2,7 +2,11 @@
   <div class="doc-row">
     <h5 class="doc-intro-item">{{title}}</h5>
     <div class="doc-copy">
-        {{md (interpolateReferences description)}}
+        {{#if description}}
+          {{md (interpolateReferences description)}}
+        {{else if file }}
+          {{md (loadTextFromFile file)}}
+        {{/if}}
     </div>
     <div class="doc-examples">
     </div>
