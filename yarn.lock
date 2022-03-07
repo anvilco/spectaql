@@ -10,14 +10,6 @@
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
 
-"@anvilco/graphql-2-json-schema@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@anvilco/graphql-2-json-schema/-/graphql-2-json-schema-0.0.5.tgz#95643509252b7c0a32ecfd4ec21d07a740319526"
-  integrity sha512-lvGOyxqwbOetyJP6TLMj5M9VsBfZ3cRdo4nzc6z5+V4dmprPP6vjN8cvyxSWuJms8pWVDGTcN+80gPtlMeUW7w==
-  dependencies:
-    json5 "^2.2.0"
-    lodash "^4.17.20"
-
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -1746,6 +1738,14 @@ graphlib@^2.1.8:
   integrity sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==
   dependencies:
     lodash "^4.17.15"
+
+graphql-2-json-schema@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/graphql-2-json-schema/-/graphql-2-json-schema-0.9.1.tgz#69ae883f999f7fc4177e6a18be645a6aa0b1a6f9"
+  integrity sha512-jO8NC+jBi3ZxEG9TPwVltkBoQuf3Fqsju3A0eLtj4E+s5jaabJn2haHeAOgePdzwJhGITTBASAYv8xEA/406UA==
+  dependencies:
+    json5 "^2.2.0"
+    lodash "^4.17.20"
 
 graphql-json-schema@^0.1.2:
   version "0.1.2"
