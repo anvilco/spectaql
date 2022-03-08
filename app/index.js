@@ -11,6 +11,7 @@ const {
   pathToRoot,
 } = require('./spectaql/utils')
 
+let spectaql
 
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
 tmp.setGracefulCleanup()
@@ -103,7 +104,6 @@ function resolveOptions(options) {
   )
 
   if (opts.specFile) {
-    // options.specFile = normalizePath(options.specFile)
     // Add the loaded YAML to the options
     const spec = opts.specData = loadYaml(opts.specFile)
 
@@ -148,31 +148,29 @@ function resolveOptions(options) {
   opts = _.defaults({}, opts, spectaqlOptionDefaults)
 
   if (opts.logoFile) {
-    // if (opts.logoFile.indexOf('test/fixtures') === 0) {
-    //   opts.logoFile = path.resolve(root, opts.logoFile)
-    // }
-
     // Keep or don't keep the original logoFile name when copying to the target
-    opts.logoFileTargetName = opts.preserveLogoName ? path.basename(options.logoFile) : `logo${path.extname(opts.logoFile)}`
+    opts.logoFileTargetName = opts.preserveLogoName ? path.basename(opts.logoFile) : `logo${path.extname(opts.logoFile)}`
+    opts.logo = path.basename(opts.logoFileTargetName)
   }
 
   if (opts.faviconFile) {
     // Keep or don't keep the original faviconFile name when copying to the target
     opts.faviconFileTargetName = opts.preserveFaviconName ? path.basename(opts.faviconFile) : `favicon${path.extname(opts.faviconFile)}`
+    opts.favicon = path.basename(opts.faviconFileTargetName)
   }
+
+  // Set the spectaql object
+  spectaql = require(path.resolve(opts.appDir + '/spectaql/index'))
 
   return opts
 }
 
 function loadData(options) {
-  const { jsonSchema, ...specData } = require(path.resolve(options.appDir + '/spectaql/index'))(options)
-  return require(path.resolve(options.appDir + '/lib/preprocessor'))(options, specData, { jsonSchema })
+  return spectaql(options)
 }
 
 function buildSchemas(options) {
-  console.log(options)
-  // process.exit()
-  const { buildSchemas } = require(path.resolve(options.appDir + '/spectaql/index'))
+  const { buildSchemas } = spectaql
   return buildSchemas(options)
 }
 

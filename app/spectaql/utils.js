@@ -79,6 +79,7 @@ function fileExtensionIs (fileNameOrPath, extensionOrExtensions) {
 }
 
 module.exports = {
+  pathToRoot,
   normalizePath: normalizePathFn,
   fileExists,
   fileExtensionIs,

@@ -4,8 +4,17 @@
 spectaql:
   # Optional path to an image to use as the logo in the top-left of the output
   logoFile: path/to/logo.png
+  # Optional boolean indicating whether to preserve the filname of the logo provided.
+  # If false, the logo name will default to "logo"
+  preserveLogoName: false
+
   # Optional path to an image to use as a favicon for the site when it's not embedded
   faviconFile: path/to/favicon.png
+  # Optional boolean indicating whether to preserve the filname of the faviconFile provided.
+  # If false, the favicon name will default to "favicon"
+  preserveFaviconName: false
+
+
   # Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
   # required JS. Can be useful for setting some values, such as for the Traverse.defaults object
   additionalJsFile: path/to/additional.js
