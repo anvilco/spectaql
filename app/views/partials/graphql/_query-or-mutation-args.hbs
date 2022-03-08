@@ -1,0 +1,31 @@
+{{#if args}}
+  <section class="swagger-request-params">
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+      {{#each args}}
+        <tr>
+          <td>
+            {{! The Name column }}
+            {{~> graphql/name-and-type }}
+          </td>
+          {{! The Description column }}
+          <td>
+            {{ md (
+                concat
+                  (interpolateReferences description)
+                  (ternary defaultValue
+                    (concat "Default = "  (codify defaultValue stringify=true))
+                    ""
+                  )
+                joiner=". " filterFalsy=true
+              ) stripParagraph=true
+            }}
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  </section>
+{{/if}}

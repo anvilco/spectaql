@@ -33,7 +33,7 @@ describe('index', function () {
     mutationArgDocumentedDefault: true,
     hideMutationsWithUndocumentedReturnType: true,
 
-    typesDocumented: true,
+    typesDocumentedDefault: true,
     typeDocumentedDefault: true,
     fieldDocumentedDefault: true,
     argDocumentedDefault: true,
@@ -91,14 +91,39 @@ describe('index', function () {
     it('does not blow up', async function () {
       const result = spectaql($.opts)
       expect(result).be.an('object').that.includes.keys(
-        'paths',
-        'definitions',
+        'orderedDataWithHeaders',
       )
 
-      expect(result.paths).to.have.length.gt(0)
-      expect(result.definitions).to.be.an('object').that.includes.keys(
-        'SimpleTypeOne'
-      )
+      expect(result.orderedDataWithHeaders).to.have.length.gt(0)
+
+      expect(result.orderedDataWithHeaders[0]).to.include({
+        name: 'Operations',
+      })
+
+      expect(result.orderedDataWithHeaders[0].items).to.have.length.gt(0)
+      expect(result.orderedDataWithHeaders[0].items[0]).to.include({
+        name: 'Queries'
+      })
+      expect(result.orderedDataWithHeaders[0].items[0].items.find(
+        (item) => item.name === 'myQuery'
+      )).to.be.ok
+
+      expect(result.orderedDataWithHeaders[0].items).to.have.length.gt(0)
+      expect(result.orderedDataWithHeaders[0].items[1]).to.include({
+        name: 'Mutations'
+      })
+      expect(result.orderedDataWithHeaders[0].items[1].items.find(
+        (item) => item.name === 'myMutation'
+      )).to.be.ok
+
+      expect(result.orderedDataWithHeaders[1]).to.include({
+        name: 'Types',
+      })
+
+      expect(result.orderedDataWithHeaders[1].items).to.have.length.gt(0)
+      expect(result.orderedDataWithHeaders[1].items.find(
+        (item) => item.name === 'SimpleTypeOne'
+      )).to.be.ok
     })
   })
 
@@ -107,24 +132,31 @@ describe('index', function () {
     it('does not strip trailing periods by default', async function () {
       const result = spectaql($.opts)
       expect(result).be.an('object').that.includes.keys(
-        'paths',
-        'definitions',
+        'orderedDataWithHeaders',
       )
 
-      expect(result.paths).to.have.length.gt(0)
-      expect(result.definitions).to.be.an('object').that.includes.keys(
-        'MyType'
+      expect(result.orderedDataWithHeaders).to.have.length.gt(0)
+
+      const myQuery = result.orderedDataWithHeaders[0].items[0].items.find(
+        (item) => item.name === 'myQuery'
       )
 
-      const { paths, definitions } = result
-      const myQuery = paths[0].post
       expect(myQuery.description).to.eql("A query.")
-      expect(myQuery.parameters[0].description).to.eql("An argument to a query.")
+      expect(myQuery.args[0].description).to.eql("An argument to a query.")
 
-      const myType = definitions.MyType
+      const myType = result.orderedDataWithHeaders[1].items.find(
+        (item) => item.name === 'MyType'
+      )
+      expect(myType).to.be.ok
       expect(myType.description).to.eql('A type.')
-      expect(myType.properties.myField.description).to.eql('A field on a type.')
-      expect(myType.properties.myField.properties.arguments.properties.myArg.description).to.eql('An argument on a field on a type.')
+
+      const myField = myType.fields.find((field) => field.name === 'myField')
+      expect(myField).to.be.ok
+      expect(myField.description).to.eql('A field on a type.')
+
+      const myArg = myField.args.find((arg) => arg.name === 'myArg')
+      expect(myArg).to.be.ok
+      expect(myArg.description).to.eql('An argument on a field on a type.')
     })
 
     context('removeTrailingPeriodFromDescriptions is true', function () {
@@ -133,24 +165,31 @@ describe('index', function () {
       it('does strip trailing periods when asked', async function () {
         const result = spectaql($.opts)
         expect(result).be.an('object').that.includes.keys(
-          'paths',
-          'definitions',
+          'orderedDataWithHeaders',
         )
 
-        expect(result.paths).to.have.length.gt(0)
-        expect(result.definitions).to.be.an('object').that.includes.keys(
-          'MyType'
+        expect(result.orderedDataWithHeaders).to.have.length.gt(0)
+
+        const myQuery = result.orderedDataWithHeaders[0].items[0].items.find(
+          (item) => item.name === 'myQuery'
         )
 
-        const { paths, definitions } = result
-        const myQuery = paths[0].post
         expect(myQuery.description).to.eql("A query")
-        expect(myQuery.parameters[0].description).to.eql("An argument to a query")
+        expect(myQuery.args[0].description).to.eql("An argument to a query")
 
-        const myType = definitions.MyType
+        const myType = result.orderedDataWithHeaders[1].items.find(
+          (item) => item.name === 'MyType'
+        )
+        expect(myType).to.be.ok
         expect(myType.description).to.eql('A type')
-        expect(myType.properties.myField.description).to.eql('A field on a type')
-        expect(myType.properties.myField.properties.arguments.properties.myArg.description).to.eql('An argument on a field on a type')
+
+        const myField = myType.fields.find((field) => field.name === 'myField')
+        expect(myField).to.be.ok
+        expect(myField.description).to.eql('A field on a type')
+
+        const myArg = myField.args.find((arg) => arg.name === 'myArg')
+        expect(myArg).to.be.ok
+        expect(myArg.description).to.eql('An argument on a field on a type')
       })
     })
   })

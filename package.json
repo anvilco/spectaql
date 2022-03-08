@@ -3,25 +3,11 @@
   "version": "0.14.0",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
+  "homepage": "https://github.com/anvilco/spectaql",
   "license": "MIT",
-  "main": "app/index.js",
-  "bin": {
-    "spectaql": "./bin/spectaql.js"
-  },
-  "scripts": {
-    "develop": "nodemon -x 'node bin/spectaql' -D",
-    "build": "node bin/spectaql",
-    "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
-    "generateExampleData": "node bin/generateExampleData.js",
-    "test": "mocha --config ./test/mocha-config.js",
-    "test:watch": "nodemon -x 'yarn test'"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/anvilco/spectaql.git"
-  },
-  "engines": {
-    "node": ">=12"
   },
   "keywords": [
     "graphql",
@@ -36,10 +22,23 @@
   "bugs": {
     "url": "https://github.com/anvilco/spectaql/issues"
   },
-  "homepage": "https://github.com/anvilco/spectaql",
+  "main": "app/index.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "bin": {
+    "spectaql": "./bin/spectaql.js"
+  },
+  "scripts": {
+    "develop": "nodemon -x 'node bin/spectaql' -D",
+    "build": "node bin/spectaql",
+    "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
+    "generateExampleData": "node bin/generateExampleData.js",
+    "test": "mocha --config ./test/mocha-config.js",
+    "test:watch": "nodemon -x 'yarn test'"
+  },
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.1",
-    "@anvilco/graphql-2-json-schema": "^0.0.5",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
     "cheerio": "^1.0.0-rc.10",
@@ -48,6 +47,7 @@
     "commander": "^8.2.0",
     "foundation-sites": "^6.7.2",
     "graphql": "^15.6.0",
+    "graphql-2-json-schema": "^0.9.1",
     "graphql-json-schema": "^0.1.2",
     "graphql-scalars": "^1.14.1",
     "grunt": "^1.4.1",
@@ -71,6 +71,7 @@
     "json-stringify-pretty-compact": "^3.0.0",
     "lodash": "^4.17.12",
     "marked": "^3.0.4",
+    "microfiber": "^0.0.4",
     "sass": "^1.32.13",
     "sync-request": "^6.1.0",
     "tmp": "0.2.1"

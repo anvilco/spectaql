@@ -9,7 +9,13 @@ const GraphQLScalar = require('graphql-scalars');
 const highlightGraphQl = require('../spectaql/graphql-hl')
 const {
   typeIsArray,
+  analyzeTypeIntrospection,
 } = require('../spectaql/type-helpers')
+
+const IntrospectionManipulatorModule = require('microfiber')
+const {
+  default: IntrospectionManipulator,
+} = IntrospectionManipulatorModule
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround
@@ -92,8 +98,8 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
-function getExampleForScalar (value) {
-  let replacement = SCALAR_TO_EXAMPLE[value]
+function getExampleForScalar (scalarName) {
+  const replacement = SCALAR_TO_EXAMPLE[scalarName];
   if(!replacement) {
     replacement = GRAPHQL_SCALAR_TO_EXAMPLE[value];
   }
@@ -344,6 +350,107 @@ var common = {
     }
 
     console.error('Cannot format example on property ', ref, ref.$ref)
+  },
+
+  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator }) {
+    if (!(args && args.length)) {
+      return null
+    }
+
+    return args.reduce(
+      (acc, arg) => {
+        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator })
+        return acc
+      },
+      {},
+    )
+  },
+
+
+  // Take an Arg from the Introspection JSON, and figure out it's example variable representation
+  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator }) {
+    if (!arg) {
+      return null
+    }
+
+    // If there is an example, use it.
+    if (arg.example) {
+      return arg.example
+    }
+    // If there is a default, use it.
+    if (arg.defaultValue) {
+      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true })
+    }
+
+    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+
+    const underlyingTypeDefinition = introspectionManipulator.getType(
+      IntrospectionManipulator.digUnderlyingType(arg.type)
+    )
+
+    return common.generateIntrospectionReturnTypeExample({ thing: arg, underlyingTypeDefinition, originalType: arg.type })
+  },
+
+  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator }) {
+    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+    const underlyingTypeDefinition = introspectionManipulator.getType(
+      IntrospectionManipulator.digUnderlyingType(field.type)
+    )
+
+    // No fields? Just a Scalar then, so return a single value.
+    if (!underlyingTypeDefinition.fields) {
+      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+    }
+
+    // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
+    return underlyingTypeDefinition.fields.reduce(
+      (acc, field) => {
+        const underlyingTypeDefinition = introspectionManipulator.getType(
+          IntrospectionManipulator.digUnderlyingType(field.type)
+        )
+        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+        return acc
+      },
+      {}
+    )
+  },
+
+  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType }) {
+    let example = thing.example || originalType.example || underlyingTypeDefinition.example || getExampleForScalar(underlyingTypeDefinition.name)
+    if (typeof example !== 'undefined') {
+      example = unwindSpecialTags(example)
+    } else {
+      example = underlyingTypeDefinition.name
+    }
+
+    const {
+      // underlyingType,
+      // isRequired,
+      isArray,
+      // itemsRequired,
+    } = analyzeTypeIntrospection(originalType)
+
+    return isArray ? [example] : example
+  },
+
+  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator }) {
+    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+    // No fields? Just a Scalar then, so return a single value.
+    if (!type.fields) {
+      return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, originalType: type })
+    }
+
+    // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
+    return type.fields.reduce(
+      (acc, field) => {
+        const underlyingTypeDefinition = introspectionManipulator.getType(
+          IntrospectionManipulator.digUnderlyingType(field.type)
+        )
+        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+        return acc
+      },
+      {}
+    )
   },
 
   printSchema: function (value, _root) {

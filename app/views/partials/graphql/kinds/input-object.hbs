@@ -1,0 +1,39 @@
+<div class="doc-copy">
+  {{#if description}}
+    <section class="json-schema-description">
+      {{md (interpolateReferences description)}}
+    </section>
+  {{/if}}
+  {{#if inputFields }}
+    <section class="json-schema-properties-blank">
+      <table>
+        <tr>
+          <th>Input Field</th>
+          <th>Description</th>
+        </tr>
+        {{#each inputFields}}
+          <tr>
+            {{! The Value column }}
+            <td>
+              {{~> graphql/name-and-type }}
+            </td>
+            <td>
+              {{! The Description column }}
+              {{#if description}}
+                {{md (interpolateReferences description)}}
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    </section>
+  {{/if}}
+</div>
+<div class="doc-examples">
+  {{#if example }}
+    <section>
+      <h5>Example</h5>
+      {{printJSON example}}
+    </section>
+  {{/if}}
+</div>

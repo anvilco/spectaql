@@ -36,9 +36,6 @@
         "anotherField": {
           "documentation": { "example": "Metadata example of `anotherField`" }
         },
-        "lastName": {
-          "documentation": { "example": "Doe" }
-        },
         "episodeEnums": {
           "documentation": { "example": ["EMPIRE"] }
         }

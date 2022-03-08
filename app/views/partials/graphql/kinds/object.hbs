@@ -1,0 +1,20 @@
+<div class="doc-copy">
+  {{#if description}}
+    <section class="json-schema-description">
+      {{md (interpolateReferences description)}}
+    </section>
+  {{/if}}
+  {{#if fields}}
+    <section class="json-schema-properties-blank">
+      {{>graphql/kinds/_fields .}}
+    </section>
+  {{/if}}
+</div>
+<div class="doc-examples">
+  {{#if example }}
+    <section>
+      <h5>Example</h5>
+      {{printJSON example}}
+    </section>
+  {{/if}}
+</div>
