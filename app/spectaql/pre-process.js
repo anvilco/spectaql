@@ -1,18 +1,20 @@
 const htmlId = require('../helpers/htmlId')
 const generateQueryExample = require('./generate-graphql-example-data')
-const {
-  generateIntrospectionTypeExample,
-} = require('../lib/common')
+const { generateIntrospectionTypeExample } = require('../lib/common')
+const { analyzeTypeIntrospection } = require('./type-helpers')
 
-const {
-  analyzeTypeIntrospection,
-} = require('./type-helpers')
-
-function preProcess ({ orderedDataWithHeaders, introspectionResponse, graphQLSchema }) {
+function preProcess({
+  orderedDataWithHeaders,
+  introspectionResponse,
+  graphQLSchema,
+}) {
   handleItems(orderedDataWithHeaders, { introspectionResponse, graphQLSchema })
 }
 
-function handleItems (items, { depth = 0, names = [], introspectionResponse, graphQLSchema } = {}) {
+function handleItems(
+  items,
+  { depth = 0, names = [], introspectionResponse, graphQLSchema } = {}
+) {
   if (!Array.isArray(items)) {
     return
   }
@@ -22,7 +24,10 @@ function handleItems (items, { depth = 0, names = [], introspectionResponse, gra
   }
 }
 
-function handleItem (item, { depth, names, introspectionResponse, graphQLSchema }) {
+function handleItem(
+  item,
+  { depth, names, introspectionResponse, graphQLSchema }
+) {
   if (!item) {
     return
   }
@@ -40,7 +45,12 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
     names.push(item.name)
     item.htmlId = htmlId(names.join('-'))
 
-    return handleItems(item.items, { depth: depth + 1, names, introspectionResponse, graphQLSchema })
+    return handleItems(item.items, {
+      depth: depth + 1,
+      names,
+      introspectionResponse,
+      graphQLSchema,
+    })
   }
 
   // It's a leaf node
@@ -64,52 +74,73 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
   item.htmlId = htmlId([anchorPrefix, item.name].join('-'))
 }
 
-function addQueryToItem ({ item, introspectionResponse, graphQLSchema }) {
-  return _addQueryToItem({ item, flavor: 'query', introspectionResponse, graphQLSchema })
+function addQueryToItem({ item, introspectionResponse, graphQLSchema }) {
+  return _addQueryToItem({
+    item,
+    flavor: 'query',
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
-function addMutationToItem ({ item, introspectionResponse, graphQLSchema }) {
-  return _addQueryToItem({ item, flavor: 'mutation', introspectionResponse, graphQLSchema })
+function addMutationToItem({ item, introspectionResponse, graphQLSchema }) {
+  return _addQueryToItem({
+    item,
+    flavor: 'mutation',
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
-function addSubscriptionToItem ({ item, introspectionResponse, graphQLSchema }) {
-  return _addQueryToItem({ item, flavor: 'subscription', introspectionResponse, graphQLSchema })
+function addSubscriptionToItem({ item, introspectionResponse, graphQLSchema }) {
+  return _addQueryToItem({
+    item,
+    flavor: 'subscription',
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
-function _addQueryToItem ({ item, flavor, introspectionResponse, graphQLSchema }) {
-  const stuff = generateQueryExample({ prefix: flavor, field: item, introspectionResponse, graphQLSchema })
-  const {
-    query,
-    variables,
-    response,
-  } = stuff
+function _addQueryToItem({
+  item,
+  flavor,
+  introspectionResponse,
+  graphQLSchema,
+}) {
+  const stuff = generateQueryExample({
+    prefix: flavor,
+    field: item,
+    introspectionResponse,
+    graphQLSchema,
+  })
+  const { query, variables, response } = stuff
 
   item[flavor] = query
   item.variables = variables
 
-  const {
-      underlyingType,
-      isRequired,
-      isArray,
-      itemsRequired,
-    } = analyzeTypeIntrospection(item.type)
+  const { underlyingType, isRequired, isArray, itemsRequired } =
+    analyzeTypeIntrospection(item.type)
 
   item.response = {
     underlyingType,
     isRequired,
     isArray,
     itemsRequired,
-    data: response
+    data: response,
   }
 }
 
-function addDefinitionToItem ({ item, introspectionResponse, graphQLSchema }) {
+function addDefinitionToItem({ item, introspectionResponse, graphQLSchema }) {
   // if (item.name === 'AddressInput') {
   //   console.log(JSON.stringify({
   //     item,
   //   }))
   // }
-  item.example = generateIntrospectionTypeExample({ type: item, introspectionResponse, graphQLSchema })
+  item.example = generateIntrospectionTypeExample({
+    type: item,
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
 module.exports = preProcess
