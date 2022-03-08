@@ -1,6 +1,6 @@
 const { get } = require('lodash')
 // Strip off a trailer that's found at the end of a string
-module.exports = function(string, trailer, options) {
+module.exports = function (string, trailer, options) {
   if (!(string && trailer)) {
     return string
   }

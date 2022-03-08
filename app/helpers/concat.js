@@ -10,7 +10,7 @@ const stripTrailing = require('./stripTrailing')
  *
  * @return {string} - All the strings combined
  */
-module.exports = function(...strings) {
+module.exports = function (...strings) {
   let joiner = ''
   let filterFalsy = false
   let fixDoublePeriods = true
@@ -53,9 +53,10 @@ module.exports = function(...strings) {
   // but the last one.
   // Checking for startsWith('.') because sometimes the joiner might be ". "
   if (fixDoublePeriods && joiner.startsWith('.') && strings.length > 1) {
-    strings = strings.map((string, idx, strings) => idx === strings.length - 1 ? string : stripTrailing(string, '.', {}))
+    strings = strings.map((string, idx, strings) =>
+      idx === strings.length - 1 ? string : stripTrailing(string, '.', {})
+    )
   }
-
 
   return strings.join(joiner)
 }

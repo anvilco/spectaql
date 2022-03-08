@@ -2,7 +2,7 @@ const _ = require('lodash')
 const {
   // GraphQLScalarType,
   GraphQLNonNull,
-  GraphQLList
+  GraphQLList,
 } = require('graphql')
 
 const {
@@ -16,18 +16,19 @@ const {
   KIND_INTERFACE,
 } = require('microfiber')
 
-
 const SCALARS = {
   Int: 'integer',
   Float: 'number',
   String: 'string',
   Boolean: 'boolean',
   ID: 'string',
-};
-
+}
 
 function digNonNullTypeGraphQL(graphqlType) {
-  while (graphqlType instanceof GraphQLNonNull || graphqlType instanceof GraphQLList) {
+  while (
+    graphqlType instanceof GraphQLNonNull ||
+    graphqlType instanceof GraphQLList
+  ) {
     graphqlType = graphqlType.ofType
   }
 
@@ -111,13 +112,13 @@ function convertGraphQLJSONType(tipe) {
       isRequired,
       itemsAreRequired,
       ref: `#/definitions/${tipe.name}`,
-      jsonType: SCALARS[tipe.name] || tipe.name || "object"
+      jsonType: SCALARS[tipe.name] || tipe.name || 'object',
     }),
   }
 }
 
 // Take the parameters and generate a JSON Schema with it
-function generateSchema ({
+function generateSchema({
   isArray,
   // isRequired,
   itemsAreRequired,
@@ -139,10 +140,7 @@ function generateSchema ({
     // If NOT required, then the type should be an "anyOf" array that contains "null"
     if (!itemsAreRequired) {
       juice = {
-        anyOf: [
-          juice,
-          { type: 'null' },
-        ]
+        anyOf: [juice, { type: 'null' }],
       }
     }
 
@@ -160,10 +158,7 @@ function generateSchema ({
 // It is required is the type is an array containing the string "null" as a value. This is
 // standard JSON Schema notation.
 function typeIsRequired(schema) {
-  const {
-    required,
-    anyOf,
-  } = schema
+  const { required, anyOf } = schema
 
   // If the required boolean is there, it's from the HACK HACK in convertGraphQLType
   // above
@@ -188,9 +183,7 @@ function typeIsArray(schema) {
 }
 
 function getNonNullType(schema) {
-  const {
-    anyOf
-  } = schema
+  const { anyOf } = schema
 
   // Array that may contain nullables - we'll take the first non-null type
   if (Array.isArray(anyOf)) {
@@ -208,17 +201,28 @@ function digNonNullType(schema) {
   return getNonNullType(schema)
 }
 
-function getTypeFromIntrospectionResponse ({
+function getTypeFromIntrospectionResponse({
   name,
   kind,
-  kinds = [KIND_OBJECT, KIND_SCALAR, KIND_ENUM, KIND_INPUT_OBJECT, KIND_INTERFACE],
+  kinds = [
+    KIND_OBJECT,
+    KIND_SCALAR,
+    KIND_ENUM,
+    KIND_INPUT_OBJECT,
+    KIND_INTERFACE,
+  ],
   introspectionResponse,
 } = {}) {
   kinds = kind ? [kind] : kinds
-  return name && _.get(introspectionResponse, '__schema.types', []).find((type) => type.name === name && kinds.includes(type.kind))
+  return (
+    name &&
+    _.get(introspectionResponse, '__schema.types', []).find(
+      (type) => type.name === name && kinds.includes(type.kind)
+    )
+  )
 }
 
-function removeTypeFromIntrospectionResponse ({
+function removeTypeFromIntrospectionResponse({
   name,
   kind,
   introspectionResponse,
@@ -230,55 +234,73 @@ function removeTypeFromIntrospectionResponse ({
   }
 }
 
-function getFieldFromIntrospectionResponseType ({
+function getFieldFromIntrospectionResponseType({
   name,
   type: introspectionResponseTypeObject,
 } = {}) {
-  return name && (introspectionResponseTypeObject.fields || introspectionResponseTypeObject.inputFields || introspectionResponseTypeObject.enumValues || []).find((field) => field.name === name)
+  return (
+    name &&
+    (
+      introspectionResponseTypeObject.fields ||
+      introspectionResponseTypeObject.inputFields ||
+      introspectionResponseTypeObject.enumValues ||
+      []
+    ).find((field) => field.name === name)
+  )
 }
 
-function getArgFromIntrospectionResponseField ({
+function getArgFromIntrospectionResponseField({
   name,
-  field: introspectionResponseFieldObject
+  field: introspectionResponseFieldObject,
 } = {}) {
-  return name && (introspectionResponseFieldObject.args || []).find((arg) => arg.name === name)
+  return (
+    name &&
+    (introspectionResponseFieldObject.args || []).find(
+      (arg) => arg.name === name
+    )
+  )
 }
 
 function returnTypeExistsForJsonSchemaField({
   jsonSchema,
   fieldDefinition,
 } = {}) {
-
   // Fields on proper Types will have properties.return...but (at least) Input Types will have $ref right at the top
   // or nested in { type: 'array', items: { $ref: '...' } }
-  const returnTypeName = getReturnTypeNameFromJsonSchemaFieldDefinition(fieldDefinition) || getReturnTypeNameFromJsonSchemaReturnSchema(fieldDefinition)
+  const returnTypeName =
+    getReturnTypeNameFromJsonSchemaFieldDefinition(fieldDefinition) ||
+    getReturnTypeNameFromJsonSchemaReturnSchema(fieldDefinition)
   return !!returnTypeName && _.has(jsonSchema, `definitions.${returnTypeName}`)
 }
 
-function getReturnTypeNameFromJsonSchemaFieldDefinition (fieldDefinition = {}) {
+function getReturnTypeNameFromJsonSchemaFieldDefinition(fieldDefinition = {}) {
   const returnSchema = _.get(fieldDefinition, 'properties.return')
-  return returnSchema && getReturnTypeNameFromJsonSchemaReturnSchema(returnSchema)
+  return (
+    returnSchema && getReturnTypeNameFromJsonSchemaReturnSchema(returnSchema)
+  )
 }
 
-function getTypeNameFromJsonSchemaInputFieldDefinition (inputFieldDefinition = {}) {
+function getTypeNameFromJsonSchemaInputFieldDefinition(
+  inputFieldDefinition = {}
+) {
   return getReturnTypeNameFromJsonSchemaReturnSchema(inputFieldDefinition)
 }
 
-function getTypeNameFromJsonSchemaArgDefinition (argDefinition = {}) {
+function getTypeNameFromJsonSchemaArgDefinition(argDefinition = {}) {
   return getReturnTypeNameFromJsonSchemaReturnSchema(argDefinition)
 }
 
 function getReturnTypeNameFromJsonSchemaReturnSchema(schema = {}) {
-  const $ref = (digNonNullType(schema)).$ref
+  const $ref = digNonNullType(schema).$ref
   if (!($ref && $ref.startsWith('#/definitions/'))) {
-  return
+    return
   }
 
   return $ref.replace('#/definitions/', '')
 }
 
 // Provide some basic analysis of a type Field from JSON Schema
-function analyzeJsonSchemaFieldDefinition (fieldDefinition = {}) {
+function analyzeJsonSchemaFieldDefinition(fieldDefinition = {}) {
   const returnSchema = _.get(fieldDefinition, 'properties.return')
   const returnType = getReturnTypeNameFromJsonSchemaReturnSchema(returnSchema)
   return {
@@ -287,8 +309,9 @@ function analyzeJsonSchemaFieldDefinition (fieldDefinition = {}) {
   }
 }
 
-function analyzeJsonSchemaInputFieldDefinition (inputFieldDefinition = {}) {
-  const type = getTypeNameFromJsonSchemaInputFieldDefinition(inputFieldDefinition)
+function analyzeJsonSchemaInputFieldDefinition(inputFieldDefinition = {}) {
+  const type =
+    getTypeNameFromJsonSchemaInputFieldDefinition(inputFieldDefinition)
   return {
     ..._analyzeJsonSchemaDefinition(inputFieldDefinition),
     type,
@@ -296,7 +319,7 @@ function analyzeJsonSchemaInputFieldDefinition (inputFieldDefinition = {}) {
 }
 
 // Provide some basic analysis of an Argument from JSON Schema
-function analyzeJsonSchemaArgDefinition (argDefinition = {}) {
+function analyzeJsonSchemaArgDefinition(argDefinition = {}) {
   const type = getTypeNameFromJsonSchemaArgDefinition(argDefinition)
 
   return {
@@ -306,21 +329,17 @@ function analyzeJsonSchemaArgDefinition (argDefinition = {}) {
 }
 
 // Common analyzer
-function _analyzeJsonSchemaDefinition (definition = {}) {
+function _analyzeJsonSchemaDefinition(definition = {}) {
   const isArray = typeIsArray(definition)
   return {
     isArray,
-    itemsRequired: isArray && typeIsRequired(definition.items)
+    itemsRequired: isArray && typeIsRequired(definition.items),
   }
 }
 
 // Handles some weirdness from HACK HACK stuff
-function analyzeTypeSchema (thing) {
-  const {
-    name,
-    schema,
-    parent,
-  } = thing
+function analyzeTypeSchema(thing) {
+  const { name, schema, parent } = thing
 
   let isRequired = false
   let getTypesFrom
@@ -339,7 +358,7 @@ function analyzeTypeSchema (thing) {
 
     // parent should have been added to the current context in the right place
     if (_.get(parent, 'required', []).includes(name)) {
-       isRequired = true
+      isRequired = true
     }
   }
 
@@ -353,12 +372,12 @@ function analyzeTypeSchema (thing) {
     itemsRequired,
     getTypesFrom,
     type,
-    ref: type.$ref
+    ref: type.$ref,
   }
 }
 
 // Analyze a Type that's part of an Introspection object
-function analyzeTypeIntrospection (type) {
+function analyzeTypeIntrospection(type) {
   let isRequired = false
   let itemsRequired = false
   let isArray = false
@@ -392,13 +411,9 @@ function analyzeTypeIntrospection (type) {
   }
 }
 
-function introspectionTypeToString (type, { joiner = '' } = {}) {
-  const {
-    underlyingType,
-    isRequired,
-    isArray,
-    itemsRequired,
-  } = analyzeTypeIntrospection(type)
+function introspectionTypeToString(type, { joiner = '' } = {}) {
+  const { underlyingType, isRequired, isArray, itemsRequired } =
+    analyzeTypeIntrospection(type)
 
   const pieces = [underlyingType.name]
   if (isArray) {
@@ -415,11 +430,11 @@ function introspectionTypeToString (type, { joiner = '' } = {}) {
   return pieces.join(joiner)
 }
 
-function isReservedType (type) {
+function isReservedType(type) {
   return type.name.startsWith('__')
 }
 
-function typesAreSame (typeA, typeB) {
+function typesAreSame(typeA, typeB) {
   return typeA.kind === typeB.kind && typeA.name === typeB.name
 }
 

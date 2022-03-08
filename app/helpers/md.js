@@ -9,7 +9,7 @@ var common = require('../lib/common')
  * @returns {Handlebars.SafeString} a Handlebars-SafeString containing the provieded
  *      markdown, rendered as HTML.
  */
-module.exports = function(value, options) {
+module.exports = function (value, options) {
   value = value + ''
   const markdownOpts = {}
   if (options.hash) {
@@ -18,4 +18,4 @@ module.exports = function(value, options) {
   }
   var html = common.markdown(value, markdownOpts)
   return new Handlebars.SafeString(html)
-};
+}

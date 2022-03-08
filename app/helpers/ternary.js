@@ -4,7 +4,7 @@ const { get } = require('lodash')
 // Options:
 //   undefOnly (Boolean) default = false: If truthy, only values that are undefined will trigger the ifFalse
 //     condition path.
-module.exports = function(value, ifTrue, ifFalse, options) {
+module.exports = function (value, ifTrue, ifFalse, options) {
   const undefOnly = !!get(options, 'hash.undefOnly')
 
   if (value) {
