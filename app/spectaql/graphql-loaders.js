@@ -14,7 +14,11 @@ const { mergeTypeDefs } = require('@graphql-tools/merge');
 const converter = require('graphql-2-json-schema')
 const request = require('sync-request')
 
+const GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS = ['gql', 'graphql', 'graphqls', 'ts', 'js']
+
 const {
+  fileExists,
+  fileExtensionIs,
   readTextFile,
   fileToObject,
 } = require('./utils')
@@ -42,12 +46,20 @@ const loadSchemaFromSDLFile = ({
   const paths = Array.isArray(pathToFile) ? pathToFile : [pathToFile]
   const typesArray = []
   for (const path of paths) {
+    if (!fileExists(path)) {
+      throw new Error(`GraphQL schema file does not exist at ${path}`)
+    }
+    let types
     // loadFilesSync won't load .txt files, so we'll load them ourselves
     if (path.endsWith('.txt')) {
-      typesArray.push(readTextFile(path))
+      types = [readTextFile(path)]
     } else {
-      typesArray.push(...loadFilesSync(path))
+      if (!fileExtensionIs(path, GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS)) {
+        throw new Error(`Unsupported GraphQL schema file extension: ${path}. Supported extensions include ${GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS.join(', ')}.`)
+      }
+      types = loadFilesSync(path)
     }
+    typesArray.push(types)
   }
 
   const mergedTypeDefs = mergeTypeDefs(typesArray)

@@ -28,7 +28,7 @@
     }
   },
   "INPUT_OBJECT": {
-    "FilterType": {
+    "FilterInput": {
       "inputFields": {
         "someField": {
           "documentation": { "example": true }

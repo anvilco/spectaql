@@ -9,7 +9,6 @@ const {
 } = require('./type-helpers')
 
 function preProcess ({ orderedDataWithHeaders, introspectionResponse, graphQLSchema }) {
-  console.log({introspectionResponse})
   handleItems(orderedDataWithHeaders, { introspectionResponse, graphQLSchema })
 }
 
@@ -53,6 +52,9 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
   } else if (item.isMutation) {
     anchorPrefix = 'mutation'
     addMutationToItem({ item, introspectionResponse, graphQLSchema })
+  } else if (item.isSubscription) {
+    anchorPrefix = 'subscription'
+    addSubscriptionToItem({ item, introspectionResponse, graphQLSchema })
   } else {
     // It's a definition
     anchorPrefix = 'definition'
@@ -63,22 +65,26 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
 }
 
 function addQueryToItem ({ item, introspectionResponse, graphQLSchema }) {
-  return addQueryOrMutationToItem({ item, queryOrMutationIndicator: 'query', introspectionResponse, graphQLSchema })
+  return _addQueryToItem({ item, flavor: 'query', introspectionResponse, graphQLSchema })
 }
 
 function addMutationToItem ({ item, introspectionResponse, graphQLSchema }) {
-  return addQueryOrMutationToItem({ item, queryOrMutationIndicator: 'mutation', introspectionResponse, graphQLSchema })
+  return _addQueryToItem({ item, flavor: 'mutation', introspectionResponse, graphQLSchema })
 }
 
-function addQueryOrMutationToItem ({ item, queryOrMutationIndicator, introspectionResponse, graphQLSchema }) {
-  const stuff = generateQueryExample({ prefix: queryOrMutationIndicator, field: item, introspectionResponse, graphQLSchema })
+function addSubscriptionToItem ({ item, introspectionResponse, graphQLSchema }) {
+  return _addQueryToItem({ item, flavor: 'subscription', introspectionResponse, graphQLSchema })
+}
+
+function _addQueryToItem ({ item, flavor, introspectionResponse, graphQLSchema }) {
+  const stuff = generateQueryExample({ prefix: flavor, field: item, introspectionResponse, graphQLSchema })
   const {
     query,
     variables,
     response,
   } = stuff
 
-  item[queryOrMutationIndicator] = query
+  item[flavor] = query
   item.variables = variables
 
   const {
@@ -98,6 +104,11 @@ function addQueryOrMutationToItem ({ item, queryOrMutationIndicator, introspecti
 }
 
 function addDefinitionToItem ({ item, introspectionResponse, graphQLSchema }) {
+  // if (item.name === 'AddressInput') {
+  //   console.log(JSON.stringify({
+  //     item,
+  //   }))
+  // }
   item.example = generateIntrospectionTypeExample({ type: item, introspectionResponse, graphQLSchema })
 }
 

@@ -68,9 +68,10 @@
     "json-refs": "^3.0.12",
     "json-stable-stringify": "^1.0.1",
     "json-stringify-pretty-compact": "^3.0.0",
+    "json5": "^2.2.0",
     "lodash": "^4.17.12",
     "marked": "^3.0.4",
-    "microfiber": "^0.0.1",
+    "microfiber": "^0.0.4",
     "sass": "^1.32.13",
     "sync-request": "^6.1.0",
     "tmp": "0.2.1"

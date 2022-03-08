@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const JSON5 = require('json5')
 const stringify = require('json-stringify-pretty-compact')
 const cheerio = require('cheerio')
 const marked = require('marked')
@@ -32,7 +33,9 @@ const SCALAR_TO_EXAMPLE = {
   Float: [123.45, 987.65],
   Boolean: [true, false],
   Date: [new Date(), new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf())].map((date) => date.toISOString()),
+  DateTime: [new Date(), new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf())].map((date) => date.toISOString()),
   JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
+  ID: [4, "4"],
 }
 
 function unwindSpecialTags (str) {
@@ -43,6 +46,23 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
+function getExampleForScalarDefinition (scalarDefinition) {
+  const {
+    name,
+    kind,
+  } = scalarDefinition
+
+  if (kind !== 'SCALAR') {
+    return
+  }
+  let replacement = SCALAR_TO_EXAMPLE[name]
+  if (typeof replacement === 'undefined') {
+    return
+  }
+  replacement =  Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
+  return ['String', 'Date', 'DateTime'].includes(name) ? justAddSpecialTags(addQuoteTags(replacement)) : replacement
+}
+
 function getExampleForScalar (scalarName) {
   const replacement = SCALAR_TO_EXAMPLE[scalarName]
   if (typeof replacement !== 'undefined') {
@@ -51,7 +71,13 @@ function getExampleForScalar (scalarName) {
 }
 
 function jsonReplacer (name, value) {
-  return addSpecialTags(value)
+  return value
+  // return addSpecialTags(value)
+}
+
+function justAddSpecialTags (value) {
+  if (typeof value !== 'string') return value
+  return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
 
 function addSpecialTags (value, { placeholdQuotes = false } = {}) {
@@ -66,7 +92,7 @@ function addSpecialTags (value, { placeholdQuotes = false } = {}) {
     value = addQuoteTags(value)
   }
 
-  return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
+  return justAddSpecialTags(value)
 }
 
 function addQuoteTags (value) {
@@ -319,9 +345,37 @@ var common = {
     if (arg.example) {
       return arg.example
     }
-    // If there is a default, use it.
+
     if (arg.defaultValue) {
-      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true })
+      const {
+        underlyingType,
+        // isRequired,
+        isArray,
+        // itemsRequired,
+      } = analyzeTypeIntrospection(arg.type)
+
+      // console.log({
+      //   arg,
+      //   // underlyingTypeDefinition,
+      //   underlyingType,
+      //   isArray,
+      // })
+
+      if (typeof arg.defaultValue === 'string') {
+        if (underlyingType.kind !== 'ENUM') {
+          return JSON5.parse(arg.defaultValue)
+        }
+
+        if (!isArray) {
+          return arg.defaultValue
+        }
+
+        // Take a string like "[RED, GREEN]" and convert it to ["RED", "GREEN"]
+        return arg.defaultValue
+          .substr(1, arg.defaultValue.length - 2)
+          .split(',')
+          .map((val) => val.trim())
+      }
     }
 
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
@@ -358,11 +412,28 @@ var common = {
   },
 
   generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType }) {
-    let example = thing.example || originalType.example || underlyingTypeDefinition.example || getExampleForScalar(underlyingTypeDefinition.name)
+    let example = thing.example
+      || originalType.example
+      || underlyingTypeDefinition.example
+      || (underlyingTypeDefinition.kind === 'ENUM' && underlyingTypeDefinition.enumValues.length && addQuoteTags(underlyingTypeDefinition.enumValues[0].name))
+      || (underlyingTypeDefinition.kind === 'UNION' && underlyingTypeDefinition.possibleTypes.length && justAddSpecialTags(underlyingTypeDefinition.possibleTypes[0].name))
+      || getExampleForScalarDefinition(underlyingTypeDefinition)
+
+    // if (thing.name === 'String') {
+    //   console.log(JSON.stringify({
+    //     thing,
+    //     underlyingTypeDefinition,
+    //     originalType,
+    //     example,
+    //   }))
+    // }
+
+    // console.log({example})
     if (typeof example !== 'undefined') {
-      example = unwindSpecialTags(example)
+      // example = unwindSpecialTags(example)
     } else {
-      example = underlyingTypeDefinition.name
+      // example = underlyingTypeDefinition.name
+      example = justAddSpecialTags(underlyingTypeDefinition.name)
     }
 
     const {
@@ -372,18 +443,19 @@ var common = {
       // itemsRequired,
     } = analyzeTypeIntrospection(originalType)
 
-    return isArray ? [example] : example
+    return (isArray && !Array.isArray(example)) ? [example] : example
   },
 
   generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator }) {
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+    const fields = type.fields || type.inputFields
     // No fields? Just a Scalar then, so return a single value.
-    if (!type.fields) {
+    if (!fields) {
       return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, originalType: type })
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
-    return type.fields.reduce(
+    return fields.reduce(
       (acc, field) => {
         const underlyingTypeDefinition = introspectionManipulator.getType(
           IntrospectionManipulator.digUnderlyingType(field.type)

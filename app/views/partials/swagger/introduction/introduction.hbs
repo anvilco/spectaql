@@ -4,7 +4,7 @@
   {{/unless}}
   {{#unless (or info.x-hideIntroItems (empty info.x-introItems))}}
     {{#each info.x-introItems }}
-      {{#if description}}{{>swagger/introduction/x-introItem}}{{/if}}
+      {{#if (firstTruthy description file)}}{{>swagger/introduction/x-introItem}}{{/if}}
     {{/each}}
   {{/unless}}
 </div>

@@ -49,6 +49,11 @@ function run (opts) {
   })
 
   // console.log(JSON.stringify({
+  //   introspectionResponse,
+  //   orderedDataWithHeaders,
+  // }))
+
+  // console.log(JSON.stringify({
   //   orderedDataWithHeaders,
   // }))
 

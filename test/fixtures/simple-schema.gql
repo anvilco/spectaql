@@ -13,7 +13,7 @@ type Query {
   myQuery(
     "An argument to a query."
     myArg: String
-  ): String
+  ): MyType
 }
 
 "The mutation object."
@@ -22,5 +22,5 @@ type Mutation {
   myMutation(
     "An argument to a mutation."
     myArg: String
-  ): String
+  ): MyType
 }

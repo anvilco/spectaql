@@ -637,7 +637,7 @@ describe('augmenters', function () {
 
     context('"example" is in metadata', function () {
       def('example', "fooey")
-      def('processedExample', () => addSpecialTags($.example, { placeholdQuotes: true }))
+      def('processedExample', () => $.example)
       def('theMetadata', () => ({ example: $.example }))
 
       it('adds example to Introspection Query Response', function () {
@@ -647,7 +647,7 @@ describe('augmenters', function () {
       context('"examples" is *also* in metadata', function () {
         // Yes, weird that this is a scalar/single value and not an array, but it will be arrayed below
         def('examplesExample', "barrey")
-        def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true }))
+        def('processedExample', () => $.examplesExample)
         def('theMetadata', () => ({
           example: $.example,
           examples: [$.examplesExample]
@@ -662,7 +662,7 @@ describe('augmenters', function () {
     context('examples in metadata', function () {
       // Yes, weird that this is a scalar/single value and not an array
       def('examplesExample', "barrey")
-      def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true }))
+      def('processedExample', () => $.examplesExample)
       def('theMetadata', () => ({ examples: [$.examplesExample] }))
 
       it('adds one of the examples to JSON Schema', function () {
@@ -711,7 +711,7 @@ describe('augmenters', function () {
           expect(response).to.not.eql(responseBefore)
 
           // OK, WTF were special tags again? And placeholding quotes?
-          expect($.introspectionManipulator.getType({ kind: KIND_SCALAR, name: 'String' }).example).to.eql(addSpecialTags('42: Life, the Universe and Everything', { placeholdQuotes: true }))
+          expect($.introspectionManipulator.getType({ kind: KIND_SCALAR, name: 'String' }).example).to.eql('42: Life, the Universe and Everything')
         })
       })
 
@@ -732,10 +732,10 @@ describe('augmenters', function () {
             ['YetAnotherType', 'fieldWithExample', 'String', true],
           ].forEach(([typeName, fieldName, returnTypeName, placeholdQuotes]) => {
             expect($.introspectionManipulator.getField({ typeName, fieldName }).example).to.eql(
-              addSpecialTags(
+              // addSpecialTags(
                 [typeName, fieldName, returnTypeName, 'example'].join('.'),
-                { placeholdQuotes }
-              )
+                // { placeholdQuotes }
+              // )
             )
           })
 
@@ -761,9 +761,9 @@ describe('augmenters', function () {
           ].forEach(([inputName, inputFieldName, inputFieldType, isArray, itemsRequired]) => {
 
             expect($.introspectionManipulator.getInputField({ inputName, inputFieldName }).example).to.eql(
-              addSpecialTags(
+              // addSpecialTags(
                 [inputName, inputFieldName, inputFieldType, isArray, itemsRequired, 'example'].join('.'),
-              )
+              // )
             )
           })
 
@@ -796,10 +796,10 @@ describe('augmenters', function () {
             ['Mutation', 'myMutation', 'myOtherArg', 'String', true],
           ].forEach(([typeName, fieldName, argName, argType, placeholdQuotes]) => {
             expect($.introspectionManipulator.getArg({ typeName, fieldName, argName }).example).to.eql(
-              addSpecialTags(
+              // addSpecialTags(
                 [typeName, fieldName, argName, argType, 'example'].join('.'),
-                { placeholdQuotes }
-              )
+                // { placeholdQuotes }
+              // )
             )
           })
 

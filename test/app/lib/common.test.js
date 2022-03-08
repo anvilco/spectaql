@@ -78,7 +78,7 @@ describe('common', function () {
         ['foo', '<pre><code class="hljs language-gql"><span class="hljs-symbol">foo</span>\n</code></pre>'],
         ["'foo'", '<pre><code class="hljs language-gql">\'foo\'\n</code></pre>'],
         [`${SPECIAL_TAG}${QUOTE_TAG}foo${QUOTE_TAG}${SPECIAL_TAG}`, '<pre><code class="hljs language-gql"><span class="hljs-symbol">"foo"</span>\n</code></pre>'],
-        [{ foo: 'bar' }, '<pre><code class="hljs language-json">{<span class="hljs-attr">"foo"</span>: <span class="hljs-string">bar</span>}\n</code></pre>'],
+        [{ foo: 'bar' }, '<pre><code class="hljs language-json">{<span class="hljs-attr">"foo"</span>: <span class="hljs-string">"bar"</span>}\n</code></pre>'],
 
         // This is the bug/problem, sadly.
         ['"foo"', '<pre><code class="hljs language-gql">"<span class="hljs-symbol">foo"</span>\n</code></pre>'],
