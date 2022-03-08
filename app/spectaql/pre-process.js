@@ -8,21 +8,21 @@ const {
   analyzeTypeIntrospection,
 } = require('./type-helpers')
 
-function preProcess ({ orderedDataWithHeaders, introspectionResponse, graphQLSchema }, extensionOptions) {
-  handleItems(orderedDataWithHeaders, { introspectionResponse, graphQLSchema }, extensionOptions)
+function preProcess ({ orderedDataWithHeaders, introspectionResponse, graphQLSchema, scalarGraphql }) {
+  handleItems(orderedDataWithHeaders, { introspectionResponse, graphQLSchema, scalarGraphql })
 }
 
-function handleItems (items, { depth = 0, names = [], introspectionResponse, graphQLSchema } = {}, extensionOptions) {
+function handleItems (items, { depth = 0, names = [], introspectionResponse, graphQLSchema, scalarGraphql } = {}) {
   if (!Array.isArray(items)) {
     return
   }
 
   for (const item of items) {
-    handleItem(item, { depth, names, introspectionResponse, graphQLSchema }, extensionOptions)
+    handleItem(item, { depth, names, introspectionResponse, graphQLSchema, scalarGraphql })
   }
 }
 
-function handleItem (item, { depth, names, introspectionResponse, graphQLSchema }, extensionOptions) {
+function handleItem (item, { depth, names, introspectionResponse, graphQLSchema, scalarGraphql }) {
   if (!item) {
     return
   }
@@ -40,7 +40,7 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
     names.push(item.name)
     item.htmlId = htmlId(names.join('-'))
 
-    return handleItems(item.items, { depth: depth + 1, names, introspectionResponse, graphQLSchema }, extensionOptions)
+    return handleItems(item.items, { depth: depth + 1, names, introspectionResponse, graphQLSchema, scalarGraphql })
   }
 
   // It's a leaf node
@@ -48,10 +48,10 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
   let anchorPrefix
   if (item.isQuery) {
     anchorPrefix = 'query'
-    addQueryToItem({ item, introspectionResponse, graphQLSchema }, extensionOptions)
+    addQueryToItem({ item, introspectionResponse, graphQLSchema, scalarGraphql })
   } else if (item.isMutation) {
     anchorPrefix = 'mutation'
-    addMutationToItem({ item, introspectionResponse, graphQLSchema })
+    addMutationToItem({ item, introspectionResponse, graphQLSchema, scalarGraphql })
   } else if (item.isSubscription) {
     anchorPrefix = 'subscription'
     addSubscriptionToItem({ item, introspectionResponse, graphQLSchema })
@@ -64,20 +64,20 @@ function handleItem (item, { depth, names, introspectionResponse, graphQLSchema 
   item.htmlId = htmlId([anchorPrefix, item.name].join('-'))
 }
 
-function addQueryToItem ({ item, introspectionResponse, graphQLSchema }, extensionOptions) {
-  return _addQueryToItem({ item, flavor: 'query', introspectionResponse, graphQLSchema }, extensionOptions)
+function addQueryToItem ({ item, introspectionResponse, graphQLSchema, scalarGraphql }) {
+  return _addQueryToItem({ item, flavor: 'query', introspectionResponse, graphQLSchema, scalarGraphql })
 }
 
-function addMutationToItem ({ item, introspectionResponse, graphQLSchema }, extensionOptions) {
-  return _addQueryToItem({ item, flavor: 'mutation', introspectionResponse, graphQLSchema }, extensionOptions)
+function addMutationToItem ({ item, introspectionResponse, graphQLSchema, scalarGraphql }) {
+  return _addQueryToItem({ item, flavor: 'mutation', introspectionResponse, graphQLSchema, scalarGraphql })
 }
 
-function addSubscriptionToItem ({ item, introspectionResponse, graphQLSchema }, extensionOptions) {
-  return _addQueryToItem({ item, flavor: 'subscription', introspectionResponse, graphQLSchema }, extensionOptions)
+function addSubscriptionToItem ({ item, introspectionResponse, graphQLSchema, scalarGraphql }) {
+  return _addQueryToItem({ item, flavor: 'subscription', introspectionResponse, graphQLSchema, scalarGraphql })
 }
 
-function _addQueryToItem ({ item, flavor, introspectionResponse, graphQLSchema }, extensionOptions) {
-  const stuff = generateQueryExample({ prefix: flavor, field: item, introspectionResponse, graphQLSchema }, extensionOptions)
+function _addQueryToItem ({ item, flavor, introspectionResponse, graphQLSchema, scalarGraphql }) {
+  const stuff = generateQueryExample({ prefix: flavor, field: item, introspectionResponse, graphQLSchema, scalarGraphql })
   const {
     query,
     variables,

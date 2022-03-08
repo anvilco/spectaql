@@ -285,6 +285,10 @@ function addExamples (args = {}) {
     metadatasPath,
   } = introspectionOptions
 
+  const {
+    scalarGraphql,
+  } = extensionOptions
+
   const introspectionResponse = introspectionManipulator.getResponse()
 
   const types = introspectionResponse.__schema.types
@@ -300,22 +304,22 @@ function addExamples (args = {}) {
 
     const isQueryOrMutation = !!(queryType && typesAreSame(type, queryType)) || !!(mutationType && typesAreSame(type, mutationType))
 
-    handleExamples({ type, skipStatic: true, ...extensionOptions });
+    handleExamples({ type, skipStatic: true, scalarGraphql });
 
     for (const field of (type.fields || [])) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
       // queries or mutations, and we don't support that.
       if (!isQueryOrMutation) {
-        handleExamples({ type, field, ...extensionOptions });
+        handleExamples({ type, field, scalarGraphql });
       }
 
       for (const arg of (field.args || [])) {
-        handleExamples({ type, field, arg, ...extensionOptions })
+        handleExamples({ type, field, arg, scalarGraphql })
       }
     }
 
     for (const inputField of (type.inputFields || [])) {
-      handleExamples({ type, inputField, ...extensionOptions })
+      handleExamples({ type, inputField, scalarGraphql })
     }
   }
 

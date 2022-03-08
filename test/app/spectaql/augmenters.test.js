@@ -625,6 +625,7 @@ describe('augmenters', function () {
     def('result', () => addExamples({
       introspectionManipulator: $.introspectionManipulator,
       introspectionOptions: $.introspectionOptions,
+      extensionOptions: $.extensionOptions,
     }))
 
     // Common stuff across both tests, if you define things properly

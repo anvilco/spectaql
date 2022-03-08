@@ -89,6 +89,7 @@ function buildSchemas (opts) {
   if (metadataFile) {
     addMetadataFromFile({
       ...introspectionOptions,
+      ...extensionOptions,
       pathToFile: metadataFile,
       introspectionQueryResponse: introspectionResponse,
     })

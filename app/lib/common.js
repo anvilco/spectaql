@@ -46,7 +46,7 @@ function unwindSpecialTags (str) {
 }
 
 function getExampleForScalar (scalarName, { scalarGraphql} = {scalarGraphql: false} ) {
-  const replacement = SCALAR_TO_EXAMPLE[scalarName];
+  let replacement = SCALAR_TO_EXAMPLE[scalarName];
   if(!replacement && scalarGraphql) {
     replacement = GraphQLScalars.getExampleForGraphQLScalar(scalarName);
   }
@@ -383,12 +383,12 @@ var common = {
     return isArray ? [example] : example
   },
 
-  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator }, extensionOptions) {
+  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator, scalarGraphql }) {
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
     // No fields? Just a Scalar then, so return a single value.
     if (!type.fields) {
       return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, 
-        originalType: type }, extensionOptions)
+        originalType: type , scalarGraphql})
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
@@ -398,7 +398,7 @@ var common = {
           IntrospectionManipulator.digUnderlyingType(field.type)
         )
         acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, 
-          originalType: field.type }, extensionOptions)
+          originalType: field.type, scalarGraphql })
         return acc
       },
       {}
