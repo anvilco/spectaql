@@ -1,5 +1,5 @@
 // Determine if a value is a JSON-schema version of a Scalar
-const GraphQLScalars = require('../helpers/graphql-scalars');
+const GraphQLScalars = require('./graphql-scalars');
 
 
 // These are the GraphQL default scalars that map to JSON Schema types
