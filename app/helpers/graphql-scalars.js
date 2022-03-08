@@ -122,4 +122,4 @@ function isGraphQLScalar  (value)  {
   return !!value && value.title && (GRAPHQL_SCALAR_MAP[value.title] && GRAPHQL_SCALAR_MAP[value.title] === value.type);
 }
 
-module.exports = { getExampleForGraphQLScalar };
+module.exports = { getExampleForGraphQLScalar, isGraphQLScalar };
