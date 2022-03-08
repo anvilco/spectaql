@@ -24,8 +24,7 @@ const calculateShouldDocument = ({ undocumented, documented, def }) => {
   return undocumented !== true && (documented === true || def === true)
 }
 
-function augmentData (args) {
-
+function augmentData(args) {
   const introspectionManipulator = createIntrospectionManipulator(args)
 
   args = {
@@ -43,10 +42,7 @@ function augmentData (args) {
 }
 
 function createIntrospectionManipulator(args) {
-  const {
-    introspectionResponse,
-    introspectionOptions,
-  } = args
+  const { introspectionResponse, introspectionOptions } = args
 
   const {
     hideFieldsOfUndocumentedType: removeFieldsWithMissingTypes,
@@ -57,30 +53,26 @@ function createIntrospectionManipulator(args) {
     hideUnionTypesOfUndocumentedType: removePossibleTypesOfMissingTypes,
     hideQueriesWithUndocumentedReturnType: removeQueriesWithMissingTypes,
     hideMutationsWithUndocumentedReturnType: removeMutationsWithMissingTypes,
-  // } = introspectionOptions
+    // } = introspectionOptions
   } = introspectionOptions
 
-  return new IntrospectionManipulator(
-    introspectionResponse,
-    {
-      // Get this from options?
-      removeUnusedTypes: false,
-      removeFieldsWithMissingTypes,
-      removeArgsWithMissingTypes,
-      removeInputFieldsWithMissingTypes,
-      removePossibleTypesOfMissingTypes,
-      removeQueriesWithMissingTypes,
-      removeMutationsWithMissingTypes,
-    },
-  )
+  return new IntrospectionManipulator(introspectionResponse, {
+    // Get this from options?
+    removeUnusedTypes: false,
+    removeFieldsWithMissingTypes,
+    removeArgsWithMissingTypes,
+    removeInputFieldsWithMissingTypes,
+    removePossibleTypesOfMissingTypes,
+    removeQueriesWithMissingTypes,
+    removeMutationsWithMissingTypes,
+  })
 }
 
 // TODO: Separate out the metadata copying into JSON Schema results into its own thing?
-function hideThingsBasedOnMetadata ({
+function hideThingsBasedOnMetadata({
   introspectionManipulator,
   introspectionOptions,
 }) {
-
   // Hide the Type Definitions
   hideTypes({
     introspectionManipulator,
@@ -114,17 +106,13 @@ function hideThingsBasedOnMetadata ({
   }
 }
 
-function hideTypes ({
-  introspectionManipulator,
-  introspectionOptions,
-}) {
+function hideTypes({ introspectionManipulator, introspectionOptions }) {
   const {
     metadatasPath,
     queriesDocumentedDefault,
     mutationsDocumentedDefault,
     typesDocumentedDefault,
     typeDocumentedDefault,
-
   } = introspectionOptions
 
   const queryType = introspectionManipulator.getQueryType()
@@ -148,7 +136,12 @@ function hideTypes ({
     }
 
     const metadata = _.get(type, metadatasPath, {})
-    const shouldDocument = !!allThingsDocumentedDefault && calculateShouldDocument({ ...metadata, def: !!individualThingsDocumentedDefault })
+    const shouldDocument =
+      !!allThingsDocumentedDefault &&
+      calculateShouldDocument({
+        ...metadata,
+        def: !!individualThingsDocumentedDefault,
+      })
 
     if (!shouldDocument) {
       introspectionManipulator.removeType({
@@ -165,10 +158,7 @@ function hideTypes ({
 // ** Should be called after hideTypes so that fields can be hidden
 // if their return Type is also hidden - if the options say to do that **
 function hideFields(args = {}) {
-  const {
-    introspectionManipulator,
-    introspectionOptions,
-  } = args
+  const { introspectionManipulator, introspectionOptions } = args
 
   const {
     metadatasPath,
@@ -193,23 +183,28 @@ function hideFields(args = {}) {
       defaultShowHide = queryDocumentedDefault
     } else if (mutationType && typesAreSame(type, mutationType)) {
       defaultShowHide = mutationDocumentedDefault
-    }typesAreSame
+    }
+    typesAreSame
 
-    for (const field of (type.fields || [])) {
+    for (const field of type.fields || []) {
       const metadata = _.get(field, metadatasPath, {})
-      const shouldDocument = calculateShouldDocument({ ...metadata, def: defaultShowHide })
+      const shouldDocument = calculateShouldDocument({
+        ...metadata,
+        def: defaultShowHide,
+      })
       if (!shouldDocument) {
-        introspectionManipulator.removeField({ typeKind: type.kind, typeName: type.name, fieldName: field.name })
+        introspectionManipulator.removeField({
+          typeKind: type.kind,
+          typeName: type.name,
+          fieldName: field.name,
+        })
       }
     }
   }
 }
 
 function hideArguments(args = {}) {
-  const {
-    introspectionManipulator,
-    introspectionOptions,
-  } = args
+  const { introspectionManipulator, introspectionOptions } = args
 
   const {
     metadatasPath,
@@ -217,7 +212,6 @@ function hideArguments(args = {}) {
     mutationArgDocumentedDefault,
     argDocumentedDefault,
   } = introspectionOptions
-
 
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
@@ -237,22 +231,33 @@ function hideArguments(args = {}) {
       defaultShowHide = mutationArgDocumentedDefault
     }
 
-    for (const field of (type.fields || [])) {
-      for (const arg of (field.args || [])) {
+    for (const field of type.fields || []) {
+      for (const arg of field.args || []) {
         const metadata = _.get(arg, metadatasPath, {})
-        const shouldDocument = calculateShouldDocument({ ...metadata, def: defaultShowHide })
+        const shouldDocument = calculateShouldDocument({
+          ...metadata,
+          def: defaultShowHide,
+        })
         if (!shouldDocument) {
-          introspectionManipulator.removeArg({ typeKind: type.kind, typeName: type.name, fieldName: field.name, argName: arg.name })
+          introspectionManipulator.removeArg({
+            typeKind: type.kind,
+            typeName: type.name,
+            fieldName: field.name,
+            argName: arg.name,
+          })
         }
       }
     }
   }
 }
 
-function addExamples (args = {}) {
-  const dynamicExamplesProcessingModule = _.get(args, 'introspectionOptions.dynamicExamplesProcessingModule')
+function addExamples(args = {}) {
+  const dynamicExamplesProcessingModule = _.get(
+    args,
+    'introspectionOptions.dynamicExamplesProcessingModule'
+  )
 
-  let processor = (() => {})
+  let processor = () => {}
   if (dynamicExamplesProcessingModule) {
     try {
       processor = require(dynamicExamplesProcessingModule)
@@ -265,25 +270,19 @@ function addExamples (args = {}) {
         console.warn('\n\n\nPROCESSOR EXPORT MUST BE A FUNCTION\n\n\n')
         return args
       }
-    } catch(e) {
+    } catch (e) {
       if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
         console.warn('\n\n\nCOULD NOT LOAD EXAMPLE PROCESSOR\n\n\n')
         return args
-      }
-      else {
+      } else {
         throw e
       }
     }
   }
 
-  const {
-    introspectionManipulator,
-    introspectionOptions,
-  } = args
+  const { introspectionManipulator, introspectionOptions } = args
 
-  const {
-    metadatasPath,
-  } = introspectionOptions
+  const { metadatasPath } = introspectionOptions
 
   const introspectionResponse = introspectionManipulator.getResponse()
 
@@ -298,23 +297,25 @@ function addExamples (args = {}) {
       continue
     }
 
-    const isQueryOrMutation = !!(queryType && typesAreSame(type, queryType)) || !!(mutationType && typesAreSame(type, mutationType))
+    const isQueryOrMutation =
+      !!(queryType && typesAreSame(type, queryType)) ||
+      !!(mutationType && typesAreSame(type, mutationType))
 
     handleExamples({ type, skipStatic: true })
 
-    for (const field of (type.fields || [])) {
+    for (const field of type.fields || []) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
       // queries or mutations, and we don't support that.
       if (!isQueryOrMutation) {
         handleExamples({ type, field })
       }
 
-      for (const arg of (field.args || [])) {
+      for (const arg of field.args || []) {
         handleExamples({ type, field, arg })
       }
     }
 
-    for (const inputField of (type.inputFields || [])) {
+    for (const inputField of type.inputFields || []) {
       handleExamples({ type, inputField })
     }
   }
@@ -328,11 +329,8 @@ function addExamples (args = {}) {
     introspectionOptions,
   }
 
-  function getExistingExample (thing) {
-    let {
-      example,
-      examples,
-    } = _.get(thing, metadatasPath, {})
+  function getExistingExample(thing) {
+    let { example, examples } = _.get(thing, metadatasPath, {})
 
     if (examples && examples.length) {
       example = examples[Math.floor(Math.random() * examples.length)]
@@ -356,9 +354,15 @@ function addExamples (args = {}) {
   //     : addSpecialTags(example, { placeholdQuotes })
   // }
 
-  function handleExamples ({ type, field, arg, inputField, skipStatic = false }) {
+  function handleExamples({
+    type,
+    field,
+    arg,
+    inputField,
+    skipStatic = false,
+  }) {
     const thing = arg || inputField || field || type
-    const typeForAnalysis = (thing === type) ? type : thing.type
+    const typeForAnalysis = thing === type ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
 
     let example = getExistingExample(thing)
@@ -379,15 +383,10 @@ function addExamples (args = {}) {
 }
 
 // Get rid of all the metadata entries
-function removeMetadata (args = {}) {
-  const {
-    introspectionManipulator,
-    introspectionOptions,
-  } = args
+function removeMetadata(args = {}) {
+  const { introspectionManipulator, introspectionOptions } = args
 
-  const {
-    metadatasPath,
-  } = introspectionOptions
+  const { metadatasPath } = introspectionOptions
 
   const introspectionResponse = introspectionManipulator.getResponse()
 
@@ -401,15 +400,15 @@ function removeMetadata (args = {}) {
 
     _.unset(type, metadatasPath)
 
-    for (const field of (type.fields || [])) {
+    for (const field of type.fields || []) {
       _.unset(field, metadatasPath)
 
-      for (const arg of (field.args || [])) {
+      for (const arg of field.args || []) {
         _.unset(arg, metadatasPath)
       }
     }
 
-    for (const inputField of (type.inputFields || [])) {
+    for (const inputField of type.inputFields || []) {
       _.unset(inputField, metadatasPath)
     }
   }
@@ -419,8 +418,7 @@ function removeMetadata (args = {}) {
   introspectionManipulator.setResponse(introspectionResponse)
 }
 
-
-function iterateOverObject (obj, fn) {
+function iterateOverObject(obj, fn) {
   for (const key in obj) {
     const val = obj[key]
 
@@ -430,26 +428,22 @@ function iterateOverObject (obj, fn) {
         obj[key] = newVal
         continue
       } else if (typeof val === 'object') {
-        iterateOverObject (val, fn)
+        iterateOverObject(val, fn)
         continue
       }
     }
   }
 }
 
-function removeTrailingPeriodsFromDescriptions (obj) {
-  iterateOverObject(
-    obj,
-    ({ key, val }) => {
-      if (key === 'description' && typeof val === 'string') {
-        return stripTrailing(val, '.', {})
-      }
-    },
-  )
+function removeTrailingPeriodsFromDescriptions(obj) {
+  iterateOverObject(obj, ({ key, val }) => {
+    if (key === 'description' && typeof val === 'string') {
+      return stripTrailing(val, '.', {})
+    }
+  })
 
   return obj
 }
-
 
 function isUndef(item) {
   return typeof item === 'undefined'

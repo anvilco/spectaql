@@ -9,12 +9,18 @@ const {
   graphqlSync,
   print,
 } = require('graphql')
-const { loadFilesSync } = require('@graphql-tools/load-files');
-const { mergeTypeDefs } = require('@graphql-tools/merge');
+const { loadFilesSync } = require('@graphql-tools/load-files')
+const { mergeTypeDefs } = require('@graphql-tools/merge')
 const converter = require('graphql-2-json-schema')
 const request = require('sync-request')
 
-const GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS = ['gql', 'graphql', 'graphqls', 'ts', 'js']
+const GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS = [
+  'gql',
+  'graphql',
+  'graphqls',
+  'ts',
+  'js',
+]
 
 const {
   fileExists,
@@ -24,7 +30,7 @@ const {
 } = require('./utils')
 
 // Get rid of the `data` envelope
-function standardizeIntrospectionQueryResult (result) {
+function standardizeIntrospectionQueryResult(result) {
   return result.data ? result.data : result
 }
 
@@ -40,9 +46,7 @@ const introspectionResponseFromSchema = ({ schema }) => {
   )
 }
 
-const loadSchemaFromSDLFile = ({
-  pathToFile
-} = {}) => {
+const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
   const paths = Array.isArray(pathToFile) ? pathToFile : [pathToFile]
   const typesArray = []
   for (const path of paths) {
@@ -55,7 +59,11 @@ const loadSchemaFromSDLFile = ({
       types = [readTextFile(path)]
     } else {
       if (!fileExtensionIs(path, GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS)) {
-        throw new Error(`Unsupported GraphQL schema file extension: ${path}. Supported extensions include ${GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS.join(', ')}.`)
+        throw new Error(
+          `Unsupported GraphQL schema file extension: ${path}. Supported extensions include ${GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS.join(
+            ', '
+          )}.`
+        )
       }
       types = loadFilesSync(path)
     }
@@ -67,28 +75,26 @@ const loadSchemaFromSDLFile = ({
   return buildSchema(printedTypeDefs)
 }
 
-const loadIntrospectionResponseFromFile = ({
-  pathToFile,
-} = {}) => {
+const loadIntrospectionResponseFromFile = ({ pathToFile } = {}) => {
   // Standardize it
   return standardizeIntrospectionQueryResult(fileToObject(pathToFile))
 }
 
 const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
   const requestBody = {
-    operationName: "IntrospectionQuery",
-    query: getIntrospectionQuery()
-  };
+    operationName: 'IntrospectionQuery',
+    query: getIntrospectionQuery(),
+  }
 
   const requestOpts = {
-    json: requestBody
+    json: requestBody,
   }
 
   if (!isEmpty(headers)) {
     requestOpts.headers = headers
   }
 
-  const responseBody = request("POST", url, requestOpts).getBody('utf8')
+  const responseBody = request('POST', url, requestOpts).getBody('utf8')
 
   // Standardize it
   return standardizeIntrospectionQueryResult(
@@ -99,13 +105,15 @@ const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
 
 const jsonSchemaFromIntrospectionResponse = (introspectionResponse) => {
   // Need to pass nullableArrayItems: true until this is the default
-  return converter.fromIntrospectionQuery(introspectionResponse, { nullableArrayItems: true })
+  return converter.fromIntrospectionQuery(introspectionResponse, {
+    nullableArrayItems: true,
+  })
 }
 
 const graphQLSchemaFromIntrospectionResponse = (introspectionResponse) => {
   return buildClientSchema(
     normalizeIntrospectionQueryResult(introspectionResponse),
-    { assumeValid: true },
+    { assumeValid: true }
   )
 }
 
@@ -113,9 +121,18 @@ const graphQLSchemaFromIntrospectionResponse = (introspectionResponse) => {
 // they may get re-named to Query and Mutation in the introspectionResponse
 // but not get re-named in the queryType or mutationType definition
 const normalizeIntrospectionQueryResult = (introspectionResponse) => {
-  for (const [key, defaultTypeName] of [['queryType', 'Query'], ['mutationType', 'Mutation']]) {
-    const queryOrMutationTypeName = get(introspectionResponse, `__schema.${key}.name`)
-    if (queryOrMutationTypeName && !findType({ introspectionResponse, typeName: queryOrMutationTypeName })) {
+  for (const [key, defaultTypeName] of [
+    ['queryType', 'Query'],
+    ['mutationType', 'Mutation'],
+  ]) {
+    const queryOrMutationTypeName = get(
+      introspectionResponse,
+      `__schema.${key}.name`
+    )
+    if (
+      queryOrMutationTypeName &&
+      !findType({ introspectionResponse, typeName: queryOrMutationTypeName })
+    ) {
       set(introspectionResponse, `__schema.${key}`, { name: defaultTypeName })
     }
   }
@@ -123,7 +140,7 @@ const normalizeIntrospectionQueryResult = (introspectionResponse) => {
   return introspectionResponse
 }
 
-function findType ({ introspectionResponse, typeName }) {
+function findType({ introspectionResponse, typeName }) {
   return get(introspectionResponse, '__schema.types', []).find(
     (type) => type.kind === 'OBJECT' && type.name === typeName
   )

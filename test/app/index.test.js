@@ -43,7 +43,7 @@ describe('index', function () {
       let revert
       beforeEach(function () {
         revert = index.__set__({
-          'loadYaml': () => $.config,
+          loadYaml: () => $.config,
         })
       })
 
@@ -52,7 +52,7 @@ describe('index', function () {
       })
 
       def('_options', () => ({
-        specFile: 'path/to/nowhere.yaml'
+        specFile: 'path/to/nowhere.yaml',
       }))
 
       def('options', () => $._options)
@@ -62,7 +62,7 @@ describe('index', function () {
           oneFile: true,
           cssBuildMode: 'basic',
           additionalJsFile: './foo.js',
-        }
+        },
       }))
 
       it('uses config overrides', function () {
@@ -79,9 +79,8 @@ describe('index', function () {
           ...$._options,
           oneFile: false,
           cssBuildMode: 'ridiculous',
-          additionalJsFile: 'bar.js'
+          additionalJsFile: 'bar.js',
         }))
-
 
         it('uses CLI options', function () {
           const resolveOptions = index.__get__('resolveOptions')

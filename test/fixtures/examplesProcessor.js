@@ -1,5 +1,14 @@
-// eslint-disable-next-line no-unused-vars
-function processor ({ type, field, arg, inputField, underlyingType, isRequired, isArray, itemsRequired }) {
+function processor({
+  type,
+  field,
+  arg,
+  inputField,
+  underlyingType,
+  // eslint-disable-next-line no-unused-vars
+  isRequired,
+  isArray,
+  itemsRequired,
+}) {
   // Handle Args
   if (arg) {
     if (typeof arg.example !== 'undefined') {
@@ -93,7 +102,7 @@ function processor ({ type, field, arg, inputField, underlyingType, isRequired, 
     if (type.kind === 'SCALAR') {
       switch (type.name) {
         case 'String': {
-          return "42: Life, the Universe and Everything"
+          return '42: Life, the Universe and Everything'
         }
       }
     }
@@ -101,6 +110,5 @@ function processor ({ type, field, arg, inputField, underlyingType, isRequired, 
     return
   }
 }
-
 
 module.exports = processor

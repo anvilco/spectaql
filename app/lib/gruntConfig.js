@@ -5,10 +5,12 @@ const root = path.resolve(__dirname, '../..')
 const node_modules_clone = path.resolve(root, 'node_modules')
 const node_modules_dependency = path.resolve(root, '..')
 
-
-module.exports = function(grunt, options, spec) {
+module.exports = function (grunt, options, spec) {
   // The basic JS paths
-  const jsSrcPaths = [options.appDir + '/javascripts/**/*.js', '!' + options.appDir + '/javascripts/jquery*.js']
+  const jsSrcPaths = [
+    options.appDir + '/javascripts/**/*.js',
+    '!' + options.appDir + '/javascripts/jquery*.js',
+  ]
   // Add in the additional path if needed
   if (options.additionalJsFile) {
     jsSrcPaths.push(options.additionalJsFile)
@@ -25,23 +27,29 @@ module.exports = function(grunt, options, spec) {
           // other option is to include in "app/vendor" folder (which had been done prior)
           path.resolve(node_modules_clone, 'foundation-sites/scss'),
           path.resolve(node_modules_dependency, 'foundation-sites/scss'),
-        ]
+        ],
       },
       basic: {
         files: {
-          [path.resolve(options.cacheDir, 'stylesheets/basic.css')]: path.resolve(options.appDir, 'stylesheets/basic.scss')
-        }
+          [path.resolve(options.cacheDir, 'stylesheets/basic.css')]:
+            path.resolve(options.appDir, 'stylesheets/basic.scss'),
+        },
       },
       full: {
         files: {
-          [path.resolve(options.cacheDir, 'stylesheets/full.css')]: path.resolve(options.appDir, 'stylesheets/full.scss')
-        }
+          [path.resolve(options.cacheDir, 'stylesheets/full.css')]:
+            path.resolve(options.appDir, 'stylesheets/full.scss'),
+        },
       },
       foundation: {
         files: {
-          [path.resolve(options.cacheDir, 'stylesheets/foundation.css')]: path.resolve(options.appDir, 'stylesheets/foundation-includes.scss')
-        }
-      }
+          [path.resolve(options.cacheDir, 'stylesheets/foundation.css')]:
+            path.resolve(
+              options.appDir,
+              'stylesheets/foundation-includes.scss'
+            ),
+        },
+      },
     },
 
     // Concatenate files into 1
@@ -53,15 +61,15 @@ module.exports = function(grunt, options, spec) {
       css: {
         src: [options.cacheDir + '/stylesheets/**/*.css'],
         dest: options.cacheDir + '/stylesheets/spectaql.css',
-      }
+      },
     },
 
     // Minify JS
     uglify: {
       js: {
         src: options.cacheDir + '/javascripts/spectaql.js',
-        dest: options.cacheDir + '/javascripts/spectaql.min.js'
-      }
+        dest: options.cacheDir + '/javascripts/spectaql.min.js',
+      },
     },
 
     // Minify CSS
@@ -71,20 +79,25 @@ module.exports = function(grunt, options, spec) {
         cwd: options.cacheDir + '/stylesheets',
         src: ['spectaql.css'],
         dest: options.cacheDir + '/stylesheets',
-        ext: '.min.css'
-      }
+        ext: '.min.css',
+      },
     },
 
     // Compile the Handlebars templates as HTML into the target directory
     'compile-handlebars': {
       compile: {
-        files: [{
-          src: options.appDir + '/views/' + (options.embeddable ? 'embedded.hbs' : 'main.hbs'),
-          dest: options.cacheDir + '/' + options.targetFile
-        }],
+        files: [
+          {
+            src:
+              options.appDir +
+              '/views/' +
+              (options.embeddable ? 'embedded.hbs' : 'main.hbs'),
+            dest: options.cacheDir + '/' + options.targetFile,
+          },
+        ],
         templateData: spec,
         helpers: options.appDir + '/helpers/*.js',
-        partials: options.appDir + '/views/partials/**/*.hbs'
+        partials: options.appDir + '/views/partials/**/*.hbs',
       },
     },
 
@@ -96,12 +109,12 @@ module.exports = function(grunt, options, spec) {
         // wrap_line_length: 500,
         // brace_style: 'end-expand',
         preserve_newlines: false,
-        unformatted: ['code', 'pre']
+        unformatted: ['code', 'pre'],
       },
       index: {
         src: options.cacheDir + '/' + options.targetFile,
-        dest: options.cacheDir + '/' + options.targetFile
-      }
+        dest: options.cacheDir + '/' + options.targetFile,
+      },
     },
 
     // Resolve all the JS and CSS requests to local files, and embed/inline the results rather than
@@ -110,11 +123,11 @@ module.exports = function(grunt, options, spec) {
       options: {
         threshold: '1024KB',
         // deleteEmbeddedFiles: true,
-     },
-     index: {
-       src: options.cacheDir + '/' + options.targetFile,
-       dest: options.cacheDir + '/' + options.targetFile
-     }
+      },
+      index: {
+        src: options.cacheDir + '/' + options.targetFile,
+        dest: options.cacheDir + '/' + options.targetFile,
+      },
     },
 
     // Cleanup cache and target files
@@ -127,9 +140,12 @@ module.exports = function(grunt, options, spec) {
       // Delete the entire temp directory used in the build process
       cache: [options.cacheDir],
       // CSS and JS from the build process
-      assets: [options.cacheDir + '/stylesheets/**/*.css', options.cacheDir + '/javascripts/**/*.js'],
+      assets: [
+        options.cacheDir + '/stylesheets/**/*.css',
+        options.cacheDir + '/javascripts/**/*.js',
+      ],
       // HTML from the build process
-      html: [options.cacheDir + '/**/*.html']
+      html: [options.cacheDir + '/**/*.html'],
     },
 
     // Raise a HTTP server for previewing generated docs
@@ -139,20 +155,20 @@ module.exports = function(grunt, options, spec) {
           hostname: '*',
           port: options.port,
           base: options.targetDir,
-          livereload: options.developmentModeLive ? options.portLive : false
-        }
-      }
+          livereload: options.developmentModeLive ? options.portLive : false,
+        },
+      },
     },
 
     // Copy files to the target directory
     copy: {
       logo: {
         src: options.logoFile,
-        dest: options.targetDir + '/images/' + options.logoFileTargetName
+        dest: options.targetDir + '/images/' + options.logoFileTargetName,
       },
       favicon: {
         src: options.faviconFile,
-        dest: options.targetDir + '/images/' + options.faviconFileTargetName
+        dest: options.targetDir + '/images/' + options.faviconFileTargetName,
       },
       css: {
         cwd: options.cacheDir,
@@ -168,33 +184,33 @@ module.exports = function(grunt, options, spec) {
       },
       html: {
         src: options.cacheDir + '/' + options.targetFile,
-        dest: options.targetDir + '/' + options.targetFile
-      }
+        dest: options.targetDir + '/' + options.targetFile,
+      },
     },
 
     // Watch the filesystem and regenerate docs if sources change
     watch: {
       options: {
         livereload: options.developmentModeLive ? options.portLive : false,
-        spawn: false
+        spawn: false,
       },
       js: {
         files: [options.appDir + '/javascripts/**/*.js'],
-        tasks: ['javascripts']
+        tasks: ['javascripts'],
       },
       css: {
         files: [options.appDir + '/stylesheets/**/*.scss'],
-        tasks: ['stylesheets']
+        tasks: ['stylesheets'],
       },
       templates: {
         files: [
           options.specFile,
           options.appDir + '/views/**/*.hbs',
           options.appDir + '/helpers/**/*.js',
-          options.appDir + '/lib/**/*.js'
+          options.appDir + '/lib/**/*.js',
         ],
-        tasks: ['templates']
-      }
-    }
+        tasks: ['templates'],
+      },
+    },
   }
 }

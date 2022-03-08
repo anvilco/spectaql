@@ -1,6 +1,6 @@
 const htmlId = require('./htmlId')
 
-module.exports = function(reference, _options) {
+module.exports = function (reference, _options) {
   if (reference.startsWith('#definition-')) {
     return reference
   }

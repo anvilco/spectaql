@@ -6,24 +6,20 @@ const marked = require('marked')
 const highlight = require('highlight.js')
 
 const highlightGraphQl = require('../spectaql/graphql-hl')
-const {
-  analyzeTypeIntrospection,
-} = require('../spectaql/type-helpers')
+const { analyzeTypeIntrospection } = require('../spectaql/type-helpers')
 
 const IntrospectionManipulatorModule = require('microfiber')
-const {
-  default: IntrospectionManipulator,
-} = IntrospectionManipulatorModule
+const { default: IntrospectionManipulator } = IntrospectionManipulatorModule
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround
 // them with these crazy tags in order to then strip the tags out later when displaying
 // them.
 const SPECIAL_TAG = 'SPECIALTAG'
-const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, "g")
+const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, 'g')
 
 const QUOTE_TAG = 'QUOTETAG'
-const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, "g")
+const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, 'g')
 
 // Map Scalar types to example data to use fro them
 const SCALAR_TO_EXAMPLE = {
@@ -31,13 +27,19 @@ const SCALAR_TO_EXAMPLE = {
   Int: [123, 987],
   Float: [123.45, 987.65],
   Boolean: [true, false],
-  Date: [new Date(), new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf())].map((date) => date.toISOString()),
-  DateTime: [new Date(), new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf())].map((date) => date.toISOString()),
+  Date: [
+    new Date(),
+    new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf()),
+  ].map((date) => date.toISOString()),
+  DateTime: [
+    new Date(),
+    new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf()),
+  ].map((date) => date.toISOString()),
   JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
-  ID: [4, "4"],
+  ID: [4, '4'],
 }
 
-function unwindSpecialTags (str) {
+function unwindSpecialTags(str) {
   if (typeof str !== 'string') {
     return str
   }
@@ -45,17 +47,17 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
-function jsonReplacer (name, value) {
+function jsonReplacer(name, value) {
   return value
   // return addSpecialTags(value)
 }
 
-function addSpecialTags (value) {
+function addSpecialTags(value) {
   if (typeof value !== 'string') return value
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
 
-function addQuoteTags (value) {
+function addQuoteTags(value) {
   // Don't quote it if it's already been quoted or doesn't exist
   if (!value || typeof value !== 'string' || value.includes(QUOTE_TAG)) {
     return value
@@ -63,7 +65,6 @@ function addQuoteTags (value) {
 
   return `${QUOTE_TAG}${value}${QUOTE_TAG}`
 }
-
 
 const common = {
   // For testing
@@ -76,15 +77,18 @@ const common = {
    *      If this options is set to true, the <p>-tag is stripped.
    * @returns {string} the markdown rendered as HTML.
    */
-  markdown: function (value, {stripParagraph = false, addClass = false} = {}) {
+  markdown: function (
+    value,
+    { stripParagraph = false, addClass = false } = {}
+  ) {
     if (!value) {
-      return value;
+      return value
     }
 
     var html = marked(value)
     // We strip the surrounding <p>-tag, if
     if (stripParagraph) {
-      let $ = cheerio.load("<root>" + html + "</root>")('root')
+      let $ = cheerio.load('<root>' + html + '</root>')('root')
       // Only strip <p>-tags and only if there is just one of them.
       if ($.children().length === 1 && $.children('p').length === 1) {
         html = $.children('p').html()
@@ -92,44 +96,42 @@ const common = {
     }
 
     if (addClass) {
-      let $ = cheerio.load("<root>" + html + "</root>")('root')
+      let $ = cheerio.load('<root>' + html + '</root>')('root')
       if ($.children().length === 1) {
         $.children().first().addClass(addClass)
         html = $.html()
       }
     }
 
-    return html;
+    return html
   },
 
   highlight: function (code, lang) {
-    var highlighted;
+    var highlighted
     if (lang) {
       try {
-        highlighted = highlight.highlight(lang, code).value;
+        highlighted = highlight.highlight(lang, code).value
       } catch (e) {
         console.error(e)
       }
     }
     if (!highlighted) {
-      highlighted = highlight.highlightAuto(code).value;
+      highlighted = highlight.highlightAuto(code).value
     }
 
-    return '<pre><code' +
-      (lang ?
-        ' class="hljs ' + this.options.langPrefix + lang + '"' :
-        ' class="hljs"') +
+    return (
+      '<pre><code' +
+      (lang
+        ? ' class="hljs ' + this.options.langPrefix + lang + '"'
+        : ' class="hljs"') +
       '>' +
-      highlighted //code //
-      +
-      '\n</code></pre>\n';
+      highlighted + //code //
+      '\n</code></pre>\n'
+    )
   },
 
   getExampleForScalarDefinition: function (scalarDefinition) {
-    const {
-      name,
-      kind,
-    } = scalarDefinition
+    const { name, kind } = scalarDefinition
 
     if (kind !== 'SCALAR') {
       return
@@ -138,27 +140,39 @@ const common = {
     if (typeof replacement === 'undefined') {
       return
     }
-    replacement =  Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
-    return ['String', 'Date', 'DateTime'].includes(name) ? addSpecialTags(addQuoteTags(replacement)) : replacement
+    replacement = Array.isArray(replacement)
+      ? replacement[Math.floor(Math.random() * replacement.length)]
+      : replacement
+    return ['String', 'Date', 'DateTime'].includes(name)
+      ? addSpecialTags(addQuoteTags(replacement))
+      : replacement
   },
 
-  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator }) {
+  introspectionArgsToVariables: function ({
+    args,
+    introspectionResponse,
+    introspectionManipulator,
+  }) {
     if (!(args && args.length)) {
       return null
     }
 
-    return args.reduce(
-      (acc, arg) => {
-        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator })
-        return acc
-      },
-      {},
-    )
+    return args.reduce((acc, arg) => {
+      acc[arg.name] = common.introspectionArgToVariable({
+        arg,
+        introspectionResponse,
+        introspectionManipulator,
+      })
+      return acc
+    }, {})
   },
 
-
   // Take an Arg from the Introspection JSON, and figure out it's example variable representation
-  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator }) {
+  introspectionArgToVariable: function ({
+    arg,
+    introspectionResponse,
+    introspectionManipulator,
+  }) {
     if (!arg) {
       return null
     }
@@ -200,46 +214,72 @@ const common = {
       }
     }
 
-    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+    introspectionManipulator =
+      introspectionManipulator ||
+      new IntrospectionManipulator(introspectionResponse)
 
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(arg.type)
     )
 
-    return common.generateIntrospectionReturnTypeExample({ thing: arg, underlyingTypeDefinition, originalType: arg.type })
+    return common.generateIntrospectionReturnTypeExample({
+      thing: arg,
+      underlyingTypeDefinition,
+      originalType: arg.type,
+    })
   },
 
-  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator }) {
-    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+  introspectionQueryOrMutationToResponse: function ({
+    field,
+    introspectionResponse,
+    introspectionManipulator,
+  }) {
+    introspectionManipulator =
+      introspectionManipulator ||
+      new IntrospectionManipulator(introspectionResponse)
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
     )
 
     // No fields? Just a Scalar then, so return a single value.
     if (!underlyingTypeDefinition.fields) {
-      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+      return common.generateIntrospectionReturnTypeExample({
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      })
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
-    return underlyingTypeDefinition.fields.reduce(
-      (acc, field) => {
-        const underlyingTypeDefinition = introspectionManipulator.getType(
-          IntrospectionManipulator.digUnderlyingType(field.type)
-        )
-        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
-        return acc
-      },
-      {}
-    )
+    return underlyingTypeDefinition.fields.reduce((acc, field) => {
+      const underlyingTypeDefinition = introspectionManipulator.getType(
+        IntrospectionManipulator.digUnderlyingType(field.type)
+      )
+      acc[field.name] = common.generateIntrospectionReturnTypeExample({
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      })
+      return acc
+    }, {})
   },
 
-  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType }) {
-    let example = thing.example
-      || originalType.example
-      || underlyingTypeDefinition.example
-      || (underlyingTypeDefinition.kind === 'ENUM' && underlyingTypeDefinition.enumValues.length && addQuoteTags(underlyingTypeDefinition.enumValues[0].name))
-      || (underlyingTypeDefinition.kind === 'UNION' && underlyingTypeDefinition.possibleTypes.length && addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name))
-      || common.getExampleForScalarDefinition(underlyingTypeDefinition)
+  generateIntrospectionReturnTypeExample: function ({
+    thing,
+    underlyingTypeDefinition,
+    originalType,
+  }) {
+    let example =
+      thing.example ||
+      originalType.example ||
+      underlyingTypeDefinition.example ||
+      (underlyingTypeDefinition.kind === 'ENUM' &&
+        underlyingTypeDefinition.enumValues.length &&
+        addQuoteTags(underlyingTypeDefinition.enumValues[0].name)) ||
+      (underlyingTypeDefinition.kind === 'UNION' &&
+        underlyingTypeDefinition.possibleTypes.length &&
+        addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
+      common.getExampleForScalarDefinition(underlyingTypeDefinition)
 
     // if (thing.name === 'String') {
     //   console.log(JSON.stringify({
@@ -265,48 +305,61 @@ const common = {
       // itemsRequired,
     } = analyzeTypeIntrospection(originalType)
 
-    return (isArray && !Array.isArray(example)) ? [example] : example
+    return isArray && !Array.isArray(example) ? [example] : example
   },
 
-  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator }) {
-    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+  generateIntrospectionTypeExample: function ({
+    type,
+    introspectionResponse,
+    introspectionManipulator,
+  }) {
+    introspectionManipulator =
+      introspectionManipulator ||
+      new IntrospectionManipulator(introspectionResponse)
     const fields = type.fields || type.inputFields
     // No fields? Just a Scalar then, so return a single value.
     if (!fields) {
-      return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, originalType: type })
+      return common.generateIntrospectionReturnTypeExample({
+        thing: type,
+        underlyingTypeDefinition: type,
+        originalType: type,
+      })
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
-    return fields.reduce(
-      (acc, field) => {
-        const underlyingTypeDefinition = introspectionManipulator.getType(
-          IntrospectionManipulator.digUnderlyingType(field.type)
-        )
-        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
-        return acc
-      },
-      {}
-    )
+    return fields.reduce((acc, field) => {
+      const underlyingTypeDefinition = introspectionManipulator.getType(
+        IntrospectionManipulator.digUnderlyingType(field.type)
+      )
+      acc[field.name] = common.generateIntrospectionReturnTypeExample({
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      })
+      return acc
+    }, {})
   },
 
   printSchema: function (value, _root) {
     if (!value) {
-      return '';
+      return ''
     }
 
     let markedDown
-    if (typeof (value) == "string") {
-      markedDown = marked("```gql\r\n" + value + "\n```")
-
+    if (typeof value == 'string') {
+      markedDown = marked('```gql\r\n' + value + '\n```')
     } else {
-      const stringified = stringify(value, { indent: 2, replacer: jsonReplacer })
-      markedDown = marked("```json\r\n" + stringified + "\n```")
+      const stringified = stringify(value, {
+        indent: 2,
+        replacer: jsonReplacer,
+      })
+      markedDown = marked('```json\r\n' + stringified + '\n```')
     }
 
     // There is an issue with `marked` not formatting a leading quote in a single,
     // quoted string value. By unwinding the special tags after converting to markdown
     // we can avoid that issue.
-    return cheerio.load(unwindSpecialTags(markedDown)).html();
+    return cheerio.load(unwindSpecialTags(markedDown)).html()
   },
 }
 
@@ -315,7 +368,7 @@ highlight.configure({
   // "useBR": true
 })
 
-highlight.registerLanguage("graphql", highlightGraphQl);
+highlight.registerLanguage('graphql', highlightGraphQl)
 
 // Create a custom renderer for highlight.js compatability
 var renderer = new marked.Renderer()
@@ -324,7 +377,7 @@ renderer.code = common.highlight
 // Configure marked.js
 marked.setOptions({
   // highlight: common.highlight,
-  renderer: renderer
+  renderer: renderer,
 })
 
 module.exports = common

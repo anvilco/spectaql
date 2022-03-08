@@ -4,18 +4,11 @@ const buildSchemas = require('./build-schemas')
 const arrangeData = require('./arrange-data')
 const preProcessData = require('./pre-process')
 
-function run (opts) {
-  const {
-    logo,
-    favicon,
-    specFile,
-    specData: spec,
-  } = opts
+function run(opts) {
+  const { logo, favicon, specFile, specData: spec } = opts
 
   const {
-    introspection: {
-      url: introspectionUrl,
-    },
+    introspection: { url: introspectionUrl },
     servers = [],
     info = {},
   } = spec
@@ -23,24 +16,20 @@ function run (opts) {
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
   const urlToParse =
-    info['x-url']
-    || (servers.find((server) => server.production === true) || servers[0] || {}).url
-    || introspectionUrl
+    info['x-url'] ||
+    (servers.find((server) => server.production === true) || servers[0] || {})
+      .url ||
+    introspectionUrl
 
   if (!urlToParse) {
-    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-url')
+    throw new Error(
+      'Please provide either: introspection.url OR servers.url OR info.x-url'
+    )
   }
 
-  const {
-    protocol,
-    host,
-    pathname,
-  } = url.parse(urlToParse)
+  const { protocol, host, pathname } = url.parse(urlToParse)
 
-  const {
-    introspectionResponse,
-    graphQLSchema,
-  } = buildSchemas(opts)
+  const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
   const orderedDataWithHeaders = arrangeData({
     introspectionResponse,
@@ -62,8 +51,11 @@ function run (opts) {
   // }))
 
   // Side-effects
-  preProcessData({ orderedDataWithHeaders, introspectionResponse, graphQLSchema })
-
+  preProcessData({
+    orderedDataWithHeaders,
+    introspectionResponse,
+    graphQLSchema,
+  })
 
   // console.log(JSON.stringify({
   //   orderedDataWithHeaders,
@@ -78,7 +70,7 @@ function run (opts) {
     info,
     servers,
     host,
-    schemes: [ protocol.slice(0, -1) ],
+    schemes: [protocol.slice(0, -1)],
     basePath: pathname,
     orderedDataWithHeaders,
     // TODO: remove this? What does it do?

@@ -1,11 +1,9 @@
 module.exports = {
   extends: '../.eslintrc.js',
   env: {
-    mocha: true
+    mocha: true,
   },
-  plugins: [
-    'mocha',
-  ],
+  plugins: ['mocha'],
   rules: {
     'mocha/no-skipped-tests': 'warn',
     'mocha/no-exclusive-tests': 'error',
@@ -22,5 +20,5 @@ module.exports = {
     def: 'readonly',
     //
     // *************************************************
-  }
+  },
 }
