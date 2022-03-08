@@ -104,6 +104,11 @@ function _addQueryToItem ({ item, flavor, introspectionResponse, graphQLSchema }
 }
 
 function addDefinitionToItem ({ item, introspectionResponse, graphQLSchema }) {
+  // if (item.name === 'AddressInput') {
+  //   console.log(JSON.stringify({
+  //     item,
+  //   }))
+  // }
   item.example = generateIntrospectionTypeExample({ type: item, introspectionResponse, graphQLSchema })
 }
 

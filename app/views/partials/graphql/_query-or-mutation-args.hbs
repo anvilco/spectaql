@@ -17,7 +17,7 @@
                 concat
                   (interpolateReferences description)
                   (ternary defaultValue
-                    (concat "Default = "  (codify defaultValue stringify=true))
+                    (concat "Default = "  (codify defaultValue))
                     ""
                   )
                 joiner=". " filterFalsy=true

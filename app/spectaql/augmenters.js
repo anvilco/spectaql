@@ -366,12 +366,14 @@ function addExamples (args = {}) {
     // certain "kinds" like scalars?
     // Would be BREAKING CHANGE
     if (!(skipStatic || isUndef(example))) {
-      thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
+      thing.example = example
+      // thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
     if (!isUndef(example)) {
-      thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
+      thing.example = example
+      // thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
     }
   }
 }
