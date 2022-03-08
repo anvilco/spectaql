@@ -26,6 +26,7 @@ union SimpleTypes =
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 type MyType {
+  createdAt: DateTime,
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   nonRequiredField(
     "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
@@ -94,6 +95,10 @@ type Query {
 
   enumsQuery(
     enums: [EpisodeEnum!]! = [EMPIRE, JEDI]
+    "enum defaults should get literalized"
+    enum: EpisodeEnum! = EMPIRE
+    "everything else should get JSON5.parsed"
+    ints: [Int] = [1,2,3]
   ): String
 
   nodeQuery(
