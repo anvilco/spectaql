@@ -3,7 +3,7 @@ const stringify = require('json-stringify-pretty-compact')
 const cheerio = require('cheerio')
 const marked = require('marked')
 const highlight = require('highlight.js')
-const GraphQLScalar = require('graphql-scalars');
+const GraphQLScalars = require('../helpers/graphql-scalars');
 
 
 const highlightGraphQl = require('../spectaql/graphql-hl')
@@ -37,59 +37,6 @@ const SCALAR_TO_EXAMPLE = {
   JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
 }
 
-// Map GraphQL Scalar types to example data to use from them
-const GRAPHQL_SCALAR_TO_EXAMPLE = {
-  BigInt: [GraphQLScalar.BigIntMock()],
-  Byte:  [GraphQLScalar.ByteMock()],
-  Time:  [GraphQLScalar.TimeMock()],
-  Timestamp:  [GraphQLScalar.TimestampMock()],
-  DateTime:  [GraphQLScalar.DateTimeMock()],
-  UtcOffset: [GraphQLScalar.UtcOffsetMock()],
-  Duration: [GraphQLScalar.DurationMock()],
-  ISO8601Duration:  [GraphQLScalar.ISO8601DurationMock()],
-  LocalDate: [GraphQLScalar.LocalDateMock()],
-  LocalTime: [GraphQLScalar.LocalTimeMock()],
-  LocalEndTime: [GraphQLScalar.LocalEndTimeMock()],
-  EmailAddress: [GraphQLScalar.EmailAddressMock()],
-  UUID: [GraphQLScalar.UUIDMock()],
-  Hexadecimal: [GraphQLScalar.HexadecimalMock()],
-  HexColorCode: [GraphQLScalar.HexColorCodeMock()],
-  HSL: [GraphQLScalar.HSLMock()],
-  HSLA:[GraphQLScalar.HSLAMock()],
-  IBAN: [GraphQLScalar.IBANMock()],
-  IPv4 :[GraphQLScalar.IPv4Mock()],
-  IPv6:[GraphQLScalar.IPv6Mock()],
-  ISBN :[GraphQLScalar.ISBNMock()],
-  JWT : [GraphQLScalar.JWTMock()],
-  Latitude : [GraphQLScalar.LatitudeMock()],
-  Longitude: [GraphQLScalar.LongitudeMock()],
-  JSONObject: [GraphQLScalar.JSONObjectMock()],
-  MAC: [GraphQLScalar.MACMock()],
-  NegativeFloat: [GraphQLScalar.NegativeFloatMock()],
-  NegativeInt: [GraphQLScalar.NegativeIntMock()],
-  NonEmptyString: [GraphQLScalar.NonEmptyStringMock()],
-  NonNegativeFloat: [GraphQLScalar.NonNegativeFloatMock()],
-  NonNegativeInt: [GraphQLScalar.NonNegativeIntMock()],
-  NonPositiveFloat : [GraphQLScalar.NonPositiveFloatMock()],
-  NonPositiveInt: [GraphQLScalar.NonPositiveIntMock()],
-  PhoneNumber: [GraphQLScalar.PhoneNumberMock()],
-  Port: [GraphQLScalar.PortMock()],
-  PositiveFloat : [GraphQLScalar.PositiveFloatMock()],
-  PositiveInt: [GraphQLScalar.PositiveIntMock()],
-  PostalCode: [GraphQLScalar.PostalCodeMock()],
-  RGB: [GraphQLScalar.JSONObjectMock()],
-  RGBA: [GraphQLScalar.RGBAMock()],
-  SafeInt: [GraphQLScalar.SafeIntMock()],
-  URL: [GraphQLScalar.URLMock()],
-  USCurrency: [GraphQLScalar.USCurrencyMock()],
-  Currency: [GraphQLScalar.CurrencyMock()],
-  UnsignedFloat: [GraphQLScalar.UnsignedFloatMock()],
-  UnsignedInt: [GraphQLScalar.UnsignedIntMock()],
-  GUID: [GraphQLScalar.GUIDMock],
-  ObjectID: [GraphQLScalar.ObjectIDMock]
-}
-
-
 function unwindSpecialTags (str) {
   if (typeof str !== 'string') {
     return str
@@ -101,14 +48,14 @@ function unwindSpecialTags (str) {
 function getExampleForScalar (scalarName) {
   const replacement = SCALAR_TO_EXAMPLE[scalarName];
   if(!replacement) {
-    replacement = GRAPHQL_SCALAR_TO_EXAMPLE[value];
+    replacement = GraphQLScalars.getExampleForGraphQLScalar(scalarName);
   }
   if (typeof replacement !== 'undefined') {
     return Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
   }
 }
 
-function jsonReplacer (name, value) {
+function jsonReplacer (_, value) {
   return addSpecialTags(value)
 }
 
