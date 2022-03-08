@@ -1,11 +1,11 @@
+"This is a `DateTime` scalar"
+scalar DateTime
+
 "Anything with an ID can be a node"
 interface Node {
   "A unique identifier"
   id: String!
 }
-
-"This is a `DateTime` scalar"
-scalar DateTime
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 type SimpleTypeOne implements Node {
@@ -44,13 +44,26 @@ type MyType {
   doubleRequiredArrayField: [String!]!
 }
 
+"This is a type that should probably be undocumented. Metadata will indicate this should be hidden"
 type SecretType {
-  "This is a type that should probably be undocumented"
   secret: String!
+}
+
+"These are very important `enum`s. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
+enum EpisodeEnum {
+  "Who is Luke? `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
+  NEWHOPE @deprecated(reason: "`NEWHOPE` is going away")
+  "Who is Darth?"
+  EMPIRE
+  "Who are the Ewoks?"
+  JEDI
 }
 
 "Something interesting about my `Queries`."
 type Query {
+  "This will be removed due to SecretType being removed"
+  secrets: [SecretType],
+
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myQuery(
     "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
@@ -86,6 +99,18 @@ type Query {
   nodeQuery(
     id: String!
   ): Node
+
+  "Without this Query, the `FilterInput` would not be shown"
+  filterInputQuery(
+    "Without this Query, the `FilterInput` would not be shown"
+    filter: FilterInput
+  ): MyType
+
+  "Without this Query, the `ContactInfoInput` would not be shown"
+  contactInfoInputQuery(
+    "Without this arg, the `ContactInfoInput` would not be shown"
+    input: ContactInfoInput,
+  ): MyType
 }
 
 type Mutation {
@@ -102,14 +127,9 @@ type Mutation {
   ): String
 }
 
-"These are very important `enum`s. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-enum EpisodeEnum {
-  "Who is Luke? `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-  NEWHOPE @deprecated(reason: "`NEWHOPE` is going away")
-  "Who is Darth?"
-  EMPIRE
-  "Who are the Ewoks?"
-  JEDI
+type Subscription {
+  "The `myTypeUpdatedSubscription`, baby!"
+  myTypeUpdatedSubscription(input: ID): MyType!
 }
 
 "An Input Type for filtering things. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
@@ -125,6 +145,7 @@ input FilterInput {
 "ContactInfoInput description"
 input ContactInfoInput {
   email: String
+  "Without this InputField, the `AddressInput` would not be shown"
   address: AddressInput = { planet: "Earth" }
 }
 
@@ -133,9 +154,4 @@ input AddressInput {
   lat: String
   lon: String
   planet: String
-}
-
-type Subscription {
-  "The `myTypeUpdatedSubscription`, baby!"
-  myTypeUpdatedSubscription(input: ID): MyType!
 }
