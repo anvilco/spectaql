@@ -5,7 +5,7 @@ const {
   default: IntrospectionManipulator,
 } = IntrospectionManipulatorModule
 
-const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
+const arrangeData = ({ introspectionResponse, graphQLSchema: _graphQLSchema }) => {
   const introspectionManipulator = new IntrospectionManipulator(introspectionResponse)
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()

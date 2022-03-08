@@ -3,7 +3,7 @@ const _ = require('lodash')
 const IntrospectionManipulatorModule = require('microfiber')
 const {
   default: IntrospectionManipulator,
-  KIND_SCALAR,
+  // KIND_SCALAR,
 } = IntrospectionManipulatorModule
 
 const {
@@ -12,9 +12,9 @@ const {
   typesAreSame,
 } = require('./type-helpers')
 
-const {
-  addSpecialTags,
-} = require('../lib/common')
+// const {
+//   addSpecialTags,
+// } = require('../lib/common')
 
 const stripTrailing = require('../helpers/stripTrailing')
 
@@ -341,20 +341,20 @@ function addExamples (args = {}) {
     return example
   }
 
-  function massageExample ({
-    example,
-    type,
-  }) {
-    if (isUndef(example)) {
-      return example
-    }
+  // function massageExample ({
+  //   example,
+  //   type,
+  // }) {
+  //   if (isUndef(example)) {
+  //     return example
+  //   }
 
-    const placeholdQuotes = type.kind === KIND_SCALAR && ['String', 'Date'].includes(type.name)
+  //   const placeholdQuotes = type.kind === KIND_SCALAR && ['String', 'Date'].includes(type.name)
 
-    return Array.isArray(example)
-      ? example.map((val) => addSpecialTags(val, { placeholdQuotes }))
-      : addSpecialTags(example, { placeholdQuotes })
-  }
+  //   return Array.isArray(example)
+  //     ? example.map((val) => addSpecialTags(val, { placeholdQuotes }))
+  //     : addSpecialTags(example, { placeholdQuotes })
+  // }
 
   function handleExamples ({ type, field, arg, inputField, skipStatic = false }) {
     const thing = arg || inputField || field || type
