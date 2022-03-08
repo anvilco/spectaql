@@ -6,6 +6,9 @@ const preProcessData = require('./pre-process')
 
 function run (opts) {
   const {
+    logo,
+    favicon,
+    specFile,
     specData: spec,
   } = opts
 
@@ -13,24 +16,20 @@ function run (opts) {
     introspection: {
       url: introspectionUrl,
     },
-    domains = [],
     servers = [],
     info = {},
-    externalDocs,
-    securityDefinitions,
   } = spec
 
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
   const urlToParse =
-    info['x-swaggerUrl']
+    info['x-url']
     || (servers.find((server) => server.production === true) || servers[0] || {}).url
     || introspectionUrl
 
   if (!urlToParse) {
-    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
+    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-url')
   }
-
 
   const {
     protocol,
@@ -71,26 +70,22 @@ function run (opts) {
   // }))
 
   // generate specification
-  const swaggerSpec = {
+  const data = {
     // introspectionResponse,
     // graphQLSchema,
-    openapi: '3.0.0',
+    logo,
+    favicon,
     info,
     servers,
     host,
     schemes: [ protocol.slice(0, -1) ],
     basePath: pathname,
-    externalDocs,
-    tags: domains.map((domain) => ({
-      name: domain.name,
-      description: domain.description,
-      externalDocs: domain.externalDocs,
-    })),
     orderedDataWithHeaders,
-    securityDefinitions,
+    // TODO: remove this? What does it do?
+    'x-spec-path': specFile,
   }
 
-  return swaggerSpec
+  return data
 }
 
 module.exports = run

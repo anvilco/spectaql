@@ -1,5 +1,5 @@
-const _ = require('lodash')
 const JSON5 = require('json5')
+// https://www.npmjs.com/package/json-stringify-pretty-compact
 const stringify = require('json-stringify-pretty-compact')
 const cheerio = require('cheerio')
 const marked = require('marked')
@@ -7,7 +7,6 @@ const highlight = require('highlight.js')
 
 const highlightGraphQl = require('../spectaql/graphql-hl')
 const {
-  typeIsArray,
   analyzeTypeIntrospection,
 } = require('../spectaql/type-helpers')
 
@@ -46,53 +45,14 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
-function getExampleForScalarDefinition (scalarDefinition) {
-  const {
-    name,
-    kind,
-  } = scalarDefinition
-
-  if (kind !== 'SCALAR') {
-    return
-  }
-  let replacement = SCALAR_TO_EXAMPLE[name]
-  if (typeof replacement === 'undefined') {
-    return
-  }
-  replacement =  Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
-  return ['String', 'Date', 'DateTime'].includes(name) ? justAddSpecialTags(addQuoteTags(replacement)) : replacement
-}
-
-function getExampleForScalar (scalarName) {
-  const replacement = SCALAR_TO_EXAMPLE[scalarName]
-  if (typeof replacement !== 'undefined') {
-    return Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
-  }
-}
-
 function jsonReplacer (name, value) {
   return value
   // return addSpecialTags(value)
 }
 
-function justAddSpecialTags (value) {
+function addSpecialTags (value) {
   if (typeof value !== 'string') return value
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
-}
-
-function addSpecialTags (value, { placeholdQuotes = false } = {}) {
-  if (typeof value !== 'string') return value
-
-  const replacement = getExampleForScalar(value)
-  if (typeof replacement !== 'undefined') {
-    return replacement
-  }
-
-  if (placeholdQuotes) {
-    value = addQuoteTags(value)
-  }
-
-  return justAddSpecialTags(value)
 }
 
 function addQuoteTags (value) {
@@ -104,27 +64,10 @@ function addQuoteTags (value) {
   return `${QUOTE_TAG}${value}${QUOTE_TAG}`
 }
 
-function replaceQuotesWithTags (value) {
-  if (!value || typeof value !== 'string') {
-    return value
-  }
 
-  for (const quote of ['"', "'"]) {
-    if (value.startsWith(quote) && value.endsWith(quote)) {
-      return addQuoteTags(value.substring(1, value.length - 1))
-    }
-  }
-
-  return value
-}
-
-var common = {
-
-  addSpecialTags,
-
+const common = {
+  // For testing
   addQuoteTags,
-
-  replaceQuotesWithTags,
 
   /**
    * Render a markdown formatted text as HTML.
@@ -182,142 +125,21 @@ var common = {
       '\n</code></pre>\n';
   },
 
-  // formatSchema: function(value) {
-  //   var cloned;
-  //   if (typeof value === 'object' && typeof value.properties === 'object') {
-  //     if (value.example) {
-  //       // Use the supplied example
-  //       value = value.example;
-  //       cloned = _.cloneDeep(value)
-  //     } else {
-  //       // Create json object of keys : type info string
-  //       value = value.properties;
-  //       cloned = _.cloneDeep(value)
-  //       Object.keys(cloned).forEach(function(propName) {
-  //         var prop = cloned[propName];
-  //         if (prop.type) {
-  //           if (prop.example) {
-  //             cloned[propName] = prop.example;
-  //           }
-  //           else {
-  //             cloned[propName] = prop.type;
-  //             if (prop.format) {
-  //               cloned[propName] += ('(' + prop.format + ')')
-  //             }
-  //           }
-  //         }
-  //       })
-  //     }
-  //   }
-  //   return cloned;
-  // },
+  getExampleForScalarDefinition: function (scalarDefinition) {
+    const {
+      name,
+      kind,
+    } = scalarDefinition
 
-  formatExample: function (ref, root, options) {
-    if (!ref) {
-      console.error('Cannot format NULL object ' + ref)
-      // throw 'Cannot format NULL object ' + value;
-      return;
+    if (kind !== 'SCALAR') {
+      return
     }
-
-    if (typeof (ref) == "string") {
-      // console.error('ref is a string! ' + ref)
-      return ref
+    let replacement = SCALAR_TO_EXAMPLE[name]
+    if (typeof replacement === 'undefined') {
+      return
     }
-
-    if (ref.schema) {
-      ref = ref.schema
-    }
-
-    // NOTE: Large schemas with circular references have been known to exceed
-    // maximum stack size, so bail out here before that happens.
-    // A better fix is required.
-    // /usr/local/bin/node bin/spectacle -d test/fixtures/billing.yaml
-    if (!options.depth) {
-      options.depth = 0;
-    }
-
-    options.depth++;
-
-    if (options.depth > 100) {
-      // console.log('max depth', ref)
-      return;
-    }
-
-    var showReadOnly = options.showReadOnly !== false
-
-    // If there's an example, use it.
-    if (ref.example !== undefined) {
-      return ref.example
-    } else if (typeof ref.default !== 'undefined') {
-      // If there is a default, use it.
-      return addSpecialTags(ref.default, { placeholdQuotes: true })
-    } else if (ref.$ref) { // && !ref.type
-      // Don't expand out nested things...just stick their type in there
-      return this.getReferenceName(ref.$ref)
-
-      // var remoteRef = this.resolveSchemaReference(ref.$ref, root)
-      // if (remoteRef) {
-      //   return this.formatExample(remoteRef, root, options)
-      // }
-    } else if (ref.properties) { // && ref.type == 'object'
-      return Object.entries(ref.properties).reduce(
-        (acc, [k, v]) => {
-          // If the value has a properties.return, then it's a "field" on a Type
-          // or an individual "query" or "mutation", and the schema to use for the
-          // example is in properties.return
-          if (v.type === 'object' && _.get(v, 'properties.return')) {
-            v = v.properties.return
-          }
-          if (showReadOnly || v.readOnly !== true) {
-            acc[k] = this.formatExample(v, root, options)
-          }
-
-          return acc
-        },
-        {},
-      )
-    } else if (ref.allOf) {
-      let obj = {};
-      ref.allOf.forEach((parent) => {
-        var prop = this.formatExample(parent, root, options)
-        if (!prop || typeof prop == 'string') {
-          // console.log('skipping property', prop, parent)
-          return
-        }
-        obj = Object.assign(prop, obj)
-      })
-
-      return obj;
-    } else if (ref.anyOf) {
-      // Try to sample from one of the non-null possibilities
-      let samples = ref.anyOf.filter((schema) => schema.type !== 'null')
-      if (!samples.length) {
-        samples = ref.anyOf
-      }
-
-      return this.formatExample(
-        _.sample(samples),
-        root,
-        options,
-       )
-    } else if (typeIsArray(ref)) {
-      return [this.formatExample(ref.items, root, options)];
-    } else if (ref.type) {
-      let {
-        type,
-        title,
-        format,
-      } = ref
-
-      const replacement = getExampleForScalar(title)
-      if (typeof replacement !== 'undefined') {
-        type = unwindSpecialTags(replacement)
-      }
-
-      return type + (format ? ' (' + format + ')' : '')
-    }
-
-    console.error('Cannot format example on property ', ref, ref.$ref)
+    replacement =  Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
+    return ['String', 'Date', 'DateTime'].includes(name) ? addSpecialTags(addQuoteTags(replacement)) : replacement
   },
 
   introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator }) {
@@ -416,8 +238,8 @@ var common = {
       || originalType.example
       || underlyingTypeDefinition.example
       || (underlyingTypeDefinition.kind === 'ENUM' && underlyingTypeDefinition.enumValues.length && addQuoteTags(underlyingTypeDefinition.enumValues[0].name))
-      || (underlyingTypeDefinition.kind === 'UNION' && underlyingTypeDefinition.possibleTypes.length && justAddSpecialTags(underlyingTypeDefinition.possibleTypes[0].name))
-      || getExampleForScalarDefinition(underlyingTypeDefinition)
+      || (underlyingTypeDefinition.kind === 'UNION' && underlyingTypeDefinition.possibleTypes.length && addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name))
+      || common.getExampleForScalarDefinition(underlyingTypeDefinition)
 
     // if (thing.name === 'String') {
     //   console.log(JSON.stringify({
@@ -433,7 +255,7 @@ var common = {
       // example = unwindSpecialTags(example)
     } else {
       // example = underlyingTypeDefinition.name
-      example = justAddSpecialTags(underlyingTypeDefinition.name)
+      example = addSpecialTags(underlyingTypeDefinition.name)
     }
 
     const {
@@ -486,37 +308,6 @@ var common = {
     // we can avoid that issue.
     return cheerio.load(unwindSpecialTags(markedDown)).html();
   },
-
-  getReferencePath: function (reference) {
-    reference = reference.trim()
-    if (reference.indexOf('#') === 0) {
-      var hash = reference.substr(2);
-      return hash.split('/')
-    }
-
-    return ['definitions', reference]
-  },
-
-  getReferenceName: function (reference) {
-    return this.getReferencePath(reference).pop()
-  },
-
-  resolveSchemaReference: function (reference, json) {
-    var hashParts = this.getReferencePath(reference)
-
-    var current = json;
-    hashParts.forEach(function (hashPart) {
-      // Traverse schema from root along the path
-      if (hashPart.trim().length > 0) {
-        if (typeof current === 'undefined') {
-          console.warn("Reference '" + reference + "' cannot be resolved. '" + hashPart + "' is undefined.")
-          return {};
-        }
-        current = current[hashPart];
-      }
-    })
-    return current;
-  },
 }
 
 // Configure highlight.js
@@ -536,4 +327,4 @@ marked.setOptions({
   renderer: renderer
 })
 
-module.exports = common;
+module.exports = common

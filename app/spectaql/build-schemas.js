@@ -3,7 +3,6 @@ const {
   introspectionResponseFromSchema,
   loadIntrospectionResponseFromFile,
   loadIntrospectionResponseFromUrl,
-  // jsonSchemaFromIntrospectionResponse,
   graphQLSchemaFromIntrospectionResponse,
 } = require('./graphql-loaders')
 

@@ -22,19 +22,6 @@
       {{/each}}
     {{/unless}}
   {{/unless}}
-
-  {{#if securityDefinitions}}
-    {{#unless securityDefinitions.x-spectacle-hide}}
-      <a href="#authentication">Authentication</a>
-    {{/unless}}
-  {{/if}}
-
-  {{#if x-spectacle-topics}}
-    {{#each x-spectacle-topics}}
-      <a href="#topic-{{htmlId @key}}">{{@key}}</a>
-    {{/each}}
-  {{/if}}
-
   {{#if (nempty orderedDataWithHeaders)}}
     {{#each orderedDataWithHeaders}}
       {{>layout/nav/item}}

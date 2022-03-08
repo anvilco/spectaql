@@ -5,14 +5,14 @@
   </tr>
   {{#each fields}}
     <tr>
-      {{! The Name column }}
       <td data-property-name="{{./htmlId}}"
+        {{! The Name column }}
         {{#if (and isDeprecated (not @root.info.x-hideIsDeprecated)) }}class="swagger-operation-deprecated"{{/if}}
       >
         {{~> graphql/name-and-type . }}
       </td>
-      {{! The Description column }}
       <td>
+        {{! The Description column }}
         {{#if description}}
           {{md (interpolateReferences description) stripParagraph=true}}
         {{/if}}

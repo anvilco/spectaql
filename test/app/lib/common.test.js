@@ -50,7 +50,7 @@ describe('common', function () {
     })
   })
 
-  describe('replaceQuotesWithTags', function () {
+  describe.skip('replaceQuotesWithTags', function () {
     const { replaceQuotesWithTags } = common
 
     it('works', function () {

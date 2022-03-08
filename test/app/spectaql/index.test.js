@@ -43,21 +43,21 @@ describe('index', function () {
   def('schemaFile', () => pathToSimpleSchema)
 
   def('info', () => ({
-    ['x-swaggerUrl']: $.swaggerUrl
+    ['x-url']: $.url
   }))
 
-  def('swaggerUrl', () => 'http://foo.com')
+  def('url', () => 'http://foo.com')
 
-  describe('Swagger URL related', function () {
+  describe('URL related', function () {
     it('works baseline', function () {
       const result = spectaql($.opts)
       return expect(result).to.be.ok
     })
 
-    context('no x-swaggerUrl', function () {
-      def('swaggerUrl', () => undefined)
+    context('no x-url', function () {
+      def('url', () => undefined)
       it('errors', function () {
-        return expect(() => spectaql($.opts)).to.throw('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
+        return expect(() => spectaql($.opts)).to.throw('Please provide either: introspection.url OR servers.url OR info.x-url')
       })
 
       context('there are servers', function () {

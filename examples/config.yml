@@ -20,6 +20,9 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-introItems:
+    - title: Important thing 1
+      description: Some important stuff we wanted you to know. Supports `markdown`
 
 servers:
   - url: https://example.com/graphql
