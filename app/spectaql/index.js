@@ -13,22 +13,22 @@ function run (opts) {
     introspection: {
       url: introspectionUrl,
     },
-    domains = [],
+    // domains = [],
     servers = [],
     info = {},
-    externalDocs,
-    securityDefinitions,
+    // externalDocs,
+    // securityDefinitions,
   } = spec
 
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
   const urlToParse =
-    info['x-swaggerUrl']
+    info['x-url']
     || (servers.find((server) => server.production === true) || servers[0] || {}).url
     || introspectionUrl
 
   if (!urlToParse) {
-    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
+    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-url')
   }
 
 
@@ -74,20 +74,19 @@ function run (opts) {
   const swaggerSpec = {
     // introspectionResponse,
     // graphQLSchema,
-    openapi: '3.0.0',
     info,
     servers,
     host,
     schemes: [ protocol.slice(0, -1) ],
     basePath: pathname,
-    externalDocs,
-    tags: domains.map((domain) => ({
-      name: domain.name,
-      description: domain.description,
-      externalDocs: domain.externalDocs,
-    })),
+    // externalDocs,
+    // tags: domains.map((domain) => ({
+    //   name: domain.name,
+    //   description: domain.description,
+    //   externalDocs: domain.externalDocs,
+    // })),
     orderedDataWithHeaders,
-    securityDefinitions,
+    // securityDefinitions,
   }
 
   return swaggerSpec

@@ -31,8 +31,7 @@ introspection:
   #
 
   # URL of the GraphQL endpoint to hit if you want to generate the documentation based on live Introspection Query results
-  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement.
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-url below
   url: https://yoursite.com/graphql
 
   # If using the "url" option above, any headers (such as Authorization) can be added here. This
@@ -210,8 +209,7 @@ introspection:
   ##############################################
 
 servers:
-  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement.
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-url
 
   # same format as for OpenAPI Specification https://swagger.io/specification/#server-object
 
@@ -281,6 +279,5 @@ info:
   # Default: false
   x-hidePoweredBy: false
 
-  # If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement. This allows for that.
-  x-swaggerUrl: https://yoursite.com/graphql
+  # If not using introspection.url OR servers[], you need to provide x-url
+  x-url: https://yoursite.com/graphql
