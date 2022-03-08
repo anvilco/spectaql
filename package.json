@@ -43,7 +43,8 @@
     "prettify:write": "yarn prettify --write",
     "generateExampleData": "node bin/generateExampleData.js",
     "test": "mocha --config ./test/mocha-config.js",
-    "test:watch": "nodemon -x 'yarn test'"
+    "test:watch": "nodemon -x 'yarn test'",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.1",
@@ -94,6 +95,8 @@
     "eslint-plugin-mocha": "^10.0.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-standard": "^5.0.0",
+    "husky": ">=6",
+    "lint-staged": ">=10",
     "mocha": "^9.0.2",
     "nodemon": "^2.0.12",
     "prettier": "^2.5.1",
@@ -106,5 +109,9 @@
     "grunt-prettify/underscore.string": "^3.3.5",
     "**/lodash": "^4.17.20",
     "**/resolve/path-parse": "^1.0.7"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
