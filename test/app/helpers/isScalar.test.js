@@ -23,4 +23,12 @@ describe('isScalar', function () {
     expect(isScalar(notQuiteScalar)).to.be.false
     expect(isScalar(null)).to.be.false
   })
+  it('works for grapql-scalar', function () {
+    const emailAddressScalar = {
+      title: 'EmailAddress',
+      type: 'string',
+    }
+
+    expect(isScalar(emailAddressScalar)).to.be.true
+  })
 })

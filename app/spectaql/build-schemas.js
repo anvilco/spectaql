@@ -29,6 +29,7 @@ function buildSchemas (opts) {
 
   const {
     introspection: introspectionOptions,
+    extensions: extensionOptions = {},
     introspection: {
       url: introspectionUrl,
       schemaFile,
@@ -105,6 +106,7 @@ function buildSchemas (opts) {
     // jsonSchema,
     // graphQLSchema,
     introspectionOptions,
+    extensionOptions
   })
 
 

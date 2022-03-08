@@ -24,7 +24,7 @@ function sortByProperty (property) {
 
 // Take the domains, etc, and return a Swagger-compliant-esque `paths` thing.
 // In the GraphQL case, this makes all the Queries and Mutations stuff happen.
-module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) {
+module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }, extensionOptions) {
     const {
         properties,
         // definitions,
@@ -296,7 +296,7 @@ module.exports = function composePaths ({ domains, graphQLSchema, jsonSchema }) 
             expandGraph: expandFields,
             examplesByFieldName,
             allowedArgNames,
-        })
+        }, extensionOptions)
 
         const responseSchema = {
             ...convertGraphQLType(target.type).schema,

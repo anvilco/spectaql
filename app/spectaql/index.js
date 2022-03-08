@@ -13,6 +13,7 @@ function run (opts) {
     introspection: {
       url: introspectionUrl,
     },
+    extensions = {},
     domains = [],
     servers = [],
     info = {},
@@ -63,7 +64,7 @@ function run (opts) {
   // }))
 
   // Side-effects
-  preProcessData({ orderedDataWithHeaders, introspectionResponse, graphQLSchema })
+  preProcessData({ orderedDataWithHeaders, introspectionResponse, graphQLSchema }, extensions)
 
 
   // console.log(JSON.stringify({

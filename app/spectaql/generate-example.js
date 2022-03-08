@@ -238,7 +238,7 @@ function generateResponseSchema({ name, type, expandGraph, examplesByFieldName =
     return defaultResponse
 }
 
-function generateQuery({ parentType, field, allowedArgNames, expandGraph, examplesByFieldName }) {
+function generateQuery({ parentType, field, allowedArgNames, expandGraph, examplesByFieldName }, _) {
     const {
         name,
         type,

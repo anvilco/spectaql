@@ -57,7 +57,6 @@ function createIntrospectionManipulator(args) {
     hideUnionTypesOfUndocumentedType: removePossibleTypesOfMissingTypes,
     hideQueriesWithUndocumentedReturnType: removeQueriesWithMissingTypes,
     hideMutationsWithUndocumentedReturnType: removeMutationsWithMissingTypes,
-  // } = introspectionOptions
   } = introspectionOptions
 
   return new IntrospectionManipulator(
@@ -70,7 +69,7 @@ function createIntrospectionManipulator(args) {
       removeInputFieldsWithMissingTypes,
       removePossibleTypesOfMissingTypes,
       removeQueriesWithMissingTypes,
-      removeMutationsWithMissingTypes,
+      removeMutationsWithMissingTypes
     },
   )
 }
@@ -279,6 +278,7 @@ function addExamples (args = {}) {
   const {
     introspectionManipulator,
     introspectionOptions,
+    extensionOptions
   } = args
 
   const {
@@ -300,22 +300,22 @@ function addExamples (args = {}) {
 
     const isQueryOrMutation = !!(queryType && typesAreSame(type, queryType)) || !!(mutationType && typesAreSame(type, mutationType))
 
-    handleExamples({ type, skipStatic: true })
+    handleExamples({ type, skipStatic: true }, extensionOptions);
 
     for (const field of (type.fields || [])) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
       // queries or mutations, and we don't support that.
       if (!isQueryOrMutation) {
-        handleExamples({ type, field })
+        handleExamples({ type, field }, extensionOptions);
       }
 
       for (const arg of (field.args || [])) {
-        handleExamples({ type, field, arg })
+        handleExamples({ type, field, arg }, extensionOptions)
       }
     }
 
     for (const inputField of (type.inputFields || [])) {
-      handleExamples({ type, inputField })
+      handleExamples({ type, inputField }, extensionOptions)
     }
   }
 
@@ -344,6 +344,7 @@ function addExamples (args = {}) {
   function massageExample ({
     example,
     type,
+    extensionOptions
   }) {
     if (isUndef(example)) {
       return example
@@ -352,11 +353,11 @@ function addExamples (args = {}) {
     const placeholdQuotes = type.kind === KIND_SCALAR && ['String', 'Date'].includes(type.name)
 
     return Array.isArray(example)
-      ? example.map((val) => addSpecialTags(val, { placeholdQuotes }))
-      : addSpecialTags(example, { placeholdQuotes })
+      ? example.map((val) => addSpecialTags(val, { placeholdQuotes }, extensionOptions))
+      : addSpecialTags(example, { placeholdQuotes }, extensionOptions)
   }
 
-  function handleExamples ({ type, field, arg, inputField, skipStatic = false }) {
+  function handleExamples ({ type, field, arg, inputField, skipStatic = false }, extensionOptions) {
     const thing = arg || inputField || field || type
     const typeForAnalysis = (thing === type) ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
@@ -366,12 +367,12 @@ function addExamples (args = {}) {
     // certain "kinds" like scalars?
     // Would be BREAKING CHANGE
     if (!(skipStatic || isUndef(example))) {
-      thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
+      thing.example = massageExample({ example, type: typeAnalysis.underlyingType, extensionOptions })
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
     if (!isUndef(example)) {
-      thing.example = massageExample({ example, type: typeAnalysis.underlyingType })
+      thing.example = massageExample({ example, type: typeAnalysis.underlyingType, extensionOptions })
     }
   }
 }

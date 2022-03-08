@@ -204,6 +204,10 @@ introspection:
   # Default: true
   hideUnionTypesOfUndocumentedType: true
 
+extensions:
+  # scalar-graphql extension default false
+  scalarGraphql: true
+
 
   #
   #

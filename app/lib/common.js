@@ -45,9 +45,9 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
-function getExampleForScalar (scalarName) {
+function getExampleForScalar (scalarName, { graphScalarExtension } = {graphScalarExtension: false} ) {
   const replacement = SCALAR_TO_EXAMPLE[scalarName];
-  if(!replacement) {
+  if(!replacement && graphScalarExtension) {
     replacement = GraphQLScalars.getExampleForGraphQLScalar(scalarName);
   }
   if (typeof replacement !== 'undefined') {
@@ -55,14 +55,14 @@ function getExampleForScalar (scalarName) {
   }
 }
 
-function jsonReplacer (_, value) {
-  return addSpecialTags(value)
+function jsonReplacer (_, value, extensionOptions) {
+  return addSpecialTags(value, extensionOptions)
 }
 
-function addSpecialTags (value, { placeholdQuotes = false } = {}) {
+function addSpecialTags (value, { placeholdQuotes = false } = {}, options) {
   if (typeof value !== 'string') return value
 
-  const replacement = getExampleForScalar(value)
+  const replacement = getExampleForScalar(value, options)
   if (typeof replacement !== 'undefined') {
     return replacement
   }
@@ -191,7 +191,7 @@ var common = {
   //   return cloned;
   // },
 
-  formatExample: function (ref, root, options) {
+  formatExample: function (ref, root, options, extensionOptions) {
     if (!ref) {
       console.error('Cannot format NULL object ' + ref)
       // throw 'Cannot format NULL object ' + value;
@@ -229,7 +229,7 @@ var common = {
       return ref.example
     } else if (typeof ref.default !== 'undefined') {
       // If there is a default, use it.
-      return addSpecialTags(ref.default, { placeholdQuotes: true })
+      return addSpecialTags(ref.default, { placeholdQuotes: true, extensionOptions })
     } else if (ref.$ref) { // && !ref.type
       // Don't expand out nested things...just stick their type in there
       return this.getReferenceName(ref.$ref)
@@ -288,7 +288,7 @@ var common = {
         format,
       } = ref
 
-      const replacement = getExampleForScalar(title)
+      const replacement = getExampleForScalar(title, options)
       if (typeof replacement !== 'undefined') {
         type = unwindSpecialTags(replacement)
       }
@@ -299,14 +299,14 @@ var common = {
     console.error('Cannot format example on property ', ref, ref.$ref)
   },
 
-  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator }) {
+  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator,  extensionOptions}) {
     if (!(args && args.length)) {
       return null
     }
 
     return args.reduce(
       (acc, arg) => {
-        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator })
+        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator, extensionOptions })
         return acc
       },
       {},
@@ -315,7 +315,7 @@ var common = {
 
 
   // Take an Arg from the Introspection JSON, and figure out it's example variable representation
-  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator }) {
+  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator, extensionOptions }) {
     if (!arg) {
       return null
     }
@@ -326,7 +326,7 @@ var common = {
     }
     // If there is a default, use it.
     if (arg.defaultValue) {
-      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true })
+      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true }, extensionOptions);
     }
 
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
@@ -335,10 +335,12 @@ var common = {
       IntrospectionManipulator.digUnderlyingType(arg.type)
     )
 
-    return common.generateIntrospectionReturnTypeExample({ thing: arg, underlyingTypeDefinition, originalType: arg.type })
+    return common.generateIntrospectionReturnTypeExample({ 
+      thing: arg, underlyingTypeDefinition, originalType: arg.type }, extensionOptions)
   },
 
-  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator }) {
+  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator }, 
+    extensionOptions = {}) {
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
@@ -346,7 +348,7 @@ var common = {
 
     // No fields? Just a Scalar then, so return a single value.
     if (!underlyingTypeDefinition.fields) {
-      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type }, extensionOptions)
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
@@ -355,15 +357,17 @@ var common = {
         const underlyingTypeDefinition = introspectionManipulator.getType(
           IntrospectionManipulator.digUnderlyingType(field.type)
         )
-        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, 
+          originalType: field.type }, extensionOptions)
         return acc
       },
       {}
     )
   },
 
-  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType }) {
-    let example = thing.example || originalType.example || underlyingTypeDefinition.example || getExampleForScalar(underlyingTypeDefinition.name)
+  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType }, extensionOptions) {
+    let example = thing.example || originalType.example || underlyingTypeDefinition.example 
+      || getExampleForScalar(underlyingTypeDefinition.name, extensionOptions)
     if (typeof example !== 'undefined') {
       example = unwindSpecialTags(example)
     } else {
@@ -380,11 +384,12 @@ var common = {
     return isArray ? [example] : example
   },
 
-  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator }) {
+  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator }, extensionOptions) {
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
     // No fields? Just a Scalar then, so return a single value.
     if (!type.fields) {
-      return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, originalType: type })
+      return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, 
+        originalType: type }, extensionOptions)
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
@@ -393,7 +398,8 @@ var common = {
         const underlyingTypeDefinition = introspectionManipulator.getType(
           IntrospectionManipulator.digUnderlyingType(field.type)
         )
-        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type })
+        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, 
+          originalType: field.type }, extensionOptions)
         return acc
       },
       {}
