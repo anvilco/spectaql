@@ -278,7 +278,7 @@ function addExamples (args = {}) {
   const {
     introspectionManipulator,
     introspectionOptions,
-    extensionOptions
+    extensionOptions = {}
   } = args
 
   const {
