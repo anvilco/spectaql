@@ -300,22 +300,22 @@ function addExamples (args = {}) {
 
     const isQueryOrMutation = !!(queryType && typesAreSame(type, queryType)) || !!(mutationType && typesAreSame(type, mutationType))
 
-    handleExamples({ type, skipStatic: true }, extensionOptions);
+    handleExamples({ type, skipStatic: true, ...extensionOptions });
 
     for (const field of (type.fields || [])) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
       // queries or mutations, and we don't support that.
       if (!isQueryOrMutation) {
-        handleExamples({ type, field }, extensionOptions);
+        handleExamples({ type, field, ...extensionOptions });
       }
 
       for (const arg of (field.args || [])) {
-        handleExamples({ type, field, arg }, extensionOptions)
+        handleExamples({ type, field, arg, ...extensionOptions })
       }
     }
 
     for (const inputField of (type.inputFields || [])) {
-      handleExamples({ type, inputField }, extensionOptions)
+      handleExamples({ type, inputField, ...extensionOptions })
     }
   }
 
@@ -344,7 +344,7 @@ function addExamples (args = {}) {
   function massageExample ({
     example,
     type,
-    extensionOptions
+    scalarGraphql
   }) {
     if (isUndef(example)) {
       return example
@@ -353,11 +353,11 @@ function addExamples (args = {}) {
     const placeholdQuotes = type.kind === KIND_SCALAR && ['String', 'Date'].includes(type.name)
 
     return Array.isArray(example)
-      ? example.map((val) => addSpecialTags(val, { placeholdQuotes }, extensionOptions))
-      : addSpecialTags(example, { placeholdQuotes }, extensionOptions)
+      ? example.map((val) => addSpecialTags(val, { placeholdQuotes, scalarGraphql }))
+      : addSpecialTags(example, { placeholdQuotes, scalarGraphql })
   }
 
-  function handleExamples ({ type, field, arg, inputField, skipStatic = false }, extensionOptions) {
+  function handleExamples ({ type, field, arg, inputField, skipStatic = false, scalarGraphql }) {
     const thing = arg || inputField || field || type
     const typeForAnalysis = (thing === type) ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
@@ -367,12 +367,12 @@ function addExamples (args = {}) {
     // certain "kinds" like scalars?
     // Would be BREAKING CHANGE
     if (!(skipStatic || isUndef(example))) {
-      thing.example = massageExample({ example, type: typeAnalysis.underlyingType, extensionOptions })
+      thing.example = massageExample({ example, type: typeAnalysis.underlyingType, scalarGraphql })
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
     if (!isUndef(example)) {
-      thing.example = massageExample({ example, type: typeAnalysis.underlyingType, extensionOptions })
+      thing.example = massageExample({ example, type: typeAnalysis.underlyingType, scalarGraphql })
     }
   }
 }

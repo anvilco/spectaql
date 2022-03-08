@@ -38,7 +38,7 @@ describe('index', function () {
         hideFieldsWithUndocumentedReturnType: true,
       })
 
-      expect(options.specData.extension).to.include({
+      expect(options.specData.extensions).to.include({
         scalarGraphql:false
       })
     })

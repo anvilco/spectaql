@@ -142,12 +142,12 @@ describe('augmenters', function () {
     mutationArgDocumentedDefault: $.mutationArgDocumentedDefault,
     hideMutationsWithUndocumentedReturnType: $.hideMutationsWithUndocumentedReturnType,
   }))
-  def('extensionsOptions', () => $.introspectionOptionsBase)
+  def('introspectionOptions', () => $.introspectionOptionsBase)
 
-  def('extensionsOptionsBase', () => ({
+  def('extensionOptionsBase', () => ({
     scalarGraphql: $.scalarGraphql,
   }))
-  def('introspectionOptions', () => $.extensionsOptionsBase)
+  def('extensionOptions', () => $.extensionOptionsBase)
 
 
   def('rawIntrospectionResponse', () => introspectionResponseFromSchemaSDL({
@@ -657,7 +657,7 @@ describe('augmenters', function () {
 
     context('"example" is in metadata', function () {
       def('example', "fooey")
-      def('processedExample', () => addSpecialTags($.example, { placeholdQuotes: true}, { graphScalarExtension: false }))
+      def('processedExample', () => addSpecialTags($.example, { placeholdQuotes: true, scalarGraphql: false }))
       def('theMetadata', () => ({ example: $.example }))
 
       it('adds example to Introspection Query Response', function () {
@@ -667,7 +667,7 @@ describe('augmenters', function () {
       context('"examples" is *also* in metadata', function () {
         // Yes, weird that this is a scalar/single value and not an array, but it will be arrayed below
         def('examplesExample', "barrey")
-        def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true, graphScalarExtension: false }))
+        def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true, scalarGraphql: false }))
         def('theMetadata', () => ({
           example: $.example,
           examples: [$.examplesExample]
@@ -682,7 +682,7 @@ describe('augmenters', function () {
     context('examples in metadata', function () {
       // Yes, weird that this is a scalar/single value and not an array
       def('examplesExample', "barrey")
-      def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true, graphScalarExtension: false }))
+      def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true, scalarGraphql: false }))
       def('theMetadata', () => ({ examples: [$.examplesExample] }))
 
       it('adds one of the examples to JSON Schema', function () {
@@ -734,7 +734,7 @@ describe('augmenters', function () {
 
           // OK, WTF were special tags again? And placeholding quotes?
           expect($.introspectionManipulator.getType({ kind: KIND_SCALAR, name: 'String' }).example).to.eql(
-            addSpecialTags('42: Life, the Universe and Everything', { placeholdQuotes: true, graphScalarExtension: false }))
+            addSpecialTags('42: Life, the Universe and Everything', { placeholdQuotes: true, scalarGraphql: false }))
         })
       })
 
@@ -757,7 +757,7 @@ describe('augmenters', function () {
             expect($.introspectionManipulator.getField({ typeName, fieldName }).example).to.eql(
               addSpecialTags(
                 [typeName, fieldName, returnTypeName, 'example'].join('.'),
-                { placeholdQuotes, graphScalarExtension: false }
+                { placeholdQuotes, scalarGraphql: false }
               )
             )
           })
@@ -785,7 +785,7 @@ describe('augmenters', function () {
 
             expect($.introspectionManipulator.getInputField({ inputName, inputFieldName }).example).to.eql(
               addSpecialTags(
-                [inputName, inputFieldName, inputFieldType, isArray, itemsRequired, 'example'].join('.'), {graphScalarExtension: false}
+                [inputName, inputFieldName, inputFieldType, isArray, itemsRequired, 'example'].join('.'), {scalarGraphql: false}
               )
             )
           })

@@ -172,7 +172,7 @@ function generateResponseSchema({
   return defaultResponse
 }
 
-function generateQuery({ prefix, field, introspectionResponse, graphQLSchema }, extensionOptions) {
+function generateQuery({ prefix, field, introspectionResponse, graphQLSchema, scalarGraphql }) {
   const introspectionManipulator = new IntrospectionManipulator(introspectionResponse)
   const queryResult = generateQueryInternal({
     field,
@@ -192,13 +192,12 @@ function generateQuery({ prefix, field, introspectionResponse, graphQLSchema }, 
   const query = `${prefix} ${field.name}${argStr ? `(${argStr})` : ''} {\n${cleanedQuery}}`
 
   const variables = introspectionArgsToVariables({ args: queryResult.args, introspectionResponse, 
-    introspectionManipulator }, extensionOptions)
+    introspectionManipulator, scalarGraphql })
 
   const response = {
     data: {
       [field.name]: introspectionQueryOrMutationToResponse(
-        { field, introspectionResponse, introspectionManipulator },
-         extensionOptions),
+        { field, introspectionResponse, introspectionManipulator, scalarGraphql }),
     },
   }
 

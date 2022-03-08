@@ -45,9 +45,9 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
-function getExampleForScalar (scalarName, { graphScalarExtension } = {graphScalarExtension: false} ) {
+function getExampleForScalar (scalarName, { scalarGraphql} = {scalarGraphql: false} ) {
   const replacement = SCALAR_TO_EXAMPLE[scalarName];
-  if(!replacement && graphScalarExtension) {
+  if(!replacement && scalarGraphql) {
     replacement = GraphQLScalars.getExampleForGraphQLScalar(scalarName);
   }
   if (typeof replacement !== 'undefined') {
@@ -55,14 +55,14 @@ function getExampleForScalar (scalarName, { graphScalarExtension } = {graphScala
   }
 }
 
-function jsonReplacer (_, value, extensionOptions) {
-  return addSpecialTags(value, extensionOptions)
+function jsonReplacer (_, value, options) {
+  return addSpecialTags(value, options)
 }
 
-function addSpecialTags (value, { placeholdQuotes = false } = {}, options) {
+function addSpecialTags (value, { placeholdQuotes = false, scalarGraphql } = {}) {
   if (typeof value !== 'string') return value
 
-  const replacement = getExampleForScalar(value, options)
+  const replacement = getExampleForScalar(value, {scalarGraphql})
   if (typeof replacement !== 'undefined') {
     return replacement
   }
@@ -191,7 +191,7 @@ var common = {
   //   return cloned;
   // },
 
-  formatExample: function (ref, root, options, extensionOptions) {
+  formatExample: function (ref, root, options) {
     if (!ref) {
       console.error('Cannot format NULL object ' + ref)
       // throw 'Cannot format NULL object ' + value;
@@ -229,7 +229,7 @@ var common = {
       return ref.example
     } else if (typeof ref.default !== 'undefined') {
       // If there is a default, use it.
-      return addSpecialTags(ref.default, { placeholdQuotes: true, extensionOptions })
+      return addSpecialTags(ref.default, { placeholdQuotes: true, ...options})
     } else if (ref.$ref) { // && !ref.type
       // Don't expand out nested things...just stick their type in there
       return this.getReferenceName(ref.$ref)
@@ -277,7 +277,7 @@ var common = {
       return this.formatExample(
         _.sample(samples),
         root,
-        options,
+        options
        )
     } else if (typeIsArray(ref)) {
       return [this.formatExample(ref.items, root, options)];
@@ -299,14 +299,14 @@ var common = {
     console.error('Cannot format example on property ', ref, ref.$ref)
   },
 
-  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator,  extensionOptions}) {
+  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator,  options}) {
     if (!(args && args.length)) {
       return null
     }
 
     return args.reduce(
       (acc, arg) => {
-        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator, extensionOptions })
+        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator, options })
         return acc
       },
       {},
@@ -315,7 +315,7 @@ var common = {
 
 
   // Take an Arg from the Introspection JSON, and figure out it's example variable representation
-  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator, extensionOptions }) {
+  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator, scalarGraphql }) {
     if (!arg) {
       return null
     }
@@ -326,7 +326,7 @@ var common = {
     }
     // If there is a default, use it.
     if (arg.defaultValue) {
-      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true }, extensionOptions);
+      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true, scalarGraphql});
     }
 
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
@@ -336,11 +336,10 @@ var common = {
     )
 
     return common.generateIntrospectionReturnTypeExample({ 
-      thing: arg, underlyingTypeDefinition, originalType: arg.type }, extensionOptions)
+      thing: arg, underlyingTypeDefinition, originalType: arg.type, scalarGraphql })
   },
 
-  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator }, 
-    extensionOptions = {}) {
+  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator,  scalarGraphql}) {
     introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
@@ -348,7 +347,7 @@ var common = {
 
     // No fields? Just a Scalar then, so return a single value.
     if (!underlyingTypeDefinition.fields) {
-      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type }, extensionOptions)
+      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type, scalarGraphql })
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
@@ -358,16 +357,16 @@ var common = {
           IntrospectionManipulator.digUnderlyingType(field.type)
         )
         acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, 
-          originalType: field.type }, extensionOptions)
+          originalType: field.type, scalarGraphql })
         return acc
       },
       {}
     )
   },
 
-  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType }, extensionOptions) {
+  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType, scalarGraphql }) {
     let example = thing.example || originalType.example || underlyingTypeDefinition.example 
-      || getExampleForScalar(underlyingTypeDefinition.name, extensionOptions)
+      || getExampleForScalar(underlyingTypeDefinition.name, {scalarGraphql})
     if (typeof example !== 'undefined') {
       example = unwindSpecialTags(example)
     } else {

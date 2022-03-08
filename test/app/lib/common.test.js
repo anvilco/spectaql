@@ -78,28 +78,28 @@ describe('common', function () {
           type : 'BigInt',
           title: 'BigInt',
           format: 'BigInt',
-        }, {}, {depth: 1}, {scalarGraphql: true})).to.eql('9007199254740991 (BigInt)')
+        }, {}, {depth: 1, scalarGraphql: true})).to.eql('9007199254740991 (BigInt)')
     })
     it('Byte', function () {
       expect(formatExample( {
         type : 'Byte',
         title: 'Byte',
         format: 'Byte',
-      }, {}, {depth: 1}, {scalarGraphql: true})).to.eql('196,189,173,171,167,163 (Byte)')
+      }, {}, {depth: 1, scalarGraphql: true})).to.eql('196,189,173,171,167,163 (Byte)')
   })
   it('Time', function () {
     expect(formatExample( {
       type : 'Time',
       title: 'Time',
       format: 'Time',
-    }, {}, {depth: 1}, {scalarGraphql: true})).to.eql('10:15:30Z (Time)')
+    }, {}, {depth: 1, scalarGraphql: true})).to.eql('10:15:30Z (Time)')
 })
 it('EmailAddress', function () {
   expect(formatExample( {
     type : 'EmailAddress',
     title: 'EmailAddress',
     format: 'EmailAddress',
-  }, {}, {depth: 1}, {scalarGraphql: true})).to.eql('test@test.com (EmailAddress)')
+  }, {}, {depth: 1, scalarGraphql: true})).to.eql('test@test.com (EmailAddress)')
 })
   })
 
