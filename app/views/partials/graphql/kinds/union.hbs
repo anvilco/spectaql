@@ -12,8 +12,8 @@
         </tr>
         {{#each possibleTypes}}
           <tr>
-            {{! The Union Types column }}
             <td>
+              {{! The Union Types column }}
               {{md (mdTypeLink . codify=true) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}
             </td>
           </tr>
