@@ -7,7 +7,7 @@ module.exports = {
     'mocha',
   ],
   rules: {
-    'mocha/no-skipped-tests': 'error',
+    'mocha/no-skipped-tests': 'warn',
     'mocha/no-exclusive-tests': 'error',
   },
   globals: {

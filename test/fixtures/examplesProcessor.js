@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 function processor ({ type, field, arg, inputField, underlyingType, isRequired, isArray, itemsRequired }) {
   // Handle Args
   if (arg) {

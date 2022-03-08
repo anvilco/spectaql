@@ -11,10 +11,6 @@ const {
 } = require('app/spectaql/metadata-loaders')
 
 const {
-  addSpecialTags,
-} = require('app/lib/common')
-
-const {
   createIntrospectionManipulator,
   hideThingsBasedOnMetadata,
   addExamples,
@@ -730,7 +726,7 @@ describe('augmenters', function () {
 
             // This field should have an example
             ['YetAnotherType', 'fieldWithExample', 'String', true],
-          ].forEach(([typeName, fieldName, returnTypeName, placeholdQuotes]) => {
+          ].forEach(([typeName, fieldName, returnTypeName, /*placeholdQuotes*/]) => {
             expect($.introspectionManipulator.getField({ typeName, fieldName }).example).to.eql(
               // addSpecialTags(
                 [typeName, fieldName, returnTypeName, 'example'].join('.'),
@@ -794,7 +790,7 @@ describe('augmenters', function () {
 
             ['Mutation', 'myMutation', 'myArg', 'String', true],
             ['Mutation', 'myMutation', 'myOtherArg', 'String', true],
-          ].forEach(([typeName, fieldName, argName, argType, placeholdQuotes]) => {
+          ].forEach(([typeName, fieldName, argName, argType, /*placeholdQuotes*/]) => {
             expect($.introspectionManipulator.getArg({ typeName, fieldName, argName }).example).to.eql(
               // addSpecialTags(
                 [typeName, fieldName, argName, argType, 'example'].join('.'),

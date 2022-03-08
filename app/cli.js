@@ -1,16 +1,16 @@
 const { Command } = require('commander');
 const program = new Command();
 
-const package = require('../package.json')
+const pkg = require('../package.json')
 
 module.exports = function () {
 
   //
   //= Process CLI input
 
-  program.version(package.version)
+  program.version(pkg.version)
     .usage('[options] <config.yml>')
-    .description(package.description)
+    .description(pkg.description)
     .option('-N, --noop', 'This option does nothing, but may be useful in complex CLI scenarios to get argument parsing correct')
     .option('-C, --disable-css', 'omit CSS generation (default: false)')
     .option('-c, --css-build-mode <mode>', 'full: build with very opinionated css; basic: build with minimal layout-focused css (default: full)', String)

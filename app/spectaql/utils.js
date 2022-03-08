@@ -88,7 +88,8 @@ function fileExtensionIs (fileNameOrPath, extensionOrExtensions) {
  * @return {boolean} `true` if the string is a URL.
 */
 function absoluteURL(str) {
-  return /^.*\:\/\/[^\/]+\/?/.test(str)
+  // return /^.*\:\/\/[^\/]+\/?/.test(str)
+  return /^.*:\/\/[^/]+\/?/.test(str)
 }
 
 /**
@@ -97,7 +98,8 @@ function absoluteURL(str) {
  * @return {string} the base-part of the given URL
 */
 function urlBasename(url) {
-  return /^(.*\:\/\/[^\/]+\/?)/.exec(url)[1];
+  // return /^(.*\:\/\/[^\/]+\/?)/.exec(url)[1];
+  return /^(.*:\/\/[^/]+\/?)/.exec(url)[1];
 }
 
 /**

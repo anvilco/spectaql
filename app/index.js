@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const tmp = require('tmp')
 const grunt = require('grunt')
-const package = require('../package.json')
+const pkg = require('../package.json')
 const _ = require('lodash')
 const loadYaml = require('./lib/loadYaml')
 const cliOptions = require('./cli')
@@ -188,7 +188,7 @@ function run (options = {}) {
   //
   //= Setup Grunt to do the heavy lifting
 
-  grunt.initConfig(_.merge({ pkg: package }, gruntConfig))
+  grunt.initConfig(_.merge({ pkg }, gruntConfig))
   if (opts.quiet) {
     grunt.log.writeln = function() {}
     grunt.log.write = function() {}
