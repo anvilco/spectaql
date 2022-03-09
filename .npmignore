@@ -2,7 +2,7 @@
 *
 
 # Whitelist these
-!/app/**
+!/dist/**
 !/bin/**
 !/customizations/**
 !nodemon.json
