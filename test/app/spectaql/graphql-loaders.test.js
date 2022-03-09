@@ -16,32 +16,45 @@ describe('graphql-loaders', function () {
       const result = loadSchemaFromSDLFile({ pathToFile: pathToSimpleSchema })
       expect(result).to.be.ok
       expect(result._typeMap.MyType.getFields()).to.have.property('myField')
-      expect(result._typeMap.MyType.getFields()).to.not.have.property('mySupplementalField')
+      expect(result._typeMap.MyType.getFields()).to.not.have.property(
+        'mySupplementalField'
+      )
     })
 
     it('works with string .txt path', function () {
-      const result = loadSchemaFromSDLFile({ pathToFile: pathToSimpleSchemaSupplement })
+      const result = loadSchemaFromSDLFile({
+        pathToFile: pathToSimpleSchemaSupplement,
+      })
       expect(result).to.be.ok
       expect(result._typeMap.MyType.getFields()).to.not.have.property('myField')
-      expect(result._typeMap.MyType.getFields()).to.have.property('mySupplementalField')
+      expect(result._typeMap.MyType.getFields()).to.have.property(
+        'mySupplementalField'
+      )
     })
 
     it('works with array of paths containing .gql and .txt', function () {
-      const result = loadSchemaFromSDLFile({ pathToFile: [pathToSimpleSchema, pathToSimpleSchemaSupplement] })
+      const result = loadSchemaFromSDLFile({
+        pathToFile: [pathToSimpleSchema, pathToSimpleSchemaSupplement],
+      })
       expect(result).to.be.ok
       expect(result._typeMap.MyType.getFields()).to.have.property('myField')
-      expect(result._typeMap.MyType.getFields()).to.have.property('mySupplementalField')
+      expect(result._typeMap.MyType.getFields()).to.have.property(
+        'mySupplementalField'
+      )
     })
   })
 
-
   describe('non-standard query or mutation type name', function () {
     it('works', async function () {
-      const schema = loadSchemaFromSDLFile({ pathToFile: pathToNonStandardQueryMutationSchema })
+      const schema = loadSchemaFromSDLFile({
+        pathToFile: pathToNonStandardQueryMutationSchema,
+      })
       expect(schema).to.be.ok
       const introspectionResponse = introspectionResponseFromSchema({ schema })
       expect(introspectionResponse).to.be.ok
-      const graphQLSchema = graphQLSchemaFromIntrospectionResponse(introspectionResponse)
+      const graphQLSchema = graphQLSchemaFromIntrospectionResponse(
+        introspectionResponse
+      )
       expect(graphQLSchema).to.be.ok
     })
   })

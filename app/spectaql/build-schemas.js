@@ -3,29 +3,23 @@ const {
   introspectionResponseFromSchema,
   loadIntrospectionResponseFromFile,
   loadIntrospectionResponseFromUrl,
-  // jsonSchemaFromIntrospectionResponse,
   graphQLSchemaFromIntrospectionResponse,
 } = require('./graphql-loaders')
 
-const {
-  addMetadataFromFile
-} = require('./metadata-loaders')
+const { addMetadataFromFile } = require('./metadata-loaders')
 
 const {
   augmentData,
   removeTrailingPeriodsFromDescriptions,
 } = require('./augmenters')
 
-
-function errorThingDone ({ trying, done }) {
+function errorThingDone({ trying, done }) {
   const msg = `Cannot try to ${trying} while also having ${done}`
   throw new Error(msg)
 }
 
-function buildSchemas (opts) {
-  const {
-    specData: spec,
-  } = opts
+function buildSchemas(opts) {
+  const { specData: spec } = opts
 
   const {
     introspection: introspectionOptions,
@@ -54,7 +48,9 @@ function buildSchemas (opts) {
     if (done) {
       errorThingDone({ trying: 'load Introspection from file', done })
     }
-    introspectionResponse = loadIntrospectionResponseFromFile({ pathToFile: introspectionFile })
+    introspectionResponse = loadIntrospectionResponseFromFile({
+      pathToFile: introspectionFile,
+    })
     done = 'loaded Introspection from file'
   }
 
@@ -64,17 +60,23 @@ function buildSchemas (opts) {
     }
 
     if (authHeader && headers) {
-      throw new Error('Cannot provide both header and headers options. Please choose one.')
+      throw new Error(
+        'Cannot provide both header and headers options. Please choose one.'
+      )
     }
     let resolvedHeaders = {}
     if (authHeader) {
       resolvedHeaders.authorization = authHeader
     } else if (headers) {
       // CLI headers come in as a string; YAML as an object.
-      resolvedHeaders = typeof headers === 'string' ? JSON.parse(headers) : headers
+      resolvedHeaders =
+        typeof headers === 'string' ? JSON.parse(headers) : headers
     }
 
-    introspectionResponse = loadIntrospectionResponseFromUrl({ headers: resolvedHeaders, url: introspectionUrl })
+    introspectionResponse = loadIntrospectionResponseFromUrl({
+      headers: resolvedHeaders,
+      url: introspectionUrl,
+    })
     done = 'loaded via Introspection URL'
   }
 
@@ -110,14 +112,14 @@ function buildSchemas (opts) {
     extensionOptions
   })
 
-
   if (removeTrailingPeriodFromDescriptions) {
     removeTrailingPeriodsFromDescriptions(augmentedIntrospectionResponse)
     // removeTrailingPeriodsFromDescriptions(definitions)
   }
 
-
-  const graphQLSchema = graphQLSchemaFromIntrospectionResponse(augmentedIntrospectionResponse)
+  const graphQLSchema = graphQLSchemaFromIntrospectionResponse(
+    augmentedIntrospectionResponse
+  )
   return {
     introspectionResponse: augmentedIntrospectionResponse,
     graphQLSchema,

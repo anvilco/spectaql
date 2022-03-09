@@ -6,13 +6,7 @@ const {
   graphQLSchemaFromIntrospectionResponse,
 } = require('app/spectaql/graphql-loaders')
 
-const {
-  addMetadata
-} = require('app/spectaql/metadata-loaders')
-
-const {
-  addSpecialTags,
-} = require('app/lib/common')
+const { addMetadata } = require('app/spectaql/metadata-loaders')
 
 const {
   createIntrospectionManipulator,
@@ -22,14 +16,12 @@ const {
   // addExamplesDynamically,
 } = require('app/spectaql/augmenters')
 
-const {
-  KIND_INPUT_OBJECT,
-  KIND_SCALAR,
-} = require('microfiber')
-const { PossibleTypeExtensionsRule } = require('graphql')
+const { KIND_INPUT_OBJECT, KIND_SCALAR } = require('microfiber')
 
 describe('augmenters', function () {
-  def('schemaSDLBase', () => `
+  def(
+    'schemaSDLBase',
+    () => `
     type MyType {
       myField(
         myArg: String
@@ -79,25 +71,15 @@ describe('augmenters', function () {
   def('schemaSDL', () => $.schemaSDLBase)
 
   def('metadataBase', () => ({
-    'OBJECT': {
-      MyType: {
-
-      },
-      OtherType: {
-
-      },
-      Query: {
-
-      },
-      Mutation: {
-
-      }
+    OBJECT: {
+      MyType: {},
+      OtherType: {},
+      Query: {},
+      Mutation: {},
     },
-    'INPUT_OBJECT': {
-      MyInput: {
-
-      },
-    }
+    INPUT_OBJECT: {
+      MyInput: {},
+    },
   }))
   def('metadata', () => $.metadataBase)
 
@@ -130,35 +112,36 @@ describe('augmenters', function () {
 
     fieldDocumentedDefault: $.fieldDocumentedDefault,
     argDocumentedDefault: $.argDocumentedDefault,
-    hideFieldsWithUndocumentedReturnType: $.hideFieldsWithUndocumentedReturnType,
+    hideFieldsWithUndocumentedReturnType:
+      $.hideFieldsWithUndocumentedReturnType,
 
     queriesDocumentedDefault: $.queriesDocumentedDefault,
     queryDocumentedDefault: $.queryDocumentedDefault,
     queryArgDocumentedDefault: $.queryArgDocumentedDefault,
-    hideQueriesWithUndocumentedReturnType: $.hideQueriesWithUndocumentedReturnType,
+    hideQueriesWithUndocumentedReturnType:
+      $.hideQueriesWithUndocumentedReturnType,
 
     mutationsDocumentedDefault: $.mutationsDocumentedDefault,
     mutationDocumentedDefault: $.mutationDocumentedDefault,
     mutationArgDocumentedDefault: $.mutationArgDocumentedDefault,
-    hideMutationsWithUndocumentedReturnType: $.hideMutationsWithUndocumentedReturnType,
+    hideMutationsWithUndocumentedReturnType:
+      $.hideMutationsWithUndocumentedReturnType,
   }))
   def('introspectionOptions', () => $.introspectionOptionsBase)
 
-  def('extensionOptionsBase', () => ({
-    scalarGraphql: $.scalarGraphql,
-  }))
-  def('extensionOptions', () => $.extensionOptionsBase)
-
-
-  def('rawIntrospectionResponse', () => introspectionResponseFromSchemaSDL({
-    schemaSDL: $.schemaSDL
-  }))
-  def('introspectionResponse', () => addMetadata({
-    introspectionQueryResponse: $.rawIntrospectionResponse,
-    metadata: $.metadata,
-    metadatasReadPath: $.metadatasPath,
-    metadatasWritePath: $.metadatasPath,
-  }))
+  def('rawIntrospectionResponse', () =>
+    introspectionResponseFromSchemaSDL({
+      schemaSDL: $.schemaSDL,
+    })
+  )
+  def('introspectionResponse', () =>
+    addMetadata({
+      introspectionQueryResponse: $.rawIntrospectionResponse,
+      metadata: $.metadata,
+      metadatasReadPath: $.metadatasPath,
+      metadatasWritePath: $.metadatasPath,
+    })
+  )
 
   def('introspectionManipulatorOptions', () => ({
     removeUnusedTypes: false,
@@ -168,11 +151,13 @@ describe('augmenters', function () {
     // removePossibleTypesOfMissingTypes: false,
   }))
 
-  def('graphQLSchema', () => graphQLSchemaFromIntrospectionResponse($.introspectionResponse))
+  def('graphQLSchema', () =>
+    graphQLSchemaFromIntrospectionResponse($.introspectionResponse)
+  )
 
   def('args', () => ({
     introspectionResponse: $.introspectionResponse,
-    introspectionOptions: $.introspectionOptions
+    introspectionOptions: $.introspectionOptions,
   }))
 
   def('introspectionManipulator', () => createIntrospectionManipulator($.args))
@@ -180,12 +165,12 @@ describe('augmenters', function () {
   def('response', () => $.result.introspectionManipulator.getResponse())
 
   describe('hideThingsBasedOnMetadata', function () {
-    def('result', () => hideThingsBasedOnMetadata({
+    def('result', () =>
+      hideThingsBasedOnMetadata({
         introspectionManipulator: $.introspectionManipulator,
         introspectionOptions: $.introspectionOptions,
-        extensionOptions: $.extensionOptions,
-    }))
-
+      })
+    )
 
     it('shows everything when nothing was told to be hidden', function () {
       const responseBefore = _.cloneDeep($.introspectionResponse)
@@ -196,8 +181,19 @@ describe('augmenters', function () {
     describe('Types', function () {
       it('shows at least some things by default', function () {
         expect($.introspectionManipulator.getType({ name: 'MyType' })).to.be.ok
-        expect($.introspectionManipulator.getField({ typeName: 'MyType', fieldName: 'myField' })).to.be.ok
-        expect($.introspectionManipulator.getArg({ typeName: 'MyType', fieldName: 'myField', argName: 'myArg' })).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'MyType',
+            fieldName: 'myField',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getArg({
+            typeName: 'MyType',
+            fieldName: 'myField',
+            argName: 'myArg',
+          })
+        ).to.be.ok
       })
 
       context('typesDocumentedDefault is false', function () {
@@ -209,12 +205,16 @@ describe('augmenters', function () {
           expect(response).to.not.eql(responseBefore)
 
           expect($.introspectionManipulator.getAllTypes()).to.eql([])
-          expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
+          expect(
+            $.introspectionManipulator.getType({ name: 'MyType' })
+          ).to.not.be.ok
         })
 
         context('metadata says MyType should be documented', function () {
           def('metadata', () => {
-            return _.set($.metadataBase, 'OBJECT.MyType.documentation', { documented: true })
+            return _.set($.metadataBase, 'OBJECT.MyType.documentation', {
+              documented: true,
+            })
           })
 
           it('still does not show any types', function () {
@@ -222,7 +222,9 @@ describe('augmenters', function () {
             const response = $.response
             expect(response).to.not.eql(responseBefore)
             expect($.introspectionManipulator.getAllTypes()).to.eql([])
-            expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
+            expect(
+              $.introspectionManipulator.getType({ name: 'MyType' })
+            ).to.not.be.ok
           })
         })
       })
@@ -236,23 +238,33 @@ describe('augmenters', function () {
           expect(response).to.not.eql(responseBefore)
 
           expect($.introspectionManipulator.getAllTypes()).to.eql([])
-          expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
+          expect(
+            $.introspectionManipulator.getType({ name: 'MyType' })
+          ).to.not.be.ok
         })
 
-        context('metadata directive says MyType should be documented', function () {
-          def('metadata', () => {
-            return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, { documented: true })
-          })
+        context(
+          'metadata directive says MyType should be documented',
+          function () {
+            def('metadata', () => {
+              return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, {
+                documented: true,
+              })
+            })
 
-          it('only documents MyType', function () {
-            const responseBefore = _.cloneDeep($.introspectionResponse)
-            const response = $.response
-            expect(response).to.not.eql(responseBefore)
+            it('only documents MyType', function () {
+              const responseBefore = _.cloneDeep($.introspectionResponse)
+              const response = $.response
+              expect(response).to.not.eql(responseBefore)
 
-            expect($.introspectionManipulator.getAllTypes()).to.be.an('array').of.length(1)
-            expect($.introspectionManipulator.getType({ name: 'MyType' })).to.be.ok
-          })
-        })
+              expect($.introspectionManipulator.getAllTypes())
+                .to.be.an('array')
+                .of.length(1)
+              expect($.introspectionManipulator.getType({ name: 'MyType' })).to
+                .be.ok
+            })
+          }
+        )
       })
 
       context('scalarGraphql is true', function () {
@@ -269,47 +281,92 @@ describe('augmenters', function () {
       })
 
       describe('undocumented metadata directive', function () {
-        context('metadata directive says MyType should NOT be documented', function () {
-          def('metadata', () => {
-            return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, { undocumented: true })
-          })
+        context(
+          'metadata directive says MyType should NOT be documented',
+          function () {
+            def('metadata', () => {
+              return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, {
+                undocumented: true,
+              })
+            })
 
-          it('does not document MyType', function () {
-            const responseBefore = _.cloneDeep($.introspectionResponse)
-            const response = $.response
-            expect(response).to.not.eql(responseBefore)
+            it('does not document MyType', function () {
+              const responseBefore = _.cloneDeep($.introspectionResponse)
+              const response = $.response
+              expect(response).to.not.eql(responseBefore)
 
-            expect($.introspectionManipulator.getType({ name: 'MyType' })).to.not.be.ok
-          })
+              expect($.introspectionManipulator.getType({ name: 'MyType' })).to
+                .not.be.ok
+            })
 
-          // Removal of Types fields, Mutations and Queries that have a return type that is not
-          // documented.
+            // Removal of Types fields, Mutations and Queries that have a return type that is not
+            // documented.
 
-          it('removes some Type Fields, Queries and Mutations due to MyType not existing', function () {
-            const responseBefore = _.cloneDeep($.introspectionResponse)
-            const response = $.response
-            expect(response).to.not.eql(responseBefore)
+            it('removes some Type Fields, Queries and Mutations due to MyType not existing', function () {
+              const responseBefore = _.cloneDeep($.introspectionResponse)
+              const response = $.response
+              expect(response).to.not.eql(responseBefore)
 
-            // myField is gone b/c it was MyType
-            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myField' })).to.not.be.ok
+              // myField is gone b/c it was MyType
+              expect(
+                $.introspectionManipulator.getField({
+                  typeName: 'OtherType',
+                  fieldName: 'myField',
+                })
+              ).to.not.be.ok
 
-            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myOtherField' })).to.be.ok
-            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNonNullables' })).to.be.ok
-            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNullables' })).to.be.ok
-            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNonNullables' })).to.be.ok
-            expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNullables' })).to.be.ok
+              expect(
+                $.introspectionManipulator.getField({
+                  typeName: 'OtherType',
+                  fieldName: 'myOtherField',
+                })
+              ).to.be.ok
+              expect(
+                $.introspectionManipulator.getField({
+                  typeName: 'OtherType',
+                  fieldName: 'nonRequiredArrayOfNonNullables',
+                })
+              ).to.be.ok
+              expect(
+                $.introspectionManipulator.getField({
+                  typeName: 'OtherType',
+                  fieldName: 'nonRequiredArrayOfNullables',
+                })
+              ).to.be.ok
+              expect(
+                $.introspectionManipulator.getField({
+                  typeName: 'OtherType',
+                  fieldName: 'requiredArrayOfNonNullables',
+                })
+              ).to.be.ok
+              expect(
+                $.introspectionManipulator.getField({
+                  typeName: 'OtherType',
+                  fieldName: 'requiredArrayOfNullables',
+                })
+              ).to.be.ok
 
-            // myOtherQuery is gone b/c its return type was MyType
-            expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to.not.be.ok
+              // myOtherQuery is gone b/c its return type was MyType
+              expect(
+                $.introspectionManipulator.getQuery({ name: 'myOtherQuery' })
+              ).to.not.be.ok
 
-            expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be.ok
+              expect($.introspectionManipulator.getQuery({ name: 'myQuery' }))
+                .to.be.ok
 
-            // myOtherMutation is gone b/c its return type was MyType
-            expect($.introspectionManipulator.getMutation({ name: 'myOtherMutation' })).to.not.be.ok
+              // myOtherMutation is gone b/c its return type was MyType
+              expect(
+                $.introspectionManipulator.getMutation({
+                  name: 'myOtherMutation',
+                })
+              ).to.not.be.ok
 
-            expect($.introspectionManipulator.getMutation({ name: 'myMutation' })).to.be.ok
-          })
-        })
+              expect(
+                $.introspectionManipulator.getMutation({ name: 'myMutation' })
+              ).to.be.ok
+            })
+          }
+        )
       })
     })
 
@@ -317,24 +374,68 @@ describe('augmenters', function () {
       afterEach(() => {
         // Make sure it does not mess up Query or Mutation
         expect($.introspectionManipulator.getQueryType()).to.be.ok
-        expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to.be.ok
-        expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be.ok
+        expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to
+          .be.ok
+        expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be
+          .ok
         expect($.introspectionManipulator.getMutationType()).to.be.ok
-        expect($.introspectionManipulator.getMutation({ name: 'myOtherMutation' })).to.be.ok
-        expect($.introspectionManipulator.getMutation({ name: 'myMutation' })).to.be.ok
+        expect(
+          $.introspectionManipulator.getMutation({ name: 'myOtherMutation' })
+        ).to.be.ok
+        expect($.introspectionManipulator.getMutation({ name: 'myMutation' }))
+          .to.be.ok
       })
 
       it('shows at least some things by default', function () {
-        expect($.introspectionManipulator.getField({ typeName: 'MyType', fieldName: 'myField' })).to.be.ok
-        expect($.introspectionManipulator.getField({ typeName: 'MyType', fieldName: 'myOtherField' })).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'MyType',
+            fieldName: 'myField',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'MyType',
+            fieldName: 'myOtherField',
+          })
+        ).to.be.ok
 
-
-        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myField' })).to.be.ok
-        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'myOtherField' })).to.be.ok
-        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNonNullables' })).to.be.ok
-        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'nonRequiredArrayOfNullables' })).to.be.ok
-        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNonNullables' })).to.be.ok
-        expect($.introspectionManipulator.getField({ typeName: 'OtherType', fieldName: 'requiredArrayOfNullables' })).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'OtherType',
+            fieldName: 'myField',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'OtherType',
+            fieldName: 'myOtherField',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'OtherType',
+            fieldName: 'nonRequiredArrayOfNonNullables',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'OtherType',
+            fieldName: 'nonRequiredArrayOfNullables',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'OtherType',
+            fieldName: 'requiredArrayOfNonNullables',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getField({
+            typeName: 'OtherType',
+            fieldName: 'requiredArrayOfNullables',
+          })
+        ).to.be.ok
       })
 
       context('fieldDocumentedDefault is false', function () {
@@ -345,53 +446,75 @@ describe('augmenters', function () {
           const response = $.response
           expect(response).to.not.eql(responseBefore)
 
-          let fields = $.introspectionManipulator.getType({ name: 'MyType' }).fields
+          let fields = $.introspectionManipulator.getType({
+            name: 'MyType',
+          }).fields
           expect(fields).to.be.null
 
-          fields = $.introspectionManipulator.getType({ name: 'OtherType' }).fields
+          fields = $.introspectionManipulator.getType({
+            name: 'OtherType',
+          }).fields
           expect(fields).to.be.null
         })
 
-        context('metadata directive says MyType should be documented', function () {
-          def('metadata', () => {
-            return _.set($.metadataBase, `OBJECT.MyType.fields.myField.${$.metadatasPath}`, { documented: true })
-          })
+        context(
+          'metadata directive says MyType should be documented',
+          function () {
+            def('metadata', () => {
+              return _.set(
+                $.metadataBase,
+                `OBJECT.MyType.fields.myField.${$.metadatasPath}`,
+                { documented: true }
+              )
+            })
 
-          it('only documents myField', function () {
-            const responseBefore = _.cloneDeep($.introspectionResponse)
-            const response = $.response
-            expect(response).to.not.eql(responseBefore)
+            it('only documents myField', function () {
+              const responseBefore = _.cloneDeep($.introspectionResponse)
+              const response = $.response
+              expect(response).to.not.eql(responseBefore)
 
-            let fields = $.introspectionManipulator.getType({ name: 'MyType' }).fields
-            // myField is the only one there
-            expect(fields).to.be.an('array').of.length(1)
-            expect(fields[0].name).to.eql('myField')
+              let fields = $.introspectionManipulator.getType({
+                name: 'MyType',
+              }).fields
+              // myField is the only one there
+              expect(fields).to.be.an('array').of.length(1)
+              expect(fields[0].name).to.eql('myField')
 
-            // No fields on OtherType
-            fields = $.introspectionManipulator.getType({ name: 'OtherType' }).fields
-            expect(fields).to.be.null
-          })
-        })
+              // No fields on OtherType
+              fields = $.introspectionManipulator.getType({
+                name: 'OtherType',
+              }).fields
+              expect(fields).to.be.null
+            })
+          }
+        )
       })
     })
 
     describe('Queries and Mutations', function () {
       afterEach(() => {
         // Make sure it does not mess up Types
-        expect($.introspectionManipulator.getAllTypes()).to.be.an('array').of.length.gt(4)
+        expect($.introspectionManipulator.getAllTypes())
+          .to.be.an('array')
+          .of.length.gt(4)
       })
 
       it('shows at least some things by default', function () {
-        expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be.ok
-        expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to.be.ok
+        expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).to.be
+          .ok
+        expect($.introspectionManipulator.getQuery({ name: 'myOtherQuery' })).to
+          .be.ok
 
-        expect($.introspectionManipulator.getMutation({ name: 'myMutation' })).to.be.ok
-        expect($.introspectionManipulator.getMutation({ name: 'myOtherMutation' })).to.be.ok
+        expect($.introspectionManipulator.getMutation({ name: 'myMutation' }))
+          .to.be.ok
+        expect(
+          $.introspectionManipulator.getMutation({ name: 'myOtherMutation' })
+        ).to.be.ok
       })
 
       // Tests for top-level "should we document this at all" options
       ;[
-        ['queriesDocumentedDefault', 'Query', 'Mutation' ],
+        ['queriesDocumentedDefault', 'Query', 'Mutation'],
         ['mutationsDocumentedDefault', 'Mutation', 'Query'],
       ].forEach(([option, thing, otherThing]) => {
         context(`${option} is false`, function () {
@@ -403,86 +526,123 @@ describe('augmenters', function () {
             expect(response).to.not.eql(responseBefore)
 
             expect($.introspectionManipulator[`get${thing}Type`]()).to.not.be.ok
-            expect($.introspectionManipulator[`get${otherThing}Type`]()).to.be.ok
+            expect(
+              $.introspectionManipulator[`get${otherThing}Type`]()
+            ).to.be.ok
           })
         })
       })
 
-
       // Tests for 1-by-1 undocumentedness
       ;[
-        ['queryDocumentedDefault', 'Query', 'Mutation', 'myOtherQuery', 'myMutation'],
-        ['mutationDocumentedDefault', 'Mutation', 'Query', 'myOtherMutation', 'myQuery'],
-      ].forEach(([option, thing, otherThing, exceptionName, otherThingTest]) => {
-        context(`${option} is false`, function () {
-          def(option, false)
+        [
+          'queryDocumentedDefault',
+          'Query',
+          'Mutation',
+          'myOtherQuery',
+          'myMutation',
+        ],
+        [
+          'mutationDocumentedDefault',
+          'Mutation',
+          'Query',
+          'myOtherMutation',
+          'myQuery',
+        ],
+      ].forEach(
+        ([option, thing, otherThing, exceptionName, otherThingTest]) => {
+          context(`${option} is false`, function () {
+            def(option, false)
 
-          afterEach(() => {
-            // Make sure that at least 1 thing from the other thing is OK
-            expect($.introspectionManipulator[`get${otherThing}`]({ name: otherThingTest })).to.be.ok
-          })
-
-          it(`does not show any ${thing}s`, function () {
-            const responseBefore = _.cloneDeep($.introspectionResponse)
-            const response = $.response
-            expect(response).to.not.eql(responseBefore)
-
-            const thingType = $.introspectionManipulator[`get${thing}Type`]()
-            const otherThingType = $.introspectionManipulator[`get${otherThing}Type`]()
-
-            // Both things should be there
-            expect(thingType).to.be.ok
-            expect(otherThingType).to.be.ok
-
-            // But only 1 should have any fields
-            expect(thingType.fields).to.be.null
-            expect(otherThingType.fields).to.be.an('array').of.length(2)
-          })
-
-          context(`metadata directive says ${exceptionName} should be documented`, function () {
-            def('metadata', () => {
-              return _.set($.metadataBase, `OBJECT.${thing}.fields.${exceptionName}.${$.metadatasPath}`, { documented: true })
+            afterEach(() => {
+              // Make sure that at least 1 thing from the other thing is OK
+              expect(
+                $.introspectionManipulator[`get${otherThing}`]({
+                  name: otherThingTest,
+                })
+              ).to.be.ok
             })
 
-            it(`only documents ${exceptionName}`, function () {
+            it(`does not show any ${thing}s`, function () {
               const responseBefore = _.cloneDeep($.introspectionResponse)
               const response = $.response
               expect(response).to.not.eql(responseBefore)
 
               const thingType = $.introspectionManipulator[`get${thing}Type`]()
-              const otherThingType = $.introspectionManipulator[`get${otherThing}Type`]()
+              const otherThingType =
+                $.introspectionManipulator[`get${otherThing}Type`]()
 
               // Both things should be there
               expect(thingType).to.be.ok
               expect(otherThingType).to.be.ok
 
-              // Thing should have just the 1 field, and it should be the exception
-              expect(thingType.fields).to.be.an('array').of.length(1)
-              expect($.introspectionManipulator[`get${thing}`]({ name: exceptionName })).to.be.ok
-
-              // OtherThing should be normal
+              // But only 1 should have any fields
+              expect(thingType.fields).to.be.null
               expect(otherThingType.fields).to.be.an('array').of.length(2)
             })
+
+            context(
+              `metadata directive says ${exceptionName} should be documented`,
+              function () {
+                def('metadata', () => {
+                  return _.set(
+                    $.metadataBase,
+                    `OBJECT.${thing}.fields.${exceptionName}.${$.metadatasPath}`,
+                    { documented: true }
+                  )
+                })
+
+                it(`only documents ${exceptionName}`, function () {
+                  const responseBefore = _.cloneDeep($.introspectionResponse)
+                  const response = $.response
+                  expect(response).to.not.eql(responseBefore)
+
+                  const thingType =
+                    $.introspectionManipulator[`get${thing}Type`]()
+                  const otherThingType =
+                    $.introspectionManipulator[`get${otherThing}Type`]()
+
+                  // Both things should be there
+                  expect(thingType).to.be.ok
+                  expect(otherThingType).to.be.ok
+
+                  // Thing should have just the 1 field, and it should be the exception
+                  expect(thingType.fields).to.be.an('array').of.length(1)
+                  expect(
+                    $.introspectionManipulator[`get${thing}`]({
+                      name: exceptionName,
+                    })
+                  ).to.be.ok
+
+                  // OtherThing should be normal
+                  expect(otherThingType.fields).to.be.an('array').of.length(2)
+                })
+              }
+            )
           })
-        })
-      })
+        }
+      )
     })
 
     // Same code for Types and [Queries / Mutations]?
     describe('Arguments', function () {
       it('shows at least some things by default', function () {
-        [
+        ;[
           ['Query', 'myQuery'],
           ['Mutation', 'myMutation'],
           ['MyType', 'myField'],
         ].forEach(([typeName, fieldName]) => {
-          ['myArg', 'myOtherArg'].forEach((argName) => {
-            expect($.introspectionManipulator.getArg({ typeName, fieldName, argName })).to.be.ok
+          ;['myArg', 'myOtherArg'].forEach((argName) => {
+            expect(
+              $.introspectionManipulator.getArg({
+                typeName,
+                fieldName,
+                argName,
+              })
+            ).to.be.ok
           })
-
         })
       })
-
       ;[
         [
           'argDocumentedDefault',
@@ -518,9 +678,13 @@ describe('augmenters', function () {
           afterEach(() => {
             // Unaffecteds should still have all their arguments
             for (const notAffected of notAffecteds) {
-              expect($.introspectionManipulator.getField(notAffected).args).to.be.an('array').of.length(2)
+              expect($.introspectionManipulator.getField(notAffected).args)
+                .to.be.an('array')
+                .of.length(2)
               for (const argName of ['myArg', 'myOtherArg']) {
-                expect($.introspectionManipulator.getArg({ ...notAffected, argName })).to.be.ok
+                expect(
+                  $.introspectionManipulator.getArg({ ...notAffected, argName })
+                ).to.be.ok
               }
             }
           })
@@ -531,26 +695,42 @@ describe('augmenters', function () {
             expect(response).to.not.eql(responseBefore)
 
             // Affected thing should be empty of arguments
-            expect($.introspectionManipulator.getField(affected).args).to.eql([])
+            expect($.introspectionManipulator.getField(affected).args).to.eql(
+              []
+            )
           })
 
-          context(`metadata directive says myOtherArg should be documented`, function () {
-            const exceptionName = 'myOtherArg'
+          context(
+            `metadata directive says myOtherArg should be documented`,
+            function () {
+              const exceptionName = 'myOtherArg'
 
-            def('metadata', () => {
-              return _.set($.metadataBase, `OBJECT.${affected.typeName}.fields.${affected.fieldName}.args.${exceptionName}.${$.metadatasPath}`, { documented: true })
-            })
+              def('metadata', () => {
+                return _.set(
+                  $.metadataBase,
+                  `OBJECT.${affected.typeName}.fields.${affected.fieldName}.args.${exceptionName}.${$.metadatasPath}`,
+                  { documented: true }
+                )
+              })
 
-            it(`only documents ${exceptionName}`, function () {
-              const responseBefore = _.cloneDeep($.introspectionResponse)
-              const response = $.response
-              expect(response).to.not.eql(responseBefore)
+              it(`only documents ${exceptionName}`, function () {
+                const responseBefore = _.cloneDeep($.introspectionResponse)
+                const response = $.response
+                expect(response).to.not.eql(responseBefore)
 
-              // Affected thing should have just the exceptional argument
-              expect($.introspectionManipulator.getField(affected).args).to.be.an('array').of.length(1)
-              expect($.introspectionManipulator.getArg({ ...affected, argName: exceptionName })).to.be.ok
-            })
-          })
+                // Affected thing should have just the exceptional argument
+                expect($.introspectionManipulator.getField(affected).args)
+                  .to.be.an('array')
+                  .of.length(1)
+                expect(
+                  $.introspectionManipulator.getArg({
+                    ...affected,
+                    argName: exceptionName,
+                  })
+                ).to.be.ok
+              })
+            }
+          )
         })
       })
     })
@@ -561,7 +741,7 @@ describe('augmenters', function () {
 
   describe('addExamples', function () {
     def('metadataBase', () => ({
-      'OBJECT': {
+      OBJECT: {
         MyType: {
           // Should have no impact, example-wise
           metadata: $.theMetadata,
@@ -571,10 +751,10 @@ describe('augmenters', function () {
               args: {
                 myArg: {
                   metadata: $.theMetadata,
-                }
-              }
-            }
-          }
+                },
+              },
+            },
+          },
         },
         Query: {
           // Should have no impact, example-wise
@@ -585,10 +765,10 @@ describe('augmenters', function () {
               args: {
                 myArg: {
                   metadata: $.theMetadata,
-                }
-              }
-            }
-          }
+                },
+              },
+            },
+          },
         },
         Mutation: {
           // Should have no impact, example-wise
@@ -599,13 +779,13 @@ describe('augmenters', function () {
               args: {
                 myArg: {
                   metadata: $.theMetadata,
-                }
-              }
-            }
-          }
-        }
+                },
+              },
+            },
+          },
+        },
       },
-      'INPUT_OBJECT': {
+      INPUT_OBJECT: {
         MyInput: {
           // Should have no impact, example-wise
           metadata: $.theMetadata,
@@ -618,48 +798,94 @@ describe('augmenters', function () {
             },
           },
         },
-      }
+      },
     }))
 
     def('metadata', () => $.metadataBase)
 
-    def('result', () => addExamples({
-      introspectionManipulator: $.introspectionManipulator,
-      introspectionOptions: $.introspectionOptions,
-      extensionOptions: $.extensionOptions,
-    }))
+    def('result', () =>
+      addExamples({
+        introspectionManipulator: $.introspectionManipulator,
+        introspectionOptions: $.introspectionOptions,
+      })
+    )
 
     // Common stuff across both tests, if you define things properly
-    function commonTests () {
+    function commonTests() {
       const responseBefore = _.cloneDeep($.introspectionResponse)
       const response = $.response
       expect(response).to.not.eql(responseBefore)
 
       // No top-level examples, even if ther was something in the metadata for them
-      expect($.introspectionManipulator.getType({ name: 'MyType' })).to.be.an('object').that.does.not.have.any.keys('example')
-      expect($.introspectionManipulator.getType({ name: 'MyInput', kind: KIND_INPUT_OBJECT })).to.be.an('object').that.does.not.have.any.keys('example')
-      expect($.introspectionManipulator.getType({ name: 'Query' })).to.be.an('object').that.does.not.have.any.keys('example')
-      expect($.introspectionManipulator.getType({ name: 'Mutation' })).to.be.an('object').that.does.not.have.any.keys('example')
+      expect($.introspectionManipulator.getType({ name: 'MyType' }))
+        .to.be.an('object')
+        .that.does.not.have.any.keys('example')
+      expect(
+        $.introspectionManipulator.getType({
+          name: 'MyInput',
+          kind: KIND_INPUT_OBJECT,
+        })
+      )
+        .to.be.an('object')
+        .that.does.not.have.any.keys('example')
+      expect($.introspectionManipulator.getType({ name: 'Query' }))
+        .to.be.an('object')
+        .that.does.not.have.any.keys('example')
+      expect($.introspectionManipulator.getType({ name: 'Mutation' }))
+        .to.be.an('object')
+        .that.does.not.have.any.keys('example')
 
       // Type Fields have example...
-      expect($.introspectionManipulator.getField({ typeName: 'MyType', fieldName: 'myField' }).example).to.eql($.processedExample)
+      expect(
+        $.introspectionManipulator.getField({
+          typeName: 'MyType',
+          fieldName: 'myField',
+        }).example
+      ).to.eql($.processedExample)
 
       // Input Fields have example...
-      expect($.introspectionManipulator.getInputField({ inputName: 'MyInput', inputFieldName: 'inputOne' }).example).to.eql($.processedExample)
+      expect(
+        $.introspectionManipulator.getInputField({
+          inputName: 'MyInput',
+          inputFieldName: 'inputOne',
+        }).example
+      ).to.eql($.processedExample)
 
       // ...queries and mutations DO NOT
-      expect($.introspectionManipulator.getQuery({ name: 'myQuery' })).be.an('object').that.does.not.have.any.keys('example')
-      expect($.introspectionManipulator.getMutation({ name: 'myMutation' })).be.an('object').that.does.not.have.any.keys('example')
+      expect($.introspectionManipulator.getQuery({ name: 'myQuery' }))
+        .be.an('object')
+        .that.does.not.have.any.keys('example')
+      expect($.introspectionManipulator.getMutation({ name: 'myMutation' }))
+        .be.an('object')
+        .that.does.not.have.any.keys('example')
 
       // Arguments on all things have an example
-      expect($.introspectionManipulator.getArg({ typeName: 'MyType', fieldName: 'myField', argName: 'myArg' }).example).to.eql($.processedExample)
-      expect($.introspectionManipulator.getArg({ typeName: 'Query', fieldName: 'myQuery', argName: 'myArg' }).example).to.eql($.processedExample)
-      expect($.introspectionManipulator.getArg({ typeName: 'Mutation', fieldName: 'myMutation', argName: 'myArg' }).example).to.eql($.processedExample)
+      expect(
+        $.introspectionManipulator.getArg({
+          typeName: 'MyType',
+          fieldName: 'myField',
+          argName: 'myArg',
+        }).example
+      ).to.eql($.processedExample)
+      expect(
+        $.introspectionManipulator.getArg({
+          typeName: 'Query',
+          fieldName: 'myQuery',
+          argName: 'myArg',
+        }).example
+      ).to.eql($.processedExample)
+      expect(
+        $.introspectionManipulator.getArg({
+          typeName: 'Mutation',
+          fieldName: 'myMutation',
+          argName: 'myArg',
+        }).example
+      ).to.eql($.processedExample)
     }
 
     context('"example" is in metadata', function () {
-      def('example', "fooey")
-      def('processedExample', () => addSpecialTags($.example, { placeholdQuotes: true, scalarGraphql: false }))
+      def('example', 'fooey')
+      def('processedExample', () => $.example)
       def('theMetadata', () => ({ example: $.example }))
 
       it('adds example to Introspection Query Response', function () {
@@ -668,11 +894,11 @@ describe('augmenters', function () {
 
       context('"examples" is *also* in metadata', function () {
         // Yes, weird that this is a scalar/single value and not an array, but it will be arrayed below
-        def('examplesExample', "barrey")
-        def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true, scalarGraphql: false }))
+        def('examplesExample', 'barrey')
+        def('processedExample', () => $.examplesExample)
         def('theMetadata', () => ({
           example: $.example,
-          examples: [$.examplesExample]
+          examples: [$.examplesExample],
         }))
 
         it('adds one of the examples to JSON Schema', function () {
@@ -683,8 +909,8 @@ describe('augmenters', function () {
 
     context('examples in metadata', function () {
       // Yes, weird that this is a scalar/single value and not an array
-      def('examplesExample', "barrey")
-      def('processedExample', () => addSpecialTags($.examplesExample, { placeholdQuotes: true, scalarGraphql: false }))
+      def('examplesExample', 'barrey')
+      def('processedExample', () => $.examplesExample)
       def('theMetadata', () => ({ examples: [$.examplesExample] }))
 
       it('adds one of the examples to JSON Schema', function () {
@@ -693,7 +919,9 @@ describe('augmenters', function () {
     })
 
     context('example added by processor', function () {
-      def('schemaSDL', () => `
+      def(
+        'schemaSDL',
+        () => `
         ${$.schemaSDLBase}
 
         scalar EmailAddress
@@ -717,7 +945,8 @@ describe('augmenters', function () {
           inputFour: [Int!]
           inputFive: [Int!]!
         }
-      `)
+      `
+      )
 
       def('metadata', () => ({}))
 
@@ -735,8 +964,12 @@ describe('augmenters', function () {
           expect(response).to.not.eql(responseBefore)
 
           // OK, WTF were special tags again? And placeholding quotes?
-          expect($.introspectionManipulator.getType({ kind: KIND_SCALAR, name: 'String' }).example).to.eql(
-            addSpecialTags('42: Life, the Universe and Everything', { placeholdQuotes: true, scalarGraphql: false }))
+          expect(
+            $.introspectionManipulator.getType({
+              kind: KIND_SCALAR,
+              name: 'String',
+            }).example
+          ).to.eql('42: Life, the Universe and Everything')
         })
       })
 
@@ -745,7 +978,6 @@ describe('augmenters', function () {
           const responseBefore = _.cloneDeep($.introspectionResponse)
           const response = $.response
           expect(response).to.not.eql(responseBefore)
-
           ;[
             ['MyType', 'myField', 'String', true],
             ['MyType', 'myOtherField', 'OtherType', false],
@@ -755,17 +987,25 @@ describe('augmenters', function () {
 
             // This field should have an example
             ['YetAnotherType', 'fieldWithExample', 'String', true],
-          ].forEach(([typeName, fieldName, returnTypeName, placeholdQuotes]) => {
-            expect($.introspectionManipulator.getField({ typeName, fieldName }).example).to.eql(
-              addSpecialTags(
-                [typeName, fieldName, returnTypeName, 'example'].join('.'),
-                { placeholdQuotes, scalarGraphql: false }
+          ].forEach(
+            ([typeName, fieldName, returnTypeName /*placeholdQuotes*/]) => {
+              expect(
+                $.introspectionManipulator.getField({ typeName, fieldName })
+                  .example
+              ).to.eql(
+                // addSpecialTags(
+                [typeName, fieldName, returnTypeName, 'example'].join('.')
+                // { placeholdQuotes }
+                // )
               )
-            )
-          })
+            }
+          )
 
           // This field should NOT have an example
-          const fieldWithoutExample = $.introspectionManipulator.getField({ typeName: 'YetAnotherType', fieldName: 'fieldWithoutExample' })
+          const fieldWithoutExample = $.introspectionManipulator.getField({
+            typeName: 'YetAnotherType',
+            fieldName: 'fieldWithoutExample',
+          })
           expect(fieldWithoutExample).to.be.ok
           expect(fieldWithoutExample.example).to.not.be.ok
         })
@@ -776,25 +1016,45 @@ describe('augmenters', function () {
           const responseBefore = _.cloneDeep($.introspectionResponse)
           const response = $.response
           expect(response).to.not.eql(responseBefore)
-
           ;[
             ['AnotherInput', 'inputOne', 'Int', false, false],
             ['AnotherInput', 'inputTwo', 'Int', true, false],
             ['AnotherInput', 'inputThree', 'Int', false, false],
             ['AnotherInput', 'inputFour', 'Int', true, true],
             ['AnotherInput', 'inputFive', 'Int', true, true],
-          ].forEach(([inputName, inputFieldName, inputFieldType, isArray, itemsRequired]) => {
-
-            expect($.introspectionManipulator.getInputField({ inputName, inputFieldName }).example).to.eql(
-              addSpecialTags(
-                [inputName, inputFieldName, inputFieldType, isArray, itemsRequired, 'example'].join('.'), {scalarGraphql: false}
+          ].forEach(
+            ([
+              inputName,
+              inputFieldName,
+              inputFieldType,
+              isArray,
+              itemsRequired,
+            ]) => {
+              expect(
+                $.introspectionManipulator.getInputField({
+                  inputName,
+                  inputFieldName,
+                }).example
+              ).to.eql(
+                // addSpecialTags(
+                [
+                  inputName,
+                  inputFieldName,
+                  inputFieldType,
+                  isArray,
+                  itemsRequired,
+                  'example',
+                ].join('.')
+                // )
               )
-            )
-          })
-
+            }
+          )
           ;['inputOne', 'inputTwo'].forEach((fieldWithoutExample) => {
             // This field should NOT have an example
-            const inputField = $.introspectionManipulator.getInputField({ inputName: 'MyInput', inputFieldName: fieldWithoutExample })
+            const inputField = $.introspectionManipulator.getInputField({
+              inputName: 'MyInput',
+              inputFieldName: fieldWithoutExample,
+            })
             expect(inputField).to.be.ok
             expect(inputField.example).to.not.be.ok
           })
@@ -806,27 +1066,46 @@ describe('augmenters', function () {
           const responseBefore = _.cloneDeep($.introspectionResponse)
           const response = $.response
           expect(response).to.not.eql(responseBefore)
-
           ;[
             ['MyType', 'myField', 'myArg', 'String', true],
             ['MyType', 'myField', 'myOtherArg', 'String', true],
 
-            ['YetAnotherType', 'fieldWithExample', 'argWithExample', 'String', true],
-            ['YetAnotherType', 'fieldWithoutExample', 'argWithExample', 'Boolean', false],
+            [
+              'YetAnotherType',
+              'fieldWithExample',
+              'argWithExample',
+              'String',
+              true,
+            ],
+            [
+              'YetAnotherType',
+              'fieldWithoutExample',
+              'argWithExample',
+              'Boolean',
+              false,
+            ],
 
             ['Query', 'myQuery', 'myArg', 'String', true],
             ['Query', 'myQuery', 'myOtherArg', 'String', true],
 
             ['Mutation', 'myMutation', 'myArg', 'String', true],
             ['Mutation', 'myMutation', 'myOtherArg', 'String', true],
-          ].forEach(([typeName, fieldName, argName, argType, placeholdQuotes]) => {
-            expect($.introspectionManipulator.getArg({ typeName, fieldName, argName }).example).to.eql(
-              addSpecialTags(
-                [typeName, fieldName, argName, argType, 'example'].join('.'),
-                { placeholdQuotes}
+          ].forEach(
+            ([typeName, fieldName, argName, argType /*placeholdQuotes*/]) => {
+              expect(
+                $.introspectionManipulator.getArg({
+                  typeName,
+                  fieldName,
+                  argName,
+                }).example
+              ).to.eql(
+                // addSpecialTags(
+                [typeName, fieldName, argName, argType, 'example'].join('.')
+                // { placeholdQuotes }
+                // )
               )
-            )
-          })
+            }
+          )
 
           // There are no arguments on these, so they should not have arguments, nor examples
           ;[
@@ -836,7 +1115,10 @@ describe('augmenters', function () {
             ['Query', 'myOtherQuery'],
             ['Mutation', 'myOtherMutation'],
           ].forEach(([typeName, fieldName]) => {
-            const field = $.introspectionManipulator.getField({ typeName, fieldName })
+            const field = $.introspectionManipulator.getField({
+              typeName,
+              fieldName,
+            })
             expect(field).to.be.ok
             expect(field.args).to.eql([])
           })

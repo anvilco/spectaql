@@ -1,4 +1,5 @@
-const _ = require('lodash')
+const JSON5 = require('json5')
+// https://www.npmjs.com/package/json-stringify-pretty-compact
 const stringify = require('json-stringify-pretty-compact')
 const cheerio = require('cheerio')
 const marked = require('marked')
@@ -7,25 +8,20 @@ const GraphQLScalars = require('../helpers/graphql-scalars');
 
 
 const highlightGraphQl = require('../spectaql/graphql-hl')
-const {
-  typeIsArray,
-  analyzeTypeIntrospection,
-} = require('../spectaql/type-helpers')
+const { analyzeTypeIntrospection } = require('../spectaql/type-helpers')
 
 const IntrospectionManipulatorModule = require('microfiber')
-const {
-  default: IntrospectionManipulator,
-} = IntrospectionManipulatorModule
+const { default: IntrospectionManipulator } = IntrospectionManipulatorModule
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround
 // them with these crazy tags in order to then strip the tags out later when displaying
 // them.
 const SPECIAL_TAG = 'SPECIALTAG'
-const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, "g")
+const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, 'g')
 
 const QUOTE_TAG = 'QUOTETAG'
-const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, "g")
+const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, 'g')
 
 // Map Scalar types to example data to use from them
 const SCALAR_TO_EXAMPLE = {
@@ -33,11 +29,19 @@ const SCALAR_TO_EXAMPLE = {
   Int: [123, 987],
   Float: [123.45, 987.65],
   Boolean: [true, false],
-  Date: [new Date(), new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf())].map((date) => date.toISOString()),
+  Date: [
+    new Date(),
+    new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf()),
+  ].map((date) => date.toISOString()),
+  DateTime: [
+    new Date(),
+    new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf()),
+  ].map((date) => date.toISOString()),
   JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
+  ID: [4, '4'],
 }
 
-function unwindSpecialTags (str) {
+function unwindSpecialTags(str) {
   if (typeof str !== 'string') {
     return str
   }
@@ -45,36 +49,17 @@ function unwindSpecialTags (str) {
   return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
 }
 
-function getExampleForScalar (scalarName, { scalarGraphql} = {scalarGraphql: false} ) {
-  let replacement = SCALAR_TO_EXAMPLE[scalarName];
-  if(!replacement && scalarGraphql) {
-    replacement = GraphQLScalars.getExampleForGraphQLScalar(scalarName);
-  }
-  if (typeof replacement !== 'undefined') {
-    return Array.isArray(replacement) ? replacement[Math.floor(Math.random() * replacement.length)] : replacement
-  }
+function jsonReplacer(name, value) {
+  return value
+  // return addSpecialTags(value)
 }
 
-function jsonReplacer (_, value, options) {
-  return addSpecialTags(value, options)
-}
-
-function addSpecialTags (value, { placeholdQuotes = false, scalarGraphql } = {}) {
+function addSpecialTags(value) {
   if (typeof value !== 'string') return value
-
-  const replacement = getExampleForScalar(value, {scalarGraphql})
-  if (typeof replacement !== 'undefined') {
-    return replacement
-  }
-
-  if (placeholdQuotes) {
-    value = addQuoteTags(value)
-  }
-
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
 
-function addQuoteTags (value) {
+function addQuoteTags(value) {
   // Don't quote it if it's already been quoted or doesn't exist
   if (!value || typeof value !== 'string' || value.includes(QUOTE_TAG)) {
     return value
@@ -83,27 +68,9 @@ function addQuoteTags (value) {
   return `${QUOTE_TAG}${value}${QUOTE_TAG}`
 }
 
-function replaceQuotesWithTags (value) {
-  if (!value || typeof value !== 'string') {
-    return value
-  }
-
-  for (const quote of ['"', "'"]) {
-    if (value.startsWith(quote) && value.endsWith(quote)) {
-      return addQuoteTags(value.substring(1, value.length - 1))
-    }
-  }
-
-  return value
-}
-
-var common = {
-
-  addSpecialTags,
-
+const common = {
+  // For testing
   addQuoteTags,
-
-  replaceQuotesWithTags,
 
   /**
    * Render a markdown formatted text as HTML.
@@ -112,15 +79,18 @@ var common = {
    *      If this options is set to true, the <p>-tag is stripped.
    * @returns {string} the markdown rendered as HTML.
    */
-  markdown: function (value, {stripParagraph = false, addClass = false} = {}) {
+  markdown: function (
+    value,
+    { stripParagraph = false, addClass = false } = {}
+  ) {
     if (!value) {
-      return value;
+      return value
     }
 
     var html = marked(value)
     // We strip the surrounding <p>-tag, if
     if (stripParagraph) {
-      let $ = cheerio.load("<root>" + html + "</root>")('root')
+      let $ = cheerio.load('<root>' + html + '</root>')('root')
       // Only strip <p>-tags and only if there is just one of them.
       if ($.children().length === 1 && $.children('p').length === 1) {
         html = $.children('p').html()
@@ -128,194 +98,86 @@ var common = {
     }
 
     if (addClass) {
-      let $ = cheerio.load("<root>" + html + "</root>")('root')
+      let $ = cheerio.load('<root>' + html + '</root>')('root')
       if ($.children().length === 1) {
         $.children().first().addClass(addClass)
         html = $.html()
       }
     }
 
-    return html;
+    return html
   },
 
   highlight: function (code, lang) {
-    var highlighted;
+    var highlighted
     if (lang) {
       try {
-        highlighted = highlight.highlight(lang, code).value;
+        highlighted = highlight.highlight(lang, code).value
       } catch (e) {
         console.error(e)
       }
     }
     if (!highlighted) {
-      highlighted = highlight.highlightAuto(code).value;
+      highlighted = highlight.highlightAuto(code).value
     }
 
-    return '<pre><code' +
-      (lang ?
-        ' class="hljs ' + this.options.langPrefix + lang + '"' :
-        ' class="hljs"') +
+    return (
+      '<pre><code' +
+      (lang
+        ? ' class="hljs ' + this.options.langPrefix + lang + '"'
+        : ' class="hljs"') +
       '>' +
-      highlighted //code //
-      +
-      '\n</code></pre>\n';
+      highlighted + //code //
+      '\n</code></pre>\n'
+    )
   },
 
-  // formatSchema: function(value) {
-  //   var cloned;
-  //   if (typeof value === 'object' && typeof value.properties === 'object') {
-  //     if (value.example) {
-  //       // Use the supplied example
-  //       value = value.example;
-  //       cloned = _.cloneDeep(value)
-  //     } else {
-  //       // Create json object of keys : type info string
-  //       value = value.properties;
-  //       cloned = _.cloneDeep(value)
-  //       Object.keys(cloned).forEach(function(propName) {
-  //         var prop = cloned[propName];
-  //         if (prop.type) {
-  //           if (prop.example) {
-  //             cloned[propName] = prop.example;
-  //           }
-  //           else {
-  //             cloned[propName] = prop.type;
-  //             if (prop.format) {
-  //               cloned[propName] += ('(' + prop.format + ')')
-  //             }
-  //           }
-  //         }
-  //       })
-  //     }
-  //   }
-  //   return cloned;
-  // },
+  getExampleForScalarDefinition: function (scalarDefinition, {scalarGraphql = false}) {
+    const { name, kind } = scalarDefinition
 
-  formatExample: function (ref, root, options) {
-    if (!ref) {
-      console.error('Cannot format NULL object ' + ref)
-      // throw 'Cannot format NULL object ' + value;
-      return;
+    if (kind !== 'SCALAR') {
+      return
     }
-
-    if (typeof (ref) == "string") {
-      // console.error('ref is a string! ' + ref)
-      return ref
+    let replacement = SCALAR_TO_EXAMPLE[name]
+    if(!replacement && scalarGraphql) {
+      replacement = GraphQLScalars.getExampleForGraphQLScalar(name);
     }
-
-    if (ref.schema) {
-      ref = ref.schema
+    if (typeof replacement === 'undefined') {
+      return
     }
-
-    // NOTE: Large schemas with circular references have been known to exceed
-    // maximum stack size, so bail out here before that happens.
-    // A better fix is required.
-    // /usr/local/bin/node bin/spectacle -d test/fixtures/billing.yaml
-    if (!options.depth) {
-      options.depth = 0;
-    }
-
-    options.depth++;
-
-    if (options.depth > 100) {
-      // console.log('max depth', ref)
-      return;
-    }
-
-    var showReadOnly = options.showReadOnly !== false
-
-    // If there's an example, use it.
-    if (ref.example !== undefined) {
-      return ref.example
-    } else if (typeof ref.default !== 'undefined') {
-      // If there is a default, use it.
-      return addSpecialTags(ref.default, { placeholdQuotes: true, ...options})
-    } else if (ref.$ref) { // && !ref.type
-      // Don't expand out nested things...just stick their type in there
-      return this.getReferenceName(ref.$ref)
-
-      // var remoteRef = this.resolveSchemaReference(ref.$ref, root)
-      // if (remoteRef) {
-      //   return this.formatExample(remoteRef, root, options)
-      // }
-    } else if (ref.properties) { // && ref.type == 'object'
-      return Object.entries(ref.properties).reduce(
-        (acc, [k, v]) => {
-          // If the value has a properties.return, then it's a "field" on a Type
-          // or an individual "query" or "mutation", and the schema to use for the
-          // example is in properties.return
-          if (v.type === 'object' && _.get(v, 'properties.return')) {
-            v = v.properties.return
-          }
-          if (showReadOnly || v.readOnly !== true) {
-            acc[k] = this.formatExample(v, root, options)
-          }
-
-          return acc
-        },
-        {},
-      )
-    } else if (ref.allOf) {
-      let obj = {};
-      ref.allOf.forEach((parent) => {
-        var prop = this.formatExample(parent, root, options)
-        if (!prop || typeof prop == 'string') {
-          // console.log('skipping property', prop, parent)
-          return
-        }
-        obj = Object.assign(prop, obj)
-      })
-
-      return obj;
-    } else if (ref.anyOf) {
-      // Try to sample from one of the non-null possibilities
-      let samples = ref.anyOf.filter((schema) => schema.type !== 'null')
-      if (!samples.length) {
-        samples = ref.anyOf
-      }
-
-      return this.formatExample(
-        _.sample(samples),
-        root,
-        options
-       )
-    } else if (typeIsArray(ref)) {
-      return [this.formatExample(ref.items, root, options)];
-    } else if (ref.type) {
-      let {
-        type,
-        title,
-        format,
-      } = ref
-
-      const replacement = getExampleForScalar(title, options)
-      if (typeof replacement !== 'undefined') {
-        type = unwindSpecialTags(replacement)
-      }
-
-      return type + (format ? ' (' + format + ')' : '')
-    }
-
-    console.error('Cannot format example on property ', ref, ref.$ref)
+    replacement = Array.isArray(replacement)
+      ? replacement[Math.floor(Math.random() * replacement.length)]
+      : replacement
+    return ['String', 'Date', 'DateTime'].includes(name)
+      ? addSpecialTags(addQuoteTags(replacement))
+      : replacement
   },
 
-  introspectionArgsToVariables: function ({ args, introspectionResponse, introspectionManipulator,  options}) {
+  introspectionArgsToVariables: function ({
+    args,
+    introspectionResponse,
+    introspectionManipulator,
+  }, options) {
     if (!(args && args.length)) {
       return null
     }
 
-    return args.reduce(
-      (acc, arg) => {
-        acc[arg.name] = common.introspectionArgToVariable({ arg, introspectionResponse, introspectionManipulator, options })
-        return acc
-      },
-      {},
-    )
+    return args.reduce((acc, arg) => {
+      acc[arg.name] = common.introspectionArgToVariable({
+        arg,
+        introspectionResponse,
+        introspectionManipulator,
+      }, options)
+      return acc
+    }, {})
   },
 
-
   // Take an Arg from the Introspection JSON, and figure out it's example variable representation
-  introspectionArgToVariable: function ({ arg, introspectionResponse, introspectionManipulator, scalarGraphql }) {
+  introspectionArgToVariable: function ({
+    arg,
+    introspectionResponse,
+    introspectionManipulator,
+  }, options) {
     if (!arg) {
       return null
     }
@@ -324,53 +186,121 @@ var common = {
     if (arg.example) {
       return arg.example
     }
-    // If there is a default, use it.
+
     if (arg.defaultValue) {
-      return addSpecialTags(arg.defaultValue, { placeholdQuotes: true, scalarGraphql});
+      const {
+        underlyingType,
+        // isRequired,
+        isArray,
+        // itemsRequired,
+      } = analyzeTypeIntrospection(arg.type)
+
+      // console.log({
+      //   arg,
+      //   // underlyingTypeDefinition,
+      //   underlyingType,
+      //   isArray,
+      // })
+
+      if (typeof arg.defaultValue === 'string') {
+        if (underlyingType.kind !== 'ENUM') {
+          return JSON5.parse(arg.defaultValue)
+        }
+
+        if (!isArray) {
+          return arg.defaultValue
+        }
+
+        // Take a string like "[RED, GREEN]" and convert it to ["RED", "GREEN"]
+        return arg.defaultValue
+          .substr(1, arg.defaultValue.length - 2)
+          .split(',')
+          .map((val) => val.trim())
+      }
     }
 
-    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+    introspectionManipulator =
+      introspectionManipulator ||
+      new IntrospectionManipulator(introspectionResponse)
 
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(arg.type)
     )
 
-    return common.generateIntrospectionReturnTypeExample({ 
-      thing: arg, underlyingTypeDefinition, originalType: arg.type, scalarGraphql })
+    return common.generateIntrospectionReturnTypeExample({
+      thing: arg,
+      underlyingTypeDefinition,
+      originalType: arg.type,
+    }, options)
   },
 
-  introspectionQueryOrMutationToResponse: function ({ field, introspectionResponse, introspectionManipulator,  scalarGraphql}) {
-    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+  introspectionQueryOrMutationToResponse: function ({
+    field,
+    introspectionResponse,
+    introspectionManipulator,
+  }, options) {
+    introspectionManipulator =
+      introspectionManipulator ||
+      new IntrospectionManipulator(introspectionResponse)
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
     )
 
     // No fields? Just a Scalar then, so return a single value.
     if (!underlyingTypeDefinition.fields) {
-      return common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, originalType: field.type, scalarGraphql })
+      return common.generateIntrospectionReturnTypeExample({
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      }, options)
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
-    return underlyingTypeDefinition.fields.reduce(
-      (acc, field) => {
-        const underlyingTypeDefinition = introspectionManipulator.getType(
-          IntrospectionManipulator.digUnderlyingType(field.type)
-        )
-        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, 
-          originalType: field.type, scalarGraphql })
-        return acc
-      },
-      {}
-    )
+    return underlyingTypeDefinition.fields.reduce((acc, field) => {
+      const underlyingTypeDefinition = introspectionManipulator.getType(
+        IntrospectionManipulator.digUnderlyingType(field.type)
+      )
+      acc[field.name] = common.generateIntrospectionReturnTypeExample({
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      },options)
+      return acc
+    }, {})
   },
 
-  generateIntrospectionReturnTypeExample: function ({ thing, underlyingTypeDefinition, originalType, scalarGraphql }) {
-    let example = thing.example || originalType.example || underlyingTypeDefinition.example 
-      || getExampleForScalar(underlyingTypeDefinition.name, {scalarGraphql})
+  generateIntrospectionReturnTypeExample: function ({
+    thing,
+    underlyingTypeDefinition,
+    originalType,
+  }, options ) {
+    let example =
+      thing.example ||
+      originalType.example ||
+      underlyingTypeDefinition.example ||
+      (underlyingTypeDefinition.kind === 'ENUM' &&
+        underlyingTypeDefinition.enumValues.length &&
+        addQuoteTags(underlyingTypeDefinition.enumValues[0].name)) ||
+      (underlyingTypeDefinition.kind === 'UNION' &&
+        underlyingTypeDefinition.possibleTypes.length &&
+        addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
+      common.getExampleForScalarDefinition(underlyingTypeDefinition, options)
+
+    // if (thing.name === 'String') {
+    //   console.log(JSON.stringify({
+    //     thing,
+    //     underlyingTypeDefinition,
+    //     originalType,
+    //     example,
+    //   }))
+    // }
+
+    // console.log({example})
     if (typeof example !== 'undefined') {
-      example = unwindSpecialTags(example)
+      // example = unwindSpecialTags(example)
     } else {
-      example = underlyingTypeDefinition.name
+      // example = underlyingTypeDefinition.name
+      example = addSpecialTags(underlyingTypeDefinition.name)
     }
 
     const {
@@ -380,80 +310,62 @@ var common = {
       // itemsRequired,
     } = analyzeTypeIntrospection(originalType)
 
-    return isArray ? [example] : example
+    return isArray && !Array.isArray(example) ? [example] : example
   },
 
-  generateIntrospectionTypeExample: function ({ type, introspectionResponse, introspectionManipulator, scalarGraphql }) {
-    introspectionManipulator = introspectionManipulator || new IntrospectionManipulator(introspectionResponse)
+  generateIntrospectionTypeExample: function ({
+    type,
+    introspectionResponse,
+    introspectionManipulator,
+    scalarGraphql,
+  }) {
+    introspectionManipulator =
+      introspectionManipulator ||
+      new IntrospectionManipulator(introspectionResponse)
+    const fields = type.fields || type.inputFields
     // No fields? Just a Scalar then, so return a single value.
-    if (!type.fields) {
-      return common.generateIntrospectionReturnTypeExample({ thing: type, underlyingTypeDefinition: type, 
-        originalType: type , scalarGraphql})
+    if (!fields) {
+      return common.generateIntrospectionReturnTypeExample({
+        thing: type,
+        underlyingTypeDefinition: type,
+        originalType: type,
+      }, {scalarGraphql})
     }
 
     // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
-    return type.fields.reduce(
-      (acc, field) => {
-        const underlyingTypeDefinition = introspectionManipulator.getType(
-          IntrospectionManipulator.digUnderlyingType(field.type)
-        )
-        acc[field.name] = common.generateIntrospectionReturnTypeExample({ thing: field, underlyingTypeDefinition, 
-          originalType: field.type, scalarGraphql })
-        return acc
-      },
-      {}
-    )
+    return fields.reduce((acc, field) => {
+      const underlyingTypeDefinition = introspectionManipulator.getType(
+        IntrospectionManipulator.digUnderlyingType(field.type)
+      )
+      acc[field.name] = common.generateIntrospectionReturnTypeExample({
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      }, {scalarGraphql})
+      return acc
+    }, {})
   },
 
   printSchema: function (value, _root) {
     if (!value) {
-      return '';
+      return ''
     }
 
     let markedDown
-    if (typeof (value) == "string") {
-      markedDown = marked("```gql\r\n" + value + "\n```")
-
+    if (typeof value == 'string') {
+      markedDown = marked('```gql\r\n' + value + '\n```')
     } else {
-      const stringified = stringify(value, { indent: 2, replacer: jsonReplacer })
-      markedDown = marked("```json\r\n" + stringified + "\n```")
+      const stringified = stringify(value, {
+        indent: 2,
+        replacer: jsonReplacer,
+      })
+      markedDown = marked('```json\r\n' + stringified + '\n```')
     }
 
     // There is an issue with `marked` not formatting a leading quote in a single,
     // quoted string value. By unwinding the special tags after converting to markdown
     // we can avoid that issue.
-    return cheerio.load(unwindSpecialTags(markedDown)).html();
-  },
-
-  getReferencePath: function (reference) {
-    reference = reference.trim()
-    if (reference.indexOf('#') === 0) {
-      var hash = reference.substr(2);
-      return hash.split('/')
-    }
-
-    return ['definitions', reference]
-  },
-
-  getReferenceName: function (reference) {
-    return this.getReferencePath(reference).pop()
-  },
-
-  resolveSchemaReference: function (reference, json) {
-    var hashParts = this.getReferencePath(reference)
-
-    var current = json;
-    hashParts.forEach(function (hashPart) {
-      // Traverse schema from root along the path
-      if (hashPart.trim().length > 0) {
-        if (typeof current === 'undefined') {
-          console.warn("Reference '" + reference + "' cannot be resolved. '" + hashPart + "' is undefined.")
-          return {};
-        }
-        current = current[hashPart];
-      }
-    })
-    return current;
+    return cheerio.load(unwindSpecialTags(markedDown)).html()
   },
 }
 
@@ -462,7 +374,7 @@ highlight.configure({
   // "useBR": true
 })
 
-highlight.registerLanguage("graphql", highlightGraphQl);
+highlight.registerLanguage('graphql', highlightGraphQl)
 
 // Create a custom renderer for highlight.js compatability
 var renderer = new marked.Renderer()
@@ -471,7 +383,7 @@ renderer.code = common.highlight
 // Configure marked.js
 marked.setOptions({
   // highlight: common.highlight,
-  renderer: renderer
+  renderer: renderer,
 })
 
-module.exports = common;
+module.exports = common

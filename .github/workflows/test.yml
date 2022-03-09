@@ -7,7 +7,10 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    # Leave out to test branches off of branches
+    # branches: [ main ]
+
+
 
 jobs:
   build:

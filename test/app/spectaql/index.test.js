@@ -1,12 +1,7 @@
 const spectaql = require('app/spectaql')
-const {
-  pathToSimpleSchema,
-  pathToComplexSchema,
-} = require('test/helpers')
-
+const { pathToSimpleSchema, pathToComplexSchema } = require('test/helpers')
 
 describe('index', function () {
-
   def('opts', () => ({
     specData: $.specData,
   }))
@@ -22,7 +17,8 @@ describe('index', function () {
     schemaFile: $.schemaFile,
     introspectionFile: $.introspectionFile,
     metadataFile: $.metadataFile,
-    removeTrailingPeriodFromDescriptions: $.removeTrailingPeriodFromDescriptions,
+    removeTrailingPeriodFromDescriptions:
+      $.removeTrailingPeriodFromDescriptions,
     queriesDocumentedDefault: true,
     queryDocumentedDefault: true,
     queryArgDocumentedDefault: true,
@@ -47,29 +43,31 @@ describe('index', function () {
   def('schemaFile', () => pathToSimpleSchema)
 
   def('info', () => ({
-    ['x-swaggerUrl']: $.swaggerUrl
+    ['x-url']: $.url,
   }))
 
-  def('swaggerUrl', () => 'http://foo.com')
+  def('url', () => 'http://foo.com')
 
-  describe('Swagger URL related', function () {
+  describe('URL related', function () {
     it('works baseline', function () {
       const result = spectaql($.opts)
       return expect(result).to.be.ok
     })
 
-    context('no x-swaggerUrl', function () {
-      def('swaggerUrl', () => undefined)
+    context('no x-url', function () {
+      def('url', () => undefined)
       it('errors', function () {
-        return expect(() => spectaql($.opts)).to.throw('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
+        return expect(() => spectaql($.opts)).to.throw(
+          'Please provide either: introspection.url OR servers.url OR info.x-url'
+        )
       })
 
       context('there are servers', function () {
-        def('servers', () => ([
+        def('servers', () => [
           {
             url: 'http://foo.com',
-          }
-        ]))
+          },
+        ])
 
         it("doesn't error", function () {
           const result = spectaql($.opts)
@@ -94,9 +92,9 @@ describe('index', function () {
     def('schemaFile', () => pathToComplexSchema)
     it('does not blow up', async function () {
       const result = spectaql($.opts)
-      expect(result).be.an('object').that.includes.keys(
-        'orderedDataWithHeaders',
-      )
+      expect(result)
+        .be.an('object')
+        .that.includes.keys('orderedDataWithHeaders')
 
       expect(result.orderedDataWithHeaders).to.have.length.gt(0)
 
@@ -106,28 +104,34 @@ describe('index', function () {
 
       expect(result.orderedDataWithHeaders[0].items).to.have.length.gt(0)
       expect(result.orderedDataWithHeaders[0].items[0]).to.include({
-        name: 'Queries'
+        name: 'Queries',
       })
-      expect(result.orderedDataWithHeaders[0].items[0].items.find(
-        (item) => item.name === 'myQuery'
-      )).to.be.ok
+      expect(
+        result.orderedDataWithHeaders[0].items[0].items.find(
+          (item) => item.name === 'myQuery'
+        )
+      ).to.be.ok
 
       expect(result.orderedDataWithHeaders[0].items).to.have.length.gt(0)
       expect(result.orderedDataWithHeaders[0].items[1]).to.include({
-        name: 'Mutations'
+        name: 'Mutations',
       })
-      expect(result.orderedDataWithHeaders[0].items[1].items.find(
-        (item) => item.name === 'myMutation'
-      )).to.be.ok
+      expect(
+        result.orderedDataWithHeaders[0].items[1].items.find(
+          (item) => item.name === 'myMutation'
+        )
+      ).to.be.ok
 
       expect(result.orderedDataWithHeaders[1]).to.include({
         name: 'Types',
       })
 
       expect(result.orderedDataWithHeaders[1].items).to.have.length.gt(0)
-      expect(result.orderedDataWithHeaders[1].items.find(
-        (item) => item.name === 'SimpleTypeOne'
-      )).to.be.ok
+      expect(
+        result.orderedDataWithHeaders[1].items.find(
+          (item) => item.name === 'SimpleTypeOne'
+        )
+      ).to.be.ok
     })
   })
 
@@ -135,9 +139,9 @@ describe('index', function () {
     def('schemaFile', () => pathToSimpleSchema)
     it('does not strip trailing periods by default', async function () {
       const result = spectaql($.opts)
-      expect(result).be.an('object').that.includes.keys(
-        'orderedDataWithHeaders',
-      )
+      expect(result)
+        .be.an('object')
+        .that.includes.keys('orderedDataWithHeaders')
 
       expect(result.orderedDataWithHeaders).to.have.length.gt(0)
 
@@ -145,8 +149,8 @@ describe('index', function () {
         (item) => item.name === 'myQuery'
       )
 
-      expect(myQuery.description).to.eql("A query.")
-      expect(myQuery.args[0].description).to.eql("An argument to a query.")
+      expect(myQuery.description).to.eql('A query.')
+      expect(myQuery.args[0].description).to.eql('An argument to a query.')
 
       const myType = result.orderedDataWithHeaders[1].items.find(
         (item) => item.name === 'MyType'
@@ -168,9 +172,9 @@ describe('index', function () {
 
       it('does strip trailing periods when asked', async function () {
         const result = spectaql($.opts)
-        expect(result).be.an('object').that.includes.keys(
-          'orderedDataWithHeaders',
-        )
+        expect(result)
+          .be.an('object')
+          .that.includes.keys('orderedDataWithHeaders')
 
         expect(result.orderedDataWithHeaders).to.have.length.gt(0)
 
@@ -178,8 +182,8 @@ describe('index', function () {
           (item) => item.name === 'myQuery'
         )
 
-        expect(myQuery.description).to.eql("A query")
-        expect(myQuery.args[0].description).to.eql("An argument to a query")
+        expect(myQuery.description).to.eql('A query')
+        expect(myQuery.args[0].description).to.eql('An argument to a query')
 
         const myType = result.orderedDataWithHeaders[1].items.find(
           (item) => item.name === 'MyType'
@@ -202,7 +206,9 @@ describe('index', function () {
     def('schemaFile', () => './test/fixtures/bad-schema.gql')
 
     it('raises error', function () {
-      return expect(() => spectaql($.opts)).to.throw('Problem with Introspection Query Response')
+      return expect(() => spectaql($.opts)).to.throw(
+        'Problem with Introspection Query Response'
+      )
     })
   })
 })

@@ -11,13 +11,13 @@
             {{! The Name column }}
             {{~> graphql/name-and-type }}
           </td>
-          {{! The Description column }}
           <td>
+            {{! The Description column }}
             {{ md (
                 concat
                   (interpolateReferences description)
                   (ternary defaultValue
-                    (concat "Default = "  (codify defaultValue stringify=true))
+                    (concat "Default = "  (codify defaultValue))
                     ""
                   )
                 joiner=". " filterFalsy=true

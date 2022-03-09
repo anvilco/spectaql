@@ -1,16 +1,23 @@
 const get = require('lodash/get')
 const sortBy = require('lodash/sortBy')
 const IntrospectionManipulatorModule = require('microfiber')
-const {
-  default: IntrospectionManipulator,
-} = IntrospectionManipulatorModule
+const { default: IntrospectionManipulator } = IntrospectionManipulatorModule
 
-const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
-  const introspectionManipulator = new IntrospectionManipulator(introspectionResponse)
+const arrangeData = ({
+  introspectionResponse,
+  graphQLSchema: _graphQLSchema,
+}) => {
+  const introspectionManipulator = new IntrospectionManipulator(
+    introspectionResponse
+  )
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
   const subscriptionType = introspectionManipulator.getSubscriptionType()
-  const otherTypes = introspectionManipulator.getAllTypes({ includeQuery: false, includeMutation: false, includeSubscription: false })
+  const otherTypes = introspectionManipulator.getAllTypes({
+    includeQuery: false,
+    includeMutation: false,
+    includeSubscription: false,
+  })
 
   const hasQueries = get(queryType, 'fields.length')
   const hasMutations = get(mutationType, 'fields.length')
@@ -19,56 +26,68 @@ const arrangeData = ({ introspectionResponse, graphQLSchema }) => {
   const hasOtherTypes = get(otherTypes, 'length')
 
   return [
-    hasQueriesOrMutations ? {
-      name: 'Operations',
-      hideInContent: true,
-      items: [
-         hasQueries ? {
-          name: 'Queries',
-          makeNavSection: true,
+    hasQueriesOrMutations
+      ? {
+          name: 'Operations',
+          hideInContent: true,
+          items: [
+            hasQueries
+              ? {
+                  name: 'Queries',
+                  makeNavSection: true,
+                  makeContentSection: true,
+                  items: sortBy(
+                    queryType.fields.map((query) => ({
+                      ...query,
+                      isQuery: true,
+                    })),
+                    'name'
+                  ),
+                }
+              : null,
+            hasMutations
+              ? {
+                  name: 'Mutations',
+                  makeNavSection: true,
+                  makeContentSection: true,
+                  items: sortBy(
+                    mutationType.fields.map((query) => ({
+                      ...query,
+                      isMutation: true,
+                    })),
+                    'name'
+                  ),
+                }
+              : null,
+          ],
+        }
+      : null,
+    hasOtherTypes
+      ? {
+          name: 'Types',
           makeContentSection: true,
           items: sortBy(
-            queryType.fields.map((query) => ({
-              ...query,
-              isQuery: true,
+            otherTypes.map((type) => ({
+              ...type,
+              isType: true,
             })),
-            'name',
+            'name'
           ),
-        } : null,
-        hasMutations ? {
-          name: 'Mutations',
-          makeNavSection: true,
+        }
+      : null,
+    hasSubscriptions
+      ? {
+          name: 'Subscriptions',
           makeContentSection: true,
           items: sortBy(
-            mutationType.fields.map((query) => ({
-              ...query,
-              isMutation: true,
+            subscriptionType.fields.map((type) => ({
+              ...type,
+              isSubscription: true,
             })),
-            'name',
+            'name'
           ),
-        } : null,
-      ]
-    } : null,
-    hasOtherTypes ? {
-      name: 'Types',
-      makeContentSection: true,
-      items: sortBy(
-        otherTypes.map((type) => ({
-          ...type,
-          isType: true,
-        })),
-      'name'),
-    } : null,
-    hasSubscriptions ? {
-      name: 'Subscriptions',
-      makeContentSection: true,
-      items: sortBy(
-        subscriptionType.fields.map((type) => ({
-          ...type,
-          isSubscription: true,
-        })),
-      'name'),
-    } : null
+        }
+      : null,
   ].filter(Boolean)
 }
 

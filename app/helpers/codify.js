@@ -3,7 +3,7 @@ const { get } = require('lodash')
 //
 // Options:
 //   stringify (Boolean) default = false: If truthy, the value will be JSON.stringify'd before being returned
-module.exports = function(value, options) {
+module.exports = function (value, options) {
   if (typeof value === 'undefined') {
     return value
   }
@@ -13,5 +13,5 @@ module.exports = function(value, options) {
     value = JSON.stringify(value)
   }
 
-  return "`" + value + "`"
+  return '`' + value + '`'
 }

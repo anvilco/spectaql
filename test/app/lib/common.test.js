@@ -21,7 +21,7 @@ describe('common', function () {
         [`${QUOTE_TAG}foo${QUOTE_TAG}`, '"foo"'],
         [`${SPECIAL_TAG}${QUOTE_TAG}foo${QUOTE_TAG}${SPECIAL_TAG}`, '"foo"'],
         // This is not a string, so nothing changes
-        [22, 22]
+        [22, 22],
       ]
 
       for (const [input, output] of pairs) {
@@ -50,7 +50,7 @@ describe('common', function () {
     })
   })
 
-  describe('replaceQuotesWithTags', function () {
+  describe.skip('replaceQuotesWithTags', function () {
     const { replaceQuotesWithTags } = common
 
     it('works', function () {
@@ -61,7 +61,7 @@ describe('common', function () {
         // Doesn't double-add quote tag
         [`"${QUOTE_TAG}foo${QUOTE_TAG}"`, `${QUOTE_TAG}foo${QUOTE_TAG}`],
         // Doesn't do anything if no quotes
-        ['foo', 'foo']
+        ['foo', 'foo'],
       ]
 
       for (const [input, output] of pairs) {
@@ -70,36 +70,26 @@ describe('common', function () {
     })
   })
 
-  describe('formatExample', function () {
-    const { formatExample } = common
+  describe('getExampleForScalarDefinition', function () {
+    const { getExampleForScalarDefinition } = common
 
     it('BigInt', function () {
-        expect(formatExample( {
-          type : 'BigInt',
-          title: 'BigInt',
-          format: 'BigInt',
-        }, {}, {depth: 1, scalarGraphql: true})).to.eql('9007199254740991 (BigInt)')
+        expect(getExampleForScalarDefinition( {
+          kind : 'SCALAR',
+          name: 'BigInt'
+        },{scalarGraphql: true})).to.equal(9007199254740991n)
     })
-    it('Byte', function () {
-      expect(formatExample( {
-        type : 'Byte',
-        title: 'Byte',
-        format: 'Byte',
-      }, {}, {depth: 1, scalarGraphql: true})).to.eql('196,189,173,171,167,163 (Byte)')
-  })
   it('Time', function () {
-    expect(formatExample( {
-      type : 'Time',
-      title: 'Time',
-      format: 'Time',
-    }, {}, {depth: 1, scalarGraphql: true})).to.eql('10:15:30Z (Time)')
+    expect(getExampleForScalarDefinition( {
+      kind : 'SCALAR',
+      name: 'Time'
+    }, {scalarGraphql: true})).to.eql('10:15:30Z')
 })
 it('EmailAddress', function () {
-  expect(formatExample( {
-    type : 'EmailAddress',
-    title: 'EmailAddress',
-    format: 'EmailAddress',
-  }, {}, {depth: 1, scalarGraphql: true})).to.eql('test@test.com (EmailAddress)')
+  expect(getExampleForScalarDefinition( {
+    kind : 'SCALAR',
+    name: 'EmailAddress'
+  }, {scalarGraphql: true})).to.eql('test@test.com')
 })
   })
 
@@ -108,13 +98,28 @@ it('EmailAddress', function () {
 
     it('works', function () {
       const pairs = [
-        ['foo', '<pre><code class="hljs language-gql"><span class="hljs-symbol">foo</span>\n</code></pre>'],
-        ["'foo'", '<pre><code class="hljs language-gql">\'foo\'\n</code></pre>'],
-        [`${SPECIAL_TAG}${QUOTE_TAG}foo${QUOTE_TAG}${SPECIAL_TAG}`, '<pre><code class="hljs language-gql"><span class="hljs-symbol">"foo"</span>\n</code></pre>'],
-        [{ foo: 'bar' }, '<pre><code class="hljs language-json">{<span class="hljs-attr">"foo"</span>: <span class="hljs-string">bar</span>}\n</code></pre>'],
+        [
+          'foo',
+          '<pre><code class="hljs language-gql"><span class="hljs-symbol">foo</span>\n</code></pre>',
+        ],
+        [
+          "'foo'",
+          '<pre><code class="hljs language-gql">\'foo\'\n</code></pre>',
+        ],
+        [
+          `${SPECIAL_TAG}${QUOTE_TAG}foo${QUOTE_TAG}${SPECIAL_TAG}`,
+          '<pre><code class="hljs language-gql"><span class="hljs-symbol">"foo"</span>\n</code></pre>',
+        ],
+        [
+          { foo: 'bar' },
+          '<pre><code class="hljs language-json">{<span class="hljs-attr">"foo"</span>: <span class="hljs-string">"bar"</span>}\n</code></pre>',
+        ],
 
         // This is the bug/problem, sadly.
-        ['"foo"', '<pre><code class="hljs language-gql">"<span class="hljs-symbol">foo"</span>\n</code></pre>'],
+        [
+          '"foo"',
+          '<pre><code class="hljs language-gql">"<span class="hljs-symbol">foo"</span>\n</code></pre>',
+        ],
       ]
 
       for (const [input, output] of pairs) {

@@ -1,23 +1,17 @@
-/**
- * Copyright (c) 2016 Kam Low
- *
- * @license MIT
- **/
-
 const fs = require('fs')
 const path = require('path')
 const tmp = require('tmp')
 const grunt = require('grunt')
-const package = require('../package.json')
+const pkg = require('../package.json')
 const _ = require('lodash')
 const loadYaml = require('./lib/loadYaml')
 const cliOptions = require('./cli')
+const { normalizePath, pathToRoot } = require('./spectaql/utils')
 
+let spectaql
 
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
 tmp.setGracefulCleanup()
-
-const root = path.resolve(__dirname, '..')
 
 const defaults = {
   quiet: false,
@@ -25,8 +19,8 @@ const defaults = {
   portLive: 4401,
   targetDir: path.resolve(process.cwd(), 'public'),
   targetFile: 'index.html',
-  appDir: path.resolve(root, 'app'),
-  gruntConfigFile: path.resolve(root, 'app/lib/gruntConfig.js'),
+  appDir: normalizePath('app'), //path.resolve(root, 'app'),
+  gruntConfigFile: normalizePath('app/lib/gruntConfig.js'), //path.resolve(root, 'app/lib/gruntConfig.js'),
   cacheDir: tmp.dirSync({
     unsafeCleanup: true,
     prefix: 'spectaql-',
@@ -42,7 +36,7 @@ const spectaqlOptionDefaults = {
 }
 
 const introspectionOptionDefaults = {
-  dynamicExamplesProcessingModule: path.resolve('./customizations/examples'),
+  dynamicExamplesProcessingModule: normalizePath('customizations/examples'),
 
   removeTrailingPeriodFromDescriptions: false,
 
@@ -84,12 +78,21 @@ const introspectionOptionsMap = {
   headers: 'headers',
 }
 
-function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'additionalJsFile', 'faviconFile', 'specFile']) {
+function resolvePaths(
+  options,
+  keys = [
+    'targetDir',
+    'appDir',
+    'logoFile',
+    'additionalJsFile',
+    'faviconFile',
+    'specFile',
+  ]
+) {
   keys.forEach((key) => {
-    const val = options[key]
-    // TODO: make this "!val.startsWith('/')"?
-    if (typeof val === 'string' && val.startsWith('.')) {
-      options[key] = path.resolve(val)
+    const pth = options[key]
+    if (typeof pth === 'string') {
+      options[key] = normalizePath(pth)
     }
   })
 }
@@ -98,25 +101,21 @@ function resolveOptions(options) {
   // Start with options from the CLI
   let opts = _.extend({}, options)
 
-  // Replace some absolute paths
-  if (options.specFile && options.specFile.indexOf('test/fixtures') === 0) {
-    options.specFile = path.resolve(options.specFile)
-  }
+  resolvePaths(opts)
 
-  const introspectionCliOptions = Object.entries(introspectionOptionsMap).reduce(
-    (acc, [fromKey, toKey]) => {
-      if (typeof opts[fromKey] !== 'undefined') {
-        acc[toKey] = opts[fromKey]
-      }
+  const introspectionCliOptions = Object.entries(
+    introspectionOptionsMap
+  ).reduce((acc, [fromKey, toKey]) => {
+    if (typeof opts[fromKey] !== 'undefined') {
+      acc[toKey] = opts[fromKey]
+    }
 
-      return acc
-    },
-    {},
-  )
+    return acc
+  }, {})
 
-  if (options.specFile) {
+  if (opts.specFile) {
     // Add the loaded YAML to the options
-    const spec = opts.specData = loadYaml(options.specFile)
+    const spec = (opts.specData = loadYaml(opts.specFile))
 
     const {
       spectaql: spectaqlYaml,
@@ -145,79 +144,96 @@ function resolveOptions(options) {
   // Resolve all the top-level paths
   resolvePaths(opts)
 
-  if (opts.appDir && opts.appDir.indexOf('/') !== 0) {
-    opts.appDir = path.resolve(opts.appDir)
-  }
+  // if (opts.appDir && opts.appDir.indexOf('/') !== 0) {
+  //   opts.appDir = path.resolve(opts.appDir)
+  // }
 
   // Add in some defaults here
-  opts.specData.introspection = _.defaults({}, introspectionCliOptions, opts.specData.introspection, introspectionOptionDefaults)
+  opts.specData.introspection = _.defaults(
+    {},
+    introspectionCliOptions,
+    opts.specData.introspection,
+    introspectionOptionDefaults
+  )
 
 
   opts.specData.extensions = _.defaults({}, opts.specData.extensions, extensionsOptionDefaults)
 
   // Resolve the introspection options paths
-  resolvePaths(opts.specData.introspection, Object.values(introspectionOptionsMap))
+  resolvePaths(
+    opts.specData.introspection,
+    Object.values(introspectionOptionsMap)
+  )
 
   // OK, layer in any defaults that may be set by the CLI and the YAML, but may not have been:
   opts = _.defaults({}, opts, spectaqlOptionDefaults)
 
   if (opts.logoFile) {
-    if (opts.logoFile.indexOf('test/fixtures') === 0) {
-      opts.logoFile = path.resolve(root, opts.logoFile)
-    }
-
     // Keep or don't keep the original logoFile name when copying to the target
-    opts.logoFileTargetName = opts.preserveLogoName ? path.basename(options.logoFile) : `logo${path.extname(opts.logoFile)}`
+    opts.logoFileTargetName = opts.preserveLogoName
+      ? path.basename(opts.logoFile)
+      : `logo${path.extname(opts.logoFile)}`
+    opts.logo = path.basename(opts.logoFileTargetName)
   }
 
   if (opts.faviconFile) {
     // Keep or don't keep the original faviconFile name when copying to the target
-    opts.faviconFileTargetName = opts.preserveFaviconName ? path.basename(opts.faviconFile) : `favicon${path.extname(opts.faviconFile)}`
+    opts.faviconFileTargetName = opts.preserveFaviconName
+      ? path.basename(opts.faviconFile)
+      : `favicon${path.extname(opts.faviconFile)}`
+    opts.favicon = path.basename(opts.faviconFileTargetName)
   }
+
+  // Set the spectaql object
+  spectaql = require(path.resolve(opts.appDir + '/spectaql/index'))
 
   return opts
 }
 
 function loadData(options) {
-  const { jsonSchema, ...specData } = require(path.resolve(options.appDir + '/spectaql/index'))(options)
-  return require(path.resolve(options.appDir + '/lib/preprocessor'))(options, specData, { jsonSchema })
+  return spectaql(options)
 }
 
 function buildSchemas(options) {
-  console.log(options)
-  // process.exit()
-  const { buildSchemas } = require(path.resolve(options.appDir + '/spectaql/index'))
+  const { buildSchemas } = spectaql
   return buildSchemas(options)
 }
 
 /**
  * Run SpectaQL and configured tasks
  **/
-function run (options = {}) {
+function run(options = {}) {
   const opts = resolveOptions(options)
 
   //
   //= Load the specification and init configuration
 
-  const gruntConfig = require(path.resolve(opts.gruntConfigFile))(grunt, opts, loadData(opts))
+  const gruntConfig = require(path.resolve(opts.gruntConfigFile))(
+    grunt,
+    opts,
+    loadData(opts)
+  )
 
   //
   //= Setup Grunt to do the heavy lifting
 
-  grunt.initConfig(_.merge({ pkg: package }, gruntConfig))
+  grunt.initConfig(_.merge({ pkg }, gruntConfig))
   if (opts.quiet) {
-    grunt.log.writeln = function() {}
-    grunt.log.write = function() {}
-    grunt.log.header = function() {}
-    grunt.log.ok = function() {}
+    grunt.log.writeln = function () {}
+    grunt.log.write = function () {}
+    grunt.log.header = function () {}
+    grunt.log.ok = function () {}
   }
 
   var cwd = process.cwd() // change CWD for loadNpmTasks global install
-  var exists = grunt.file.exists(path.join(path.resolve('node_modules'),
-                       'grunt-contrib-concat',
-                       'package.json'))
-  if (!exists)
-    process.chdir(root)
+  var exists = grunt.file.exists(
+    path.join(
+      path.resolve('node_modules'),
+      'grunt-contrib-concat',
+      'package.json'
+    )
+  )
+  if (!exists) process.chdir(pathToRoot)
 
   grunt.loadNpmTasks('grunt-contrib-concat')
   grunt.loadNpmTasks('grunt-contrib-uglify')
@@ -233,37 +249,44 @@ function run (options = {}) {
 
   process.chdir(cwd)
 
-  grunt.registerTask('predentation', 'Remove indentation from generated <pre> tags.', function() {
-    var html = fs.readFileSync(opts.cacheDir + '/' + opts.targetFile, 'utf8')
-    html = html.replace(/<pre.*?><code.*?>([\s\S]*?)<\/code><\/pre>/gmi, function(x, _y) {
-      var lines = x.split('\n'), level = null;
-      if (lines) {
+  grunt.registerTask(
+    'predentation',
+    'Remove indentation from generated <pre> tags.',
+    function () {
+      var html = fs.readFileSync(opts.cacheDir + '/' + opts.targetFile, 'utf8')
+      html = html.replace(
+        /<pre.*?><code.*?>([\s\S]*?)<\/code><\/pre>/gim,
+        function (x, _y) {
+          var lines = x.split('\n'),
+            level = null
+          if (lines) {
+            // Determine the level of indentation
+            lines.forEach(function (line) {
+              if (line[0] === '<') return
+              var wsp = line.search(/\S/)
+              level =
+                level === null || (wsp < line.length && wsp < level)
+                  ? wsp
+                  : level
+            })
 
-        // Determine the level of indentation
-        lines.forEach(function(line) {
-          if (line[0] === '<') return;
-          var wsp = line.search(/\S/)
-          level = (level === null || (wsp < line.length && wsp < level)) ? wsp : level;
-        })
-
-        // Remove indentation
-        var regex = new RegExp('^\\s{' + level + '}')
-        lines.forEach(function(line, index, lines) {
-          lines[index] = line.replace(regex, '')
-        })
-      }
-      return lines.join('\n')
-    })
-    fs.writeFileSync(opts.cacheDir + '/' + opts.targetFile, html)
-  })
+            // Remove indentation
+            var regex = new RegExp('^\\s{' + level + '}')
+            lines.forEach(function (line, index, lines) {
+              lines[index] = line.replace(regex, '')
+            })
+          }
+          return lines.join('\n')
+        }
+      )
+      fs.writeFileSync(opts.cacheDir + '/' + opts.targetFile, html)
+    }
+  )
 
   const stylesheetsToBuild = []
 
   if (opts.cssBuildMode === 'full') {
-    stylesheetsToBuild.push(
-      'full',
-      'foundation',
-    )
+    stylesheetsToBuild.push('full', 'foundation')
   } else {
     stylesheetsToBuild.push('basic')
   }
@@ -272,59 +295,50 @@ function run (options = {}) {
     ...stylesheetsToBuild.map((name) => `sass:${name}`),
     'concat:css',
     'cssmin:css',
-    ],
-  )
+  ])
 
-  grunt.registerTask('javascripts', [
-    'concat:js',
-    'uglify',
-    ],
-  ),
+  grunt.registerTask('javascripts', ['concat:js', 'uglify']),
+    grunt.registerTask('templates', [
+      'clean:html',
+      'compile-handlebars',
+      'predentation',
+      'prettify',
+    ])
 
-  grunt.registerTask('templates', [
-    'clean:html',
-    'compile-handlebars',
-    'predentation',
-    'prettify',
-    ],
-  )
-
-  grunt.registerTask('default', [
-    'stylesheets',
-    'javascripts',
-    'templates',
-    ],
-  )
+  grunt.registerTask('default', ['stylesheets', 'javascripts', 'templates'])
 
   grunt.registerTask('server', ['connect'])
 
   grunt.registerTask('develop', ['server', 'watch'])
 
   // Reload template data when watch files change
-  grunt.event.on('watch', function() {
+  grunt.event.on('watch', function () {
     try {
-      grunt.config.set('compile-handlebars.compile.templateData', loadData(opts))
+      grunt.config.set(
+        'compile-handlebars.compile.templateData',
+        loadData(opts)
+      )
     } catch (e) {
-      grunt.fatal(e);
+      grunt.fatal(e)
     }
   })
 
   // Report, etc when all tasks have completed.
-  var donePromise = new Promise(function(resolve, reject) {
+  var donePromise = new Promise(function (resolve, reject) {
     grunt.task.options({
-      error: function(e) {
-        if(!opts.quiet) {
+      error: function (e) {
+        if (!opts.quiet) {
           console.warn('Task error:', e)
         }
         // TODO: fail here or push on?
         reject(e)
       },
-      done: function() {
-        if(!opts.quiet) {
+      done: function () {
+        if (!opts.quiet) {
           console.log('All tasks complete')
         }
         resolve()
-      }
+      },
     })
   })
 
@@ -334,8 +348,7 @@ function run (options = {}) {
 
   if (opts.startServer) {
     grunt.task.run('server')
-  }
-  else {
+  } else {
     if (!opts.disableCss) {
       grunt.task.run('stylesheets')
 

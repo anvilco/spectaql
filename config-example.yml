@@ -4,8 +4,17 @@
 spectaql:
   # Optional path to an image to use as the logo in the top-left of the output
   logoFile: path/to/logo.png
+  # Optional boolean indicating whether to preserve the filname of the logo provided.
+  # If false, the logo name will default to "logo"
+  preserveLogoName: false
+
   # Optional path to an image to use as a favicon for the site when it's not embedded
   faviconFile: path/to/favicon.png
+  # Optional boolean indicating whether to preserve the filname of the faviconFile provided.
+  # If false, the favicon name will default to "favicon"
+  preserveFaviconName: false
+
+
   # Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
   # required JS. Can be useful for setting some values, such as for the Traverse.defaults object
   additionalJsFile: path/to/additional.js
@@ -31,8 +40,7 @@ introspection:
   #
 
   # URL of the GraphQL endpoint to hit if you want to generate the documentation based on live Introspection Query results
-  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement.
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-url below
   url: https://yoursite.com/graphql
 
   # If using the "url" option above, any headers (such as Authorization) can be added here. This
@@ -214,8 +222,7 @@ extensions:
   ##############################################
 
 servers:
-  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement.
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-url
 
   # same format as for OpenAPI Specification https://swagger.io/specification/#server-object
 
@@ -285,6 +292,5 @@ info:
   # Default: false
   x-hidePoweredBy: false
 
-  # If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement. This allows for that.
-  x-swaggerUrl: https://yoursite.com/graphql
+  # If not using introspection.url OR servers[], you need to provide x-url
+  x-url: https://yoursite.com/graphql

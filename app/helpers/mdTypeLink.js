@@ -6,20 +6,22 @@ const mdLink = require('./mdLink')
 const schemaReferenceHref = require('./schemaReferenceHref')
 
 // Creates a markdown link for the provided Type. Options are passed along to mdLink
-module.exports = function mdTypeLink (thing, options) {
+module.exports = function mdTypeLink(thing, options) {
   thing = normalizeThing(thing)
   const {
     underlyingType,
     // isRequired,
     // isArray,
     // itemsRequired,
-  } = (thing.response || analyzeTypeIntrospection(thing.type))
+  } = thing.response || analyzeTypeIntrospection(thing.type)
 
   if (!underlyingType) {
-    console.warn(JSON.stringify({
-      msg: 'no underlyingType found',
-      name: thing.name,
-    }))
+    console.warn(
+      JSON.stringify({
+        msg: 'no underlyingType found',
+        name: thing.name,
+      })
+    )
 
     return thing.name
   }
@@ -29,10 +31,9 @@ module.exports = function mdTypeLink (thing, options) {
   return mdLink(text, url, options)
 }
 
-
 // Some of the "things" passed to this will be full objects with a "type", and other things will
 // be the "type" object itself...so we normalize this a bit
-function normalizeThing (thing) {
+function normalizeThing(thing) {
   if (thing.type) {
     return thing
   }

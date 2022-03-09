@@ -4,45 +4,32 @@ const buildSchemas = require('./build-schemas')
 const arrangeData = require('./arrange-data')
 const preProcessData = require('./pre-process')
 
-function run (opts) {
-  const {
-    specData: spec,
-  } = opts
+function run(opts) {
+  const { logo, favicon, specFile, specData: spec } = opts
 
   const {
-    introspection: {
-      url: introspectionUrl,
-    },
-    extensions = {},
-    domains = [],
+    introspection: { url: introspectionUrl },
     servers = [],
     info = {},
-    externalDocs,
-    securityDefinitions,
   } = spec
 
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
   const urlToParse =
-    info['x-swaggerUrl']
-    || (servers.find((server) => server.production === true) || servers[0] || {}).url
-    || introspectionUrl
+    info['x-url'] ||
+    (servers.find((server) => server.production === true) || servers[0] || {})
+      .url ||
+    introspectionUrl
 
   if (!urlToParse) {
-    throw new Error('Please provide either: introspection.url OR servers.url OR info.x-swaggerUrl for Swagger spec compliance')
+    throw new Error(
+      'Please provide either: introspection.url OR servers.url OR info.x-url'
+    )
   }
 
+  const { protocol, host, pathname } = url.parse(urlToParse)
 
-  const {
-    protocol,
-    host,
-    pathname,
-  } = url.parse(urlToParse)
-
-  const {
-    introspectionResponse,
-    graphQLSchema,
-  } = buildSchemas(opts)
+  const { introspectionResponse, graphQLSchema, scalarGraphql } = buildSchemas(opts)
 
   const orderedDataWithHeaders = arrangeData({
     introspectionResponse,
@@ -55,6 +42,11 @@ function run (opts) {
   }))
 
   // console.log(JSON.stringify({
+  //   introspectionResponse,
+  //   orderedDataWithHeaders,
+  // }))
+
+  // console.log(JSON.stringify({
   //   orderedDataWithHeaders,
   // }))
 
@@ -64,34 +56,33 @@ function run (opts) {
   // }))
 
   // Side-effects
-  preProcessData({ orderedDataWithHeaders, introspectionResponse, graphQLSchema }, extensions)
-
+  preProcessData({
+    orderedDataWithHeaders,
+    introspectionResponse,
+    graphQLSchema,
+  }, {scalarGraphql})
 
   // console.log(JSON.stringify({
   //   orderedDataWithHeaders,
   // }))
 
   // generate specification
-  const swaggerSpec = {
+  const data = {
     // introspectionResponse,
     // graphQLSchema,
-    openapi: '3.0.0',
+    logo,
+    favicon,
     info,
     servers,
     host,
-    schemes: [ protocol.slice(0, -1) ],
+    schemes: [protocol.slice(0, -1)],
     basePath: pathname,
-    externalDocs,
-    tags: domains.map((domain) => ({
-      name: domain.name,
-      description: domain.description,
-      externalDocs: domain.externalDocs,
-    })),
     orderedDataWithHeaders,
-    securityDefinitions,
+    // TODO: remove this? What does it do?
+    'x-spec-path': specFile,
   }
 
-  return swaggerSpec
+  return data
 }
 
 module.exports = run

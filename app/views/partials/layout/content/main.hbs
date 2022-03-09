@@ -3,14 +3,8 @@
   <h1 class="doc-title">{{info.title}}</h1>
   {{! Check if there is effectively nothing to do }}
   {{#unless (or info.x-hideIntroduction (and info.x-hideWelcome (or info.x-hideIntroItems (empty info.x-introItems))))}}
-    {{>swagger/introduction/introduction}}
+    {{>layout/content/introduction/main}}
   {{/unless}}
-
-  {{#unless securityDefinitions.x-spectacle-hide}}
-    {{>swagger/securityDefinitions}}
-  {{/unless}}
-
-  {{>swagger/x-spectacle-topics}}
 
   {{! DO THE CONTENT }}
   {{#if (nempty orderedDataWithHeaders)}}
@@ -19,14 +13,12 @@
     {{/each}}
   {{/if}}
 
-  {{! Powered by link }}
+  {{! "Powered by" link }}
+  {{#unless info.x-hidePoweredBy }}
   <div class="doc-row no-margin">
     <div class="doc-copy doc-separator">
-      {{#if externalDocs}}
-      <a class="powered-by" href="{{externalDocs.url}}">{{externalDocs.description}}</a>
-       {{else}}{{#unless info.x-hidePoweredBy }}
       <a class="powered-by" href="https://github.com/anvilco/spectaql">Documentation by <span>Anvil SpectaQL</span></a>
-      {{/unless}}{{/if}}
     </div>
   </div>
+  {{/unless}}
 </article>

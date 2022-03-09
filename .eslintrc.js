@@ -1,21 +1,30 @@
 'use strict'
 
 module.exports = {
-  "extends": ["eslint:recommended"],
-  "env": {
-    "browser": false,
-    "node": true,
-    "es6": true
+  root: true,
+  extends: [
+    'eslint:recommended',
+  ],
+  env: {
+    es2021: true,
+    node: true,
+    browser: false,
   },
-  "parserOptions": {
-    "ecmaVersion": 2020
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: "module"
   },
-  "rules": {
-    "no-unused-vars": [
-      "error",
+  plugins: [
+  ],
+  rules: {
+    'no-unused-vars': [
+      'error',
       {
-        "argsIgnorePattern": "^_"
+        argsIgnorePattern: '^_',
       }
-    ]
-  }
+    ],
+  },
+  ignorePatterns: [
+    'app/javascripts/**/*.js'
+  ],
 }
