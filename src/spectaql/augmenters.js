@@ -1,30 +1,21 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
-const IntrospectionManipulatorModule = require('microfiber')
-const {
-  default: IntrospectionManipulator,
-  // KIND_SCALAR,
-} = IntrospectionManipulatorModule
-
-const {
+import IntrospectionManipulator from 'microfiber'
+import {
   analyzeTypeIntrospection,
   isReservedType,
   typesAreSame,
-} = require('./type-helpers')
+} from './type-helpers'
 
-// const {
-//   addSpecialTags,
-// } = require('../lib/common')
-
-const stripTrailing = require('../helpers/stripTrailing')
+import stripTrailing from '../helpers/stripTrailing'
 
 // const METADATA_OUTPUT_PATH = 'metadata'
 
-const calculateShouldDocument = ({ undocumented, documented, def }) => {
+export const calculateShouldDocument = ({ undocumented, documented, def }) => {
   return undocumented !== true && (documented === true || def === true)
 }
 
-function augmentData(args) {
+export function augmentData(args) {
   const introspectionManipulator = createIntrospectionManipulator(args)
 
   args = {
@@ -41,7 +32,7 @@ function augmentData(args) {
   return introspectionManipulator.getResponse()
 }
 
-function createIntrospectionManipulator(args) {
+export function createIntrospectionManipulator(args) {
   const { introspectionResponse, introspectionOptions } = args
 
   const {
@@ -69,7 +60,7 @@ function createIntrospectionManipulator(args) {
 }
 
 // TODO: Separate out the metadata copying into JSON Schema results into its own thing?
-function hideThingsBasedOnMetadata({
+export function hideThingsBasedOnMetadata({
   introspectionManipulator,
   introspectionOptions,
 }) {
@@ -251,7 +242,7 @@ function hideArguments(args = {}) {
   }
 }
 
-function addExamples(args = {}) {
+export function addExamples(args = {}) {
   const dynamicExamplesProcessingModule = _.get(
     args,
     'introspectionOptions.dynamicExamplesProcessingModule'
@@ -435,7 +426,7 @@ function iterateOverObject(obj, fn) {
   }
 }
 
-function removeTrailingPeriodsFromDescriptions(obj) {
+export function removeTrailingPeriodsFromDescriptions(obj) {
   iterateOverObject(obj, ({ key, val }) => {
     if (key === 'description' && typeof val === 'string') {
       return stripTrailing(val, '.', {})
@@ -447,13 +438,4 @@ function removeTrailingPeriodsFromDescriptions(obj) {
 
 function isUndef(item) {
   return typeof item === 'undefined'
-}
-
-module.exports = {
-  augmentData,
-  createIntrospectionManipulator,
-  hideThingsBasedOnMetadata,
-  addExamples,
-  calculateShouldDocument,
-  removeTrailingPeriodsFromDescriptions,
 }

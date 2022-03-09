@@ -1,8 +1,7 @@
-const url = require('url')
-
-const buildSchemas = require('./build-schemas')
-const arrangeData = require('./arrange-data')
-const preProcessData = require('./pre-process')
+import url from 'url'
+import buildSchemas from './build-schemas'
+import arrangeData from './arrange-data'
+import preProcessData from './pre-process'
 
 function run(opts) {
   const { logo, favicon, specFile, specData: spec } = opts
@@ -80,6 +79,7 @@ function run(opts) {
   return data
 }
 
+// These need to be exported as CommonJS so that they can be properly dynamically required in src/index.js
 module.exports = run
 module.exports.run = run
 module.exports.buildSchemas = buildSchemas

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const options = require('../dist/cli')()
-const spectaql = require('../dist')
+const { run, parseCliOptions } = require('../index')
+const cliOptions = parseCliOptions()
 
 // Run the main app with parsed options
-spectaql(options).catch(console.warn)
+run(cliOptions).catch(console.warn)

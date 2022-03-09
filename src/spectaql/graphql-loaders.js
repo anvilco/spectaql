@@ -1,18 +1,24 @@
-const isEmpty = require('lodash/isEmpty')
-const get = require('lodash/get')
-const set = require('lodash/set')
+import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
+import set from 'lodash/set'
 
-const {
+import {
   buildClientSchema,
   buildSchema,
   getIntrospectionQuery,
   graphqlSync,
   print,
-} = require('graphql')
-const { loadFilesSync } = require('@graphql-tools/load-files')
-const { mergeTypeDefs } = require('@graphql-tools/merge')
-const converter = require('graphql-2-json-schema')
-const request = require('sync-request')
+} from 'graphql'
+import { loadFilesSync } from '@graphql-tools/load-files'
+import { mergeTypeDefs } from '@graphql-tools/merge'
+import converter from 'graphql-2-json-schema'
+import request from 'sync-request'
+import {
+  fileExists,
+  fileExtensionIs,
+  readTextFile,
+  fileToObject,
+} from './utils'
 
 const GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS = [
   'gql',
@@ -22,31 +28,24 @@ const GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS = [
   'js',
 ]
 
-const {
-  fileExists,
-  fileExtensionIs,
-  readTextFile,
-  fileToObject,
-} = require('./utils')
-
 // Get rid of the `data` envelope
 function standardizeIntrospectionQueryResult(result) {
   return result.data ? result.data : result
 }
 
-const introspectionResponseFromSchemaSDL = ({ schemaSDL }) => {
+export const introspectionResponseFromSchemaSDL = ({ schemaSDL }) => {
   return introspectionResponseFromSchema({
     schema: buildSchema(schemaSDL),
   })
 }
 
-const introspectionResponseFromSchema = ({ schema }) => {
+export const introspectionResponseFromSchema = ({ schema }) => {
   return standardizeIntrospectionQueryResult(
     graphqlSync(schema, getIntrospectionQuery())
   )
 }
 
-const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
+export const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
   const paths = Array.isArray(pathToFile) ? pathToFile : [pathToFile]
   const typesArray = []
   for (const path of paths) {
@@ -75,12 +74,12 @@ const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
   return buildSchema(printedTypeDefs)
 }
 
-const loadIntrospectionResponseFromFile = ({ pathToFile } = {}) => {
+export const loadIntrospectionResponseFromFile = ({ pathToFile } = {}) => {
   // Standardize it
   return standardizeIntrospectionQueryResult(fileToObject(pathToFile))
 }
 
-const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
+export const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
   const requestBody = {
     operationName: 'IntrospectionQuery',
     query: getIntrospectionQuery(),
@@ -103,14 +102,16 @@ const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
   )
 }
 
-const jsonSchemaFromIntrospectionResponse = (introspectionResponse) => {
+export const jsonSchemaFromIntrospectionResponse = (introspectionResponse) => {
   // Need to pass nullableArrayItems: true until this is the default
   return converter.fromIntrospectionQuery(introspectionResponse, {
     nullableArrayItems: true,
   })
 }
 
-const graphQLSchemaFromIntrospectionResponse = (introspectionResponse) => {
+export const graphQLSchemaFromIntrospectionResponse = (
+  introspectionResponse
+) => {
   return buildClientSchema(
     normalizeIntrospectionQueryResult(introspectionResponse),
     { assumeValid: true }
@@ -144,14 +145,4 @@ function findType({ introspectionResponse, typeName }) {
   return get(introspectionResponse, '__schema.types', []).find(
     (type) => type.kind === 'OBJECT' && type.name === typeName
   )
-}
-
-module.exports = {
-  introspectionResponseFromSchemaSDL,
-  introspectionResponseFromSchema,
-  loadSchemaFromSDLFile,
-  loadIntrospectionResponseFromFile,
-  loadIntrospectionResponseFromUrl,
-  jsonSchemaFromIntrospectionResponse,
-  graphQLSchemaFromIntrospectionResponse,
 }

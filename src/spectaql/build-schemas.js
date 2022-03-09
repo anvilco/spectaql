@@ -1,24 +1,24 @@
-const {
+import {
   loadSchemaFromSDLFile,
   introspectionResponseFromSchema,
   loadIntrospectionResponseFromFile,
   loadIntrospectionResponseFromUrl,
   graphQLSchemaFromIntrospectionResponse,
-} = require('./graphql-loaders')
+} from './graphql-loaders'
 
-const { addMetadataFromFile } = require('./metadata-loaders')
+import { addMetadataFromFile } from './metadata-loaders'
 
-const {
+import {
   augmentData,
   removeTrailingPeriodsFromDescriptions,
-} = require('./augmenters')
+} from './augmenters'
 
 function errorThingDone({ trying, done }) {
   const msg = `Cannot try to ${trying} while also having ${done}`
   throw new Error(msg)
 }
 
-function buildSchemas(opts) {
+export function buildSchemas(opts) {
   const { specData: spec } = opts
 
   const {
@@ -123,5 +123,4 @@ function buildSchemas(opts) {
   }
 }
 
-module.exports = buildSchemas
-module.exports.buildSchemas = buildSchemas
+export default buildSchemas

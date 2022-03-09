@@ -1,7 +1,9 @@
-const htmlId = require('../helpers/htmlId')
-const generateQueryExample = require('./generate-graphql-example-data')
-const { generateIntrospectionTypeExample } = require('../lib/common')
-const { analyzeTypeIntrospection } = require('./type-helpers')
+import htmlId from '../helpers/htmlId'
+import generateQueryExample from './generate-graphql-example-data'
+import { generateIntrospectionTypeExample } from '../lib/common'
+import { analyzeTypeIntrospection } from './type-helpers'
+
+export default preProcess
 
 function preProcess({
   orderedDataWithHeaders,
@@ -142,5 +144,3 @@ function addDefinitionToItem({ item, introspectionResponse, graphQLSchema }) {
     graphQLSchema,
   })
 }
-
-module.exports = preProcess

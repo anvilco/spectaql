@@ -1,14 +1,12 @@
-const {
-  addMetadata: addMetadataFn,
-} = require('@anvilco/apollo-server-plugin-introspection-metadata')
+import { addMetadata as addMetadataFn } from '@anvilco/apollo-server-plugin-introspection-metadata'
 
-const { fileToObject } = require('./utils')
+import { fileToObject } from './utils'
 
-const loadMetadataFromFile = ({ pathToFile } = {}) => {
+export const loadMetadataFromFile = ({ pathToFile } = {}) => {
   return fileToObject(pathToFile)
 }
 
-const addMetadataFromFile = ({
+export const addMetadataFromFile = ({
   pathToFile,
   introspectionQueryResponse,
   metadatasReadPath,
@@ -23,7 +21,7 @@ const addMetadataFromFile = ({
   })
 }
 
-const addMetadata = ({
+export const addMetadata = ({
   introspectionQueryResponse,
   metadata,
   metadatasReadPath: metadataSourceKey,
@@ -35,10 +33,4 @@ const addMetadata = ({
     metadataSourceKey,
     metadataTargetKey,
   })
-}
-
-module.exports = {
-  loadMetadataFromFile,
-  addMetadataFromFile,
-  addMetadata,
 }

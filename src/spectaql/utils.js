@@ -1,9 +1,10 @@
-const path = require('path')
-const fs = require('fs')
+import path from 'path'
+import fs from 'fs'
 
 // How far is this file from the Root?
 const numDirsToRoot = 2
-const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
+
+export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
 
 function normalizePathFn(pth) {
   if (!pth.startsWith('/')) {
@@ -12,15 +13,16 @@ function normalizePathFn(pth) {
 
   return path.resolve(pth)
 }
+export const normalizePath = normalizePathFn
 
-function fileExists(pth, { normalizePath = true } = {}) {
+export function fileExists(pth, { normalizePath = true } = {}) {
   if (normalizePath) {
     pth = normalizePathFn(pth)
   }
   return fs.existsSync(pth)
 }
 
-function readTextFile(pth, options = {}) {
+export function readTextFile(pth, options = {}) {
   let { normalizePath = true, ...optionsForReadFileSync } = options
 
   optionsForReadFileSync = {
@@ -34,7 +36,7 @@ function readTextFile(pth, options = {}) {
   return fs.readFileSync(pth, optionsForReadFileSync)
 }
 
-function fileToObject(pathToFile, options = {}) {
+export function fileToObject(pathToFile, options = {}) {
   let { normalizePath = true, ...otherOptions } = options
   if (normalizePath) {
     pathToFile = normalizePathFn(pathToFile)
@@ -44,7 +46,7 @@ function fileToObject(pathToFile, options = {}) {
     : readJSONFile(pathToFile, otherOptions)
 }
 
-function readJSONFile(pth, options = {}) {
+export function readJSONFile(pth, options = {}) {
   let { normalizePath = true, ...optionsForReadJSONParse } = options
   if (normalizePath) {
     pth = normalizePathFn(pth)
@@ -52,14 +54,14 @@ function readJSONFile(pth, options = {}) {
   return JSON.parse(readTextFile(pth, optionsForReadJSONParse))
 }
 
-function readJSFile(pth, { normalizePath = true } = {}) {
+export function readJSFile(pth, { normalizePath = true } = {}) {
   if (normalizePath) {
     pth = normalizePathFn(pth)
   }
   return require(pth)
 }
 
-function fileExtensionIs(fileNameOrPath, extensionOrExtensions) {
+export function fileExtensionIs(fileNameOrPath, extensionOrExtensions) {
   if (typeof fileNameOrPath !== 'string') {
     return false
   }
@@ -80,7 +82,7 @@ function fileExtensionIs(fileNameOrPath, extensionOrExtensions) {
  * @param {string} str the string to check.
  * @return {boolean} `true` if the string is a URL.
  */
-function absoluteURL(str) {
+export function absoluteURL(str) {
   // return /^.*\:\/\/[^\/]+\/?/.test(str)
   return /^.*:\/\/[^/]+\/?/.test(str)
 }
@@ -90,7 +92,7 @@ function absoluteURL(str) {
  * @param {string} url an absolute URL to split
  * @return {string} the base-part of the given URL
  */
-function urlBasename(url) {
+export function urlBasename(url) {
   // return /^(.*\:\/\/[^\/]+\/?)/.exec(url)[1];
   return /^(.*:\/\/[^/]+\/?)/.exec(url)[1]
 }
@@ -100,7 +102,7 @@ function urlBasename(url) {
  * @param {...string} paths Paths to join, left to right
  * @return {string} the joined path.
  */
-function join(..._paths) {
+export function join(..._paths) {
   const args = [].concat.apply([], arguments)
   return args.slice(1).reduce(function (url, val) {
     if (absoluteURL(url) || absoluteURL(val)) {
@@ -116,7 +118,7 @@ function join(..._paths) {
  * @param {string} to the destination path
  * @return {string} A relative path from the origin to the destination.
  */
-function relative(from, to) {
+export function relative(from, to) {
   var localToRemote = !absoluteURL(from) && absoluteURL(to)
   var differentDomains =
     absoluteURL(from) &&
@@ -126,19 +128,4 @@ function relative(from, to) {
     return to
   }
   return path.posix.relative(from, to)
-}
-
-module.exports = {
-  pathToRoot,
-  normalizePath: normalizePathFn,
-  fileExists,
-  fileExtensionIs,
-  readTextFile,
-  fileToObject,
-  readJSONFile,
-  readJSFile,
-  absoluteURL,
-  urlBasename,
-  join,
-  relative,
 }

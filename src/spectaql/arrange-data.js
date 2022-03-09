@@ -1,12 +1,8 @@
-const get = require('lodash/get')
-const sortBy = require('lodash/sortBy')
-const IntrospectionManipulatorModule = require('microfiber')
-const { default: IntrospectionManipulator } = IntrospectionManipulatorModule
+import get from 'lodash/get'
+import sortBy from 'lodash/sortBy'
+import IntrospectionManipulator from 'microfiber'
 
-const arrangeData = ({
-  introspectionResponse,
-  graphQLSchema: _graphQLSchema,
-}) => {
+export default ({ introspectionResponse, graphQLSchema: _graphQLSchema }) => {
   const introspectionManipulator = new IntrospectionManipulator(
     introspectionResponse
   )
@@ -90,5 +86,3 @@ const arrangeData = ({
       : null,
   ].filter(Boolean)
 }
-
-module.exports = arrangeData

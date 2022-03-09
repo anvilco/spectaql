@@ -1,9 +1,10 @@
 import fs from 'fs'
 import path from 'path'
+import _ from 'lodash'
 import tmp from 'tmp'
 import grunt from 'grunt'
+
 import pkg from '../package.json'
-import _ from 'lodash'
 import loadYaml from './lib/loadYaml'
 import { normalizePath, pathToRoot } from './spectaql/utils'
 
@@ -94,9 +95,9 @@ function resolvePaths(
   })
 }
 
-function resolveOptions(options) {
+function resolveOptions(cliOptions) {
   // Start with options from the CLI
-  let opts = _.extend({}, options)
+  let opts = _.extend({}, cliOptions)
 
   resolvePaths(opts)
 
@@ -182,8 +183,8 @@ function _buildSchemas(options) {
 /**
  * Run SpectaQL and configured tasks
  **/
-export const run = function (options = {}) {
-  const opts = resolveOptions(options)
+export const run = function (cliOptions = {}) {
+  const opts = resolveOptions(cliOptions)
 
   //
   //= Load the specification and init configuration
@@ -379,14 +380,13 @@ export const run = function (options = {}) {
 
   return donePromise
 }
-export default run
 
-export const loadData = function (options = {}) {
-  const opts = resolveOptions(options)
+export const loadData = function (cliOptions = {}) {
+  const opts = resolveOptions(cliOptions)
   return _loadData(opts)
 }
 
-export const buildSchemas = function (options = {}) {
-  const opts = resolveOptions(options)
+export const buildSchemas = function (cliOptions = {}) {
+  const opts = resolveOptions(cliOptions)
   return _buildSchemas(opts)
 }

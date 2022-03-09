@@ -4,6 +4,7 @@ module.exports = {
       // Using polyfills: No polyfills were added, since the `useBuiltIns` option was not set.
       '@babel/preset-env',
       {
+        // modules: 'commonjs',
         targets: {
           // Keep this roughly in-line with our "engines.node" value in package.json
           node: '12',

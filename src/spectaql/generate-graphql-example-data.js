@@ -1,13 +1,11 @@
-const { introspectionTypeToString } = require('./type-helpers')
-
-const IntrospectionManipulatorModule = require('microfiber')
-const { default: IntrospectionManipulator } = IntrospectionManipulatorModule
-const {
+import { introspectionTypeToString } from './type-helpers'
+import IntrospectionManipulator from 'microfiber'
+import {
   introspectionArgsToVariables,
   introspectionQueryOrMutationToResponse,
-} = require('../lib/common')
+} from '../lib/common'
 
-function generateQuery({
+export function generateQuery({
   prefix,
   field,
   introspectionResponse,
@@ -122,4 +120,4 @@ function generateQueryInternal({
   }
 }
 
-module.exports = generateQuery
+export default generateQuery

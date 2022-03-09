@@ -1,5 +1,5 @@
 // Oh hi!
-module.exports = function (e) {
+export default function (e) {
   const VARIABLES = {
     className: 'code',
     begin: '\\$',
