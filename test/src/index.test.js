@@ -1,7 +1,12 @@
+import * as loadYaml from 'dist/lib/loadYaml'
 const rewire = require('rewire')
 const index = rewire('dist/index')
 
 describe('index', function () {
+  afterEach(() => {
+    sinon.restore()
+  })
+
   describe('resolveOptions', function () {
     def('options', () => ({}))
 
@@ -40,15 +45,11 @@ describe('index', function () {
     })
 
     context('config yaml specifies some options', function () {
-      let revert
       beforeEach(function () {
-        revert = index.__set__({
-          loadYaml: () => $.config,
-        })
-      })
-
-      afterEach(function () {
-        revert()
+        sinon.stub(loadYaml, 'default').callsFake(() => $.config)
+        // revert = index.__set__({
+        //   loadYaml: () => $.config,
+        // })
       })
 
       def('_options', () => ({

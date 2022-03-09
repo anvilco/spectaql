@@ -1,9 +1,9 @@
-const { Command } = require('commander')
+import pkg from '../package.json'
+import { Command } from 'commander'
+
 const program = new Command()
 
-const pkg = require('../package.json')
-
-module.exports = function () {
+export default function () {
   //
   //= Process CLI input
 

@@ -10,6 +10,7 @@ module.exports = {
   },
   globals: {
     expect: 'readonly',
+    sinon: 'readonly',
     // *************************************************
     // bdd-lazy-var
     //

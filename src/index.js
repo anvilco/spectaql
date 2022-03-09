@@ -1,19 +1,20 @@
-const fs = require('fs')
-const path = require('path')
-const tmp = require('tmp')
-const grunt = require('grunt')
-const pkg = require('../package.json')
-const _ = require('lodash')
-const loadYaml = require('./lib/loadYaml')
-const cliOptions = require('./cli')
-const { normalizePath, pathToRoot } = require('./spectaql/utils')
+import fs from 'fs'
+import path from 'path'
+import tmp from 'tmp'
+import grunt from 'grunt'
+import pkg from '../package.json'
+import _ from 'lodash'
+import loadYaml from './lib/loadYaml'
+import { normalizePath, pathToRoot } from './spectaql/utils'
+
+export { default as parseCliOptions } from './cli'
 
 let spectaql
 
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
 tmp.setGracefulCleanup()
 
-const defaults = {
+const defaults = Object.freeze({
   quiet: false,
   port: 4400,
   portLive: 4401,
@@ -27,15 +28,15 @@ const defaults = {
   }).name,
   oneFile: false,
   specData: {},
-}
+})
 
 // Things that may get set from either the CLI or the YAML.spectaql area, but if nothing
 // is set, then use these:
-const spectaqlOptionDefaults = {
+const spectaqlOptionDefaults = Object.freeze({
   cssBuildMode: 'full',
-}
+})
 
-const introspectionOptionDefaults = {
+const introspectionOptionDefaults = Object.freeze({
   dynamicExamplesProcessingModule: normalizePath('customizations/examples'),
 
   removeTrailingPeriodFromDescriptions: false,
@@ -61,10 +62,10 @@ const introspectionOptionDefaults = {
   fieldDocumentedDefault: true,
   argDocumentedDefault: true,
   hideFieldsWithUndocumentedReturnType: true,
-}
+})
 
 // From CLI option name to introspection config option name
-const introspectionOptionsMap = {
+const introspectionOptionsMap = Object.freeze({
   schemaFile: 'schemaFile',
   introspectionUrl: 'url',
   introspectionFile: 'introspectionFile',
@@ -72,7 +73,7 @@ const introspectionOptionsMap = {
   dynamicExamplesProcessingModule: 'dynamicExamplesProcessingModule',
   header: 'authHeader',
   headers: 'headers',
-}
+})
 
 function resolvePaths(
   options,
@@ -122,16 +123,6 @@ function resolveOptions(options) {
       // Use "defaults" here to preserve whatever may have been specified in the CLI
       opts = _.defaults({}, opts, spectaqlYaml)
     }
-
-    // if (introspectionYaml) {
-    //   // Move the provided Introspection-related CLI options into the Introspection
-    //   // data from the YAML config. CLI opts take precedent
-    //   Object.entries(introspectionOptionsMap).forEach(([fromKey, toKey]) => {
-    //     if (typeof opts[fromKey] !== 'undefined') {
-    //       introspectionYaml[toKey] = opts[fromKey]
-    //     }
-    //   })
-    // }
   }
 
   // Add in defaults for things that were not set via CLI or YAML config
@@ -139,10 +130,6 @@ function resolveOptions(options) {
 
   // Resolve all the top-level paths
   resolvePaths(opts)
-
-  // if (opts.appDir && opts.appDir.indexOf('/') !== 0) {
-  //   opts.appDir = path.resolve(opts.appDir)
-  // }
 
   // Add in some defaults here
   opts.specData.introspection = _.defaults(
@@ -183,11 +170,11 @@ function resolveOptions(options) {
   return opts
 }
 
-function loadData(options) {
+function _loadData(options) {
   return spectaql(options)
 }
 
-function buildSchemas(options) {
+function _buildSchemas(options) {
   const { buildSchemas } = spectaql
   return buildSchemas(options)
 }
@@ -195,7 +182,7 @@ function buildSchemas(options) {
 /**
  * Run SpectaQL and configured tasks
  **/
-function run(options = {}) {
+export const run = function (options = {}) {
   const opts = resolveOptions(options)
 
   //
@@ -204,7 +191,7 @@ function run(options = {}) {
   const gruntConfig = require(path.resolve(opts.gruntConfigFile))(
     grunt,
     opts,
-    loadData(opts)
+    _loadData(opts)
   )
 
   //
@@ -309,7 +296,7 @@ function run(options = {}) {
     try {
       grunt.config.set(
         'compile-handlebars.compile.templateData',
-        loadData(opts)
+        _loadData(opts)
       )
     } catch (e) {
       grunt.fatal(e)
@@ -392,15 +379,14 @@ function run(options = {}) {
 
   return donePromise
 }
+export default run
 
-module.exports = run
-module.exports.run = run
-module.exports.parseCliOptions = cliOptions
-module.exports.loadData = function (options = {}) {
+export const loadData = function (options = {}) {
   const opts = resolveOptions(options)
-  return loadData(opts)
+  return _loadData(opts)
 }
-module.exports.buildSchemas = function (options = {}) {
+
+export const buildSchemas = function (options = {}) {
   const opts = resolveOptions(options)
-  return buildSchemas(opts)
+  return _buildSchemas(opts)
 }

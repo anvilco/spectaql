@@ -34,14 +34,11 @@
     "build": "babel src --copy-files --out-dir ./dist",
     "clean-build": "yarn clean && yarn build",
     "prepare": "husky install && yarn clean && yarn build",
-
     "test": "mocha --config ./test/mocha-config.js",
     "test:watch": "nodemon -x 'yarn clean-build && yarn test'",
-
     "develop": "nodemon -x 'yarn clean-build && node bin/spectaql' -D",
     "build:site": "node bin/spectaql",
     "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
-
     "prettify": "prettier 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
     "lint": "eslint 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
     "lint:fix": "yarn lint --fix",
@@ -49,7 +46,6 @@
     "lint:quiet:fix": "yarn lint:quiet --fix",
     "prettify:check": "yarn prettify --check",
     "prettify:write": "yarn prettify --write",
-
     "generateExampleData": "node bin/generateExampleData.js"
   },
   "dependencies": {
@@ -95,6 +91,7 @@
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.5",
     "@babel/preset-env": "^7.16.11",
+    "@babel/register": "^7.17.0",
     "app-module-path": "^2.2.0",
     "bdd-lazy-var": "^2.6.0",
     "chai": "^4.3.0",
@@ -110,7 +107,9 @@
     "nodemon": "^2.0.12",
     "prettier": "^2.5.1",
     "rewire": "^5.0.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "sinon": "^13.0.1",
+    "sinon-chai": "^3.7.0"
   },
   "resolutions": {
     "grunt-compile-handlebars/lodash.merge": "^4.6.2",
