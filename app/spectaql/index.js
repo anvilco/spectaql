@@ -36,11 +36,6 @@ function run(opts) {
     graphQLSchema,
   })
 
-  console.log(JSON.stringify({
-    introspectionResponse,
-    orderedDataWithHeaders,
-  }))
-
   // console.log(JSON.stringify({
   //   introspectionResponse,
   //   orderedDataWithHeaders,
