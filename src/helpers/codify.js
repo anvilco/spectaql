@@ -1,4 +1,4 @@
-const { get } = require('lodash')
+import get from 'lodash/get'
 // Wraps a string in `backticks` so when it's rendered in markdown it will look cool
 //
 // Options:

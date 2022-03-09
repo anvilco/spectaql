@@ -1,4 +1,4 @@
-const stripTrailing = require('./stripTrailing')
+import stripTrailing from './stripTrailing'
 
 /**
  * A simple helper to concatenate strings

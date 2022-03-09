@@ -1,4 +1,5 @@
-const { get } = require('lodash')
+import get from 'lodash/get'
+
 // Implements a simple ternary helper.
 //
 // Options:

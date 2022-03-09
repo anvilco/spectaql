@@ -1,9 +1,9 @@
-const {
+import {
   analyzeTypeIntrospection,
   introspectionTypeToString,
-} = require('../spectaql/type-helpers')
-const mdLink = require('./mdLink')
-const schemaReferenceHref = require('./schemaReferenceHref')
+} from '../spectaql/type-helpers'
+import mdLink from './mdLink'
+import schemaReferenceHref from './schemaReferenceHref'
 
 // Creates a markdown link for the provided Type. Options are passed along to mdLink
 module.exports = function mdTypeLink(thing, options) {

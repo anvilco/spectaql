@@ -1,5 +1,5 @@
-var Handlebars = require('handlebars')
-var common = require('../lib/common')
+import Handlebars from 'handlebars'
+import { markdown } from '../lib/common'
 
 /**
  * Render a markdown formatted text as HTML.
@@ -16,6 +16,6 @@ module.exports = function (value, options) {
     markdownOpts.stripParagraph = options.hash.stripParagraph || false
     markdownOpts.addClass = options.hash.addClass || false
   }
-  var html = common.markdown(value, markdownOpts)
+  var html = markdown(value, markdownOpts)
   return new Handlebars.SafeString(html)
 }

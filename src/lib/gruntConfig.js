@@ -1,10 +1,11 @@
-const path = require('path')
-const sass = require('sass')
+import path from 'path'
+import sass from 'sass'
 
 const root = path.resolve(__dirname, '../..')
 const node_modules_clone = path.resolve(root, 'node_modules')
 const node_modules_dependency = path.resolve(root, '..')
 
+// Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
   // The basic JS paths
   const jsSrcPaths = [

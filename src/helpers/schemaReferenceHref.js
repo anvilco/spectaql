@@ -1,4 +1,4 @@
-const htmlId = require('./htmlId')
+import htmlId from './htmlId'
 
 module.exports = function (reference, _options) {
   if (reference.startsWith('#definition-')) {

@@ -11,6 +11,7 @@ import { normalizePath, pathToRoot } from './spectaql/utils'
 export { default as parseCliOptions } from './cli'
 
 let spectaql
+let gruntConfigFn
 
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
 tmp.setGracefulCleanup()
@@ -85,6 +86,7 @@ function resolvePaths(
     'additionalJsFile',
     'faviconFile',
     'specFile',
+    'gruntConfigFile',
   ]
 ) {
   keys.forEach((key) => {
@@ -167,6 +169,7 @@ function resolveOptions(cliOptions) {
 
   // Set the spectaql object
   spectaql = require(path.resolve(opts.appDir + '/spectaql/index'))
+  gruntConfigFn = require(opts.gruntConfigFile)
 
   return opts
 }
@@ -189,11 +192,7 @@ export const run = function (cliOptions = {}) {
   //
   //= Load the specification and init configuration
 
-  const gruntConfig = require(path.resolve(opts.gruntConfigFile))(
-    grunt,
-    opts,
-    _loadData(opts)
-  )
+  const gruntConfig = gruntConfigFn(grunt, opts, _loadData(opts))
 
   //
   //= Setup Grunt to do the heavy lifting

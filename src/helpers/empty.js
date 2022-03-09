@@ -1,5 +1,5 @@
-const _ = require('lodash')
+import isEmpty from 'lodash/isEmpty'
 
 module.exports = function (value) {
-  return _.isEmpty(value)
+  return isEmpty(value)
 }
