@@ -183,6 +183,7 @@ describe('augmenters', function () {
     def('result', () => hideThingsBasedOnMetadata({
         introspectionManipulator: $.introspectionManipulator,
         introspectionOptions: $.introspectionOptions,
+        extensionOptions: $.extensionOptions,
     }))
 
 
