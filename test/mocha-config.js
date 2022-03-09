@@ -6,7 +6,7 @@ module.exports = {
   reporter: 'spec',
   slow: 75,
   timeout: 2000,
-  spec: './test/app/**/*.test.js',
+  spec: './test/src/**/*.test.js',
   require: [
     // https://mochajs.org/#-require-module-r-module
     // '@babel/register',

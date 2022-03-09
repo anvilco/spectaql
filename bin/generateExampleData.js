@@ -22,9 +22,9 @@ const pathToIntrospectionWithoutMetadata = path.resolve(
 const {
   loadSchemaFromSDLFile,
   introspectionResponseFromSchema,
-} = require('../app/spectaql/graphql-loaders')
+} = require('../dist/spectaql/graphql-loaders')
 
-const { addMetadataFromFile } = require('../app/spectaql/metadata-loaders')
+const { addMetadataFromFile } = require('../dist/spectaql/metadata-loaders')
 
 const schema = loadSchemaFromSDLFile({ pathToFile: pathToExampleSchema })
 const introspectionResponse = introspectionResponseFromSchema({ schema })

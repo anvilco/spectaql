@@ -8,7 +8,7 @@ const {
   loadSchemaFromSDLFile,
   introspectionResponseFromSchema,
   graphQLSchemaFromIntrospectionResponse,
-} = require('app/spectaql/graphql-loaders')
+} = require('dist/spectaql/graphql-loaders')
 
 describe('graphql-loaders', function () {
   describe('loadSchemaFromSDLFile', function () {

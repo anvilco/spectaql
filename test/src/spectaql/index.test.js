@@ -1,4 +1,4 @@
-const spectaql = require('app/spectaql')
+const spectaql = require('dist/spectaql')
 const { pathToSimpleSchema, pathToComplexSchema } = require('test/helpers')
 
 describe('index', function () {

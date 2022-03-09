@@ -22,29 +22,35 @@
   "bugs": {
     "url": "https://github.com/anvilco/spectaql/issues"
   },
-  "main": "app/index.js",
   "engines": {
     "node": ">=12"
   },
+  "main": "dist/index.js",
   "bin": {
     "spectaql": "./bin/spectaql.js"
   },
   "scripts": {
     "clean": "yarn rimraf ./dist",
-    "develop": "nodemon -x 'node bin/spectaql' -D",
-    "build": "node bin/spectaql",
-    "build:example": "yarn build --target-dir ./examples/output ./examples/config.yml",
-    "prettify": "prettier 'app/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
-    "lint": "eslint 'app/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
+    "build": "babel src --copy-files --out-dir ./dist",
+    "clean-build": "yarn clean && yarn build",
+    "prepare": "husky install && yarn clean && yarn build",
+
+    "test": "mocha --config ./test/mocha-config.js",
+    "test:watch": "nodemon -x 'yarn clean-build && yarn test'",
+
+    "develop": "nodemon -x 'yarn clean-build && node bin/spectaql' -D",
+    "build:site": "node bin/spectaql",
+    "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
+
+    "prettify": "prettier 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
+    "lint": "eslint 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:quiet:fix": "yarn lint:quiet --fix",
     "prettify:check": "yarn prettify --check",
     "prettify:write": "yarn prettify --write",
-    "generateExampleData": "node bin/generateExampleData.js",
-    "test": "mocha --config ./test/mocha-config.js",
-    "test:watch": "nodemon -x 'yarn test'",
-    "prepare": "husky install"
+
+    "generateExampleData": "node bin/generateExampleData.js"
   },
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.1",
@@ -86,6 +92,9 @@
     "tmp": "0.2.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
     "app-module-path": "^2.2.0",
     "bdd-lazy-var": "^2.6.0",
     "chai": "^4.3.0",

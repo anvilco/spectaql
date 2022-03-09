@@ -19,8 +19,8 @@ const defaults = {
   portLive: 4401,
   targetDir: path.resolve(process.cwd(), 'public'),
   targetFile: 'index.html',
-  appDir: normalizePath('app'), //path.resolve(root, 'app'),
-  gruntConfigFile: normalizePath('app/lib/gruntConfig.js'), //path.resolve(root, 'app/lib/gruntConfig.js'),
+  appDir: normalizePath('dist'), //path.resolve(root, 'dist'),
+  gruntConfigFile: normalizePath('dist/lib/gruntConfig.js'), //path.resolve(root, 'dist/lib/gruntConfig.js'),
   cacheDir: tmp.dirSync({
     unsafeCleanup: true,
     prefix: 'spectaql-',

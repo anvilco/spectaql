@@ -1,5 +1,5 @@
 const rewire = require('rewire')
-const index = rewire('app/index')
+const index = rewire('dist/index')
 
 describe('index', function () {
   describe('resolveOptions', function () {

@@ -4,9 +4,9 @@ const {
   introspectionResponseFromSchemaSDL,
   // jsonSchemaFromIntrospectionResponse,
   graphQLSchemaFromIntrospectionResponse,
-} = require('app/spectaql/graphql-loaders')
+} = require('dist/spectaql/graphql-loaders')
 
-const { addMetadata } = require('app/spectaql/metadata-loaders')
+const { addMetadata } = require('dist/spectaql/metadata-loaders')
 
 const {
   createIntrospectionManipulator,
@@ -14,7 +14,7 @@ const {
   addExamples,
   // addExamplesFromMetadata,
   // addExamplesDynamically,
-} = require('app/spectaql/augmenters')
+} = require('dist/spectaql/augmenters')
 
 const { KIND_INPUT_OBJECT, KIND_SCALAR } = require('microfiber')
 

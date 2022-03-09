@@ -134,7 +134,7 @@ module.exports = function () {
 
     .option(
       '-g, --grunt-config-file <file>',
-      'specify a custom Grunt configuration file (default: app/lib/gruntConfig.js)',
+      'specify a custom Grunt configuration file (default: dist/lib/gruntConfig.js)',
       String
     )
     // TODO: remove this option in favor of --headers as part of a breaking change
