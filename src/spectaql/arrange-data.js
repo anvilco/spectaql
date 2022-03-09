@@ -1,6 +1,6 @@
 import get from 'lodash/get'
 import sortBy from 'lodash/sortBy'
-import IntrospectionManipulator from 'microfiber'
+import { Microfiber as IntrospectionManipulator } from 'microfiber'
 
 export default ({ introspectionResponse, graphQLSchema: _graphQLSchema }) => {
   const introspectionManipulator = new IntrospectionManipulator(

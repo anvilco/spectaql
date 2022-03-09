@@ -1,5 +1,5 @@
 import { introspectionTypeToString } from './type-helpers'
-import IntrospectionManipulator from 'microfiber'
+import { Microfiber as IntrospectionManipulator } from 'microfiber'
 import {
   introspectionArgsToVariables,
   introspectionQueryOrMutationToResponse,

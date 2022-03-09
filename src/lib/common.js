@@ -8,7 +8,7 @@ import highlightJs from 'highlight.js'
 import highlightGraphQlFunction from '../spectaql/graphql-hl'
 import { analyzeTypeIntrospection } from '../spectaql/type-helpers'
 
-import IntrospectionManipulator from 'microfiber'
+import { Microfiber as IntrospectionManipulator } from 'microfiber'
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround

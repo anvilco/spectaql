@@ -16,7 +16,7 @@ const {
   // addExamplesDynamically,
 } = require('dist/spectaql/augmenters')
 
-const { KIND_INPUT_OBJECT, KIND_SCALAR } = require('microfiber')
+import { KINDS } from 'microfiber'
 
 describe('augmenters', function () {
   def(
@@ -809,7 +809,7 @@ describe('augmenters', function () {
       expect(
         $.introspectionManipulator.getType({
           name: 'MyInput',
-          kind: KIND_INPUT_OBJECT,
+          kind: KINDS.INPUT_OBJECT,
         })
       )
         .to.be.an('object')
@@ -950,7 +950,7 @@ describe('augmenters', function () {
           // OK, WTF were special tags again? And placeholding quotes?
           expect(
             $.introspectionManipulator.getType({
-              kind: KIND_SCALAR,
+              kind: KINDS.SCALAR,
               name: 'String',
             }).example
           ).to.eql('42: Life, the Universe and Everything')

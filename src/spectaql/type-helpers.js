@@ -1,25 +1,15 @@
 import _ from 'lodash'
-
-import {
-  KIND_SCALAR,
-  KIND_OBJECT,
-  KIND_INPUT_OBJECT,
-  // KIND_UNION,
-  KIND_ENUM,
-  KIND_LIST,
-  KIND_NON_NULL,
-  KIND_INTERFACE,
-} from 'microfiber'
+import { KINDS } from 'microfiber'
 
 export function getTypeFromIntrospectionResponse({
   name,
   kind,
   kinds = [
-    KIND_OBJECT,
-    KIND_SCALAR,
-    KIND_ENUM,
-    KIND_INPUT_OBJECT,
-    KIND_INTERFACE,
+    KINDS.OBJECT,
+    KINDS.SCALAR,
+    KINDS.ENUM,
+    KINDS.INPUT_OBJECT,
+    KINDS.INTERFACE,
   ],
   introspectionResponse,
 } = {}) {
@@ -79,7 +69,7 @@ export function analyzeTypeIntrospection(type) {
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    if (type.kind === KIND_NON_NULL) {
+    if (type.kind === KINDS.NON_NULL) {
       // If we already know this is an array, then this NonNull means that the
       // "items" are required
       if (isArray) {
@@ -89,7 +79,7 @@ export function analyzeTypeIntrospection(type) {
         // not be an array) is required
         isRequired = true
       }
-    } else if (type.kind === KIND_LIST) {
+    } else if (type.kind === KINDS.LIST) {
       isArray = true
     } else {
       break

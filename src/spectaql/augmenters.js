@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import IntrospectionManipulator from 'microfiber'
+import { Microfiber as IntrospectionManipulator } from 'microfiber'
 import {
   analyzeTypeIntrospection,
   isReservedType,

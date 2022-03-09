@@ -3987,10 +3987,10 @@ methods@^1.1.1:
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   integrity sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
 
-microfiber@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-0.0.4.tgz#79d8718a210ef991b2558e885b4cd570ca59bc0e"
-  integrity sha512-0f8d25+hhb4QTm63CYySWXeGn4V77qxOjsmeTfZB/zUnSZQ12H7XOcyRatx9vnZWktlZKd6S1J4SLksa6tkeKA==
+microfiber@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-0.0.5.tgz#aae8de5a85cd5ab9027e29181bfbaee0f311a0df"
+  integrity sha512-JY7lxky4cNghTbceRNnGLh1qc+sLyAJz0TTT1XdE6ARXdIvJzJFVR2t8oxFBAS1/VxXVQRaecLFmleaJz1nVqw==
   dependencies:
     lodash.defaults "^4.2.0"
     lodash.get "^4.4.2"
