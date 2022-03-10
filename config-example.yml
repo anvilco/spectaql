@@ -11,7 +11,7 @@ spectaql:
   additionalJsFile: path/to/additional.js
   # Optional path to a CSS file that will be bundled into the spectaql.min.css with all the other CSS
   # from foundation, etc. Useful for overriding CSS styles to your liking.
-  additionalCssFile: path/to/addition.css
+  additionalCssFile: path/to/additional.css
 
   # Optional string specifying how to build and include CSS for the output:
   #   full: will include a very opinionated set of CSS to make the output look good

@@ -140,7 +140,7 @@ Examples:
 
 The best option for customizing your output is to see if what you want to do is already supported out of the box:
 - There are various options in the [CLI](#command-line-options) and [YAML](#yaml-options) config for customizing your results.
-- Overriding CSS is already supported. Check [customizations/scss](https://github.com/anvilco/spectaql/blob/master/customizations/scss) for more.
+- Overriding CSS is already supported. Check [customizations/scss](https://github.com/anvilco/spectaql/blob/master/examples/customizations/css/custom.css) for more.
 - Overriding "examples" for things is already supported via [metadata](#metadata), or via a [dynamic example generator](#dynamic-example-generators).
 
 
