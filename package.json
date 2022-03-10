@@ -31,7 +31,8 @@
   },
   "scripts": {
     "clean": "yarn rimraf ./dist",
-    "build": "babel src --copy-files --out-dir ./dist",
+    "build": "babel src --out-dir ./dist --copy-files",
+    "build:with-maps": "yarn build --source-maps",
     "clean-build": "yarn clean && yarn build",
     "prepare": "husky install && yarn clean && yarn build",
     "test": "mocha --config ./test/mocha-config.js",
