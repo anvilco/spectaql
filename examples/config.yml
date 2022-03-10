@@ -1,6 +1,8 @@
 spectaql:
   logoFile: ./test/fixtures/logo.png
   faviconFile: ./test/fixtures/favicon.png
+  additionalJsFile: ./examples/customizations/js/custom.js
+  additionalCssFile: ./examples/customizations/css/custom.css
 
 introspection:
   removeTrailingPeriodFromDescriptions: false

@@ -9,6 +9,9 @@ spectaql:
   # Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
   # required JS. Can be useful for setting some values, such as for the Traverse.defaults object
   additionalJsFile: path/to/additional.js
+  # Optional path to a CSS file that will be bundled into the spectaql.min.css with all the other CSS
+  # from foundation, etc. Useful for overriding CSS styles to your liking.
+  additionalCssFile: path/to/addition.css
 
   # Optional string specifying how to build and include CSS for the output:
   #   full: will include a very opinionated set of CSS to make the output look good
