@@ -79,7 +79,7 @@ const introspectionOptionsMap = {
   headers: 'headers',
 }
 
-function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'additionalJsFile', 'faviconFile', 'specFile']) {
+function resolvePaths (options, keys = ['targetDir', 'appDir', 'logoFile', 'additionalJsFile', 'additionalCssFile', 'faviconFile', 'specFile']) {
   keys.forEach((key) => {
     const val = options[key]
     // TODO: make this "!val.startsWith('/')"?
