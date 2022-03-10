@@ -2,7 +2,7 @@ import JSON5 from 'json5'
 // https://www.npmjs.com/package/json-stringify-pretty-compact
 import stringify from 'json-stringify-pretty-compact'
 import cheerio from 'cheerio'
-import marked from 'marked'
+import { marked } from 'marked'
 import highlightJs from 'highlight.js'
 
 import highlightGraphQlFunction from '../spectaql/graphql-hl'
@@ -98,7 +98,7 @@ export function markdown(
     return value
   }
 
-  var html = marked(value)
+  let html = marked.parse(value)
   // We strip the surrounding <p>-tag, if
   if (stripParagraph) {
     let $ = cheerio.load('<root>' + html + '</root>')('root')
@@ -360,13 +360,13 @@ export function printSchema(value, _root) {
 
   let markedDown
   if (typeof value == 'string') {
-    markedDown = marked('```gql\r\n' + value + '\n```')
+    markedDown = marked.parse('```gql\r\n' + value + '\n```')
   } else {
     const stringified = stringify(value, {
       indent: 2,
       replacer: jsonReplacer,
     })
-    markedDown = marked('```json\r\n' + stringified + '\n```')
+    markedDown = marked.parse('```json\r\n' + stringified + '\n```')
   }
 
   // There is an issue with `marked` not formatting a leading quote in a single,
