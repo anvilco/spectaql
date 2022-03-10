@@ -63,6 +63,7 @@ describe('index', function () {
           oneFile: true,
           cssBuildMode: 'basic',
           additionalJsFile: './foo.js',
+          additionalCssFile: './foo.css',
         },
       }))
 
@@ -73,6 +74,7 @@ describe('index', function () {
         expect(options.oneFile).to.be.true
         expect(options.cssBuildMode).to.eql('basic')
         expect(options.additionalJsFile.endsWith('foo.js')).to.be.true
+        expect(options.additionalCssFile.endsWith('foo.css')).to.be.true
       })
 
       context('CLI specifies some options', function () {
@@ -81,6 +83,7 @@ describe('index', function () {
           oneFile: false,
           cssBuildMode: 'ridiculous',
           additionalJsFile: 'bar.js',
+          additionalCssFile: 'bar.css',
         }))
 
         it('uses CLI options', function () {
@@ -90,6 +93,7 @@ describe('index', function () {
           expect(options.oneFile).to.be.false
           expect(options.cssBuildMode).to.be.eql('ridiculous')
           expect(options.additionalJsFile.endsWith('bar.js')).to.be.true
+          expect(options.additionalCssFile.endsWith('bar.css')).to.be.true
         })
       })
     })

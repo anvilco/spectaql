@@ -17,6 +17,11 @@ module.exports = function (grunt, options, spec) {
     jsSrcPaths.push(options.additionalJsFile)
   }
 
+  const cssSrcPaths = [options.cacheDir + '/stylesheets/**/*.css']
+  if (options.additionalCssFile) {
+    cssSrcPaths.push(options.additionalCssFile)
+  }
+
   return {
     // Compile SCSS source files into the cache directory
     sass: {
@@ -60,7 +65,7 @@ module.exports = function (grunt, options, spec) {
         dest: options.cacheDir + '/javascripts/spectaql.js',
       },
       css: {
-        src: [options.cacheDir + '/stylesheets/**/*.css'],
+        src: cssSrcPaths,
         dest: options.cacheDir + '/stylesheets/spectaql.css',
       },
     },

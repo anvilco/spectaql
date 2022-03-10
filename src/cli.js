@@ -132,6 +132,14 @@ export default function () {
       String
     )
 
+    // Optional path to a CSS file that will be bundled into the spectaql.min.css with all the other CSS
+    // from foundation, etc. Useful for overriding CSS styles to your liking.
+    .option(
+      '--additional-css-file <file>',
+      'specify a file that contains additional CSS to add to the spectaql.min.css',
+      String
+    )
+
     .option(
       '-g, --grunt-config-file <file>',
       'specify a custom Grunt configuration file (default: dist/lib/gruntConfig.js)',

@@ -84,6 +84,7 @@ function resolvePaths(
     'appDir',
     'logoFile',
     'additionalJsFile',
+    'additionalCssFile',
     'faviconFile',
     'specFile',
     'gruntConfigFile',
