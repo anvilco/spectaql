@@ -67,7 +67,7 @@ const introspectionOptionDefaults = Object.freeze({
 })
 
 const extensionsOptionDefaults = Object.freeze({
-  graphqlScalarExamples: false,
+  graphqlScalarExamples: true,
 })
 
 // From CLI option name to introspection config option name

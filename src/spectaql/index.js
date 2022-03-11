@@ -36,20 +36,6 @@ function run(opts) {
     graphQLSchema,
   })
 
-  // console.log(JSON.stringify({
-  //   introspectionResponse,
-  //   orderedDataWithHeaders,
-  // }))
-
-  // console.log(JSON.stringify({
-  //   orderedDataWithHeaders,
-  // }))
-
-  // console.log(JSON.stringify({
-  //   introspectionResponse,
-  //   graphQLSchema,
-  // }))
-
   // Side-effects
   preProcessData({
     orderedDataWithHeaders,
@@ -58,11 +44,6 @@ function run(opts) {
     extensions,
   })
 
-  // console.log(JSON.stringify({
-  //   orderedDataWithHeaders,
-  // }))
-
-  // generate specification
   const data = {
     // introspectionResponse,
     // graphQLSchema,

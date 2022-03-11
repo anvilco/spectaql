@@ -43,8 +43,8 @@ describe('index', function () {
         hideFieldsWithUndocumentedReturnType: true,
       })
 
-      expect(options.specData.extensions).to.include({
-        scalarGraphql: false,
+      expect(options.specData.extensions).to.eql({
+        graphqlScalarExamples: true,
       })
     })
 
@@ -69,6 +69,9 @@ describe('index', function () {
           additionalJsFile: './foo.js',
           additionalCssFile: './foo.css',
         },
+        extensions: {
+          graphqlScalarExamples: false,
+        },
       }))
 
       it('uses config overrides', function () {
@@ -79,6 +82,9 @@ describe('index', function () {
         expect(options.cssBuildMode).to.eql('basic')
         expect(options.additionalJsFile.endsWith('foo.js')).to.be.true
         expect(options.additionalCssFile.endsWith('foo.css')).to.be.true
+        expect(options.specData.extensions).to.eql({
+          graphqlScalarExamples: false,
+        })
       })
 
       context('CLI specifies some options', function () {

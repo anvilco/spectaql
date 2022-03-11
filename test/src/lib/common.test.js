@@ -5,15 +5,15 @@ const common = rewire('../../../dist/lib/common')
 describe('common', function () {
   let SPECIAL_TAG
   let QUOTE_TAG
-  let unwindSpecialTags
+  let unwindTags
 
   before(function () {
     SPECIAL_TAG = common.__get__('SPECIAL_TAG')
     QUOTE_TAG = common.__get__('QUOTE_TAG')
-    unwindSpecialTags = common.__get__('unwindSpecialTags')
+    unwindTags = common.__get__('unwindTags')
   })
 
-  describe('unwindSpecialTags', function () {
+  describe('unwindTags', function () {
     it('works', function () {
       const pairs = [
         // These get unwound
@@ -28,7 +28,7 @@ describe('common', function () {
       ]
 
       for (const [input, output] of pairs) {
-        expect(unwindSpecialTags(input)).to.eql(output)
+        expect(unwindTags(input)).to.eql(output)
       }
     })
   })
@@ -54,6 +54,12 @@ describe('common', function () {
   })
 
   describe('getExampleForScalarDefinition', function () {
+    def('graphqlScalarExamples', () => true)
+    def('otherOptions', () => ({
+      extensions: {
+        graphqlScalarExamples: $.graphqlScalarExamples,
+      },
+    }))
     const { getExampleForScalarDefinition } = common
 
     it('BigInt', function () {
@@ -63,10 +69,11 @@ describe('common', function () {
             kind: 'SCALAR',
             name: 'BigInt',
           },
-          { scalarGraphql: true }
+          $.otherOptions
         )
       ).to.equal(9007199254740991n)
     })
+
     it('Time', function () {
       expect(
         getExampleForScalarDefinition(
@@ -74,10 +81,11 @@ describe('common', function () {
             kind: 'SCALAR',
             name: 'Time',
           },
-          { scalarGraphql: true }
+          $.otherOptions
         )
-      ).to.eql('10:15:30Z')
+      ).to.eql(`${SPECIAL_TAG}${QUOTE_TAG}10:15:30Z${QUOTE_TAG}${SPECIAL_TAG}`)
     })
+
     it('EmailAddress', function () {
       expect(
         getExampleForScalarDefinition(
@@ -85,9 +93,51 @@ describe('common', function () {
             kind: 'SCALAR',
             name: 'EmailAddress',
           },
-          { scalarGraphql: true }
+          $.otherOptions
         )
-      ).to.eql('test@test.com')
+      ).to.eql(
+        `${SPECIAL_TAG}${QUOTE_TAG}test@test.com${QUOTE_TAG}${SPECIAL_TAG}`
+      )
+    })
+
+    context('graphqlScalarExamples extension is false', function () {
+      def('graphqlScalarExamples', () => false)
+
+      it('BigInt', function () {
+        expect(
+          getExampleForScalarDefinition(
+            {
+              kind: 'SCALAR',
+              name: 'BigInt',
+            },
+            $.otherOptions
+          )
+        ).to.be.undefined
+      })
+
+      it('Time', function () {
+        expect(
+          getExampleForScalarDefinition(
+            {
+              kind: 'SCALAR',
+              name: 'Time',
+            },
+            $.otherOptions
+          )
+        ).to.be.undefined
+      })
+
+      it('EmailAddress', function () {
+        expect(
+          getExampleForScalarDefinition(
+            {
+              kind: 'SCALAR',
+              name: 'EmailAddress',
+            },
+            $.otherOptions
+          )
+        ).to.be.undefined
+      })
     })
   })
 

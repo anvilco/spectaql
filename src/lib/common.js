@@ -60,7 +60,7 @@ const SCALAR_TO_EXAMPLE = {
   ID: [4, '4'],
 }
 
-function unwindSpecialTags(str) {
+function unwindTags(str) {
   if (typeof str !== 'string') {
     return str
   }
@@ -182,20 +182,10 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
     replacement = getExampleForGraphQLScalar(name)
   }
 
-  if (name === 'PhoneNumber') {
-    console.log({
-      getExampleForGraphQLScalar: true,
-      otherOptions,
-      useGraphqlScalarExamples,
-      replacement,
-    })
-  }
-
   if (typeof replacement === 'undefined') {
     replacement = SCALAR_TO_EXAMPLE[name]
-  } else if (typeof replacement === 'string') {
-    replacement = addSpecialTags(addQuoteTags(replacement))
   }
+
   if (typeof replacement === 'undefined') {
     return
   }
@@ -203,10 +193,11 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
     ? replacement[Math.floor(Math.random() * replacement.length)]
     : replacement
 
+  if (typeof replacement === 'string') {
+    replacement = addSpecialTags(addQuoteTags(replacement))
+  }
+
   return replacement
-  // return ['String', 'Date', 'DateTime'].includes(name)
-  //   ? addSpecialTags(addQuoteTags(replacement))
-  //   : replacement
 }
 
 export function introspectionArgsToVariables({
@@ -366,7 +357,7 @@ function generateIntrospectionReturnTypeExample(
 
   // console.log({example})
   if (typeof example !== 'undefined') {
-    // example = unwindSpecialTags(example)
+    // example = unwindTags(example)
   } else {
     // example = underlyingTypeDefinition.name
     example = addSpecialTags(underlyingTypeDefinition.name)
@@ -452,5 +443,5 @@ export function printSchema(value, _root) {
   // There is an issue with `marked` not formatting a leading quote in a single,
   // quoted string value. By unwinding the special tags after converting to markdown
   // we can avoid that issue.
-  return cheerio.load(unwindSpecialTags(quoted)).html()
+  return cheerio.load(unwindTags(quoted)).html()
 }
