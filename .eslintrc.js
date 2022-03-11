@@ -2,9 +2,7 @@
 
 module.exports = {
   root: true,
-  extends: [
-    'eslint:recommended',
-  ],
+  extends: ['eslint:recommended'],
   env: {
     es2021: true,
     node: true,
@@ -12,19 +10,16 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: "module"
+    sourceType: 'module',
   },
-  plugins: [
-  ],
+  plugins: [],
   rules: {
     'no-unused-vars': [
       'error',
       {
         argsIgnorePattern: '^_',
-      }
+      },
     ],
   },
-  ignorePatterns: [
-    'app/javascripts/**/*.js'
-  ],
+  ignorePatterns: ['src/javascripts/**/*.js'],
 }

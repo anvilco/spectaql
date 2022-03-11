@@ -5,6 +5,7 @@
   "ignore": [
     ".git",
     "docs",
-    "public"
+    "public",
+    "dist"
   ]
 }

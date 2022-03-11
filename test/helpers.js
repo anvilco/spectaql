@@ -2,7 +2,7 @@ const path = require('path')
 const {
   loadSchemaFromSDLFile,
   introspectionResponseFromSchema,
-} = require('app/spectaql/graphql-loaders')
+} = require('dist/spectaql/graphql-loaders')
 
 const pathToSimpleSchema = path.resolve(
   __dirname,
