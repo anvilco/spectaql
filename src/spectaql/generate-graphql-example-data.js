@@ -4,6 +4,26 @@ import {
   introspectionArgsToVariables,
   introspectionQueryOrMutationToResponse,
 } from '../lib/common'
+import { capitalizeFirstLetter } from './utils'
+
+// Create a sane/friendly indentation of args based on how many there are, and the depth
+function friendlyArgsString({ args, depth }) {
+  if (!args.length) {
+    return ''
+  }
+  const outerSpace = '  '.repeat(depth)
+  let argsStr
+  if (args.length === 1) {
+    argsStr = args[0]
+    return `(${argsStr})`
+  } else {
+    argsStr = '\n'
+    const innerSpace = '  '.repeat(depth + 1)
+    argsStr += args.map((piece) => innerSpace + piece).join(',\n')
+    argsStr += '\n'
+    return `(${argsStr}${outerSpace})`
+  }
+}
 
 export function generateQuery({
   prefix,
@@ -22,15 +42,16 @@ export function generateQuery({
     depth: 1,
   })
 
-  const argStr = queryResult.args
+  const args = queryResult.args
     .filter((item, pos) => queryResult.args.indexOf(item) === pos)
     .map((arg) => `$${arg.name}: ${introspectionTypeToString(arg.type)}`)
-    .join(', ')
+
+  const argStr = friendlyArgsString({ args, depth: 0 })
 
   const cleanedQuery = queryResult.query.replace(/ : [\w![\]]+/g, '')
 
-  const query = `${prefix} ${field.name}${
-    argStr ? `(${argStr})` : ''
+  const query = `${prefix} ${capitalizeFirstLetter(field.name)}${
+    argStr ? `${argStr}` : ''
   } {\n${cleanedQuery}}`
 
   const variables = introspectionArgsToVariables({
@@ -80,8 +101,7 @@ function generateQueryInternal({
 
   // Only if top-level for now
   if (argsStrPieces.length > 0 && depth === 1) {
-    const argsStr = argsStrPieces.join(', ')
-    queryStr += `(${argsStr})`
+    queryStr += friendlyArgsString({ args: argsStrPieces, depth })
   }
 
   const returnType = introspectionManipulator.getType(

@@ -2848,34 +2848,12 @@ graceful-fs@~2.0.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-2.0.3.tgz#7cd2cdb228a4a3f36e95efa6cc142de7d1a136d0"
   integrity sha1-fNLNsiiko/Nule+mzBQt59GhNtA=
 
-graphql-2-json-schema@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/graphql-2-json-schema/-/graphql-2-json-schema-0.9.1.tgz#69ae883f999f7fc4177e6a18be645a6aa0b1a6f9"
-  integrity sha512-jO8NC+jBi3ZxEG9TPwVltkBoQuf3Fqsju3A0eLtj4E+s5jaabJn2haHeAOgePdzwJhGITTBASAYv8xEA/406UA==
-  dependencies:
-    json5 "^2.2.0"
-    lodash "^4.17.20"
-
-graphql-json-schema@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/graphql-json-schema/-/graphql-json-schema-0.1.2.tgz#649645432092acc801de9ad2a8a956232a142310"
-  integrity sha512-XXjWbEfSd/6fiCQbavtBfgZWCnt3caXC9zW89PJZL8U+d7lt5U7ZTKDIlN2wayiE+WU/G9rCyrb1tU6k900GWg==
-  dependencies:
-    graphql "^0.10.1"
-
 graphql-scalars@^1.15.0:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/graphql-scalars/-/graphql-scalars-1.15.0.tgz#798b9aa12bcbe56be32d62aadc2cd67e22ba63c4"
   integrity sha512-uLi71egHsfF+A4XmnltPYRUnvy8uBsobRjhW6aBi305gpE/v52xkuKcjygV0CqeqdvRKmFhczh9HRx1lho2MRw==
   dependencies:
     tslib "~2.3.0"
-
-graphql@^0.10.1:
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.10.5.tgz#c9be17ca2bdfdbd134077ffd9bbaa48b8becd298"
-  integrity sha512-Q7cx22DiLhwHsEfUnUip1Ww/Vfx7FS0w6+iHItNuN61+XpegHSa3k5U0+6M5BcpavQImBwFiy0z3uYwY7cXMLQ==
-  dependencies:
-    iterall "^1.1.0"
 
 graphql@^15.6.0:
   version "15.6.0"
@@ -3494,11 +3472,6 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
-
-iterall@^1.1.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.3.0.tgz#afcb08492e2915cbd8a0884eb93a8c94d0d72fea"
-  integrity sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==
 
 js-beautify@~1.5.4:
   version "1.5.10"

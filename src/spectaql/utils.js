@@ -129,3 +129,7 @@ export function relative(from, to) {
   }
   return path.posix.relative(from, to)
 }
+
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}

@@ -53,28 +53,6 @@ describe('common', function () {
     })
   })
 
-  describe('generateIntrospectionReturnTypeExample', function () {
-    const { generateIntrospectionReturnTypeExample } = common
-    const thing = {}
-    const originalType = {}
-
-    it('BigInt', function () {
-      expect(
-        generateIntrospectionReturnTypeExample(
-          {
-            thing,
-            underlyingTypeDefinition: {
-              kind: 'SCALAR',
-              name: 'BigInt',
-            },
-            originalType,
-          },
-          { scalarGraphql: true }
-        )
-      ).to.equal(9007199254740991n)
-    })
-  })
-
   describe('getExampleForScalarDefinition', function () {
     const { getExampleForScalarDefinition } = common
 
