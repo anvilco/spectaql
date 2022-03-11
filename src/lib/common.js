@@ -9,7 +9,7 @@ import highlightGraphQlFunction from '../spectaql/graphql-hl'
 import { analyzeTypeIntrospection } from '../spectaql/type-helpers'
 
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
-const GraphQLScalars = require('../helpers/graphql-scalars')
+import { getExampleForGraphQLScalar } from '../helpers/graphql-scalars'
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround
@@ -155,7 +155,7 @@ export function getExampleForScalarDefinition(
   }
   let replacement = SCALAR_TO_EXAMPLE[name]
   if (typeof replacement === 'undefined' && scalarGraphql) {
-    replacement = GraphQLScalars.getExampleForGraphQLScalar(name)
+    replacement = getExampleForGraphQLScalar(name)
   }
   if (typeof replacement === 'undefined') {
     return
