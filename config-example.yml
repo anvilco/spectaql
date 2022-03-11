@@ -181,6 +181,13 @@ introspection:
   # Default: true
   hideMutationsWithUndocumentedReturnType: true
 
+  # Whether to document any Subscriptions at all
+  # Default: true
+  subscriptionsDocumentedDefault: true
+  # Whether to document an individual Subscription, in the absence of a metadata directive
+  # Default: true
+  subscriptionDocumentedDefault: true
+
   # Whether to document any Types at all
   # Default: true
   typesDocumentedDefault: true
@@ -196,6 +203,14 @@ introspection:
   # Default: true
   hideFieldsOfUndocumentedType: true
 
+  # Whether to document an individual Input Field, in the absence of a metadata directive
+  # Default: true
+  inputFieldDocumentedDefault: true
+  # Hide any inputFields of undocumented types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideInputFieldsOfUndocumentedType: true
+
   # Whether to document an individual Argument, in the absence of a metadata directive
   # Default: true
   argDocumentedDefault: true
@@ -205,11 +220,9 @@ introspection:
   hideArgsOfUndocumentedType: true
 
 
-  # Hide any inputFields of undocumented types so as not to reference something
-  # that seemingly does not exist.
+  # Whether to document an individual Input Field, in the absence of a metadata directive
   # Default: true
-  hideInputFieldsOfUndocumentedType: true
-
+  unionsDocumentedDefault: true
   # Hide Union possibleTypes that are not documented so as not to reference something
   # that seemingly does not exist.
   # Default: true

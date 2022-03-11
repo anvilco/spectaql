@@ -1,11 +1,13 @@
 import _ from 'lodash'
 
-import { Microfiber as IntrospectionManipulator } from 'microfiber'
 import {
-  analyzeTypeIntrospection,
+  Microfiber as IntrospectionManipulator,
+  KINDS,
   isReservedType,
   typesAreSame,
-} from './type-helpers'
+} from 'microfiber'
+
+import { analyzeTypeIntrospection } from './type-helpers'
 
 import stripTrailing from '../helpers/stripTrailing'
 
@@ -35,12 +37,11 @@ export function augmentData(args) {
 export function createIntrospectionManipulator(args) {
   const { introspectionResponse, introspectionOptions } = args
 
+  //
   const {
     hideFieldsOfUndocumentedType: removeFieldsWithMissingTypes,
-    // I'm new
     hideArgsOfUndocumentedType: removeArgsWithMissingTypes,
     hideInputFieldsOfUndocumentedType: removeInputFieldsWithMissingTypes,
-    // I'm new
     hideUnionTypesOfUndocumentedType: removePossibleTypesOfMissingTypes,
     hideQueriesWithUndocumentedReturnType: removeQueriesWithMissingTypes,
     hideMutationsWithUndocumentedReturnType: removeMutationsWithMissingTypes,
@@ -102,19 +103,29 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
     metadatasPath,
     queriesDocumentedDefault,
     mutationsDocumentedDefault,
+    subscriptionsDocumentedDefault,
     typesDocumentedDefault,
     typeDocumentedDefault,
   } = introspectionOptions
 
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
-  const types = introspectionManipulator.getResponse().__schema.types
+  const subscriptionType = introspectionManipulator.getSubscriptionType()
+
+  const types = introspectionManipulator.getAllTypes({
+    includeReserved: false,
+    includeQuery: true,
+    includeMutation: true,
+    includeSubscription: true,
+  })
+  // const types = introspectionManipulator.getResponse().__schema.types
+  // console.log(types)
 
   for (const type of types) {
     // Don't mess with reserved GraphQL types
-    if (isReservedType(type)) {
-      continue
-    }
+    // if (isReservedType(type)) {
+    //   continue
+    // }
 
     let allThingsDocumentedDefault = typesDocumentedDefault
     let individualThingsDocumentedDefault = typeDocumentedDefault
@@ -123,6 +134,13 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
       individualThingsDocumentedDefault = true
     } else if (typesAreSame(type, mutationType)) {
       allThingsDocumentedDefault = !!mutationsDocumentedDefault
+      individualThingsDocumentedDefault = true
+    } else if (typesAreSame(type, subscriptionType)) {
+      console.log({
+        subscriptionsDocumentedDefault,
+        type,
+      })
+      allThingsDocumentedDefault = !!subscriptionsDocumentedDefault
       individualThingsDocumentedDefault = true
     }
 
@@ -148,36 +166,50 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
 //
 // ** Should be called after hideTypes so that fields can be hidden
 // if their return Type is also hidden - if the options say to do that **
-function hideFields(args = {}) {
-  const { introspectionManipulator, introspectionOptions } = args
+function hideFields(options = {}) {
+  const { introspectionManipulator, introspectionOptions } = options
 
   const {
     metadatasPath,
     queryDocumentedDefault,
     mutationDocumentedDefault,
+    subscriptionDocumentedDefault,
     fieldDocumentedDefault,
+    inputFieldDocumentedDefault,
   } = introspectionOptions
 
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
+  const subscriptionType = introspectionManipulator.getSubscriptionType()
 
-  const types = introspectionManipulator.getResponse().__schema.types
+  const types = introspectionManipulator.getAllTypes({
+    includeReserved: false,
+    includeQuery: true,
+    includeMutation: true,
+    includeSubscription: true,
+  })
 
   for (const type of types) {
     // Don't mess with reserved GraphQL types
-    if (isReservedType(type)) {
-      continue
-    }
+    // if (isReservedType(type)) {
+    //   continue
+    // }
 
-    let defaultShowHide = fieldDocumentedDefault
+    let defaultShowHide =
+      type.kind === KINDS.INPUT_OBJECT
+        ? inputFieldDocumentedDefault
+        : fieldDocumentedDefault
     if (queryType && typesAreSame(type, queryType)) {
-      defaultShowHide = queryDocumentedDefault
+      defaultShowHide = !!queryDocumentedDefault
     } else if (mutationType && typesAreSame(type, mutationType)) {
-      defaultShowHide = mutationDocumentedDefault
+      defaultShowHide = !!mutationDocumentedDefault
+    } else if (subscriptionType && typesAreSame(type, subscriptionType)) {
+      defaultShowHide = !!subscriptionDocumentedDefault
+      console.log(type)
     }
-    typesAreSame
 
-    for (const field of type.fields || []) {
+    // Handle OBJECT.fields AND INPUT_OBJECT.inputFields
+    for (const field of type.fields || type.inputFields || []) {
       const metadata = _.get(field, metadatasPath, {})
       const shouldDocument = calculateShouldDocument({
         ...metadata,

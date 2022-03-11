@@ -89,7 +89,7 @@ describe('augmenters', function () {
   def('typeDocumentedDefault', true)
   def('fieldDocumentedDefault', true)
   def('argDocumentedDefault', true)
-  def('hideFieldsWithUndocumentedReturnType', true)
+  def('hideFieldsOfUndocumentedType', true)
 
   def('queriesDocumentedDefault', true)
   def('queryDocumentedDefault', true)
@@ -110,8 +110,7 @@ describe('augmenters', function () {
 
     fieldDocumentedDefault: $.fieldDocumentedDefault,
     argDocumentedDefault: $.argDocumentedDefault,
-    hideFieldsWithUndocumentedReturnType:
-      $.hideFieldsWithUndocumentedReturnType,
+    hideFieldsOfUndocumentedType: $.hideFieldsOfUndocumentedType,
 
     queriesDocumentedDefault: $.queriesDocumentedDefault,
     queryDocumentedDefault: $.queryDocumentedDefault,

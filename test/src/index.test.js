@@ -40,7 +40,7 @@ describe('index', function () {
         typeDocumentedDefault: true,
         fieldDocumentedDefault: true,
         argDocumentedDefault: true,
-        hideFieldsWithUndocumentedReturnType: true,
+        hideFieldsOfUndocumentedType: true,
       })
 
       expect(options.specData.extensions).to.eql({

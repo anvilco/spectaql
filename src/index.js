@@ -59,11 +59,23 @@ const introspectionOptionDefaults = Object.freeze({
   mutationArgDocumentedDefault: true,
   hideMutationsWithUndocumentedReturnType: true,
 
+  subscriptionsDocumentedDefault: true,
+  subscriptionDocumentedDefault: true,
+
   typesDocumentedDefault: true,
   typeDocumentedDefault: true,
+
   fieldDocumentedDefault: true,
+  hideFieldsOfUndocumentedType: true,
+
+  inputFieldDocumentedDefault: true,
+  hideInputFieldsOfUndocumentedType: true,
+
   argDocumentedDefault: true,
-  hideFieldsWithUndocumentedReturnType: true,
+  hideArgsOfUndocumentedType: true,
+
+  unionsDocumentedDefault: true,
+  hideUnionTypesOfUndocumentedType: true,
 })
 
 const extensionsOptionDefaults = Object.freeze({
