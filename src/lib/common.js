@@ -299,10 +299,11 @@ export function introspectionQueryOrMutationToResponse({
   }, {})
 }
 
-export function generateIntrospectionReturnTypeExample({
+function generateIntrospectionReturnTypeExample({
   thing,
   underlyingTypeDefinition,
   originalType,
+  quoteEnum = false,
 }) {
   let example =
     thing.example ||
@@ -310,7 +311,9 @@ export function generateIntrospectionReturnTypeExample({
     underlyingTypeDefinition.example ||
     (underlyingTypeDefinition.kind === 'ENUM' &&
       underlyingTypeDefinition.enumValues.length &&
-      addQuoteTags(underlyingTypeDefinition.enumValues[0].name)) ||
+      (quoteEnum
+        ? addQuoteTags(underlyingTypeDefinition.enumValues[0].name)
+        : underlyingTypeDefinition.enumValues[0].name)) ||
     (underlyingTypeDefinition.kind === 'UNION' &&
       underlyingTypeDefinition.possibleTypes.length &&
       addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
@@ -358,6 +361,8 @@ export function generateIntrospectionTypeExample({
       thing: type,
       underlyingTypeDefinition: type,
       originalType: type,
+      // For the Example on an Enum Type, we want it quoted
+      quoteEnum: true,
     })
   }
 
