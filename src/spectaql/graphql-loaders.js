@@ -11,7 +11,7 @@ import {
 } from 'graphql'
 import { loadFilesSync } from '@graphql-tools/load-files'
 import { mergeTypeDefs } from '@graphql-tools/merge'
-import converter from 'graphql-2-json-schema'
+
 import request from 'sync-request'
 import {
   fileExists,
@@ -100,13 +100,6 @@ export const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
     // Parse it
     JSON.parse(responseBody)
   )
-}
-
-export const jsonSchemaFromIntrospectionResponse = (introspectionResponse) => {
-  // Need to pass nullableArrayItems: true until this is the default
-  return converter.fromIntrospectionQuery(introspectionResponse, {
-    nullableArrayItems: true,
-  })
 }
 
 export const graphQLSchemaFromIntrospectionResponse = (

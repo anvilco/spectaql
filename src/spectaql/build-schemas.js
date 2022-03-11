@@ -100,8 +100,6 @@ export function buildSchemas(opts) {
     throw new Error('Problem with Introspection Query Response')
   }
 
-  // const jsonSchema = jsonSchemaFromIntrospectionResponse(introspectionResponse)
-
   const augmentedIntrospectionResponse = augmentData({
     introspectionResponse,
     // jsonSchema,
