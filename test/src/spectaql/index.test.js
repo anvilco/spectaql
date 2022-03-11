@@ -36,10 +36,6 @@ describe('index', function () {
     hideFieldsWithUndocumentedReturnType: true,
   }))
 
-  def('extensions', () => ({
-    scalarGraphql: false,
-  }))
-
   def('schemaFile', () => pathToSimpleSchema)
 
   def('info', () => ({
