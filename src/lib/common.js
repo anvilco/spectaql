@@ -3,12 +3,30 @@ import JSON5 from 'json5'
 import stringify from 'json-stringify-pretty-compact'
 import cheerio from 'cheerio'
 import { marked } from 'marked'
-import highlightJs from 'highlight.js'
-
-import highlightGraphQlFunction from '../spectaql/graphql-hl'
+import hljs from 'highlight.js'
+import {
+  ourFunction as hljsGraphqlLang,
+  // hljsFunction as hljsGraphqlLang,
+} from '../spectaql/graphql-hl'
 import { analyzeTypeIntrospection } from '../spectaql/type-helpers'
-
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
+
+// Configure highlight.js
+hljs.configure({
+  // "useBR": true
+})
+
+hljs.registerLanguage('graphql', hljsGraphqlLang)
+
+// Create a custom renderer for highlight.js compatability
+const mdRenderer = new marked.Renderer()
+mdRenderer.code = highlight
+
+// Configure marked.js
+marked.setOptions({
+  // highlight: highlight,
+  renderer: mdRenderer,
+})
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround
@@ -37,23 +55,6 @@ const SCALAR_TO_EXAMPLE = {
   JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
   ID: [4, '4'],
 }
-
-// Configure highlight.js
-highlightJs.configure({
-  // "useBR": true
-})
-
-highlightJs.registerLanguage('graphql', highlightGraphQlFunction)
-
-// Create a custom renderer for highlight.js compatability
-const renderer = new marked.Renderer()
-renderer.code = highlight
-
-// Configure marked.js
-marked.setOptions({
-  // highlight: highlight,
-  renderer: renderer,
-})
 
 function unwindSpecialTags(str) {
   if (typeof str !== 'string') {
@@ -119,23 +120,23 @@ export function markdown(
   return html
 }
 
-export function highlight(code, lang) {
+function highlight(code, language) {
   var highlighted
-  if (lang) {
+  if (language) {
     try {
-      highlighted = highlightJs.highlight(lang, code).value
+      highlighted = hljs.highlight(code, { language }).value
     } catch (e) {
       console.error(e)
     }
   }
   if (!highlighted) {
-    highlighted = highlightJs.highlightAuto(code).value
+    highlighted = hljs.highlightAuto(code).value
   }
 
   return (
     '<pre><code' +
-    (lang
-      ? ' class="hljs ' + this.options.langPrefix + lang + '"'
+    (language
+      ? ' class="hljs ' + this.options.langPrefix + language + '"'
       : ' class="hljs"') +
     '>' +
     highlighted + //code //

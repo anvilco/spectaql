@@ -72,7 +72,7 @@
     "grunt-prettify": "^0.4.0",
     "grunt-sass": "^3.0.2",
     "handlebars": "^4.3.0",
-    "highlight.js": "9.13.1",
+    "highlight.js": "^11.4.0",
     "js-yaml": "^4.1.0",
     "json-stringify-pretty-compact": "^3.0.0",
     "json5": "^2.2.0",
