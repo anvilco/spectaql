@@ -2,7 +2,6 @@ const _ = require('lodash')
 
 const {
   introspectionResponseFromSchemaSDL,
-  // jsonSchemaFromIntrospectionResponse,
   graphQLSchemaFromIntrospectionResponse,
 } = require('dist/spectaql/graphql-loaders')
 

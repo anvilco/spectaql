@@ -2,14 +2,32 @@ import JSON5 from 'json5'
 // https://www.npmjs.com/package/json-stringify-pretty-compact
 import stringify from 'json-stringify-pretty-compact'
 import cheerio from 'cheerio'
-import marked from 'marked'
-import highlightJs from 'highlight.js'
-
-import highlightGraphQlFunction from '../spectaql/graphql-hl'
+import { marked } from 'marked'
+import hljs from 'highlight.js'
+import {
+  ourFunction as hljsGraphqlLang,
+  // hljsFunction as hljsGraphqlLang,
+} from '../spectaql/graphql-hl'
 import { analyzeTypeIntrospection } from '../spectaql/type-helpers'
-
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
 import { getExampleForGraphQLScalar } from '../helpers/graphql-scalars'
+
+// Configure highlight.js
+hljs.configure({
+  // "useBR": true
+})
+
+hljs.registerLanguage('graphql', hljsGraphqlLang)
+
+// Create a custom renderer for highlight.js compatability
+const mdRenderer = new marked.Renderer()
+mdRenderer.code = highlight
+
+// Configure marked.js
+marked.setOptions({
+  // highlight: highlight,
+  renderer: mdRenderer,
+})
 
 // Some things that we want to display as a primitive/scalar are not able to be dealt with in some
 // of the processes we go through. In those cases, we'll have to deal with them as strings and surround
@@ -20,6 +38,9 @@ const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, 'g')
 
 const QUOTE_TAG = 'QUOTETAG'
 const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, 'g')
+
+const QUOTE_HTML = '&quot;'
+const QUOTE_HTML_REGEX = new RegExp(QUOTE_HTML, 'g')
 
 // Map Scalar types to example data to use fro them
 const SCALAR_TO_EXAMPLE = {
@@ -39,29 +60,12 @@ const SCALAR_TO_EXAMPLE = {
   ID: [4, '4'],
 }
 
-// Configure highlight.js
-highlightJs.configure({
-  // "useBR": true
-})
-
-highlightJs.registerLanguage('graphql', highlightGraphQlFunction)
-
-// Create a custom renderer for highlight.js compatability
-const renderer = new marked.Renderer()
-renderer.code = highlight
-
-// Configure marked.js
-marked.setOptions({
-  // highlight: highlight,
-  renderer: renderer,
-})
-
 function unwindSpecialTags(str) {
   if (typeof str !== 'string') {
     return str
   }
 
-  return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
+  return replaceQuoteTags(removeSpecialTags(str))
 }
 
 function jsonReplacer(name, value) {
@@ -74,6 +78,11 @@ function addSpecialTags(value) {
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
 
+function removeSpecialTags(value) {
+  if (typeof value !== 'string') return value
+  return value.replace(SPECIAL_TAG_REGEX, '')
+}
+
 // Exported for testing?
 export function addQuoteTags(value) {
   // Don't quote it if it's already been quoted or doesn't exist
@@ -82,6 +91,19 @@ export function addQuoteTags(value) {
   }
 
   return `${QUOTE_TAG}${value}${QUOTE_TAG}`
+}
+
+function replaceQuoteTags(value) {
+  if (typeof value !== 'string') {
+    return value
+  }
+
+  return value.replace(QUOTE_TAG_REGEX, QUOTE_HTML)
+}
+
+function replaceHtmlQuotesWithQuotes(value) {
+  if (typeof value !== 'string') return value
+  return value.replace(QUOTE_HTML_REGEX, '"')
 }
 
 /**
@@ -99,7 +121,7 @@ export function markdown(
     return value
   }
 
-  var html = marked(value)
+  let html = marked.parse(value)
   // We strip the surrounding <p>-tag, if
   if (stripParagraph) {
     let $ = cheerio.load('<root>' + html + '</root>')('root')
@@ -120,23 +142,23 @@ export function markdown(
   return html
 }
 
-export function highlight(code, lang) {
+function highlight(code, language) {
   var highlighted
-  if (lang) {
+  if (language) {
     try {
-      highlighted = highlightJs.highlight(lang, code).value
+      highlighted = hljs.highlight(code, { language }).value
     } catch (e) {
       console.error(e)
     }
   }
   if (!highlighted) {
-    highlighted = highlightJs.highlightAuto(code).value
+    highlighted = hljs.highlightAuto(code).value
   }
 
   return (
     '<pre><code' +
-    (lang
-      ? ' class="hljs ' + this.options.langPrefix + lang + '"'
+    (language
+      ? ' class="hljs ' + this.options.langPrefix + language + '"'
       : ' class="hljs"') +
     '>' +
     highlighted + //code //
@@ -372,17 +394,22 @@ export function printSchema(value, _root) {
 
   let markedDown
   if (typeof value == 'string') {
-    markedDown = marked('```gql\r\n' + value + '\n```')
+    markedDown = marked.parse('```gql\r\n' + value + '\n```')
   } else {
     const stringified = stringify(value, {
       indent: 2,
       replacer: jsonReplacer,
     })
-    markedDown = marked('```json\r\n' + stringified + '\n```')
+    markedDown = marked.parse('```json\r\n' + stringified + '\n```')
   }
+
+  // Highlight.js, when dealing with JSON, will convert quotes into &quot;, which will always render
+  // in the browser, so we get lots of things double-quoted. So, we replace "&quot;" with '"' before
+  // unwinding things and passing them to Cheerio.
+  const quoted = replaceHtmlQuotesWithQuotes(markedDown)
 
   // There is an issue with `marked` not formatting a leading quote in a single,
   // quoted string value. By unwinding the special tags after converting to markdown
   // we can avoid that issue.
-  return cheerio.load(unwindSpecialTags(markedDown)).html()
+  return cheerio.load(unwindSpecialTags(quoted)).html()
 }
