@@ -168,32 +168,31 @@ export function getExampleForScalarDefinition(
     : replacement
 }
 
-export function introspectionArgsToVariables(
-  { args, introspectionResponse, introspectionManipulator },
-  options
-) {
+export function introspectionArgsToVariables({
+  args,
+  introspectionResponse,
+  introspectionManipulator,
+}) {
   if (!(args && args.length)) {
     return null
   }
 
   return args.reduce((acc, arg) => {
-    acc[arg.name] = introspectionArgToVariable(
-      {
-        arg,
-        introspectionResponse,
-        introspectionManipulator,
-      },
-      options
-    )
+    acc[arg.name] = introspectionArgToVariable({
+      arg,
+      introspectionResponse,
+      introspectionManipulator,
+    })
     return acc
   }, {})
 }
 
 // Take an Arg from the Introspection JSON, and figure out it's example variable representation
-export function introspectionArgToVariable(
-  { arg, introspectionResponse, introspectionManipulator },
-  options
-) {
+export function introspectionArgToVariable({
+  arg,
+  introspectionResponse,
+  introspectionManipulator,
+}) {
   if (!arg) {
     return null
   }
@@ -249,14 +248,15 @@ export function introspectionArgToVariable(
       underlyingTypeDefinition,
       originalType: arg.type,
     },
-    options
+    introspectionResponse.extensionOptions
   )
 }
 
-export function introspectionQueryOrMutationToResponse(
-  { field, introspectionResponse, introspectionManipulator },
-  options
-) {
+export function introspectionQueryOrMutationToResponse({
+  field,
+  introspectionResponse,
+  introspectionManipulator,
+}) {
   introspectionManipulator =
     introspectionManipulator ||
     new IntrospectionManipulator(introspectionResponse)
@@ -272,7 +272,7 @@ export function introspectionQueryOrMutationToResponse(
         underlyingTypeDefinition,
         originalType: field.type,
       },
-      options
+      introspectionResponse.extensionOptions
     )
   }
 
@@ -287,7 +287,7 @@ export function introspectionQueryOrMutationToResponse(
         underlyingTypeDefinition,
         originalType: field.type,
       },
-      options
+      introspectionResponse.extensionOptions
     )
     return acc
   }, {})
@@ -331,7 +331,6 @@ export function generateIntrospectionTypeExample({
   type,
   introspectionResponse,
   introspectionManipulator,
-  scalarGraphql,
 }) {
   introspectionManipulator =
     introspectionManipulator ||
@@ -345,7 +344,7 @@ export function generateIntrospectionTypeExample({
         underlyingTypeDefinition: type,
         originalType: type,
       },
-      { scalarGraphql }
+      introspectionResponse.extensionOptions
     )
   }
 
@@ -360,7 +359,7 @@ export function generateIntrospectionTypeExample({
         underlyingTypeDefinition,
         originalType: field.type,
       },
-      { scalarGraphql }
+      introspectionResponse.extensionOptions
     )
     return acc
   }, {})

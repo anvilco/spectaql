@@ -5,10 +5,12 @@ import {
   introspectionQueryOrMutationToResponse,
 } from '../lib/common'
 
-export function generateQuery(
-  { prefix, field, introspectionResponse, graphQLSchema },
-  options
-) {
+export function generateQuery({
+  prefix,
+  field,
+  introspectionResponse,
+  graphQLSchema,
+}) {
   const introspectionManipulator = new IntrospectionManipulator(
     introspectionResponse
   )
@@ -31,25 +33,19 @@ export function generateQuery(
     argStr ? `(${argStr})` : ''
   } {\n${cleanedQuery}}`
 
-  const variables = introspectionArgsToVariables(
-    {
-      args: queryResult.args,
-      introspectionResponse,
-      introspectionManipulator,
-    },
-    options
-  )
+  const variables = introspectionArgsToVariables({
+    args: queryResult.args,
+    introspectionResponse,
+    introspectionManipulator,
+  })
 
   const response = {
     data: {
-      [field.name]: introspectionQueryOrMutationToResponse(
-        {
-          field,
-          introspectionResponse,
-          introspectionManipulator,
-        },
-        options
-      ),
+      [field.name]: introspectionQueryOrMutationToResponse({
+        field,
+        introspectionResponse,
+        introspectionManipulator,
+      }),
     },
   }
 

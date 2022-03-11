@@ -28,8 +28,7 @@ function run(opts) {
 
   const { protocol, host, pathname } = url.parse(urlToParse)
 
-  const { introspectionResponse, graphQLSchema, scalarGraphql } =
-    buildSchemas(opts)
+  const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
   const orderedDataWithHeaders = arrangeData({
     introspectionResponse,
@@ -51,14 +50,11 @@ function run(opts) {
   // }))
 
   // Side-effects
-  preProcessData(
-    {
-      orderedDataWithHeaders,
-      introspectionResponse,
-      graphQLSchema,
-    },
-    { scalarGraphql }
-  )
+  preProcessData({
+    orderedDataWithHeaders,
+    introspectionResponse,
+    graphQLSchema,
+  })
 
   // console.log(JSON.stringify({
   //   orderedDataWithHeaders,

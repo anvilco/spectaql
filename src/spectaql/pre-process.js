@@ -5,26 +5,20 @@ import { analyzeTypeIntrospection } from './type-helpers'
 
 export default preProcess
 
-function preProcess(
-  { orderedDataWithHeaders, introspectionResponse, graphQLSchema },
-  { scalarGraphql }
-) {
+function preProcess({
+  orderedDataWithHeaders,
+  introspectionResponse,
+  graphQLSchema,
+}) {
   handleItems(orderedDataWithHeaders, {
     introspectionResponse,
     graphQLSchema,
-    scalarGraphql,
   })
 }
 
 function handleItems(
   items,
-  {
-    depth = 0,
-    names = [],
-    introspectionResponse,
-    graphQLSchema,
-    scalarGraphql,
-  } = {}
+  { depth = 0, names = [], introspectionResponse, graphQLSchema } = {}
 ) {
   if (!Array.isArray(items)) {
     return
@@ -36,14 +30,13 @@ function handleItems(
       names,
       introspectionResponse,
       graphQLSchema,
-      scalarGraphql,
     })
   }
 }
 
 function handleItem(
   item,
-  { depth, names, introspectionResponse, graphQLSchema, scalarGraphql }
+  { depth, names, introspectionResponse, graphQLSchema }
 ) {
   if (!item) {
     return
@@ -67,7 +60,6 @@ function handleItem(
       names,
       introspectionResponse,
       graphQLSchema,
-      scalarGraphql,
     })
   }
 
@@ -76,22 +68,13 @@ function handleItem(
   let anchorPrefix
   if (item.isQuery) {
     anchorPrefix = 'query'
-    addQueryToItem(
-      { item, introspectionResponse, graphQLSchema },
-      { scalarGraphql }
-    )
+    addQueryToItem({ item, introspectionResponse, graphQLSchema })
   } else if (item.isMutation) {
     anchorPrefix = 'mutation'
-    addMutationToItem(
-      { item, introspectionResponse, graphQLSchema },
-      { scalarGraphql }
-    )
+    addMutationToItem({ item, introspectionResponse, graphQLSchema })
   } else if (item.isSubscription) {
     anchorPrefix = 'subscription'
-    addSubscriptionToItem(
-      { item, introspectionResponse, graphQLSchema },
-      { scalarGraphql }
-    )
+    addSubscriptionToItem({ item, introspectionResponse, graphQLSchema })
   } else {
     // It's a definition
     anchorPrefix = 'definition'
@@ -99,7 +82,6 @@ function handleItem(
       item,
       introspectionResponse,
       graphQLSchema,
-      scalarGraphql,
     })
   }
   // Assign a standardized ID to it

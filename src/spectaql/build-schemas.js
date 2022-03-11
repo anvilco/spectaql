@@ -109,8 +109,8 @@ export function buildSchemas(opts) {
     // jsonSchema,
     // graphQLSchema,
     introspectionOptions,
-    extensionOptions,
   })
+  augmentedIntrospectionResponse.extensionOptions = extensionOptions
 
   if (removeTrailingPeriodFromDescriptions) {
     removeTrailingPeriodsFromDescriptions(augmentedIntrospectionResponse)
