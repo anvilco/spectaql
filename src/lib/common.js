@@ -166,18 +166,35 @@ function highlight(code, language) {
   )
 }
 
-export function getExampleForScalarDefinition(
-  scalarDefinition,
-  { scalarGraphql = false }
-) {
+export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
   const { name, kind } = scalarDefinition
 
   if (kind !== 'SCALAR') {
     return
   }
-  let replacement = SCALAR_TO_EXAMPLE[name]
-  if (typeof replacement === 'undefined' && scalarGraphql) {
+  let replacement
+
+  const useGraphqlScalarExamples =
+    otherOptions?.extensions?.graphqlScalarExamples
+
+  // If the extension for this is enabled let's see if it's supported by graphql-scalars
+  if (useGraphqlScalarExamples) {
     replacement = getExampleForGraphQLScalar(name)
+  }
+
+  if (name === 'PhoneNumber') {
+    console.log({
+      getExampleForGraphQLScalar: true,
+      otherOptions,
+      useGraphqlScalarExamples,
+      replacement,
+    })
+  }
+
+  if (typeof replacement === 'undefined') {
+    replacement = SCALAR_TO_EXAMPLE[name]
+  } else if (typeof replacement === 'string') {
+    replacement = addSpecialTags(addQuoteTags(replacement))
   }
   if (typeof replacement === 'undefined') {
     return
@@ -185,15 +202,18 @@ export function getExampleForScalarDefinition(
   replacement = Array.isArray(replacement)
     ? replacement[Math.floor(Math.random() * replacement.length)]
     : replacement
-  return ['String', 'Date', 'DateTime'].includes(name)
-    ? addSpecialTags(addQuoteTags(replacement))
-    : replacement
+
+  return replacement
+  // return ['String', 'Date', 'DateTime'].includes(name)
+  //   ? addSpecialTags(addQuoteTags(replacement))
+  //   : replacement
 }
 
 export function introspectionArgsToVariables({
   args,
   introspectionResponse,
   introspectionManipulator,
+  extensions,
 }) {
   if (!(args && args.length)) {
     return null
@@ -204,16 +224,18 @@ export function introspectionArgsToVariables({
       arg,
       introspectionResponse,
       introspectionManipulator,
+      extensions,
     })
     return acc
   }, {})
 }
 
 // Take an Arg from the Introspection JSON, and figure out it's example variable representation
-export function introspectionArgToVariable({
+function introspectionArgToVariable({
   arg,
   introspectionResponse,
   introspectionManipulator,
+  extensions,
 }) {
   if (!arg) {
     return null
@@ -264,13 +286,17 @@ export function introspectionArgToVariable({
     IntrospectionManipulator.digUnderlyingType(arg.type)
   )
 
+  const otherOptions = {
+    extensions,
+  }
+
   return generateIntrospectionReturnTypeExample(
     {
       thing: arg,
       underlyingTypeDefinition,
       originalType: arg.type,
     },
-    introspectionResponse.extensionOptions
+    otherOptions
   )
 }
 
@@ -278,6 +304,7 @@ export function introspectionQueryOrMutationToResponse({
   field,
   introspectionResponse,
   introspectionManipulator,
+  extensions,
 }) {
   introspectionManipulator =
     introspectionManipulator ||
@@ -285,6 +312,10 @@ export function introspectionQueryOrMutationToResponse({
   const underlyingTypeDefinition = introspectionManipulator.getType(
     IntrospectionManipulator.digUnderlyingType(field.type)
   )
+
+  const otherOptions = {
+    extensions,
+  }
 
   // No fields? Just a Scalar then, so return a single value.
   if (!underlyingTypeDefinition.fields) {
@@ -294,7 +325,7 @@ export function introspectionQueryOrMutationToResponse({
         underlyingTypeDefinition,
         originalType: field.type,
       },
-      introspectionResponse.extensionOptions
+      otherOptions
     )
   }
 
@@ -309,7 +340,7 @@ export function introspectionQueryOrMutationToResponse({
         underlyingTypeDefinition,
         originalType: field.type,
       },
-      introspectionResponse.extensionOptions
+      otherOptions
     )
     return acc
   }, {})
@@ -317,7 +348,7 @@ export function introspectionQueryOrMutationToResponse({
 
 function generateIntrospectionReturnTypeExample(
   { thing, underlyingTypeDefinition, originalType, quoteEnum = false },
-  extensionOptions
+  otherOptions
 ) {
   let example =
     thing.example ||
@@ -331,7 +362,7 @@ function generateIntrospectionReturnTypeExample(
     (underlyingTypeDefinition.kind === 'UNION' &&
       underlyingTypeDefinition.possibleTypes.length &&
       addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
-    getExampleForScalarDefinition(underlyingTypeDefinition, extensionOptions)
+    getExampleForScalarDefinition(underlyingTypeDefinition, otherOptions)
 
   // console.log({example})
   if (typeof example !== 'undefined') {
@@ -355,10 +386,16 @@ export function generateIntrospectionTypeExample({
   type,
   introspectionResponse,
   introspectionManipulator,
+  extensions,
 }) {
   introspectionManipulator =
     introspectionManipulator ||
     new IntrospectionManipulator(introspectionResponse)
+
+  const otherOptions = {
+    extensions,
+  }
+
   const fields = type.fields || type.inputFields
   // No fields? Just a Scalar then, so return a single value.
   if (!fields) {
@@ -370,7 +407,7 @@ export function generateIntrospectionTypeExample({
         // For the Example on an Enum Type, we want it quoted
         quoteEnum: true,
       },
-      introspectionResponse.extensionOptions
+      otherOptions
     )
   }
 
@@ -385,7 +422,7 @@ export function generateIntrospectionTypeExample({
         underlyingTypeDefinition,
         originalType: field.type,
       },
-      introspectionResponse.extensionOptions
+      otherOptions
     )
     return acc
   }, {})

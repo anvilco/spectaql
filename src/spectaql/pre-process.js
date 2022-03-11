@@ -3,22 +3,28 @@ import generateQueryExample from './generate-graphql-example-data'
 import { generateIntrospectionTypeExample } from '../lib/common'
 import { analyzeTypeIntrospection } from './type-helpers'
 
-export default preProcess
-
-function preProcess({
+export default function preProcess({
   orderedDataWithHeaders,
   introspectionResponse,
   graphQLSchema,
+  extensions = {},
 }) {
   handleItems(orderedDataWithHeaders, {
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
 }
 
 function handleItems(
   items,
-  { depth = 0, names = [], introspectionResponse, graphQLSchema } = {}
+  {
+    depth = 0,
+    names = [],
+    introspectionResponse,
+    graphQLSchema,
+    extensions,
+  } = {}
 ) {
   if (!Array.isArray(items)) {
     return
@@ -30,13 +36,14 @@ function handleItems(
       names,
       introspectionResponse,
       graphQLSchema,
+      extensions,
     })
   }
 }
 
 function handleItem(
   item,
-  { depth, names, introspectionResponse, graphQLSchema }
+  { depth, names, introspectionResponse, graphQLSchema, extensions }
 ) {
   if (!item) {
     return
@@ -60,6 +67,7 @@ function handleItem(
       names,
       introspectionResponse,
       graphQLSchema,
+      extensions,
     })
   }
 
@@ -68,13 +76,23 @@ function handleItem(
   let anchorPrefix
   if (item.isQuery) {
     anchorPrefix = 'query'
-    addQueryToItem({ item, introspectionResponse, graphQLSchema })
+    addQueryToItem({ item, introspectionResponse, graphQLSchema, extensions })
   } else if (item.isMutation) {
     anchorPrefix = 'mutation'
-    addMutationToItem({ item, introspectionResponse, graphQLSchema })
+    addMutationToItem({
+      item,
+      introspectionResponse,
+      graphQLSchema,
+      extensions,
+    })
   } else if (item.isSubscription) {
     anchorPrefix = 'subscription'
-    addSubscriptionToItem({ item, introspectionResponse, graphQLSchema })
+    addSubscriptionToItem({
+      item,
+      introspectionResponse,
+      graphQLSchema,
+      extensions,
+    })
   } else {
     // It's a definition
     anchorPrefix = 'definition'
@@ -82,36 +100,55 @@ function handleItem(
       item,
       introspectionResponse,
       graphQLSchema,
+      extensions,
     })
   }
   // Assign a standardized ID to it
   item.htmlId = htmlId([anchorPrefix, item.name].join('-'))
 }
 
-function addQueryToItem({ item, introspectionResponse, graphQLSchema }) {
+function addQueryToItem({
+  item,
+  introspectionResponse,
+  graphQLSchema,
+  extensions,
+}) {
   return _addQueryToItem({
     item,
     flavor: 'query',
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
 }
 
-function addMutationToItem({ item, introspectionResponse, graphQLSchema }) {
+function addMutationToItem({
+  item,
+  introspectionResponse,
+  graphQLSchema,
+  extensions,
+}) {
   return _addQueryToItem({
     item,
     flavor: 'mutation',
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
 }
 
-function addSubscriptionToItem({ item, introspectionResponse, graphQLSchema }) {
+function addSubscriptionToItem({
+  item,
+  introspectionResponse,
+  graphQLSchema,
+  extensions,
+}) {
   return _addQueryToItem({
     item,
     flavor: 'subscription',
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
 }
 
@@ -120,12 +157,14 @@ function _addQueryToItem({
   flavor,
   introspectionResponse,
   graphQLSchema,
+  extensions,
 }) {
   const stuff = generateQueryExample({
     prefix: flavor,
     field: item,
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
   const { query, variables, response } = stuff
 
@@ -144,7 +183,12 @@ function _addQueryToItem({
   }
 }
 
-function addDefinitionToItem({ item, introspectionResponse, graphQLSchema }) {
+function addDefinitionToItem({
+  item,
+  introspectionResponse,
+  graphQLSchema,
+  extensions,
+}) {
   // if (item.name === 'AddressInput') {
   //   console.log(JSON.stringify({
   //     item,
@@ -154,5 +198,6 @@ function addDefinitionToItem({ item, introspectionResponse, graphQLSchema }) {
     type: item,
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
 }

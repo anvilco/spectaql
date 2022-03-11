@@ -11,6 +11,9 @@ introspection:
   metadataFile: ./examples/data/metadata.json
   dynamicExamplesProcessingModule: ./examples/customizations/examples
 
+extensions:
+  graphqlScalarExamples: true
+
 info:
   title: GraphQL API Reference
   description: Welcome to the party!

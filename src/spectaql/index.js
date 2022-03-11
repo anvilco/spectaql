@@ -8,6 +8,7 @@ function run(opts) {
 
   const {
     introspection: { url: introspectionUrl },
+    extensions = {},
     servers = [],
     info = {},
   } = spec
@@ -54,6 +55,7 @@ function run(opts) {
     orderedDataWithHeaders,
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
 
   // console.log(JSON.stringify({

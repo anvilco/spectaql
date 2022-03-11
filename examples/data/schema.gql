@@ -1,6 +1,9 @@
 "This is a `DateTime` scalar"
 scalar DateTime
 
+"This is a Phone"
+scalar PhoneNumber
+
 "Anything with an ID can be a node"
 interface Node {
   "A unique identifier"
@@ -152,6 +155,7 @@ input ContactInfoInput {
   email: String
   "Without this InputField, the `AddressInput` would not be shown"
   address: AddressInput = { planet: "Earth" }
+  phoneNumber: PhoneNumber
 }
 
 "AddresInput description"

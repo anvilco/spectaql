@@ -1,56 +1,13 @@
-const GraphQLScalar = require('graphql-scalars')
+// https://www.npmjs.com/package/graphql-scalars
+import { mocks } from 'graphql-scalars'
 
 // Map GraphQL Scalar types to example data to use from them
-const GRAPHQL_SCALAR_TO_EXAMPLE = {
-  BigInt: [GraphQLScalar.BigIntMock()],
-  Byte: [GraphQLScalar.ByteMock()],
-  Time: [GraphQLScalar.TimeMock()],
-  Timestamp: [GraphQLScalar.TimestampMock()],
-  DateTime: [GraphQLScalar.DateTimeMock()],
-  UtcOffset: [GraphQLScalar.UtcOffsetMock()],
-  Duration: [GraphQLScalar.DurationMock()],
-  ISO8601Duration: [GraphQLScalar.ISO8601DurationMock()],
-  LocalDate: [GraphQLScalar.LocalDateMock()],
-  LocalTime: [GraphQLScalar.LocalTimeMock()],
-  LocalEndTime: [GraphQLScalar.LocalEndTimeMock()],
-  EmailAddress: [GraphQLScalar.EmailAddressMock()],
-  UUID: [GraphQLScalar.UUIDMock()],
-  Hexadecimal: [GraphQLScalar.HexadecimalMock()],
-  HexColorCode: [GraphQLScalar.HexColorCodeMock()],
-  HSL: [GraphQLScalar.HSLMock()],
-  HSLA: [GraphQLScalar.HSLAMock()],
-  IBAN: [GraphQLScalar.IBANMock()],
-  IPv4: [GraphQLScalar.IPv4Mock()],
-  IPv6: [GraphQLScalar.IPv6Mock()],
-  ISBN: [GraphQLScalar.ISBNMock()],
-  JWT: [GraphQLScalar.JWTMock()],
-  Latitude: [GraphQLScalar.LatitudeMock()],
-  Longitude: [GraphQLScalar.LongitudeMock()],
-  JSONObject: [GraphQLScalar.JSONObjectMock()],
-  MAC: [GraphQLScalar.MACMock()],
-  NegativeFloat: [GraphQLScalar.NegativeFloatMock()],
-  NegativeInt: [GraphQLScalar.NegativeIntMock()],
-  NonEmptyString: [GraphQLScalar.NonEmptyStringMock()],
-  NonNegativeFloat: [GraphQLScalar.NonNegativeFloatMock()],
-  NonNegativeInt: [GraphQLScalar.NonNegativeIntMock()],
-  NonPositiveFloat: [GraphQLScalar.NonPositiveFloatMock()],
-  NonPositiveInt: [GraphQLScalar.NonPositiveIntMock()],
-  PhoneNumber: [GraphQLScalar.PhoneNumberMock()],
-  Port: [GraphQLScalar.PortMock()],
-  PositiveFloat: [GraphQLScalar.PositiveFloatMock()],
-  PositiveInt: [GraphQLScalar.PositiveIntMock()],
-  PostalCode: [GraphQLScalar.PostalCodeMock()],
-  RGB: [GraphQLScalar.JSONObjectMock()],
-  RGBA: [GraphQLScalar.RGBAMock()],
-  SafeInt: [GraphQLScalar.SafeIntMock()],
-  URL: [GraphQLScalar.URLMock()],
-  USCurrency: [GraphQLScalar.USCurrencyMock()],
-  Currency: [GraphQLScalar.CurrencyMock()],
-  UnsignedFloat: [GraphQLScalar.UnsignedFloatMock()],
-  UnsignedInt: [GraphQLScalar.UnsignedIntMock()],
-  GUID: [GraphQLScalar.GUIDMock],
-  ObjectID: [GraphQLScalar.ObjectIDMock],
-}
+const GRAPHQL_SCALAR_TO_EXAMPLE = Object.freeze(
+  Object.entries(mocks).reduce((acc, [k, v]) => {
+    acc[k] = v()
+    return acc
+  }, {})
+)
 
 export function getExampleForGraphQLScalar(scalarName) {
   return GRAPHQL_SCALAR_TO_EXAMPLE[scalarName]

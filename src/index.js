@@ -66,9 +66,9 @@ const introspectionOptionDefaults = Object.freeze({
   hideFieldsWithUndocumentedReturnType: true,
 })
 
-const extensionsOptionDefaults = {
-  scalarGraphql: false,
-}
+const extensionsOptionDefaults = Object.freeze({
+  graphqlScalarExamples: false,
+})
 
 // From CLI option name to introspection config option name
 const introspectionOptionsMap = Object.freeze({
