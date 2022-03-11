@@ -194,6 +194,7 @@ module.exports = function(grunt, options, spec) {
       templates: {
         files: [
           options.specFile,
+          path.dirname(options.specFile) + '/**/*.md',
           options.appDir + '/views/**/*.hbs',
           options.appDir + '/helpers/**/*.js',
           options.appDir + '/lib/**/*.js'
