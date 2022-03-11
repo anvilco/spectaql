@@ -38,6 +38,9 @@ const SPECIAL_TAG_REGEX = new RegExp(`"?${SPECIAL_TAG}"?`, 'g')
 const QUOTE_TAG = 'QUOTETAG'
 const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, 'g')
 
+const QUOTE_HTML = '&quot;'
+const QUOTE_HTML_REGEX = new RegExp(QUOTE_HTML, 'g')
+
 // Map Scalar types to example data to use fro them
 const SCALAR_TO_EXAMPLE = {
   String: ['abc123', 'xyz789'],
@@ -61,7 +64,7 @@ function unwindSpecialTags(str) {
     return str
   }
 
-  return str.replace(SPECIAL_TAG_REGEX, '').replace(QUOTE_TAG_REGEX, '"')
+  return replaceQuoteTags(removeSpecialTags(str))
 }
 
 function jsonReplacer(name, value) {
@@ -74,6 +77,11 @@ function addSpecialTags(value) {
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
 
+function removeSpecialTags(value) {
+  if (typeof value !== 'string') return value
+  return value.replace(SPECIAL_TAG_REGEX, '')
+}
+
 // Exported for testing?
 export function addQuoteTags(value) {
   // Don't quote it if it's already been quoted or doesn't exist
@@ -82,6 +90,19 @@ export function addQuoteTags(value) {
   }
 
   return `${QUOTE_TAG}${value}${QUOTE_TAG}`
+}
+
+function replaceQuoteTags(value) {
+  if (typeof value !== 'string') {
+    return value
+  }
+
+  return value.replace(QUOTE_TAG_REGEX, QUOTE_HTML)
+}
+
+function replaceHtmlQuotesWithQuotes(value) {
+  if (typeof value !== 'string') return value
+  return value.replace(QUOTE_HTML_REGEX, '"')
 }
 
 /**
@@ -370,8 +391,13 @@ export function printSchema(value, _root) {
     markedDown = marked.parse('```json\r\n' + stringified + '\n```')
   }
 
+  // Highlight.js, when dealing with JSON, will convert quotes into &quot;, which will always render
+  // in the browser, so we get lots of things double-quoted. So, we replace "&quot;" with '"' before
+  // unwinding things and passing them to Cheerio.
+  const quoted = replaceHtmlQuotesWithQuotes(markedDown)
+
   // There is an issue with `marked` not formatting a leading quote in a single,
   // quoted string value. By unwinding the special tags after converting to markdown
   // we can avoid that issue.
-  return cheerio.load(unwindSpecialTags(markedDown)).html()
+  return cheerio.load(unwindSpecialTags(quoted)).html()
 }

@@ -18,8 +18,11 @@ describe('common', function () {
       const pairs = [
         // These get unwound
         [`${SPECIAL_TAG}foo${SPECIAL_TAG}`, 'foo'],
-        [`${QUOTE_TAG}foo${QUOTE_TAG}`, '"foo"'],
-        [`${SPECIAL_TAG}${QUOTE_TAG}foo${QUOTE_TAG}${SPECIAL_TAG}`, '"foo"'],
+        [`${QUOTE_TAG}foo${QUOTE_TAG}`, '&quot;foo&quot;'],
+        [
+          `${SPECIAL_TAG}${QUOTE_TAG}foo${QUOTE_TAG}${SPECIAL_TAG}`,
+          '&quot;foo&quot;',
+        ],
         // This is not a string, so nothing changes
         [22, 22],
       ]
@@ -81,7 +84,7 @@ describe('common', function () {
         ],
         [
           "'foo'",
-          '<pre><code class="hljs language-gql">\'foo\'\n</code></pre>',
+          '<pre><code class="hljs language-gql">\'<span class="hljs-symbol">foo\'</span>\n</code></pre>',
         ],
         [
           `${SPECIAL_TAG}${QUOTE_TAG}foo${QUOTE_TAG}${SPECIAL_TAG}`,
@@ -89,7 +92,7 @@ describe('common', function () {
         ],
         [
           { foo: 'bar' },
-          '<pre><code class="hljs language-json">{<span class="hljs-attr">"foo"</span>: <span class="hljs-string">"bar"</span>}\n</code></pre>',
+          '<pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"foo"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"bar"</span><span class="hljs-punctuation">}</span>\n</code></pre>',
         ],
 
         // This is the bug/problem, sadly.
