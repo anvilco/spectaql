@@ -42,6 +42,10 @@ describe('index', function () {
         argDocumentedDefault: true,
         hideFieldsWithUndocumentedReturnType: true,
       })
+
+      expect(options.specData.extensions).to.include({
+        scalarGraphql: false,
+      })
     })
 
     context('config yaml specifies some options', function () {

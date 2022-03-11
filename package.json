@@ -58,6 +58,7 @@
     "commander": "^8.2.0",
     "foundation-sites": "^6.7.2",
     "graphql": "^15.6.0",
+    "graphql-scalars": "^1.15.0",
     "grunt": "^1.4.1",
     "grunt-compile-handlebars": "^2.0.2",
     "grunt-contrib-clean": "^2.0.0",

@@ -23,6 +23,7 @@ export function buildSchemas(opts) {
 
   const {
     introspection: introspectionOptions,
+    extensions: extensionOptions = {},
     introspection: {
       url: introspectionUrl,
       schemaFile,
@@ -90,6 +91,7 @@ export function buildSchemas(opts) {
   if (metadataFile) {
     addMetadataFromFile({
       ...introspectionOptions,
+      ...extensionOptions,
       pathToFile: metadataFile,
       introspectionQueryResponse: introspectionResponse,
     })
@@ -106,6 +108,7 @@ export function buildSchemas(opts) {
     // graphQLSchema,
     introspectionOptions,
   })
+  augmentedIntrospectionResponse.extensionOptions = extensionOptions
 
   if (removeTrailingPeriodFromDescriptions) {
     removeTrailingPeriodsFromDescriptions(augmentedIntrospectionResponse)

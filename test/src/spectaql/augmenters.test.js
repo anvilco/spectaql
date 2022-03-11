@@ -87,6 +87,7 @@ describe('augmenters', function () {
 
   def('typesDocumentedDefault', true)
   def('typeDocumentedDefault', true)
+  def('scalarGraphql', true)
   def('fieldDocumentedDefault', true)
   def('argDocumentedDefault', true)
   def('hideFieldsWithUndocumentedReturnType', true)
@@ -263,6 +264,18 @@ describe('augmenters', function () {
             })
           }
         )
+      })
+
+      context('scalarGraphql is true', function () {
+        def('extensions', {
+          scalarGraphql: true,
+        })
+
+        it('does not show any types', function () {
+          const responseBefore = _.cloneDeep($.introspectionResponse)
+          const response = $.response
+          expect(response).to.eql(responseBefore)
+        })
       })
 
       describe('undocumented metadata directive', function () {
@@ -909,6 +922,8 @@ describe('augmenters', function () {
         () => `
         ${$.schemaSDLBase}
 
+        scalar EmailAddress
+        
         type YetAnotherType {
           fieldWithExample(
             argWithExample: String,

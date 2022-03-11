@@ -10,7 +10,10 @@ function preProcess({
   introspectionResponse,
   graphQLSchema,
 }) {
-  handleItems(orderedDataWithHeaders, { introspectionResponse, graphQLSchema })
+  handleItems(orderedDataWithHeaders, {
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
 function handleItems(
@@ -22,7 +25,12 @@ function handleItems(
   }
 
   for (const item of items) {
-    handleItem(item, { depth, names, introspectionResponse, graphQLSchema })
+    handleItem(item, {
+      depth,
+      names,
+      introspectionResponse,
+      graphQLSchema,
+    })
   }
 }
 
@@ -70,7 +78,11 @@ function handleItem(
   } else {
     // It's a definition
     anchorPrefix = 'definition'
-    addDefinitionToItem({ item, introspectionResponse, graphQLSchema })
+    addDefinitionToItem({
+      item,
+      introspectionResponse,
+      graphQLSchema,
+    })
   }
   // Assign a standardized ID to it
   item.htmlId = htmlId([anchorPrefix, item.name].join('-'))

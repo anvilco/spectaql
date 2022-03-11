@@ -53,23 +53,41 @@ describe('common', function () {
     })
   })
 
-  describe.skip('replaceQuotesWithTags', function () {
-    const { replaceQuotesWithTags } = common
+  describe('getExampleForScalarDefinition', function () {
+    const { getExampleForScalarDefinition } = common
 
-    it('works', function () {
-      const pairs = [
-        // Adds quote tag
-        ['"foo"', `${QUOTE_TAG}foo${QUOTE_TAG}`],
-        ["'foo'", `${QUOTE_TAG}foo${QUOTE_TAG}`],
-        // Doesn't double-add quote tag
-        [`"${QUOTE_TAG}foo${QUOTE_TAG}"`, `${QUOTE_TAG}foo${QUOTE_TAG}`],
-        // Doesn't do anything if no quotes
-        ['foo', 'foo'],
-      ]
-
-      for (const [input, output] of pairs) {
-        expect(replaceQuotesWithTags(input)).to.eql(output)
-      }
+    it('BigInt', function () {
+      expect(
+        getExampleForScalarDefinition(
+          {
+            kind: 'SCALAR',
+            name: 'BigInt',
+          },
+          { scalarGraphql: true }
+        )
+      ).to.equal(9007199254740991n)
+    })
+    it('Time', function () {
+      expect(
+        getExampleForScalarDefinition(
+          {
+            kind: 'SCALAR',
+            name: 'Time',
+          },
+          { scalarGraphql: true }
+        )
+      ).to.eql('10:15:30Z')
+    })
+    it('EmailAddress', function () {
+      expect(
+        getExampleForScalarDefinition(
+          {
+            kind: 'SCALAR',
+            name: 'EmailAddress',
+          },
+          { scalarGraphql: true }
+        )
+      ).to.eql('test@test.com')
     })
   })
 

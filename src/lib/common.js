@@ -10,6 +10,7 @@ import {
 } from '../spectaql/graphql-hl'
 import { analyzeTypeIntrospection } from '../spectaql/type-helpers'
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
+import { getExampleForGraphQLScalar } from '../helpers/graphql-scalars'
 
 // Configure highlight.js
 hljs.configure({
@@ -165,13 +166,19 @@ function highlight(code, language) {
   )
 }
 
-export function getExampleForScalarDefinition(scalarDefinition) {
+export function getExampleForScalarDefinition(
+  scalarDefinition,
+  { scalarGraphql = false }
+) {
   const { name, kind } = scalarDefinition
 
   if (kind !== 'SCALAR') {
     return
   }
   let replacement = SCALAR_TO_EXAMPLE[name]
+  if (typeof replacement === 'undefined' && scalarGraphql) {
+    replacement = getExampleForGraphQLScalar(name)
+  }
   if (typeof replacement === 'undefined') {
     return
   }
@@ -257,11 +264,14 @@ export function introspectionArgToVariable({
     IntrospectionManipulator.digUnderlyingType(arg.type)
   )
 
-  return generateIntrospectionReturnTypeExample({
-    thing: arg,
-    underlyingTypeDefinition,
-    originalType: arg.type,
-  })
+  return generateIntrospectionReturnTypeExample(
+    {
+      thing: arg,
+      underlyingTypeDefinition,
+      originalType: arg.type,
+    },
+    introspectionResponse.extensionOptions
+  )
 }
 
 export function introspectionQueryOrMutationToResponse({
@@ -278,11 +288,14 @@ export function introspectionQueryOrMutationToResponse({
 
   // No fields? Just a Scalar then, so return a single value.
   if (!underlyingTypeDefinition.fields) {
-    return generateIntrospectionReturnTypeExample({
-      thing: field,
-      underlyingTypeDefinition,
-      originalType: field.type,
-    })
+    return generateIntrospectionReturnTypeExample(
+      {
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      },
+      introspectionResponse.extensionOptions
+    )
   }
 
   // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
@@ -290,21 +303,22 @@ export function introspectionQueryOrMutationToResponse({
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
     )
-    acc[field.name] = generateIntrospectionReturnTypeExample({
-      thing: field,
-      underlyingTypeDefinition,
-      originalType: field.type,
-    })
+    acc[field.name] = generateIntrospectionReturnTypeExample(
+      {
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      },
+      introspectionResponse.extensionOptions
+    )
     return acc
   }, {})
 }
 
-function generateIntrospectionReturnTypeExample({
-  thing,
-  underlyingTypeDefinition,
-  originalType,
-  quoteEnum = false,
-}) {
+function generateIntrospectionReturnTypeExample(
+  { thing, underlyingTypeDefinition, originalType, quoteEnum = false },
+  extensionOptions
+) {
   let example =
     thing.example ||
     originalType.example ||
@@ -317,16 +331,7 @@ function generateIntrospectionReturnTypeExample({
     (underlyingTypeDefinition.kind === 'UNION' &&
       underlyingTypeDefinition.possibleTypes.length &&
       addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
-    getExampleForScalarDefinition(underlyingTypeDefinition)
-
-  // if (thing.name === 'String') {
-  //   console.log(JSON.stringify({
-  //     thing,
-  //     underlyingTypeDefinition,
-  //     originalType,
-  //     example,
-  //   }))
-  // }
+    getExampleForScalarDefinition(underlyingTypeDefinition, extensionOptions)
 
   // console.log({example})
   if (typeof example !== 'undefined') {
@@ -357,13 +362,16 @@ export function generateIntrospectionTypeExample({
   const fields = type.fields || type.inputFields
   // No fields? Just a Scalar then, so return a single value.
   if (!fields) {
-    return generateIntrospectionReturnTypeExample({
-      thing: type,
-      underlyingTypeDefinition: type,
-      originalType: type,
-      // For the Example on an Enum Type, we want it quoted
-      quoteEnum: true,
-    })
+    return generateIntrospectionReturnTypeExample(
+      {
+        thing: type,
+        underlyingTypeDefinition: type,
+        originalType: type,
+        // For the Example on an Enum Type, we want it quoted
+        quoteEnum: true,
+      },
+      introspectionResponse.extensionOptions
+    )
   }
 
   // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
@@ -371,11 +379,14 @@ export function generateIntrospectionTypeExample({
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
     )
-    acc[field.name] = generateIntrospectionReturnTypeExample({
-      thing: field,
-      underlyingTypeDefinition,
-      originalType: field.type,
-    })
+    acc[field.name] = generateIntrospectionReturnTypeExample(
+      {
+        thing: field,
+        underlyingTypeDefinition,
+        originalType: field.type,
+      },
+      introspectionResponse.extensionOptions
+    )
     return acc
   }, {})
 }

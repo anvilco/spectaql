@@ -66,6 +66,10 @@ const introspectionOptionDefaults = Object.freeze({
   hideFieldsWithUndocumentedReturnType: true,
 })
 
+const extensionsOptionDefaults = {
+  scalarGraphql: false,
+}
+
 // From CLI option name to introspection config option name
 const introspectionOptionsMap = Object.freeze({
   schemaFile: 'schemaFile',
@@ -141,6 +145,12 @@ function resolveOptions(cliOptions) {
     introspectionCliOptions,
     opts.specData.introspection,
     introspectionOptionDefaults
+  )
+
+  opts.specData.extensions = _.defaults(
+    {},
+    opts.specData.extensions,
+    extensionsOptionDefaults
   )
 
   // Resolve the introspection options paths
