@@ -106,64 +106,45 @@ function handleItem(
   item.htmlId = htmlId([anchorPrefix, item.name].join('-'))
 }
 
-function addQueryToItem(
-  { item, introspectionResponse, graphQLSchema },
-  options
-) {
-  return _addQueryToItem(
-    {
-      item,
-      flavor: 'query',
-      introspectionResponse,
-      graphQLSchema,
-    },
-    options
-  )
+function addQueryToItem({ item, introspectionResponse, graphQLSchema }) {
+  return _addQueryToItem({
+    item,
+    flavor: 'query',
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
-function addMutationToItem(
-  { item, introspectionResponse, graphQLSchema },
-  options
-) {
-  return _addQueryToItem(
-    {
-      item,
-      flavor: 'mutation',
-      introspectionResponse,
-      graphQLSchema,
-    },
-    options
-  )
+function addMutationToItem({ item, introspectionResponse, graphQLSchema }) {
+  return _addQueryToItem({
+    item,
+    flavor: 'mutation',
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
-function addSubscriptionToItem(
-  { item, introspectionResponse, graphQLSchema },
-  options
-) {
-  return _addQueryToItem(
-    {
-      item,
-      flavor: 'subscription',
-      introspectionResponse,
-      graphQLSchema,
-    },
-    options
-  )
+function addSubscriptionToItem({ item, introspectionResponse, graphQLSchema }) {
+  return _addQueryToItem({
+    item,
+    flavor: 'subscription',
+    introspectionResponse,
+    graphQLSchema,
+  })
 }
 
-function _addQueryToItem(
-  { item, flavor, introspectionResponse, graphQLSchema },
-  options
-) {
-  const stuff = generateQueryExample(
-    {
-      prefix: flavor,
-      field: item,
-      introspectionResponse,
-      graphQLSchema,
-    },
-    options
-  )
+function _addQueryToItem({
+  item,
+  flavor,
+  introspectionResponse,
+  graphQLSchema,
+}) {
+  const stuff = generateQueryExample({
+    prefix: flavor,
+    field: item,
+    introspectionResponse,
+    graphQLSchema,
+  })
   const { query, variables, response } = stuff
 
   item[flavor] = query
@@ -181,12 +162,7 @@ function _addQueryToItem(
   }
 }
 
-function addDefinitionToItem({
-  item,
-  introspectionResponse,
-  graphQLSchema,
-  scalarGraphql,
-}) {
+function addDefinitionToItem({ item, introspectionResponse, graphQLSchema }) {
   // if (item.name === 'AddressInput') {
   //   console.log(JSON.stringify({
   //     item,
@@ -196,6 +172,5 @@ function addDefinitionToItem({
     type: item,
     introspectionResponse,
     graphQLSchema,
-    scalarGraphql,
   })
 }
