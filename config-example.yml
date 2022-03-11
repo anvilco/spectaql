@@ -215,12 +215,14 @@ introspection:
   # Default: true
   hideUnionTypesOfUndocumentedType: true
 
-extensions:
-  # scalar-graphql extension default false
-  scalarGraphql: true
   #
   #
   ##############################################
+
+extensions:
+  # Utilize the 'graphql-scalars' library when generating examples for scalars it supports that
+  # do not have an example already set via some other method.
+  graphqlScalarExamples: true
 
 servers:
   # NOTE: If not using introspection.url OR servers[], you need to provide x-url

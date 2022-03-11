@@ -8,6 +8,7 @@ function run(opts) {
 
   const {
     introspection: { url: introspectionUrl },
+    extensions = {},
     servers = [],
     info = {},
   } = spec
@@ -35,32 +36,14 @@ function run(opts) {
     graphQLSchema,
   })
 
-  // console.log(JSON.stringify({
-  //   introspectionResponse,
-  //   orderedDataWithHeaders,
-  // }))
-
-  // console.log(JSON.stringify({
-  //   orderedDataWithHeaders,
-  // }))
-
-  // console.log(JSON.stringify({
-  //   introspectionResponse,
-  //   graphQLSchema,
-  // }))
-
   // Side-effects
   preProcessData({
     orderedDataWithHeaders,
     introspectionResponse,
     graphQLSchema,
+    extensions,
   })
 
-  // console.log(JSON.stringify({
-  //   orderedDataWithHeaders,
-  // }))
-
-  // generate specification
   const data = {
     // introspectionResponse,
     // graphQLSchema,

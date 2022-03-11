@@ -30,6 +30,7 @@ export function generateQuery({
   field,
   introspectionResponse,
   graphQLSchema,
+  extensions,
 }) {
   const introspectionManipulator = new IntrospectionManipulator(
     introspectionResponse
@@ -58,6 +59,7 @@ export function generateQuery({
     args: queryResult.args,
     introspectionResponse,
     introspectionManipulator,
+    extensions,
   })
 
   const response = {
@@ -66,6 +68,7 @@ export function generateQuery({
         field,
         introspectionResponse,
         introspectionManipulator,
+        extensions,
       }),
     },
   }
