@@ -52,6 +52,7 @@ function run(opts) {
     info,
     servers,
     host,
+    url: urlToParse,
     schemes: [protocol.slice(0, -1)],
     basePath: pathname,
     orderedDataWithHeaders,
