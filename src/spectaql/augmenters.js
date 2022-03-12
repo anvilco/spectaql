@@ -43,8 +43,13 @@ export function createIntrospectionManipulator(args) {
     hideArgsOfUndocumentedType: removeArgsWithMissingTypes,
     hideInputFieldsOfUndocumentedType: removeInputFieldsWithMissingTypes,
     hideUnionTypesOfUndocumentedType: removePossibleTypesOfMissingTypes,
+    // TODO: support this granularly in microfiber
     hideQueriesWithUndocumentedReturnType: removeQueriesWithMissingTypes,
+    // TODO: support this granularly in microfiber
     hideMutationsWithUndocumentedReturnType: removeMutationsWithMissingTypes,
+    // TODO: support this granularly in microfiber
+    hideSubscriptionsWithUndocumentedReturnType:
+      removeSubscriptionsWithMissingTypes,
     // } = introspectionOptions
   } = introspectionOptions
 
@@ -55,8 +60,12 @@ export function createIntrospectionManipulator(args) {
     removeArgsWithMissingTypes,
     removeInputFieldsWithMissingTypes,
     removePossibleTypesOfMissingTypes,
+    // TODO: support this granularly in microfiber
     removeQueriesWithMissingTypes,
+    // TODO: support this granularly in microfiber
     removeMutationsWithMissingTypes,
+    // TODO: support this granularly in microfiber
+    removeSubscriptionsWithMissingTypes,
   })
 }
 
@@ -136,10 +145,6 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
       allThingsDocumentedDefault = !!mutationsDocumentedDefault
       individualThingsDocumentedDefault = true
     } else if (typesAreSame(type, subscriptionType)) {
-      console.log({
-        subscriptionsDocumentedDefault,
-        type,
-      })
       allThingsDocumentedDefault = !!subscriptionsDocumentedDefault
       individualThingsDocumentedDefault = true
     }
@@ -205,7 +210,6 @@ function hideFields(options = {}) {
       defaultShowHide = !!mutationDocumentedDefault
     } else if (subscriptionType && typesAreSame(type, subscriptionType)) {
       defaultShowHide = !!subscriptionDocumentedDefault
-      console.log(type)
     }
 
     // Handle OBJECT.fields AND INPUT_OBJECT.inputFields
@@ -233,25 +237,34 @@ function hideArguments(args = {}) {
     metadatasPath,
     queryArgDocumentedDefault,
     mutationArgDocumentedDefault,
+    subscriptionArgDocumentedDefault,
     argDocumentedDefault,
   } = introspectionOptions
 
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
+  const subscriptionType = introspectionManipulator.getSubscriptionType()
 
-  const types = introspectionManipulator.getResponse().__schema.types
+  const types = introspectionManipulator.getAllTypes({
+    includeReserved: false,
+    includeQuery: true,
+    includeMutation: true,
+    includeSubscription: true,
+  })
 
   for (const type of types) {
     // Don't mess with reserved GraphQL types
-    if (isReservedType(type)) {
-      continue
-    }
+    // if (isReservedType(type)) {
+    //   continue
+    // }
 
     let defaultShowHide = argDocumentedDefault
     if (queryType && typesAreSame(type, queryType)) {
-      defaultShowHide = queryArgDocumentedDefault
+      defaultShowHide = !!queryArgDocumentedDefault
     } else if (mutationType && typesAreSame(type, mutationType)) {
-      defaultShowHide = mutationArgDocumentedDefault
+      defaultShowHide = !!mutationArgDocumentedDefault
+    } else if (subscriptionType && typesAreSame(type, subscriptionType)) {
+      defaultShowHide = !!subscriptionArgDocumentedDefault
     }
 
     for (const field of type.fields || []) {

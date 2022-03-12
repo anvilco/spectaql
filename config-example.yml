@@ -187,6 +187,13 @@ introspection:
   # Whether to document an individual Subscription, in the absence of a metadata directive
   # Default: true
   subscriptionDocumentedDefault: true
+  # Whether to document a Subscription Argument, in the absence of a metadata directive
+  # Default: true
+  subscriptionArgDocumentedDefault: true
+  # Hide any Subscriptions with undocumented return types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideSubscriptionsWithUndocumentedReturnType: true
 
   # Whether to document any Types at all
   # Default: true

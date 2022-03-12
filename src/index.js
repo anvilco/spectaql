@@ -52,15 +52,20 @@ const introspectionOptionDefaults = Object.freeze({
   queriesDocumentedDefault: true,
   queryDocumentedDefault: true,
   queryArgDocumentedDefault: true,
+  // TODO: support this granularly in microfiber
   hideQueriesWithUndocumentedReturnType: true,
 
   mutationsDocumentedDefault: true,
   mutationDocumentedDefault: true,
   mutationArgDocumentedDefault: true,
+  // TODO: support this granularly in microfiber
   hideMutationsWithUndocumentedReturnType: true,
 
   subscriptionsDocumentedDefault: true,
   subscriptionDocumentedDefault: true,
+  subscriptionArgDocumentedDefault: true,
+  // TODO: support this granularly in microfiber
+  hideSubscriptionsWithUndocumentedReturnType: true,
 
   typesDocumentedDefault: true,
   typeDocumentedDefault: true,
