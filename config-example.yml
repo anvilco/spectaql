@@ -142,10 +142,8 @@ introspection:
 
 
   # This allows you to specify a custom path to a JS moddule to handle the generation of
-  # example values for your schema. The default is "./customizations/examples" which starts
-  # out doing nothing
-  #
-  # Default: ./customizations/examples
+  # example values for your schema.
+  # Default: none
   dynamicExamplesProcessingModule: path/to/examples.js
 
   ##############################################

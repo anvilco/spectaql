@@ -39,7 +39,7 @@ const spectaqlOptionDefaults = Object.freeze({
 })
 
 const introspectionOptionDefaults = Object.freeze({
-  dynamicExamplesProcessingModule: normalizePath('customizations/examples'),
+  dynamicExamplesProcessingModule: false,
 
   removeTrailingPeriodFromDescriptions: false,
 

@@ -120,7 +120,7 @@ export default function () {
     )
     .option(
       '--dynamic-examples-processing-module <file>',
-      'specify a JS module that will dynamically generate schema examples (default: /customizations/examples',
+      'specify a JS module that will dynamically generate schema examples (default: none',
       String
     )
 

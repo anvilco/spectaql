@@ -2,6 +2,10 @@
 @import 'foundation';
 
 #spectacle {
-  @import '../../customizations/scss/full';
-  @import '_full';
+  @import 'variables';
+  @import 'utils';
+  @import 'schema';
+  @import 'layout';
+  @import 'drawer';
+  @import 'monokai';
 }

@@ -4,7 +4,7 @@ import arrangeData from './arrange-data'
 import preProcessData from './pre-process'
 
 function run(opts) {
-  const { logo, favicon, specFile, specData: spec } = opts
+  const { logo, favicon, specData: spec } = opts
 
   const {
     introspection: { url: introspectionUrl },
@@ -45,8 +45,6 @@ function run(opts) {
   })
 
   const data = {
-    // introspectionResponse,
-    // graphQLSchema,
     logo,
     favicon,
     info,
@@ -56,8 +54,6 @@ function run(opts) {
     schemes: [protocol.slice(0, -1)],
     basePath: pathname,
     orderedDataWithHeaders,
-    // TODO: remove this? What does it do?
-    'x-spec-path': specFile,
   }
 
   return data
