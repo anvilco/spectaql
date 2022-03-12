@@ -138,6 +138,9 @@ type Mutation {
 type Subscription {
   "The `myTypeUpdatedSubscription`, baby!"
   myTypeUpdatedSubscription(input: ID): MyType!
+
+  "A subscription that will probably be removed when `SecretType` is removed"
+  secretTypeSubscription: SecretType!
 }
 
 "An Input Type for filtering things. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"

@@ -3,13 +3,17 @@ spectaql:
   faviconFile: ./test/fixtures/favicon.png
   # additionalJsFile: ./examples/customizations/js/custom.js
   # additionalCssFile: ./examples/customizations/css/custom.css
+  # cssBuildMode: basic
 
 introspection:
   # url: http://localhost:3000/graphql
   removeTrailingPeriodFromDescriptions: false
   schemaFile: ./examples/data/schema.gql
   metadataFile: ./examples/data/metadata.json
-  dynamicExamplesProcessingModule: ./examples/customizations/examples
+  # dynamicExamplesProcessingModule: ./examples/customizations/examples
+
+  # subscriptionArgDocumentedDefault: false
+  # inputFieldDocumentedDefault: false
 
 extensions:
   graphqlScalarExamples: true

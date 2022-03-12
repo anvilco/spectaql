@@ -1,6 +1,171 @@
 #spectacle {
   padding: 0;
   margin: 0;
-  @import '../../customizations/scss/basic';
-  @import '_basic'
+  // These styles should be limited to providing the "basic" layout and
+  // structure for documentation. Styles related to shading and padding
+  // and things like that should be applied elsewhere.
+
+  $max-content-width: 88em !default;
+  $drawer-size: 250px !default;
+  $drawer-size-desktop-large: 300px !default;
+
+  $content-padding: 20px !default;
+
+  $sidebar-top: 0px !default;
+  $sidebar-padding: $content-padding !default;
+  $sidebar-background: #fff !default;
+
+  $overlay-background: rgba(0, 0, 0, .5) !default;
+
+  $code-background: #ccc !default;
+
+  $size-tablet: 32em !default;
+  $size-desktop: 48em !default;
+  $size-desktop-large: 64em !default;
+
+  // Below this size, the sidebar will be a mobile-style drawer
+  $size-sidebar-break: $size-desktop !default;
+
+  // Below this size, the content will stack
+  $size-content-break: $size-desktop !default;
+
+  #page {
+    display: flex;
+
+    * {
+      box-sizing: border-box;
+    }
+
+    &.drawer-open {
+      #sidebar {
+        transform: translateX(0);
+      }
+    }
+
+    #sidebar {
+      position: fixed;
+      min-width: $drawer-size;
+      max-width: $drawer-size;
+      flex-shrink: 0;
+      transition: transform .2s ease-out;
+      transform: translateX(-100%);
+      z-index: 10;
+
+      padding-top: $sidebar-padding;
+      background: $sidebar-background;
+
+      .close-button {
+        display: block;
+
+        @media (min-width: $size-sidebar-break) {
+          display: none;
+        }
+      }
+
+      @media (min-width: $size-sidebar-break) {
+        position: relative;
+        transform: none;
+      }
+
+      @media (min-width: $size-desktop-large) {
+        min-width: $drawer-size-desktop-large;
+        max-width: $drawer-size-desktop-large;
+      }
+
+      #nav {
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - #{$sidebar-top});
+        padding: 0 $sidebar-padding;
+        padding-bottom: $sidebar-padding;
+
+        position: sticky;
+        top: 0;
+
+        overflow: auto;
+
+        > a {
+          display: block;
+        }
+      }
+
+      #logo {
+        padding: 0 $sidebar-padding;
+        img {
+          max-width: 100%;
+        }
+      }
+    }
+
+    #docs {
+      position: relative;
+      margin: 0 auto;
+      min-width: 100px;
+      max-width: $max-content-width;
+      flex-grow: 1;
+      flex-shrink: 1;
+      padding: $content-padding;
+
+      .floating-menu-icon {
+        display: block;
+
+        @media (min-width: $size-sidebar-break) {
+          display: none;
+        }
+      }
+
+      .drawer-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: $overlay-background;
+
+        @media (min-width: $size-sidebar-break) {
+          display: none;
+        }
+      }
+
+      #content {
+        .doc-row {
+          @media (min-width: $size-content-break) {
+            display: flex;
+            flex-wrap: wrap;
+          }
+
+          .doc-intro-item {
+            width: 100%;
+          }
+
+          .doc-copy,
+          .doc-examples {
+            width: 100%;
+            @media (min-width: $size-content-break) {
+              width: 50%;
+            }
+          }
+
+          .doc-copy {
+            @media (min-width: $size-content-break) {
+              padding-right: $content-padding;
+            }
+          }
+
+          .doc-examples {
+            pre {
+              overflow: auto;
+              background: #ccc;
+            }
+
+            @media (min-width: $size-content-break) {
+              padding-left: $content-padding;
+            }
+          }
+        }
+      }
+    } // end #docs
+
+  }
+
 }

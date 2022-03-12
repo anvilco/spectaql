@@ -29,11 +29,14 @@ describe('index', function () {
     mutationArgDocumentedDefault: true,
     hideMutationsWithUndocumentedReturnType: true,
 
-    typesDocumentedDefault: true,
-    typeDocumentedDefault: true,
+    subscriptionsDocumentedDefault: true,
+    subscriptionDocumentedDefault: true,
+
+    objectsDocumentedDefault: true,
+    objectDocumentedDefault: true,
     fieldDocumentedDefault: true,
     argDocumentedDefault: true,
-    hideFieldsWithUndocumentedReturnType: true,
+    hideFieldsOfUndocumentedType: true,
   }))
 
   def('schemaFile', () => pathToSimpleSchema)

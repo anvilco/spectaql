@@ -142,10 +142,8 @@ introspection:
 
 
   # This allows you to specify a custom path to a JS moddule to handle the generation of
-  # example values for your schema. The default is "./customizations/examples" which starts
-  # out doing nothing
-  #
-  # Default: ./customizations/examples
+  # example values for your schema.
+  # Default: none
   dynamicExamplesProcessingModule: path/to/examples.js
 
   ##############################################
@@ -181,12 +179,51 @@ introspection:
   # Default: true
   hideMutationsWithUndocumentedReturnType: true
 
+  # Whether to document any Subscriptions at all
+  # Default: true
+  subscriptionsDocumentedDefault: true
+  # Whether to document an individual Subscription, in the absence of a metadata directive
+  # Default: true
+  subscriptionDocumentedDefault: true
+  # Whether to document a Subscription Argument, in the absence of a metadata directive
+  # Default: true
+  subscriptionArgDocumentedDefault: true
+  # Hide any Subscriptions with undocumented return types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideSubscriptionsWithUndocumentedReturnType: true
+
   # Whether to document any Types at all
   # Default: true
-  typesDocumentedDefault: true
+  objectsDocumentedDefault: true
   # Whether to document an individual Type, in the absence of a metadata directive
   # Default: true
-  typeDocumentedDefault: true
+  objectDocumentedDefault: true
+
+  # Whether to document any Input Object types at all
+  # Default: true
+  inputsDocumentedDefault: true
+  # Whether to document an individual Input Object, in the absence of a metadata directive
+  # Default: true
+  inputDocumentedDefault: true
+
+  # Whether to document any Enums at all
+  # Default: true
+  enumsDocumentedDefault: true
+  # Whether to document an individual Enum, in the absence of a metadata directive
+  # Default: true
+  enumDocumentedDefault: true
+
+  # Whether to document any Unions at all
+  # Default: true
+  unionsDocumentedDefault: true
+  # Whether to document an individual Union, in the absence of a metadata directive
+  # Default: true
+  unionDocumentedDefault: true
+  # Hide Union possibleTypes that are not documented so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideUnionTypesOfUndocumentedType: true
 
   # Whether to document an individual Field, in the absence of a metadata directive
   # Default: true
@@ -196,6 +233,14 @@ introspection:
   # Default: true
   hideFieldsOfUndocumentedType: true
 
+  # Whether to document an individual Input Field, in the absence of a metadata directive
+  # Default: true
+  inputFieldDocumentedDefault: true
+  # Hide any inputFields of undocumented types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideInputFieldsOfUndocumentedType: true
+
   # Whether to document an individual Argument, in the absence of a metadata directive
   # Default: true
   argDocumentedDefault: true
@@ -203,17 +248,6 @@ introspection:
   # that seemingly does not exist.
   # Default: true
   hideArgsOfUndocumentedType: true
-
-
-  # Hide any inputFields of undocumented types so as not to reference something
-  # that seemingly does not exist.
-  # Default: true
-  hideInputFieldsOfUndocumentedType: true
-
-  # Hide Union possibleTypes that are not documented so as not to reference something
-  # that seemingly does not exist.
-  # Default: true
-  hideUnionTypesOfUndocumentedType: true
 
   #
   #

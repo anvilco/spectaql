@@ -39,7 +39,7 @@ const spectaqlOptionDefaults = Object.freeze({
 })
 
 const introspectionOptionDefaults = Object.freeze({
-  dynamicExamplesProcessingModule: normalizePath('customizations/examples'),
+  dynamicExamplesProcessingModule: false,
 
   removeTrailingPeriodFromDescriptions: false,
 
@@ -52,18 +52,42 @@ const introspectionOptionDefaults = Object.freeze({
   queriesDocumentedDefault: true,
   queryDocumentedDefault: true,
   queryArgDocumentedDefault: true,
+  // TODO: support this granularly in microfiber
   hideQueriesWithUndocumentedReturnType: true,
 
   mutationsDocumentedDefault: true,
   mutationDocumentedDefault: true,
   mutationArgDocumentedDefault: true,
+  // TODO: support this granularly in microfiber
   hideMutationsWithUndocumentedReturnType: true,
 
-  typesDocumentedDefault: true,
-  typeDocumentedDefault: true,
+  subscriptionsDocumentedDefault: true,
+  subscriptionDocumentedDefault: true,
+  subscriptionArgDocumentedDefault: true,
+  // TODO: support this granularly in microfiber
+  hideSubscriptionsWithUndocumentedReturnType: true,
+
+  objectsDocumentedDefault: true,
+  objectDocumentedDefault: true,
+
+  inputsDocumentedDefault: true,
+  inputDocumentedDefault: true,
+
+  enumsDocumentedDefault: true,
+  enumDocumentedDefault: true,
+
+  unionsDocumentedDefault: true,
+  unionDocumentedDefault: true,
+  hideUnionTypesOfUndocumentedType: true,
+
   fieldDocumentedDefault: true,
+  hideFieldsOfUndocumentedType: true,
+
+  inputFieldDocumentedDefault: true,
+  hideInputFieldsOfUndocumentedType: true,
+
   argDocumentedDefault: true,
-  hideFieldsWithUndocumentedReturnType: true,
+  hideArgsOfUndocumentedType: true,
 })
 
 const extensionsOptionDefaults = Object.freeze({

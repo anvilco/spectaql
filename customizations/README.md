@@ -1,1 +1,0 @@
-Support for any implemented customization techniques that require files will be done in this folder. Each technique will have its own folder and a corresponding `README` that explains what it does and how it can be used.

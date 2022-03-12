@@ -4,7 +4,6 @@
 # Whitelist these
 !/dist/**
 !/bin/**
-!/customizations/**
 !nodemon.json
 
 # Re-ignore these

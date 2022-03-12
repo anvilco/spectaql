@@ -105,6 +105,7 @@ export const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
 export const graphQLSchemaFromIntrospectionResponse = (
   introspectionResponse
 ) => {
+  // console.log(JSON.stringify(introspectionResponse))
   return buildClientSchema(
     normalizeIntrospectionQueryResult(introspectionResponse),
     { assumeValid: true }
