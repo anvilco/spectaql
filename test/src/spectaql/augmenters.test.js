@@ -87,9 +87,14 @@ describe('augmenters', function () {
 
   def('typesDocumentedDefault', true)
   def('typeDocumentedDefault', true)
+
   def('fieldDocumentedDefault', true)
-  def('argDocumentedDefault', true)
   def('hideFieldsOfUndocumentedType', true)
+
+  def('inputFieldDocumentedDefault', true)
+  def('hideInputFieldsOfUndocumentedType', true)
+
+  def('argDocumentedDefault', true)
 
   def('queriesDocumentedDefault', true)
   def('queryDocumentedDefault', true)
@@ -109,8 +114,12 @@ describe('augmenters', function () {
     typeDocumentedDefault: $.typeDocumentedDefault,
 
     fieldDocumentedDefault: $.fieldDocumentedDefault,
-    argDocumentedDefault: $.argDocumentedDefault,
     hideFieldsOfUndocumentedType: $.hideFieldsOfUndocumentedType,
+
+    inputFieldDocumentedDefault: $.inputFieldDocumentedDefault,
+    hideInputFieldsOfUndocumentedType: $.hideInputFieldsOfUndocumentedType,
+
+    argDocumentedDefault: $.argDocumentedDefault,
 
     queriesDocumentedDefault: $.queriesDocumentedDefault,
     queryDocumentedDefault: $.queryDocumentedDefault,
@@ -201,7 +210,7 @@ describe('augmenters', function () {
           const response = $.response
           expect(response).to.not.eql(responseBefore)
 
-          expect($.introspectionManipulator.getAllTypes()).to.eql([])
+          expect($.introspectionManipulator.getAllTypes({})).to.eql([])
           expect(
             $.introspectionManipulator.getType({ name: 'MyType' })
           ).to.not.be.ok
@@ -218,7 +227,7 @@ describe('augmenters', function () {
             const responseBefore = _.cloneDeep($.introspectionResponse)
             const response = $.response
             expect(response).to.not.eql(responseBefore)
-            expect($.introspectionManipulator.getAllTypes()).to.eql([])
+            expect($.introspectionManipulator.getAllTypes({})).to.eql([])
             expect(
               $.introspectionManipulator.getType({ name: 'MyType' })
             ).to.not.be.ok
@@ -234,7 +243,7 @@ describe('augmenters', function () {
           const response = $.response
           expect(response).to.not.eql(responseBefore)
 
-          expect($.introspectionManipulator.getAllTypes()).to.eql([])
+          expect($.introspectionManipulator.getAllTypes({})).to.eql([])
           expect(
             $.introspectionManipulator.getType({ name: 'MyType' })
           ).to.not.be.ok
@@ -254,7 +263,7 @@ describe('augmenters', function () {
               const response = $.response
               expect(response).to.not.eql(responseBefore)
 
-              expect($.introspectionManipulator.getAllTypes())
+              expect($.introspectionManipulator.getAllTypes({}))
                 .to.be.an('array')
                 .of.length(1)
               expect($.introspectionManipulator.getType({ name: 'MyType' })).to
@@ -433,12 +442,12 @@ describe('augmenters', function () {
           let fields = $.introspectionManipulator.getType({
             name: 'MyType',
           }).fields
-          expect(fields).to.be.null
+          expect(fields).to.eql([])
 
           fields = $.introspectionManipulator.getType({
             name: 'OtherType',
           }).fields
-          expect(fields).to.be.null
+          expect(fields).to.eql([])
         })
 
         context(
@@ -468,7 +477,7 @@ describe('augmenters', function () {
               fields = $.introspectionManipulator.getType({
                 name: 'OtherType',
               }).fields
-              expect(fields).to.be.null
+              expect(fields).to.eql([])
             })
           }
         )
@@ -478,7 +487,7 @@ describe('augmenters', function () {
     describe('Queries and Mutations', function () {
       afterEach(() => {
         // Make sure it does not mess up Types
-        expect($.introspectionManipulator.getAllTypes())
+        expect($.introspectionManipulator.getAllTypes({}))
           .to.be.an('array')
           .of.length.gt(4)
       })
@@ -561,7 +570,7 @@ describe('augmenters', function () {
               expect(otherThingType).to.be.ok
 
               // But only 1 should have any fields
-              expect(thingType.fields).to.be.null
+              expect(thingType.fields).to.eql([])
               expect(otherThingType.fields).to.be.an('array').of.length(2)
             })
 
@@ -830,8 +839,8 @@ describe('augmenters', function () {
       // Input Fields have example...
       expect(
         $.introspectionManipulator.getInputField({
-          inputName: 'MyInput',
-          inputFieldName: 'inputOne',
+          typeName: 'MyInput',
+          fieldName: 'inputOne',
         }).example
       ).to.eql($.processedExample)
 
@@ -1005,23 +1014,17 @@ describe('augmenters', function () {
             ['AnotherInput', 'inputFour', 'Int', true, true],
             ['AnotherInput', 'inputFive', 'Int', true, true],
           ].forEach(
-            ([
-              inputName,
-              inputFieldName,
-              inputFieldType,
-              isArray,
-              itemsRequired,
-            ]) => {
+            ([typeName, fieldName, inputFieldType, isArray, itemsRequired]) => {
               expect(
                 $.introspectionManipulator.getInputField({
-                  inputName,
-                  inputFieldName,
+                  typeName,
+                  fieldName,
                 }).example
               ).to.eql(
                 // addSpecialTags(
                 [
-                  inputName,
-                  inputFieldName,
+                  typeName,
+                  fieldName,
                   inputFieldType,
                   isArray,
                   itemsRequired,
@@ -1034,8 +1037,8 @@ describe('augmenters', function () {
           ;['inputOne', 'inputTwo'].forEach((fieldWithoutExample) => {
             // This field should NOT have an example
             const inputField = $.introspectionManipulator.getInputField({
-              inputName: 'MyInput',
-              inputFieldName: fieldWithoutExample,
+              typeName: 'MyInput',
+              fieldName: fieldWithoutExample,
             })
             expect(inputField).to.be.ok
             expect(inputField.example).to.not.be.ok

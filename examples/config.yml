@@ -3,6 +3,7 @@ spectaql:
   faviconFile: ./test/fixtures/favicon.png
   # additionalJsFile: ./examples/customizations/js/custom.js
   # additionalCssFile: ./examples/customizations/css/custom.css
+  # cssBuildMode: basic
 
 introspection:
   # url: http://localhost:3000/graphql
