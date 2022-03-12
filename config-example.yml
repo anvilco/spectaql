@@ -202,6 +202,21 @@ introspection:
   # Default: true
   typeDocumentedDefault: true
 
+  inputsDocumentedDefault: true
+  inputDocumentedDefault: true
+
+  enumsDocumentedDefault: true
+  enumDocumentedDefault: true
+
+  # Whether to document an individual Input Field, in the absence of a metadata directive
+  # Default: true
+  unionsDocumentedDefault: true
+  unionDocumentedDefault: true
+  # Hide Union possibleTypes that are not documented so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideUnionTypesOfUndocumentedType: true
+
   # Whether to document an individual Field, in the absence of a metadata directive
   # Default: true
   fieldDocumentedDefault: true
@@ -225,15 +240,6 @@ introspection:
   # that seemingly does not exist.
   # Default: true
   hideArgsOfUndocumentedType: true
-
-
-  # Whether to document an individual Input Field, in the absence of a metadata directive
-  # Default: true
-  unionsDocumentedDefault: true
-  # Hide Union possibleTypes that are not documented so as not to reference something
-  # that seemingly does not exist.
-  # Default: true
-  hideUnionTypesOfUndocumentedType: true
 
   #
   #

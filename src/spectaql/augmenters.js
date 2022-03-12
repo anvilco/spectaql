@@ -37,7 +37,7 @@ export function augmentData(args) {
 export function createIntrospectionManipulator(args) {
   const { introspectionResponse, introspectionOptions } = args
 
-  //
+  // Map our options to Microfiber options
   const {
     hideFieldsOfUndocumentedType: removeFieldsWithMissingTypes,
     hideArgsOfUndocumentedType: removeArgsWithMissingTypes,
@@ -115,6 +115,12 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
     subscriptionsDocumentedDefault,
     typesDocumentedDefault,
     typeDocumentedDefault,
+    inputsDocumentedDefault,
+    inputDocumentedDefault,
+    unionsDocumentedDefault,
+    unionDocumentedDefault,
+    enumsDocumentedDefault,
+    enumDocumentedDefault,
   } = introspectionOptions
 
   const queryType = introspectionManipulator.getQueryType()
@@ -137,7 +143,7 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
     // }
 
     let allThingsDocumentedDefault = typesDocumentedDefault
-    let individualThingsDocumentedDefault = typeDocumentedDefault
+    let individualThingsDocumentedDefault = !!typeDocumentedDefault
     if (typesAreSame(type, queryType)) {
       allThingsDocumentedDefault = queriesDocumentedDefault
       individualThingsDocumentedDefault = true
@@ -147,6 +153,15 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
     } else if (typesAreSame(type, subscriptionType)) {
       allThingsDocumentedDefault = !!subscriptionsDocumentedDefault
       individualThingsDocumentedDefault = true
+    } else if (type.kind === KINDS.INPUT_OBJECT) {
+      allThingsDocumentedDefault = !!inputsDocumentedDefault
+      individualThingsDocumentedDefault = !!inputDocumentedDefault
+    } else if (type.kind === KINDS.ENUM) {
+      allThingsDocumentedDefault = !!enumsDocumentedDefault
+      individualThingsDocumentedDefault = !!enumDocumentedDefault
+    } else if (type.kind === KINDS.UNION) {
+      allThingsDocumentedDefault = !!unionsDocumentedDefault
+      individualThingsDocumentedDefault = !!unionDocumentedDefault
     }
 
     const metadata = _.get(type, metadatasPath, {})
@@ -158,6 +173,15 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
       })
 
     if (!shouldDocument) {
+      console.log({
+        removingType: true,
+        type,
+        typesDocumentedDefault,
+        typeDocumentedDefault,
+        allThingsDocumentedDefault,
+        individualThingsDocumentedDefault,
+        metadata,
+      })
       introspectionManipulator.removeType({
         kind: type.kind,
         name: type.name,

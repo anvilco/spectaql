@@ -88,6 +88,15 @@ describe('augmenters', function () {
   def('typesDocumentedDefault', true)
   def('typeDocumentedDefault', true)
 
+  def('inputsDocumentedDefault', true)
+  def('inputDocumentedDefault', true)
+
+  def('unionsDocumentedDefault', true)
+  def('unionDocumentedDefault', true)
+
+  def('enumsDocumentedDefault', true)
+  def('enumDocumentedDefault', true)
+
   def('fieldDocumentedDefault', true)
   def('hideFieldsOfUndocumentedType', true)
 
@@ -112,6 +121,15 @@ describe('augmenters', function () {
 
     typesDocumentedDefault: $.typesDocumentedDefault,
     typeDocumentedDefault: $.typeDocumentedDefault,
+
+    inputsDocumentedDefault: $.inputsDocumentedDefault,
+    inputDocumentedDefault: $.inputDocumentedDefault,
+
+    unionsDocumentedDefault: $.unionsDocumentedDefault,
+    unionDocumentedDefault: $.unionDocumentedDefault,
+
+    enumsDocumentedDefault: $.enumsDocumentedDefault,
+    enumDocumentedDefault: $.enumDocumentedDefault,
 
     fieldDocumentedDefault: $.fieldDocumentedDefault,
     hideFieldsOfUndocumentedType: $.hideFieldsOfUndocumentedType,
@@ -201,77 +219,88 @@ describe('augmenters', function () {
           })
         ).to.be.ok
       })
+      context(
+        'typesDocumentedDefault and unionsDocumentedDefault and inputsDocumentedDefault is false',
+        function () {
+          def('typesDocumentedDefault', false)
+          def('unionsDocumentedDefault', false)
+          def('inputsDocumentedDefault', false)
 
-      context('typesDocumentedDefault is false', function () {
-        def('typesDocumentedDefault', false)
-
-        it('does not show any types', function () {
-          const responseBefore = _.cloneDeep($.introspectionResponse)
-          const response = $.response
-          expect(response).to.not.eql(responseBefore)
-
-          expect($.introspectionManipulator.getAllTypes({})).to.eql([])
-          expect(
-            $.introspectionManipulator.getType({ name: 'MyType' })
-          ).to.not.be.ok
-        })
-
-        context('metadata says MyType should be documented', function () {
-          def('metadata', () => {
-            return _.set($.metadataBase, 'OBJECT.MyType.documentation', {
-              documented: true,
-            })
-          })
-
-          it('still does not show any types', function () {
+          it('does not show any types', function () {
             const responseBefore = _.cloneDeep($.introspectionResponse)
             const response = $.response
             expect(response).to.not.eql(responseBefore)
+
             expect($.introspectionManipulator.getAllTypes({})).to.eql([])
-            expect(
-              $.introspectionManipulator.getType({ name: 'MyType' })
-            ).to.not.be.ok
+            expect($.introspectionManipulator.getType({ name: 'MyType' })).to
+              .not.be.ok
           })
-        })
-      })
 
-      context('typeDocumentedDefault is false', function () {
-        def('typeDocumentedDefault', false)
-
-        it('does not show any types', function () {
-          const responseBefore = _.cloneDeep($.introspectionResponse)
-          const response = $.response
-          expect(response).to.not.eql(responseBefore)
-
-          expect($.introspectionManipulator.getAllTypes({})).to.eql([])
-          expect(
-            $.introspectionManipulator.getType({ name: 'MyType' })
-          ).to.not.be.ok
-        })
-
-        context(
-          'metadata directive says MyType should be documented',
-          function () {
+          context('metadata says MyType should be documented', function () {
             def('metadata', () => {
-              return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, {
+              return _.set($.metadataBase, 'OBJECT.MyType.documentation', {
                 documented: true,
               })
             })
 
-            it('only documents MyType', function () {
+            it('still does not show any types', function () {
               const responseBefore = _.cloneDeep($.introspectionResponse)
               const response = $.response
               expect(response).to.not.eql(responseBefore)
-
-              expect($.introspectionManipulator.getAllTypes({}))
-                .to.be.an('array')
-                .of.length(1)
-              expect($.introspectionManipulator.getType({ name: 'MyType' })).to
-                .be.ok
+              expect($.introspectionManipulator.getAllTypes({})).to.eql([])
+              expect(
+                $.introspectionManipulator.getType({ name: 'MyType' })
+              ).to.not.be.ok
             })
-          }
-        )
-      })
+          })
+        }
+      )
+
+      context(
+        'typeDocumentedDefault and unionDocumentedDefault and inputDocumentedDefault is false',
+        function () {
+          def('typeDocumentedDefault', false)
+          def('unionDocumentedDefault', false)
+          def('inputDocumentedDefault', false)
+
+          it('does not show any types', function () {
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
+
+            expect($.introspectionManipulator.getAllTypes({})).to.eql([])
+            expect($.introspectionManipulator.getType({ name: 'MyType' })).to
+              .not.be.ok
+          })
+
+          context(
+            'metadata directive says MyType should be documented',
+            function () {
+              def('metadata', () => {
+                return _.set(
+                  $.metadataBase,
+                  `OBJECT.MyType.${$.metadatasPath}`,
+                  {
+                    documented: true,
+                  }
+                )
+              })
+
+              it('only documents MyType', function () {
+                const responseBefore = _.cloneDeep($.introspectionResponse)
+                const response = $.response
+                expect(response).to.not.eql(responseBefore)
+
+                expect($.introspectionManipulator.getAllTypes({}))
+                  .to.be.an('array')
+                  .of.length(1)
+                expect($.introspectionManipulator.getType({ name: 'MyType' }))
+                  .to.be.ok
+              })
+            }
+          )
+        }
+      )
 
       describe('undocumented metadata directive', function () {
         context(
