@@ -73,12 +73,12 @@ const introspectionOptionDefaults = Object.freeze({
   inputsDocumentedDefault: true,
   inputDocumentedDefault: true,
 
+  enumsDocumentedDefault: true,
+  enumDocumentedDefault: true,
+
   unionsDocumentedDefault: true,
   unionDocumentedDefault: true,
   hideUnionTypesOfUndocumentedType: true,
-
-  enumsDocumentedDefault: true,
-  enumDocumentedDefault: true,
 
   fieldDocumentedDefault: true,
   hideFieldsOfUndocumentedType: true,

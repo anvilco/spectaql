@@ -202,15 +202,25 @@ introspection:
   # Default: true
   typeDocumentedDefault: true
 
+  # Whether to document any Input Object types at all
+  # Default: true
   inputsDocumentedDefault: true
+  # Whether to document an individual Input Object, in the absence of a metadata directive
+  # Default: true
   inputDocumentedDefault: true
 
+  # Whether to document any Enums at all
+  # Default: true
   enumsDocumentedDefault: true
+  # Whether to document an individual Enum, in the absence of a metadata directive
+  # Default: true
   enumDocumentedDefault: true
 
-  # Whether to document an individual Input Field, in the absence of a metadata directive
+  # Whether to document any Unions at all
   # Default: true
   unionsDocumentedDefault: true
+  # Whether to document an individual Union, in the absence of a metadata directive
+  # Default: true
   unionDocumentedDefault: true
   # Hide Union possibleTypes that are not documented so as not to reference something
   # that seemingly does not exist.
