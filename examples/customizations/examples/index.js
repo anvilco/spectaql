@@ -1,9 +1,6 @@
-// const _ = require('lodash')
-
 const LIFE_THE_UNIVERSE_AND_EVERYTHING = 42
 
-//
-function processor ({
+module.exports = function processor({
   // The type should always be provided
   type,
   // If the thing is a field or the argument on a field, field will be present
@@ -20,13 +17,14 @@ function processor ({
   // Eg: [String] => { kind: 'SCALAR', name: 'String' }
   underlyingType,
   // Is the thing required or not? Eg: String! or [String]! => true
+  // eslint-disable-next-line no-unused-vars
   isRequired,
   // Is the thing an array/list? Eg: [String] => true
   isArray,
   // Are the items in the array/list required? Eg: [String!] => true
+  // eslint-disable-next-line no-unused-vars
   itemsRequired,
 }) {
-
   // If "arg" is present, we know the thing being processed is an arg
   if (arg) {
     if (typeof arg.example !== 'undefined') {
@@ -36,7 +34,13 @@ function processor ({
     const argType = underlyingType
 
     // All String arguments on the myQuery Query get examples
-    if (type.kind === 'OBJECT' && type.name  === 'Query' && field.name === 'myQuery' && argType.kind === 'SCALAR' && argType.name === 'String') {
+    if (
+      type.kind === 'OBJECT' &&
+      type.name === 'Query' &&
+      field.name === 'myQuery' &&
+      argType.kind === 'SCALAR' &&
+      argType.name === 'String'
+    ) {
       const val = `Special generated Argument example for ${field.name} ${arg.name}`
       // Might need to be an array
       return isArray ? [val] : val
@@ -61,7 +65,12 @@ function processor ({
     const fieldType = underlyingType
 
     // All String fields on MyType get an example, unless they already had one from somewhere
-    if (type.kind === 'OBJECT' && type.name === 'MyType' && fieldType.kind === 'SCALAR' && fieldType.name === 'String') {
+    if (
+      type.kind === 'OBJECT' &&
+      type.name === 'MyType' &&
+      fieldType.kind === 'SCALAR' &&
+      fieldType.name === 'String'
+    ) {
       const val = `Generated Field example for ${field.name}`
       // Might need to be an array
       return isArray ? [val] : val
@@ -80,7 +89,9 @@ function processor ({
     const inputFieldType = underlyingType
 
     if (inputFieldType.kind === 'SCALAR' && inputFieldType.name === 'Int') {
-      return isArray ? [LIFE_THE_UNIVERSE_AND_EVERYTHING] : LIFE_THE_UNIVERSE_AND_EVERYTHING
+      return isArray
+        ? [LIFE_THE_UNIVERSE_AND_EVERYTHING]
+        : LIFE_THE_UNIVERSE_AND_EVERYTHING
     }
 
     return
@@ -102,5 +113,3 @@ function processor ({
     return
   }
 }
-
-module.exports = processor
