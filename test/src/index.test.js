@@ -36,8 +36,8 @@ describe('index', function () {
         mutationArgDocumentedDefault: true,
         hideMutationsWithUndocumentedReturnType: true,
 
-        typesDocumentedDefault: true,
-        typeDocumentedDefault: true,
+        objectsDocumentedDefault: true,
+        objectDocumentedDefault: true,
         fieldDocumentedDefault: true,
         argDocumentedDefault: true,
         hideFieldsOfUndocumentedType: true,

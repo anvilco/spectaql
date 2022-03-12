@@ -1,4 +1,4 @@
-- `typesDocumented` option renamed to `typesDocumentedDefault`.
+- `typesDocumented` option renamed to `objectsDocumentedDefault`.
 - `hideFieldsWithUndocumentedReturnType` option was renamed to `hideFieldsOfUndocumentedType`.
 
 New options/features:

@@ -113,8 +113,8 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
     queriesDocumentedDefault,
     mutationsDocumentedDefault,
     subscriptionsDocumentedDefault,
-    typesDocumentedDefault,
-    typeDocumentedDefault,
+    objectsDocumentedDefault,
+    objectDocumentedDefault,
     inputsDocumentedDefault,
     inputDocumentedDefault,
     unionsDocumentedDefault,
@@ -133,17 +133,10 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
     includeMutation: true,
     includeSubscription: true,
   })
-  // const types = introspectionManipulator.getResponse().__schema.types
-  // console.log(types)
 
   for (const type of types) {
-    // Don't mess with reserved GraphQL types
-    // if (isReservedType(type)) {
-    //   continue
-    // }
-
-    let allThingsDocumentedDefault = typesDocumentedDefault
-    let individualThingsDocumentedDefault = !!typeDocumentedDefault
+    let allThingsDocumentedDefault = objectsDocumentedDefault
+    let individualThingsDocumentedDefault = !!objectDocumentedDefault
     if (typesAreSame(type, queryType)) {
       allThingsDocumentedDefault = queriesDocumentedDefault
       individualThingsDocumentedDefault = true
@@ -173,15 +166,6 @@ function hideTypes({ introspectionManipulator, introspectionOptions }) {
       })
 
     if (!shouldDocument) {
-      console.log({
-        removingType: true,
-        type,
-        typesDocumentedDefault,
-        typeDocumentedDefault,
-        allThingsDocumentedDefault,
-        individualThingsDocumentedDefault,
-        metadata,
-      })
       introspectionManipulator.removeType({
         kind: type.kind,
         name: type.name,

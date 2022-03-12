@@ -197,10 +197,10 @@ introspection:
 
   # Whether to document any Types at all
   # Default: true
-  typesDocumentedDefault: true
+  objectsDocumentedDefault: true
   # Whether to document an individual Type, in the absence of a metadata directive
   # Default: true
-  typeDocumentedDefault: true
+  objectDocumentedDefault: true
 
   # Whether to document any Input Object types at all
   # Default: true

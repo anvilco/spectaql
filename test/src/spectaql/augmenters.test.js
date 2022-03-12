@@ -85,8 +85,8 @@ describe('augmenters', function () {
   def('doMetadata', true)
   def('metadatasPath', 'metadata')
 
-  def('typesDocumentedDefault', true)
-  def('typeDocumentedDefault', true)
+  def('objectsDocumentedDefault', true)
+  def('objectDocumentedDefault', true)
 
   def('inputsDocumentedDefault', true)
   def('inputDocumentedDefault', true)
@@ -119,8 +119,8 @@ describe('augmenters', function () {
     metadata: $.doMetadata,
     metadatasPath: $.metadatasPath,
 
-    typesDocumentedDefault: $.typesDocumentedDefault,
-    typeDocumentedDefault: $.typeDocumentedDefault,
+    objectsDocumentedDefault: $.objectsDocumentedDefault,
+    objectDocumentedDefault: $.objectDocumentedDefault,
 
     inputsDocumentedDefault: $.inputsDocumentedDefault,
     inputDocumentedDefault: $.inputDocumentedDefault,
@@ -220,9 +220,9 @@ describe('augmenters', function () {
         ).to.be.ok
       })
       context(
-        'typesDocumentedDefault and unionsDocumentedDefault and inputsDocumentedDefault is false',
+        'objectsDocumentedDefault and unionsDocumentedDefault and inputsDocumentedDefault is false',
         function () {
-          def('typesDocumentedDefault', false)
+          def('objectsDocumentedDefault', false)
           def('unionsDocumentedDefault', false)
           def('inputsDocumentedDefault', false)
 
@@ -257,9 +257,9 @@ describe('augmenters', function () {
       )
 
       context(
-        'typeDocumentedDefault and unionDocumentedDefault and inputDocumentedDefault is false',
+        'objectDocumentedDefault and unionDocumentedDefault and inputDocumentedDefault is false',
         function () {
-          def('typeDocumentedDefault', false)
+          def('objectDocumentedDefault', false)
           def('unionDocumentedDefault', false)
           def('inputDocumentedDefault', false)
 
