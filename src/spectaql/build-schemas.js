@@ -28,7 +28,6 @@ export function buildSchemas(opts) {
       schemaFile,
       introspectionFile,
       metadataFile,
-      authHeader,
       headers,
       removeTrailingPeriodFromDescriptions,
     },
@@ -58,15 +57,8 @@ export function buildSchemas(opts) {
       errorThingDone({ trying: 'load Introspection from URL', done })
     }
 
-    if (authHeader && headers) {
-      throw new Error(
-        'Cannot provide both header and headers options. Please choose one.'
-      )
-    }
     let resolvedHeaders = {}
-    if (authHeader) {
-      resolvedHeaders.authorization = authHeader
-    } else if (headers) {
+    if (headers) {
       // CLI headers come in as a string; YAML as an object.
       resolvedHeaders =
         typeof headers === 'string' ? JSON.parse(headers) : headers

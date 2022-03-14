@@ -69,12 +69,18 @@ describe('index', function () {
           additionalJsFile: './foo.js',
           additionalCssFile: './foo.css',
         },
+        introspection: {
+          url: 'http://mysite.com/graphql',
+          headers: {
+            Authorization: 'Bearer s3cretT0k2n',
+          },
+        },
         extensions: {
           graphqlScalarExamples: false,
         },
       }))
 
-      it('uses config overrides', function () {
+      it('uses config overrides and does not resolve certain things as paths', function () {
         const resolveOptions = index.__get__('resolveOptions')
         const options = resolveOptions($.options)
 
@@ -82,6 +88,13 @@ describe('index', function () {
         expect(options.cssBuildMode).to.eql('basic')
         expect(options.additionalJsFile.endsWith('foo.js')).to.be.true
         expect(options.additionalCssFile.endsWith('foo.css')).to.be.true
+        // Not a path
+        expect(options.specData.introspection.url).to.eql(
+          'http://mysite.com/graphql'
+        )
+        expect(options.specData.introspection.headers).to.eql({
+          Authorization: 'Bearer s3cretT0k2n',
+        })
         expect(options.specData.extensions).to.eql({
           graphqlScalarExamples: false,
         })

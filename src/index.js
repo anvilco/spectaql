@@ -101,9 +101,13 @@ const introspectionOptionsMap = Object.freeze({
   introspectionFile: 'introspectionFile',
   introspectionMetadataFile: 'metadataFile',
   dynamicExamplesProcessingModule: 'dynamicExamplesProcessingModule',
-  header: 'authHeader',
   headers: 'headers',
 })
+
+// What keys should be normalized as paths?
+const introspectionOptionsToNormalize = Object.values(
+  introspectionOptionsMap
+).filter((key) => !['url', 'headers'].includes(key))
 
 function resolvePaths(
   options,
@@ -178,10 +182,7 @@ function resolveOptions(cliOptions) {
   )
 
   // Resolve the introspection options paths
-  resolvePaths(
-    opts.specData.introspection,
-    Object.values(introspectionOptionsMap)
-  )
+  resolvePaths(opts.specData.introspection, introspectionOptionsToNormalize)
 
   // OK, layer in any defaults that may be set by the CLI and the YAML, but may not have been:
   opts = _.defaults({}, opts, spectaqlOptionDefaults)
