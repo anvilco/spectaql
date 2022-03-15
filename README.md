@@ -51,10 +51,11 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
   - Provide a single SDL file containing your schema
   - Provide an array of multiple SDL files to be merged into a final schema
   - Provide a glob that leads to SDL files to be merged into a final schema
-- Will automatically generate documentation for all Types, Fields, Queries, Mutations and Arguments by default.
+- Will automatically generate documentation for all Types, Fields, Queries, Mutations, Arguments and Subscriptions by default.
 - Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
 - Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
 - Supports customization of CSS to allow overriding the styles.
+- Supports customization of HTML output templates to allow overriding the HTML output.
 - Supports markdown just about everywhere you can provide text.
 - Live preview mode while developing.
 - Many options for output:
@@ -131,6 +132,28 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata _before_ SpectaQL even gets involved. Just a thought.
 
+## Customizing CSS
+
+If you'd like to customize the CSS for your build, you can do so easily:
+
+- Create your customized CSS file. See [this example]() for an idea.
+- Tell SpectaQL to load it either via the `--additional-css-file` or the `spectaql.additionalCssFile` option in your configuration YAML.
+- Profit!
+
+_NOTE:_ The default behavior is to use the CSS in the `additionalCssFile` in addition to the default CSS that SpectaQL generates as way to add-to or override that default build CSS. If you'd like to only include the `additionalCssFile` in your CSS output, the `--disable-css` CLI option can be specified.
+
+## Customizing HTML
+
+If you'd like to really dig in and control the HTML output of SpectaQL, you can override as much or as little of the default [Handlebars][handlebars]] templates. Here's how:
+[default-views-dir]: /src/views
+[custom-views-overlay-example]: /examples/customizations/handlebars/views
+
+- Create your customized Handlebars view directory. You can add, remove or replace as much or as little of the [default views][default-views-dir]] as you like. Here is an [example views directory overlay][custom-views-overlay-example]] that changes just one of the templates.
+- Tell SpectaQL to load it either via the the `spectaql.viewsOverlay` option in your configuration YAML.
+- Profit!
+
+_NOTE:_ If you're just trying to make small changes, you'll need to mimic the existing default folder structure to have the same relative directory location as the templates you want to overlay, but you do not need to includes any files that you do not intend to customize. If you'd like to completely redo the HTML output, you can create whatever templates, files and directory structure you need, and just ensure that either the `main.hbs` or `embedded.hbs` entry point(s) exist, depending on your `--embeddable` CLI option.
+
 ## Reference Interpolation
 
 All `decription`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Types].<Query, Mutation, or Type name>}}`
@@ -202,3 +225,7 @@ Good luck and enjoy SpectaQL!
 [npm-url]: https://www.npmjs.com/package/spectaql
 [docs]: https://www.useanvil.com/docs/api/graphql/reference/
 [blog]: https://www.useanvil.com/blog/2021-03-17-autogenerate-graphql-docs-with-spectaql
+[handlebars]: https://handlebarsjs.com/
+[custom-css-example]: foo
+[default-views-dir]: /src/views
+[custom-views-overlay-example]: /examples/customizations/handlebars/views

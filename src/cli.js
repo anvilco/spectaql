@@ -15,13 +15,50 @@ export default function () {
       '-N, --noop',
       'This option does nothing, but may be useful in complex CLI scenarios to get argument parsing correct'
     )
-    .option('-C, --disable-css', 'omit CSS generation (default: false)')
+
+    //**************************************
+    //
+    //  CSS Stuff
+    //
+    //
     .option(
       '-c, --css-build-mode <mode>',
       'full: build with very opinionated css; basic: build with minimal layout-focused css (default: full)',
       String
     )
+    .option(
+      '-C, --disable-css',
+      'omit SpectaQL default CSS generation from the "build mode" - will still include any additional CSS file that you may have specified (default: false)'
+    )
+    // Optional path to a CSS file that will be bundled into the spectaql.min.css with all the other CSS
+    // from foundation, etc. Useful for overriding CSS styles to your liking.
+    .option(
+      '--additional-css-file <file>',
+      'specify a file that contains additional CSS to add to the spectaql.min.css',
+      String
+    )
+
+    //
+    //
+    //**************************************
+
+    //**************************************
+    //
+    //  JS Stuff
+    //
+    //
     .option('-J, --disable-js', 'omit JavaScript generation (default: false)')
+    // Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
+    // required JS. Can be useful for setting some values, such as for the Traverse.defaults object
+    .option(
+      '--additional-js-file <file>',
+      'specify a file that contains additional JavaScript to add to the spectaql.min.js',
+      String
+    )
+
+    //
+    //
+    //**************************************
 
     // This option lets you build a minimal version of the documentation without the HTML `<body>` tags, so you can embed
     // SpectaQL into your own website template.
@@ -123,23 +160,6 @@ export default function () {
       'specify a JS module that will dynamically generate schema examples (default: none',
       String
     )
-
-    // Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
-    // required JS. Can be useful for setting some values, such as for the Traverse.defaults object
-    .option(
-      '--additional-js-file <file>',
-      'specify a file that contains additional JavaScript to add to the spectaql.min.js',
-      String
-    )
-
-    // Optional path to a CSS file that will be bundled into the spectaql.min.css with all the other CSS
-    // from foundation, etc. Useful for overriding CSS styles to your liking.
-    .option(
-      '--additional-css-file <file>',
-      'specify a file that contains additional CSS to add to the spectaql.min.css',
-      String
-    )
-
     .option(
       '-g, --grunt-config-file <file>',
       'specify a custom Grunt configuration file (default: dist/lib/gruntConfig.js)',

@@ -109,6 +109,7 @@ module.exports = function (grunt, options, spec) {
       },
     },
 
+    // https://www.npmjs.com/package/grunt-compile-handlebars
     // Compile the Handlebars templates as HTML into the target directory
     // Everyting has been copied intermediately to the cache directory
     // so that custom stuff can be combined with standard stuff
@@ -194,6 +195,7 @@ module.exports = function (grunt, options, spec) {
       },
     },
 
+    // https://www.npmjs.com/package/grunt-contrib-copy
     // Copy files to the target directory
     copy: {
       'views-tmp': {
@@ -209,6 +211,10 @@ module.exports = function (grunt, options, spec) {
       favicon: {
         src: options.faviconFile,
         dest: options.targetDir + '/images/' + options.faviconFileTargetName,
+      },
+      'custom-css': {
+        src: options.additionalCssFile,
+        dest: options.cacheDir + '/stylesheets/custom.css',
       },
       css: {
         expand: true,

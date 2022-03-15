@@ -2,7 +2,7 @@ spectaql:
   logoFile: ./test/fixtures/logo.png
   faviconFile: ./test/fixtures/favicon.png
   # additionalJsFile: ./examples/customizations/js/custom.js
-  # additionalCssFile: ./examples/customizations/css/custom.css
+  additionalCssFile: ./examples/customizations/css/custom.css
   # cssBuildMode: basic
   # viewsOverlay: ./examples/customizations/handlebars/views
 
