@@ -187,9 +187,13 @@ npx spectaql -d path/to/config.yml
 
 ### Testing
 
-> Under Construction
+```sh
+npm run test
+# OR
+yarn test
+```
 
-The changes we made from the DociQL project are significant, and as a result there is only a limited amount of test coverage at this point. However, new code should be tested, and unit tests for the existing code will be added in the future...or are welcome as pull requests!
+The changes we made from the [DociQL][dociql] project are significant, and as a result there is only a limited amount of test coverage at this point. However, new code should be tested, and unit tests for the existing code will be added in the future...or are welcome as pull requests!
 
 Testing is powered by [Mocha](https://mochajs.org/)/[Chai](http://chaijs.com/) and uses the [BDD Lazy Var](https://github.com/stalniy/bdd-lazy-var) enhancement for writing RSpec-style tests.
 
@@ -201,7 +205,7 @@ While it's very robust, SpectaQL is still quite new and is evolving. It's likely
 
 ## Contributors and Special Thanks
 
-This library owes a very special thanks to the [DociQL](https://github.com/wayfair/dociql) project, which served as a great starting point for SpectaQL to build on top of.
+This library owes a very special thanks to the [DociQL][dociql] project, which served as a great starting point for SpectaQL to build on top of.
 
 ## License
 
@@ -222,6 +226,7 @@ Good luck and enjoy SpectaQL!
 [npm]: https://img.shields.io/npm/v/spectaql.svg
 [npm-downloads]: https://img.shields.io/npm/dw/spectaql
 [npm-url]: https://www.npmjs.com/package/spectaql
+[dociql]: https://github.com/wayfair/dociql
 [docs]: https://www.useanvil.com/docs/api/graphql/reference/
 [blog]: https://www.useanvil.com/blog/2021-03-17-autogenerate-graphql-docs-with-spectaql
 [changelog]: /CHANGELOG.md
