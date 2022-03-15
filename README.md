@@ -7,13 +7,14 @@
 
 <a href="https://www.useanvil.com/docs"><img src="/static/SpectaQL.png" width="800"></a>
 
-> A nice enhancement of [DociQL](https://github.com/wayfair/dociql)
-
 <hr />
 
 ### NOTICE
 
-I'm considering a major (internal) change to SpectaQL and would like to hear any feedback that Users may have on the idea. Please feel free to chime in on [this issue](https://github.com/anvilco/spectaql/issues/111).
+Migrating from pre `1.0`?
+
+- Here are the breaking changes: [BREAKING_CHANGES_1.md][breaking-1]
+- Here's a list of some of the interesting new changes: [CHANGELOG.md][changelog]
 
 <hr />
 
@@ -136,27 +137,25 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 If you'd like to customize the CSS for your build, you can do so easily:
 
-- Create your customized CSS file. See [this example]() for an idea.
-- Tell SpectaQL to load it either via the `--additional-css-file` or the `spectaql.additionalCssFile` option in your configuration YAML.
+- Create your customized CSS file. See [this example][custom-css-example] for an idea.
+- Tell SpectaQL to load it either via the `--additional-css-file` in the CLI, or the `spectaql.additionalCssFile` option in your configuration YAML.
 - Profit!
 
-_NOTE:_ The default behavior is to use the CSS in the `additionalCssFile` in addition to the default CSS that SpectaQL generates as way to add-to or override that default build CSS. If you'd like to only include the `additionalCssFile` in your CSS output, the `--disable-css` CLI option can be specified.
+_NOTE:_ The default behavior is to use the CSS in the `additionalCssFile` in addition to the default CSS that SpectaQL generates as way to add-to or override that default build CSS. If you'd like to only include the `additionalCssFile` in your CSS output, the `--disable-css` CLI option can be specified to have that effect.
 
 ## Customizing HTML
 
-If you'd like to really dig in and control the HTML output of SpectaQL, you can override as much or as little of the default [Handlebars][handlebars]] templates. Here's how:
-[default-views-dir]: /src/views
-[custom-views-overlay-example]: /examples/customizations/handlebars/views
+If you'd like to really dig in and control the HTML output of SpectaQL, you can override as much or as little of the default [Handlebars][handlebars] templates. Here's how:
 
-- Create your customized Handlebars view directory. You can add, remove or replace as much or as little of the [default views][default-views-dir]] as you like. Here is an [example views directory overlay][custom-views-overlay-example]] that changes just one of the templates.
+- Create your customized Handlebars view directory. You can add, remove, or replace as much or as little of the [default views][default-views-dir] as you like. Here is an [example views directory overlay][custom-views-overlay-example] that changes just one of the templates.
 - Tell SpectaQL to load it either via the the `spectaql.viewsOverlay` option in your configuration YAML.
 - Profit!
 
-_NOTE:_ If you're just trying to make small changes, you'll need to mimic the existing default folder structure to have the same relative directory location as the templates you want to overlay, but you do not need to includes any files that you do not intend to customize. If you'd like to completely redo the HTML output, you can create whatever templates, files and directory structure you need, and just ensure that either the `main.hbs` or `embedded.hbs` entry point(s) exist, depending on your `--embeddable` CLI option.
+_NOTE:_ If you're just trying to make small changes, you'll want to mimic the existing default folder structure to have the same relative directory location as the templates you want to overlay, but you do not need to includes any files that you do not intend to customize. If you'd like to completely redo the HTML output, you can create whatever templates, files and directory structure you need, and just ensure that either the `normal.hbs` or `embedded.hbs` entry point(s) exist, depending on your `--embeddable` CLI option.
 
 ## Reference Interpolation
 
-All `decription`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Types].<Query, Mutation, or Type name>}}`
+All `description`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Types].<Query, Mutation, or Type name>}}`
 
 Examples:
 
@@ -225,7 +224,9 @@ Good luck and enjoy SpectaQL!
 [npm-url]: https://www.npmjs.com/package/spectaql
 [docs]: https://www.useanvil.com/docs/api/graphql/reference/
 [blog]: https://www.useanvil.com/blog/2021-03-17-autogenerate-graphql-docs-with-spectaql
+[changelog]: /CHANGELOG.md
+[breaking-1]: /BREAKING_CHANGES_1.md
 [handlebars]: https://handlebarsjs.com/
-[custom-css-example]: foo
+[custom-css-example]: /examples/customizations/css/custom.css
 [default-views-dir]: /src/views
 [custom-views-overlay-example]: /examples/customizations/handlebars/views

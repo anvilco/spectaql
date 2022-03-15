@@ -120,7 +120,7 @@ module.exports = function (grunt, options, spec) {
             src:
               options.cacheDir +
               '/views/' +
-              (options.embeddable ? 'embedded.hbs' : 'main.hbs'),
+              (options.embeddable ? 'embedded.hbs' : 'normal.hbs'),
             dest: options.cacheDir + '/' + options.targetFile,
           },
         ],
