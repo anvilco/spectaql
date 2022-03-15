@@ -7,4 +7,4 @@ Some notable additions/enhancements to `1.0.0` are:
   - `parseCliOptions`: used to parse the CLI arguments into sane arguments to be passed to `run`.
   - `loadData`: bascially does all the processing that SpectaQL would do with gathering and processing the data right up to the point where SpectaQL would start to generate the HTML, etc.
   - `buildSchemas`: Does a bit less than `loadData` in that it will take the provided options and return an augmented Introspection Query Response as well as a GraphQL Schema instance.
-  -
+  - Use the `spectaql.viewsOverlay` option to provide a path to any Handlebars templates that you'd like to add or overload.

@@ -117,6 +117,7 @@ function resolvePaths(
     'logoFile',
     'additionalJsFile',
     'additionalCssFile',
+    'viewsOverlay',
     'faviconFile',
     'specFile',
     'gruntConfigFile',
@@ -301,10 +302,12 @@ export const run = function (cliOptions = {}) {
 
   const stylesheetsToBuild = []
 
-  if (opts.cssBuildMode === 'full') {
-    stylesheetsToBuild.push('full', 'foundation')
-  } else {
-    stylesheetsToBuild.push('basic')
+  if (!opts.disableCss) {
+    if (opts.cssBuildMode === 'full') {
+      stylesheetsToBuild.push('full', 'foundation')
+    } else {
+      stylesheetsToBuild.push('basic')
+    }
   }
 
   grunt.registerTask('stylesheets', [
@@ -313,13 +316,19 @@ export const run = function (cliOptions = {}) {
     'cssmin:css',
   ])
 
-  grunt.registerTask('javascripts', ['concat:js', 'uglify']),
-    grunt.registerTask('templates', [
-      'clean:html',
-      'compile-handlebars',
-      'predentation',
-      'prettify',
-    ])
+  grunt.registerTask('javascripts', ['concat:js', 'uglify'])
+  grunt.registerTask('templates', [
+    'clean:html',
+    'clean:views-tmp',
+    // TODO:
+    // 'clean:helpers',
+    'copy:views-tmp',
+    // TODO:
+    // 'copy:helpers',
+    'compile-handlebars',
+    'predentation',
+    'prettify',
+  ])
 
   grunt.registerTask('default', ['stylesheets', 'javascripts', 'templates'])
 
@@ -365,14 +374,13 @@ export const run = function (cliOptions = {}) {
   if (opts.startServer) {
     grunt.task.run('server')
   } else {
-    if (!opts.disableCss) {
-      grunt.task.run('stylesheets')
+    grunt.task.run('stylesheets')
 
-      // If not oneFile/embedding JS/CSS, then we'll need to copy the files
-      if (!opts.oneFile) {
-        copies.unshift('css')
-      }
+    // If not oneFile/embedding JS/CSS, then we'll need to copy the files
+    if (!opts.oneFile) {
+      copies.unshift('css')
     }
+
     if (!opts.disableJs) {
       grunt.task.run('javascripts')
 

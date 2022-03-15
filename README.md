@@ -7,13 +7,14 @@
 
 <a href="https://www.useanvil.com/docs"><img src="/static/SpectaQL.png" width="800"></a>
 
-> A nice enhancement of [DociQL](https://github.com/wayfair/dociql)
-
 <hr />
 
 ### NOTICE
 
-I'm considering a major (internal) change to SpectaQL and would like to hear any feedback that Users may have on the idea. Please feel free to chime in on [this issue](https://github.com/anvilco/spectaql/issues/111).
+Migrating from pre `1.0`?
+
+- Here are the breaking changes: [BREAKING_CHANGES_1.md][breaking-1]
+- Here's a list of some of the interesting new changes: [CHANGELOG.md][changelog]
 
 <hr />
 
@@ -51,10 +52,11 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
   - Provide a single SDL file containing your schema
   - Provide an array of multiple SDL files to be merged into a final schema
   - Provide a glob that leads to SDL files to be merged into a final schema
-- Will automatically generate documentation for all Types, Fields, Queries, Mutations and Arguments by default.
+- Will automatically generate documentation for all Types, Fields, Queries, Mutations, Arguments and Subscriptions by default.
 - Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
 - Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
 - Supports customization of CSS to allow overriding the styles.
+- Supports customization of HTML output templates to allow overriding the HTML output.
 - Supports markdown just about everywhere you can provide text.
 - Live preview mode while developing.
 - Many options for output:
@@ -131,9 +133,29 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata _before_ SpectaQL even gets involved. Just a thought.
 
+## Customizing CSS
+
+If you'd like to customize the CSS for your build, you can do so easily:
+
+- Create your customized CSS file. See [this example][custom-css-example] for an idea.
+- Tell SpectaQL to load it either via the `--additional-css-file` in the CLI, or the `spectaql.additionalCssFile` option in your configuration YAML.
+- Profit!
+
+_NOTE:_ The default behavior is to use the CSS in the `additionalCssFile` in addition to the default CSS that SpectaQL generates as way to add-to or override that default build CSS. If you'd like to only include the `additionalCssFile` in your CSS output, the `--disable-css` CLI option can be specified to have that effect.
+
+## Customizing HTML
+
+If you'd like to really dig in and control the HTML output of SpectaQL, you can override as much or as little of the default [Handlebars][handlebars] templates. Here's how:
+
+- Create your customized Handlebars view directory. You can add, remove, or replace as much or as little of the [default views][default-views-dir] as you like. Here is an [example views directory overlay][custom-views-overlay-example] that changes just one of the templates.
+- Tell SpectaQL to load it either via the the `spectaql.viewsOverlay` option in your configuration YAML.
+- Profit!
+
+_NOTE:_ If you're just trying to make small changes, you'll want to mimic the existing default folder structure to have the same relative directory location as the templates you want to overlay, but you do not need to includes any files that you do not intend to customize. If you'd like to completely redo the HTML output, you can create whatever templates, files and directory structure you need, and just ensure that either the `normal.hbs` or `embedded.hbs` entry point(s) exist, depending on your `--embeddable` CLI option.
+
 ## Reference Interpolation
 
-All `decription`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Types].<Query, Mutation, or Type name>}}`
+All `description`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Types].<Query, Mutation, or Type name>}}`
 
 Examples:
 
@@ -165,9 +187,13 @@ npx spectaql -d path/to/config.yml
 
 ### Testing
 
-> Under Construction
+```sh
+npm run test
+# OR
+yarn test
+```
 
-The changes we made from the DociQL project are significant, and as a result there is only a limited amount of test coverage at this point. However, new code should be tested, and unit tests for the existing code will be added in the future...or are welcome as pull requests!
+The changes we made from the [DociQL][dociql] project are significant, and as a result there is only a limited amount of test coverage at this point. However, new code should be tested, and unit tests for the existing code will be added in the future...or are welcome as pull requests!
 
 Testing is powered by [Mocha](https://mochajs.org/)/[Chai](http://chaijs.com/) and uses the [BDD Lazy Var](https://github.com/stalniy/bdd-lazy-var) enhancement for writing RSpec-style tests.
 
@@ -179,7 +205,7 @@ While it's very robust, SpectaQL is still quite new and is evolving. It's likely
 
 ## Contributors and Special Thanks
 
-This library owes a very special thanks to the [DociQL](https://github.com/wayfair/dociql) project, which served as a great starting point for SpectaQL to build on top of.
+This library owes a very special thanks to the [DociQL][dociql] project, which served as a great starting point for SpectaQL to build on top of.
 
 ## License
 
@@ -200,5 +226,12 @@ Good luck and enjoy SpectaQL!
 [npm]: https://img.shields.io/npm/v/spectaql.svg
 [npm-downloads]: https://img.shields.io/npm/dw/spectaql
 [npm-url]: https://www.npmjs.com/package/spectaql
+[dociql]: https://github.com/wayfair/dociql
 [docs]: https://www.useanvil.com/docs/api/graphql/reference/
 [blog]: https://www.useanvil.com/blog/2021-03-17-autogenerate-graphql-docs-with-spectaql
+[changelog]: /CHANGELOG.md
+[breaking-1]: /BREAKING_CHANGES_1.md
+[handlebars]: https://handlebarsjs.com/
+[custom-css-example]: /examples/customizations/css/custom.css
+[default-views-dir]: /src/views
+[custom-views-overlay-example]: /examples/customizations/handlebars/views
