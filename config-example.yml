@@ -14,7 +14,6 @@ spectaql:
   # If false, the favicon name will default to "favicon"
   preserveFaviconName: false
 
-
   # Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
   # required JS. Can be useful for setting some values, such as for the Traverse.defaults object
   additionalJsFile: path/to/additional.js
@@ -30,6 +29,10 @@ spectaql:
   # Default: full
   cssBuildMode: full # or basic
 
+  # Optional path to a directory containing any view customization files you want SpectaQL to use.
+  # The files provided will be merged over the standard files found in `src/views`. This means that
+  # you can override as much or as little of the existing/default views as you like.
+  viewsOverlay: path/to/custom/views
 
 introspection:
   ##############################################

@@ -117,6 +117,7 @@ function resolvePaths(
     'logoFile',
     'additionalJsFile',
     'additionalCssFile',
+    'viewsOverlay',
     'faviconFile',
     'specFile',
     'gruntConfigFile',
@@ -313,13 +314,19 @@ export const run = function (cliOptions = {}) {
     'cssmin:css',
   ])
 
-  grunt.registerTask('javascripts', ['concat:js', 'uglify']),
-    grunt.registerTask('templates', [
-      'clean:html',
-      'compile-handlebars',
-      'predentation',
-      'prettify',
-    ])
+  // const templateTasks
+
+  grunt.registerTask('javascripts', ['concat:js', 'uglify'])
+  grunt.registerTask('templates', [
+    'clean:html',
+    'clean:views-tmp',
+    // 'clean:helpers',
+    'copy:views-tmp',
+    // 'copy:helpers',
+    'compile-handlebars',
+    'predentation',
+    'prettify',
+  ])
 
   grunt.registerTask('default', ['stylesheets', 'javascripts', 'templates'])
 

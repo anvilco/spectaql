@@ -4,13 +4,15 @@ spectaql:
   # additionalJsFile: ./examples/customizations/js/custom.js
   # additionalCssFile: ./examples/customizations/css/custom.css
   # cssBuildMode: basic
+  # viewsOverlay: ./examples/customizations/handlebars/views
+
 
 introspection:
-  url: http://localhost:3000/graphql
+  # url: http://localhost:3000/graphql
   removeTrailingPeriodFromDescriptions: false
-  # schemaFile: ./examples/data/schema.gql
+  schemaFile: ./examples/data/schema.gql
   metadataFile: ./examples/data/metadata.json
-  # dynamicExamplesProcessingModule: ./examples/customizations/examples
+  dynamicExamplesProcessingModule: ./examples/customizations/examples
 
   # subscriptionArgDocumentedDefault: false
   # inputFieldDocumentedDefault: false

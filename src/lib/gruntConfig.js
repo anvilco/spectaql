@@ -1,6 +1,8 @@
 import path from 'path'
 import sass from 'sass'
 
+import { normalizePath } from '../spectaql/utils'
+
 const root = path.resolve(__dirname, '../..')
 const node_modules_clone = path.resolve(root, 'node_modules')
 const node_modules_dependency = path.resolve(root, '..')
@@ -20,6 +22,24 @@ module.exports = function (grunt, options, spec) {
   const cssSrcPaths = [options.cacheDir + '/stylesheets/**/*.css']
   if (options.additionalCssFile) {
     cssSrcPaths.push(options.additionalCssFile)
+  }
+
+  const copyViewsTempFiles = [
+    {
+      expand: true,
+      cwd: options.appDir,
+      src: 'views/**/*.hbs',
+      dest: options.cacheDir,
+    },
+  ]
+
+  if (options.viewsOverlay) {
+    copyViewsTempFiles.push({
+      expand: true,
+      cwd: normalizePath(options.viewsOverlay + '/..'),
+      src: '**/*.hbs',
+      dest: options.cacheDir,
+    })
   }
 
   return {
@@ -90,20 +110,23 @@ module.exports = function (grunt, options, spec) {
     },
 
     // Compile the Handlebars templates as HTML into the target directory
+    // Everyting has been copied intermediately to the cache directory
+    // so that custom stuff can be combined with standard stuff
     'compile-handlebars': {
       compile: {
         files: [
           {
             src:
-              options.appDir +
+              options.cacheDir +
               '/views/' +
               (options.embeddable ? 'embedded.hbs' : 'main.hbs'),
             dest: options.cacheDir + '/' + options.targetFile,
           },
         ],
         templateData: spec,
+        // TODO: allow helpers to be overridden/expanded, too
         helpers: options.appDir + '/helpers/*.js',
-        partials: options.appDir + '/views/partials/**/*.hbs',
+        partials: options.cacheDir + '/views/partials/**/*.hbs',
       },
     },
 
@@ -149,9 +172,14 @@ module.exports = function (grunt, options, spec) {
       assets: [
         options.cacheDir + '/stylesheets/**/*.css',
         options.cacheDir + '/javascripts/**/*.js',
+        options.cacheDir + '/views/**/*.hbs',
       ],
       // HTML from the build process
       html: [options.cacheDir + '/**/*.html'],
+      // HBS from the build process
+      'views-tmp': [options.cacheDir + '/views/**/*.hbs'],
+      // helpers: [options.cacheDir + '/helpers/*.js'],
+      // partials: options.cacheDir + '/views/partials/**/*.hbs',
     },
 
     // Raise a HTTP server for previewing generated docs
@@ -168,6 +196,12 @@ module.exports = function (grunt, options, spec) {
 
     // Copy files to the target directory
     copy: {
+      'views-tmp': {
+        // We do an intermediate copy of the template files to the cache directory
+        // so that we can combine the standard templates/files, with any custom ones
+        // the user has provided.
+        files: copyViewsTempFiles,
+      },
       logo: {
         src: options.logoFile,
         dest: options.targetDir + '/images/' + options.logoFileTargetName,
@@ -177,14 +211,14 @@ module.exports = function (grunt, options, spec) {
         dest: options.targetDir + '/images/' + options.faviconFileTargetName,
       },
       css: {
-        cwd: options.cacheDir,
         expand: true,
+        cwd: options.cacheDir,
         src: 'stylesheets/*.min.css',
         dest: options.targetDir,
       },
       js: {
-        cwd: options.cacheDir,
         expand: true,
+        cwd: options.cacheDir,
         src: 'javascripts/*.min.js',
         dest: options.targetDir,
       },
