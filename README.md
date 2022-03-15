@@ -55,6 +55,7 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
 - Will automatically generate documentation for all Types, Fields, Queries, Mutations, Arguments and Subscriptions by default.
 - Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
 - Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
+- Supports (beta) dynamic grouping and arranging of data via a custom data arrangment plugin that you control.
 - Supports customization of CSS to allow overriding the styles.
 - Supports customization of HTML output templates to allow overriding the HTML output.
 - Supports markdown just about everywhere you can provide text.
@@ -133,7 +134,7 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata _before_ SpectaQL even gets involved. Just a thought.
 
-## Dynamic Data Arrangers
+## Dynamic Data Arrangement
 
 _NOTE:_ This is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
 
@@ -250,4 +251,4 @@ Good luck and enjoy SpectaQL!
 [default-views-dir]: /src/views
 [custom-views-overlay-example]: /examples/customizations/handlebars/views
 [default-data-arranger]: /src/spectaql/arrange-data.js
-[custom-data-arranger]: /examples/customizations/data-arrangements/index.js
+[custom-data-arranger]: /examples/customizations/data-arrangement/index.js
