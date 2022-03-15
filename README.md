@@ -55,6 +55,7 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
 - Will automatically generate documentation for all Types, Fields, Queries, Mutations, Arguments and Subscriptions by default.
 - Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
 - Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
+- Supports (beta) dynamic grouping and arranging of data via a custom data arrangment plugin that you control.
 - Supports customization of CSS to allow overriding the styles.
 - Supports customization of HTML output templates to allow overriding the HTML output.
 - Supports markdown just about everywhere you can provide text.
@@ -133,6 +134,20 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata _before_ SpectaQL even gets involved. Just a thought.
 
+## Dynamic Data Arrangement
+
+_NOTE:_ This is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
+
+By default, SpectaQL will use all the non-hidden data that your GraphQL schema has provided, and arrange it in an sane, but opinionated default manner. It will group `Queries` and `Mutations` under an `Operations` header, then it will display all regular `Types`, and finally it will display all `Subscriptions`. You can see the [default arranger source][default-data-arranger] for more on how the default is done.
+
+However, if you'd like to completely customize the data that's displayed, and have some basic control over how it's displayed, you can provide a "dynamic data arranger" module. Here's how:
+
+- Create your dynamic data arranger module. It should export a function that expects the same arguments that are provided in the [example dynamic data arranger][custom-data-arranger]
+- Tell SpectaQL to load it via the the `spectaql.dynamicDataArrangementProcessingModule` option in your configuration YAML.
+- Profit!
+
+_NOTE:_ Again, this is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
+
 ## Customizing CSS
 
 If you'd like to customize the CSS for your build, you can do so easily:
@@ -148,7 +163,7 @@ _NOTE:_ The default behavior is to use the CSS in the `additionalCssFile` in add
 If you'd like to really dig in and control the HTML output of SpectaQL, you can override as much or as little of the default [Handlebars][handlebars] templates. Here's how:
 
 - Create your customized Handlebars view directory. You can add, remove, or replace as much or as little of the [default views][default-views-dir] as you like. Here is an [example views directory overlay][custom-views-overlay-example] that changes just one of the templates.
-- Tell SpectaQL to load it either via the the `spectaql.viewsOverlay` option in your configuration YAML.
+- Tell SpectaQL to load it via the the `spectaql.viewsOverlay` option in your configuration YAML.
 - Profit!
 
 _NOTE:_ If you're just trying to make small changes, you'll want to mimic the existing default folder structure to have the same relative directory location as the templates you want to overlay, but you do not need to includes any files that you do not intend to customize. If you'd like to completely redo the HTML output, you can create whatever templates, files and directory structure you need, and just ensure that either the `normal.hbs` or `embedded.hbs` entry point(s) exist, depending on your `--embeddable` CLI option.
@@ -235,3 +250,5 @@ Good luck and enjoy SpectaQL!
 [custom-css-example]: /examples/customizations/css/custom.css
 [default-views-dir]: /src/views
 [custom-views-overlay-example]: /examples/customizations/handlebars/views
+[default-data-arranger]: /src/spectaql/arrange-data.js
+[custom-data-arranger]: /examples/customizations/data-arrangement/index.js

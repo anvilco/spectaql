@@ -22,8 +22,8 @@
       {{/each}}
     {{/unless}}
   {{/unless}}
-  {{#if (nempty orderedDataWithHeaders)}}
-    {{#each orderedDataWithHeaders}}
+  {{#if (nempty items)}}
+    {{#each items}}
       {{>layout/nav/item}}
     {{/each}}
   {{/if}}

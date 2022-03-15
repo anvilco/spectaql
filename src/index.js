@@ -118,6 +118,7 @@ function resolvePaths(
     'additionalJsFile',
     'additionalCssFile',
     'viewsOverlay',
+    'dynamicDataArrangementProcessingModule',
     'faviconFile',
     'specFile',
     'gruntConfigFile',

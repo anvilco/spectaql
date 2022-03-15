@@ -4,12 +4,12 @@ import { generateIntrospectionTypeExample } from '../lib/common'
 import { analyzeTypeIntrospection } from './type-helpers'
 
 export default function preProcess({
-  orderedDataWithHeaders,
+  items,
   introspectionResponse,
   graphQLSchema,
   extensions = {},
 }) {
-  handleItems(orderedDataWithHeaders, {
+  handleItems(items, {
     introspectionResponse,
     graphQLSchema,
     extensions,
@@ -189,11 +189,6 @@ function addDefinitionToItem({
   graphQLSchema,
   extensions,
 }) {
-  // if (item.name === 'AddressInput') {
-  //   console.log(JSON.stringify({
-  //     item,
-  //   }))
-  // }
   item.example = generateIntrospectionTypeExample({
     type: item,
     introspectionResponse,

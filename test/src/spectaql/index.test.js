@@ -91,45 +91,39 @@ describe('index', function () {
     def('schemaFile', () => pathToComplexSchema)
     it('does not blow up', async function () {
       const result = spectaql($.opts)
-      expect(result)
-        .be.an('object')
-        .that.includes.keys('orderedDataWithHeaders')
+      expect(result).be.an('object').that.includes.keys('items')
 
-      expect(result.orderedDataWithHeaders).to.have.length.gt(0)
+      expect(result.items).to.have.length.gt(0)
 
-      expect(result.orderedDataWithHeaders[0]).to.include({
+      expect(result.items[0]).to.include({
         name: 'Operations',
       })
 
-      expect(result.orderedDataWithHeaders[0].items).to.have.length.gt(0)
-      expect(result.orderedDataWithHeaders[0].items[0]).to.include({
+      expect(result.items[0].items).to.have.length.gt(0)
+      expect(result.items[0].items[0]).to.include({
         name: 'Queries',
       })
       expect(
-        result.orderedDataWithHeaders[0].items[0].items.find(
-          (item) => item.name === 'myQuery'
-        )
+        result.items[0].items[0].items.find((item) => item.name === 'myQuery')
       ).to.be.ok
 
-      expect(result.orderedDataWithHeaders[0].items).to.have.length.gt(0)
-      expect(result.orderedDataWithHeaders[0].items[1]).to.include({
+      expect(result.items[0].items).to.have.length.gt(0)
+      expect(result.items[0].items[1]).to.include({
         name: 'Mutations',
       })
       expect(
-        result.orderedDataWithHeaders[0].items[1].items.find(
+        result.items[0].items[1].items.find(
           (item) => item.name === 'myMutation'
         )
       ).to.be.ok
 
-      expect(result.orderedDataWithHeaders[1]).to.include({
+      expect(result.items[1]).to.include({
         name: 'Types',
       })
 
-      expect(result.orderedDataWithHeaders[1].items).to.have.length.gt(0)
+      expect(result.items[1].items).to.have.length.gt(0)
       expect(
-        result.orderedDataWithHeaders[1].items.find(
-          (item) => item.name === 'SimpleTypeOne'
-        )
+        result.items[1].items.find((item) => item.name === 'SimpleTypeOne')
       ).to.be.ok
     })
   })
@@ -138,20 +132,18 @@ describe('index', function () {
     def('schemaFile', () => pathToSimpleSchema)
     it('does not strip trailing periods by default', async function () {
       const result = spectaql($.opts)
-      expect(result)
-        .be.an('object')
-        .that.includes.keys('orderedDataWithHeaders')
+      expect(result).be.an('object').that.includes.keys('items')
 
-      expect(result.orderedDataWithHeaders).to.have.length.gt(0)
+      expect(result.items).to.have.length.gt(0)
 
-      const myQuery = result.orderedDataWithHeaders[0].items[0].items.find(
+      const myQuery = result.items[0].items[0].items.find(
         (item) => item.name === 'myQuery'
       )
 
       expect(myQuery.description).to.eql('A query.')
       expect(myQuery.args[0].description).to.eql('An argument to a query.')
 
-      const myType = result.orderedDataWithHeaders[1].items.find(
+      const myType = result.items[1].items.find(
         (item) => item.name === 'MyType'
       )
       expect(myType).to.be.ok
@@ -171,20 +163,18 @@ describe('index', function () {
 
       it('does strip trailing periods when asked', async function () {
         const result = spectaql($.opts)
-        expect(result)
-          .be.an('object')
-          .that.includes.keys('orderedDataWithHeaders')
+        expect(result).be.an('object').that.includes.keys('items')
 
-        expect(result.orderedDataWithHeaders).to.have.length.gt(0)
+        expect(result.items).to.have.length.gt(0)
 
-        const myQuery = result.orderedDataWithHeaders[0].items[0].items.find(
+        const myQuery = result.items[0].items[0].items.find(
           (item) => item.name === 'myQuery'
         )
 
         expect(myQuery.description).to.eql('A query')
         expect(myQuery.args[0].description).to.eql('An argument to a query')
 
-        const myType = result.orderedDataWithHeaders[1].items.find(
+        const myType = result.items[1].items.find(
           (item) => item.name === 'MyType'
         )
         expect(myType).to.be.ok

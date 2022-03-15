@@ -7,8 +7,8 @@
   {{/unless}}
 
   {{! DO THE CONTENT }}
-  {{#if (nempty orderedDataWithHeaders)}}
-    {{#each orderedDataWithHeaders}}
+  {{#if (nempty items)}}
+    {{#each items}}
       {{>layout/content/item}}
     {{/each}}
   {{/if}}

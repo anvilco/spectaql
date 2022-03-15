@@ -1,10 +1,15 @@
 import url from 'url'
 import buildSchemas from './build-schemas'
-import arrangeData from './arrange-data'
+import arrangeDataDefault from './arrange-data'
 import preProcessData from './pre-process'
 
 function run(opts) {
-  const { logo, favicon, specData: spec } = opts
+  const {
+    logo,
+    favicon,
+    dynamicDataArrangementProcessingModule,
+    specData: spec,
+  } = opts
 
   const {
     introspection: { url: introspectionUrl },
@@ -31,14 +36,34 @@ function run(opts) {
 
   const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
-  const orderedDataWithHeaders = arrangeData({
+  let arrangeDataFn = arrangeDataDefault
+  if (dynamicDataArrangementProcessingModule) {
+    try {
+      arrangeDataFn = require(dynamicDataArrangementProcessingModule)
+      if (!arrangeDataFn) {
+        throw new Error('Please provide either')
+      }
+
+      if (typeof arrangeDataFn !== 'function') {
+        throw new Error('foo')
+      }
+    } catch (e) {
+      if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
+        throw new Error('')
+      } else {
+        throw e
+      }
+    }
+  }
+
+  const items = arrangeDataFn({
     introspectionResponse,
     graphQLSchema,
   })
 
   // Side-effects
   preProcessData({
-    orderedDataWithHeaders,
+    items,
     introspectionResponse,
     graphQLSchema,
     extensions,
@@ -53,7 +78,7 @@ function run(opts) {
     url: urlToParse,
     schemes: [protocol.slice(0, -1)],
     basePath: pathname,
-    orderedDataWithHeaders,
+    items,
   }
 
   return data

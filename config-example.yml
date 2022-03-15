@@ -34,6 +34,8 @@ spectaql:
   # you can override as much or as little of the existing/default views as you like.
   viewsOverlay: path/to/custom/views
 
+  dynamicDataArrangementProcessingModule: path/to/data-arranger.js
+
 introspection:
   ##############################################
   # These options specify where/how to get the information requried to generate your
