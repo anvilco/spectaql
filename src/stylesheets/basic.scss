@@ -1,4 +1,4 @@
-#spectacle {
+#spectaql {
   padding: 0;
   margin: 0;
   // These styles should be limited to providing the "basic" layout and
@@ -132,10 +132,6 @@
           @media (min-width: $size-content-break) {
             display: flex;
             flex-wrap: wrap;
-          }
-
-          .doc-intro-item {
-            width: 100%;
           }
 
           .doc-copy,

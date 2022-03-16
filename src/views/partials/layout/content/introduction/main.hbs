@@ -4,7 +4,7 @@
   {{/unless}}
   {{#unless (or info.x-hideIntroItems (empty info.x-introItems))}}
     {{#each info.x-introItems }}
-      {{#if (firstTruthy description file)}}{{>layout/content/introduction/intro-item}}{{/if}}
+      {{#if (firstTruthy description file)}}{{>layout/content/introduction/item}}{{/if}}
     {{/each}}
   {{/unless}}
 </div>

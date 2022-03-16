@@ -12,13 +12,11 @@
     {{>layout/nav/main}}
   </div>
   {{! DO THE CONTENT }}
-  <div id="docs" class="row collapse expanded drawer" data-drawer>
+  <div id="docs" class="expanded drawer" data-drawer>
     {{! The Hamburger for when Nav column has been collapsed }}
     <button class="floating-menu-icon" type="button" data-drawer-slide="right">
       <span class="hamburger"></span>
     </button>
-    {{! Draws the rightmost dark column where examples usually go }}
-    <div class="example-box doc-content"></div>
     {{>layout/content/main}}
   </div>
 </div>

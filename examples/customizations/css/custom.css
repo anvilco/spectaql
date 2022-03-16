@@ -6,6 +6,6 @@
     1) The 'spectaql.additionalCssFile' value in your config YAML
     2) The '--additional-css-file <path/to/custom.css' CLI argument
 */
-#spectacle .doc-row .doc-copy code {
+#spectaql .doc-row .doc-copy code {
   background-color: blue;
 }
