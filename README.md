@@ -249,6 +249,6 @@ Good luck and enjoy SpectaQL!
 [handlebars]: https://handlebarsjs.com/
 [custom-css-example]: /examples/customizations/css/custom.css
 [default-views-dir]: /src/views
-[custom-views-overlay-example]: /examples/customizations/handlebars/views
+[custom-views-overlay-example]: /examples/customizations/views
 [default-data-arranger]: /src/spectaql/arrange-data.js
 [custom-data-arranger]: /examples/customizations/data-arrangement/index.js
