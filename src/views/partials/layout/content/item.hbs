@@ -1,8 +1,8 @@
 {{#unless hideInContent }}
   {{#if makeContentSection }}
-    <h1 id="{{./htmlId}}" class="swagger-summary-tag tag-name" data-traverse-target="tag-{{./htmlId}}">{{name}}</h1>
+    <h1 id="{{./htmlId}}" class="group-heading" data-traverse-target="group-{{./htmlId}}">{{name}}</h1>
     {{#if description}}
-      <div class="tag-description doc-row">
+      <div class="group-description doc-row">
         <div class="doc-copy">
           {{md (interpolateReferences description)}}
         </div>

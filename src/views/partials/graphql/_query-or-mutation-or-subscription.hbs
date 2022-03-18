@@ -1,23 +1,23 @@
-<div id="{{./htmlId}}" class="operation panel"
+<section id="{{./htmlId}}" class="operation"
   data-traverse-target="{{./htmlId}}">
   {{# unless @first }}
     {{#if parentHtmlId }}
-      <div class="operation-tags">
-        <a class="label" href="#{{./parentHtmlId}}">{{./parentName}}</a>
+      <div class="operation-group-name">
+        <a href="#{{./parentHtmlId}}">{{./parentName}}</a>
       </div>
     {{/if}}
   {{/unless}}
 
-  <h2 class="operation-name {{#if (and isDeprecated (not @root.info.x-hideIsDeprecated)) }}swagger-operation-deprecated{{/if}}">
+  <h2 class="operation-heading {{#if (and isDeprecated (not @root.info.x-hideIsDeprecated)) }}operation-deprecated{{/if}}">
     {{md (codify name) stripParagraph="true"}}
   </h2>
 
   {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
     <div class="doc-row">
       <div class="doc-copy">
-        <section class="operation-deprecation-reason">
+        <div class="operation-deprecation-reason">
           {{ md deprecationReason stripParagraph=true }}
-        </section>
+        </div>
       </div>
     </div>
   {{/if}}
@@ -25,9 +25,9 @@
   {{#if description}}
     <div class="doc-row">
       <div class="doc-copy">
-        <section class="swagger-operation-description operation-description">
-          {{ md (interpolateReferences description) stripParagraph=true }}
-        </section>
+        <div class="operation-description">
+          {{ md (interpolateReferences description) }}
+        </div>
       </div>
     </div>
   {{/if}}
@@ -35,33 +35,40 @@
   <div class="doc-row">
     <div class="doc-copy">
       {{#if response}}
-        <section class="swagger-responses">
+        <div class="operation-responses">
           Returns
           {{! If it's got items, then it's an array, and we don't care about the indefiniteArticle }}
           {{#unless response.isArray }}
             {{ indefiniteArticle response.underlyingType.name }}
           {{/unless}}
           {{~ md (mdTypeLink . codify=true) stripParagraph=true }}
-        </section>
-        <br>
+        </div>
       {{/if}}
       {{>graphql/_query-or-mutation-args}}
     </div>
 
-    <div class="doc-examples">{{#if (firstTruthy query mutation subscription)}}
-      <section>
-        <h4>Example</h4>
-        <h5>Query</h5>
+    <div class="doc-examples">
+      {{#if (firstTruthy query mutation subscription)}}
+        <h4 class="operation-example-heading">Example</h4>
+
+        <div class="operation-example-section operation-query-example">
+          <h5>Query</h5>
           {{printGraphQL (firstTruthy query mutation subscription)}}
-          {{#if variables}}
+        </div>
+
+        {{#if variables}}
+          <div class="operation-example-section operation-variables-example">
             <h5>Variables</h5>
             {{printJSON variables}}
-          {{/if}}
-          {{#if response.data}}
+          </div>
+        {{/if}}
+        {{#if response.data}}
+          <div class="operation-example-section operation-response-example">
             <h5>Response</h5>
             {{printJSON response.data}}
-          {{/if}}
-      </section>
-    {{/if}}</div>
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
   </div>
-</div>
+</section>
