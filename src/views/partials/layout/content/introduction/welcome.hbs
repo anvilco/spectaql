@@ -1,31 +1,31 @@
-<div class="doc-row">
+<div id="welcome" class="doc-row">
   <div class="doc-copy">
-      {{md info.description}}
+    {{md info.description}}
   </div>
   <div class="doc-examples">
     <section>
       {{#if info.contact}}
-          <h5>Contact</h5>
-          <p>
-            {{#if info.contact.name}}
-              {{info.contact.name}}<br/>
-            {{/if}}
-            {{#if info.contact.email}}
-              <a href="mailto:{{info.contact.email}}">{{info.contact.email}}</a>
-            {{/if}}
-          </p>
+        <h5>Contact</h5>
+        <p>
+          {{#if info.contact.name}}
+            {{info.contact.name}}<br/>
+          {{/if}}
+          {{#if info.contact.email}}
+            <a href="mailto:{{info.contact.email}}">{{info.contact.email}}</a>
+          {{/if}}
+        </p>
       {{/if}}
 
       {{#if info.license}}
-          <h5>License</h5>
-          <p>
-            {{#if info.license.name}}
-              {{info.license.name}}<br/>
-            {{/if}}
-            {{#if info.license.url}}
-              <a href="{{info.license.url}}">{{info.license.url}}</a>
-            {{/if}}
-          </p>
+        <h5>License</h5>
+        <p>
+          {{#if info.license.name}}
+            {{info.license.name}}<br/>
+          {{/if}}
+          {{#if info.license.url}}
+            <a href="{{info.license.url}}">{{info.license.url}}</a>
+          {{/if}}
+        </p>
       {{/if}}
 
       {{#if info.termsOfService}}
@@ -36,7 +36,7 @@
 
       {{#if url}}
         <h5>API Endpoints</h5>
-          <pre><code>{{url}}</code></pre>
+        <pre><code>{{url}}</code></pre>
       {{/if}}
 
       {{#if consumes}}

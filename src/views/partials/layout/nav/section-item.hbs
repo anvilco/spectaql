@@ -1,0 +1,12 @@
+{{#unless hideInNav}}
+  <li>
+    <h5 class="nav-group-section-title">
+      <a href="#{{./htmlId}}">{{name}}</a>
+    </h5>
+    <ul class="nav-group-section-items">
+      {{#each items}}
+        {{>layout/nav/item}}
+      {{/each}}
+    </ul>
+  </li>
+{{/unless}}

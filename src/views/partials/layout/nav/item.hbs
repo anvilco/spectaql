@@ -1,22 +1,18 @@
 {{#unless hideInNav}}
-  {{#if makeNavSection}}
-    <section>
-  {{/if}}
-  {{#if (equal depth 0)}}
-    <h5>{{name}}</h5>
+  {{#if items}}
+    <div class="nav-group">
+      <h4 class="nav-group-title">{{name}}</h4>
+      <ul class="nav-group-items">
+        {{#each items}}
+          {{#if makeNavSection}}
+            {{>layout/nav/section-item}}
+          {{else}}
+            {{>layout/nav/item}}
+          {{/if}}
+        {{/each}}
+      </ul>
+    </div>
   {{else}}
-    <a href="#{{./htmlId}}">{{name}}</a>
-  {{/if}}
-  {{#if makeNavSection}}
-    <ul>
+    <li><a href="#{{./htmlId}}">{{name}}</a></li>
   {{/if}}
 {{/unless}}
-{{#each items}}
-  {{#if ../makeNavSection}}<li>{{/if}}
-  {{>layout/nav/item}}
-  {{#if ../makeNavSection}}</li>{{/if}}
-{{/each}}
-{{#if makeNavSection}}
-    </ul>
-  </section>
-{{/if}}

@@ -72,6 +72,13 @@
         max-width: $drawer-size-desktop-large;
       }
 
+      #logo {
+        padding: 0 $sidebar-padding;
+        img {
+          max-width: 100%;
+        }
+      }
+
       #nav {
         display: flex;
         flex-direction: column;
@@ -83,16 +90,14 @@
         top: 0;
 
         overflow: auto;
-
-        > a {
-          display: block;
-        }
       }
 
-      #logo {
-        padding: 0 $sidebar-padding;
-        img {
-          max-width: 100%;
+      .nav-group-items,
+      .nav-group-section-items {
+        padding: 0;
+
+        > li {
+          list-style: none;
         }
       }
     }
