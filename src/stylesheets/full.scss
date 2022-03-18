@@ -1,11 +1,96 @@
-@import 'foundation-settings';
-@import 'foundation';
+// Overrides for basic
+//////////////////////
+
+$max-content-width: 88em;
+$drawer-size: 250px;
+$drawer-size-desktop-large: 300px;
+
+$content-padding: 20px;
+
+$sidebar-top: 0px;
+$sidebar-background: #fff;
+
+$size-tablet: 32em;
+$size-desktop: 48em;
+$size-desktop-large: 64em;
+
+
+// Variables used in this theme
+//////////////////////
+
+$text-color: #222222;
+$link-color: #0298bf;
+$link-color-hover: #0182a2;
+
+
+// Imports
+//////////////////////
+
+@import 'basic';
+
+// @import url('https://fonts.googleapis.com/css?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+// Custom styles
+//////////////////////
 
 #spectaql {
-  @import 'variables';
-  @import 'utils';
-  @import 'schema';
-  @import 'layout';
-  @import 'drawer';
   @import 'monokai';
+
+  font-family: 'Barlow','Open Sans',serif;
+  font-size: 16px;
+  line-height: 1.6;
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+
+    &:hover {
+      color: $link-color-hover;
+    }
+    &:focus,
+    &:active {
+      color: $link-color;
+    }
+  }
+
+  code {
+    font-size: 14px;
+    font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+  }
+
+  pre {
+    color: white;
+
+    code {
+      background: #222222;
+    }
+  }
+
+  pre code,
+  pre code.hljs {
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 15px 20px;
+  }
+
+  #sidebar {
+    a {
+      color: $text-color;
+    }
+
+    a.nav-scroll-active,
+    a:hover {
+      font-weight: bold;
+    }
+
+    a.nav-scroll-active {
+      color: $text-color;
+    }
+
+    a:hover {
+      color: $link-color-hover;
+    }
+  }
 }
