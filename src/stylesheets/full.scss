@@ -75,6 +75,12 @@ $link-color-hover: #0182a2;
     padding: 15px 20px;
   }
 
+  .doc-heading {
+    margin-top: 0;
+    line-height: 1.2;
+    font-size: 36px;
+  }
+
   #sidebar {
     a {
       color: $text-color;
@@ -93,4 +99,42 @@ $link-color-hover: #0182a2;
       color: $link-color-hover;
     }
   }
+
+  #sidebar,
+  #docs {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    @media (min-width: $size-sidebar-break) {
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+  }
+
+  #nav,
+  #logo,
+  #docs {
+    padding-left: 30px;
+    padding-right: 30px;
+    @media (min-width: $size-sidebar-break) {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+  }
+
+  #nav,
+  #logo {
+    @media (min-width: $size-sidebar-break) {
+      border-right: 2px solid #ccc;
+    }
+  }
+
+  #logo {
+    img {
+      max-height: 18px;
+    }
+  }
+
+  #nav {
+  }
+
 }
