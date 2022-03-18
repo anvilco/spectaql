@@ -16,6 +16,7 @@
   $sidebar-background: #fff !default;
 
   $overlay-background: rgba(0, 0, 0, .5) !default;
+  $overlay-background-hidden: rgba(0, 0, 0, 0) !default;
 
   $code-background: #ccc !default;
 
@@ -38,7 +39,28 @@
 
     &.drawer-open {
       #sidebar {
+        z-index: 1000;
         transform: translateX(0);
+      }
+
+      .drawer-overlay {
+        display: block;
+        background: $overlay-background;
+        z-index: 10;
+      }
+    }
+
+    .drawer-overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: $overlay-background-hidden;
+
+      @media (min-width: $size-sidebar-break) {
+        display: none;
       }
     }
 
@@ -113,19 +135,6 @@
 
       .floating-menu-icon {
         display: block;
-
-        @media (min-width: $size-sidebar-break) {
-          display: none;
-        }
-      }
-
-      .drawer-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: $overlay-background;
 
         @media (min-width: $size-sidebar-break) {
           display: none;
