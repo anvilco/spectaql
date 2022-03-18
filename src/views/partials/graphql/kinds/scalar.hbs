@@ -1,15 +1,15 @@
 <div class="doc-copy">
   {{#if description}}
-    <section class="json-schema-description">
+    <div class="definition-description">
       {{md (interpolateReferences description)}}
-    </section>
+    </div>
   {{/if}}
 </div>
 <div class="doc-examples">
   {{#if example }}
-    <section>
+    <div class="example-section">
       <h5>Example</h5>
       {{printJSON example}}
-    </section>
+    </div>
   {{/if}}
 </div>

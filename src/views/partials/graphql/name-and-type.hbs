@@ -1,10 +1,10 @@
 {{~md (
   concat
-    (codify name)
+    (spanWrap (codify name) className="property-name")
     ' - '
-    (mdTypeLink . codify=true)
+    (spanWrap (mdTypeLink . codify=true) className="property-type")
     (ternary default
-      (concat " default = "  (codify default stringify=true))
+      (spanWrap (concat " default = "  (codify default stringify=true)) className="property-default")
       ""
       undefOnly=true
     )

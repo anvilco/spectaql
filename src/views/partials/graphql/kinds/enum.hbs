@@ -1,40 +1,44 @@
 <div class="doc-copy">
   {{#if description}}
-    <section class="json-schema-description">
+    <div class="definition-description">
       {{md (interpolateReferences description)}}
-    </section>
+    </div>
   {{/if}}
   {{#if enumValues}}
-    <section class="json-schema-properties-blank">
+    <div class="definition-properties">
       <table>
-        <tr>
-          <th>Enum Value</th>
-          <th>Description</th>
-        </tr>
-        {{#each enumValues}}
+        <thead>
           <tr>
-            {{! The Value column }}
-            <td>{{md (codify name) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}</td>
-            {{! The Description column }}
-            <td>
-              {{#if description}}
-                {{md (interpolateReferences description) stripParagraph=true}}
-              {{/if}}
-              {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
-                <span class="enum-deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>
-              {{/if}}
-            </td>
+            <th>Enum Value</th>
+            <th>Description</th>
           </tr>
-        {{/each}}
+        </thead>
+        <tbody>
+          {{#each enumValues}}
+            <tr>
+              {{! The Value column }}
+              <td>{{md (codify name) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "definition-deprecated" false)}}</td>
+              {{! The Description column }}
+              <td>
+                {{#if description}}
+                  {{md (interpolateReferences description) stripParagraph=true}}
+                {{/if}}
+                {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+                  <span class="deprecation-reason definition-enum-deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
       </table>
-    </section>
+    </div>
   {{/if}}
 </div>
 <div class="doc-examples">
   {{#if example }}
-    <section>
+    <div class="example-section">
       <h5>Example</h5>
       {{printJSON example}}
-    </section>
+    </div>
   {{/if}}
 </div>

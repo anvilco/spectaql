@@ -1,17 +1,16 @@
-<div id="{{./htmlId}}" class="definition panel"
+<section id="{{./htmlId}}"
+  class="definition definition-{{ kebabCase ./kind defaultValue='unknown' }}"
   data-traverse-target="{{./htmlId}}">
   {{#unless @first }}
     {{#if parentHtmlId }}
-      <div class="definition-tags">
-        <a class="label" href="#{{parentHtmlId}}">{{./parentName}}</a>
+      <div class="definition-group-name">
+        <a href="#{{parentHtmlId}}">{{./parentName}}</a>
       </div>
     {{/if}}
   {{/unless}}
   {{#if name}}
-    <h2 class="panel-title">{{name}}{{!--  - {{kind}} --}}</h2>
+    <h2 class="definition-heading">{{name}}{{!--  - {{kind}} --}}</h2>
   {{/if}}
-
-  looking for mike
 
   <div class="doc-row">
     {{#if (equal ./kind "SCALAR")}}
@@ -30,4 +29,4 @@
       {{ log "unknown type.hbs" . }}
     {{/if}}
   </div>
-</div>
+</section>

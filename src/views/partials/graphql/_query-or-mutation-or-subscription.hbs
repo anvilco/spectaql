@@ -1,4 +1,5 @@
-<section id="{{./htmlId}}" class="operation"
+<section id="{{./htmlId}}"
+  class="operation operation-{{#if isQuery}}query{{else if isMutation}}mutation{{else if isSubscription}}subscription{{else}}unknown{{/if}}"
   data-traverse-target="{{./htmlId}}">
   {{# unless @first }}
     {{#if parentHtmlId }}
@@ -15,7 +16,7 @@
   {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
     <div class="doc-row">
       <div class="doc-copy">
-        <div class="operation-deprecation-reason">
+        <div class="deprecation-reason">
           {{ md deprecationReason stripParagraph=true }}
         </div>
       </div>
@@ -49,21 +50,21 @@
 
     <div class="doc-examples">
       {{#if (firstTruthy query mutation subscription)}}
-        <h4 class="operation-example-heading">Example</h4>
+        <h4 class="example-heading">Example</h4>
 
-        <div class="operation-example-section operation-query-example">
+        <div class="example-section operation-query-example">
           <h5>Query</h5>
           {{printGraphQL (firstTruthy query mutation subscription)}}
         </div>
 
         {{#if variables}}
-          <div class="operation-example-section operation-variables-example">
+          <div class="example-section operation-variables-example">
             <h5>Variables</h5>
             {{printJSON variables}}
           </div>
         {{/if}}
         {{#if response.data}}
-          <div class="operation-example-section operation-response-example">
+          <div class="example-section operation-response-example">
             <h5>Response</h5>
             {{printJSON response.data}}
           </div>
