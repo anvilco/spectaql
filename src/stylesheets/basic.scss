@@ -145,9 +145,19 @@ $size-content-break: $size-desktop !default;
   .nav-group-items,
   .nav-group-section-items {
     padding: 0;
+    margin: 0;
 
     > li {
       list-style: none;
+    }
+  }
+
+  .nav-group-section-items {
+    display: none;
+  }
+  .nav-scroll-expand {
+    .nav-group-section-items {
+      display: block;
     }
   }
 

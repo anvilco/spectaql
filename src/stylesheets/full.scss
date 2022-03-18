@@ -19,6 +19,7 @@ $size-desktop-large: 64em;
 //////////////////////
 
 $text-color: #222222;
+$text-color-subtle: #999999;
 $link-color: #0298bf;
 $link-color-hover: #0182a2;
 
@@ -27,6 +28,7 @@ $link-color-hover: #0182a2;
 //////////////////////
 
 @import 'basic';
+@import 'monokai';
 
 // @import url('https://fonts.googleapis.com/css?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&display=swap');
@@ -36,8 +38,6 @@ $link-color-hover: #0182a2;
 //////////////////////
 
 #spectaql {
-  @import 'monokai';
-
   font-family: 'Barlow','Open Sans',serif;
   font-size: 16px;
   line-height: 1.6;
@@ -76,7 +76,7 @@ $link-color-hover: #0182a2;
   }
 
   .doc-heading {
-    margin-top: 0;
+    margin-top: -10px;
     line-height: 1.2;
     font-size: 36px;
   }
@@ -98,6 +98,10 @@ $link-color-hover: #0182a2;
     a:hover {
       color: $link-color-hover;
     }
+
+    @media (min-width: $size-sidebar-break) {
+      border-right: 2px solid #ccc;
+    }
   }
 
   #sidebar,
@@ -105,8 +109,8 @@ $link-color-hover: #0182a2;
     padding-top: 30px;
     padding-bottom: 30px;
     @media (min-width: $size-sidebar-break) {
-      padding-top: 50px;
-      padding-bottom: 50px;
+      padding-top: 40px;
+      padding-bottom: 40px;
     }
   }
 
@@ -121,13 +125,6 @@ $link-color-hover: #0182a2;
     }
   }
 
-  #nav,
-  #logo {
-    @media (min-width: $size-sidebar-break) {
-      border-right: 2px solid #ccc;
-    }
-  }
-
   #logo {
     img {
       max-height: 18px;
@@ -135,6 +132,31 @@ $link-color-hover: #0182a2;
   }
 
   #nav {
+    .nav-group {
+      margin-top: 20px;
+
+      li {
+        margin-bottom: 5px;
+      }
+    }
+
+    .nav-group-title {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0 0 6px 0;
+      color: $text-color-subtle;
+    }
+
+    .nav-group-section-title {
+      font-size: 1rem;
+      margin: 0;
+      margin-bottom: 5px;
+      font-weight: normal;
+    }
+
+    .nav-group-section-items {
+      margin-left: 12px;
+    }
   }
 
 }
