@@ -25,7 +25,18 @@ $text-color-subtle: #999999;
 $link-color: #0298bf;
 $link-color-hover: #0182a2;
 
-$font-size-large-heading: 36px;
+$line-height: 1.6;
+$line-height-heading: 1.2;
+$line-height-code-block: 1.4;
+
+$font-size: 16px;
+$font-size-mobile: 14px;
+
+$font-size-large-heading: 2.25em;
+$font-size-large-heading-mobile: 1.72em;
+$font-size-code: .875em;
+$font-size-code-block: .82em;
+$font-size-example-heading: .75em;
 
 
 // Imports
@@ -43,8 +54,8 @@ $font-size-large-heading: 36px;
 
 #spectaql {
   font-family: $font-family;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: $font-size-mobile;
+  line-height: $line-height;
 
   a {
     color: $link-color;
@@ -60,7 +71,7 @@ $font-size-large-heading: 36px;
   }
 
   code {
-    font-size: 14px;
+    font-size: $font-size-code;
     font-family: $font-family-monospaced;
   }
 
@@ -74,15 +85,20 @@ $font-size-large-heading: 36px;
 
   pre code,
   pre code.hljs {
-    font-size: 13px;
+    font-size: $font-size-code-block;
     line-height: 1.4;
     padding: 15px 20px;
   }
 
+  // Main docs heading
   .doc-heading {
     margin-top: -10px;
     line-height: 1.2;
     font-size: $font-size-large-heading;
+  }
+
+  @media (min-width: $size-tablet) {
+    font-size: $font-size;
   }
 
   #sidebar {
@@ -110,8 +126,12 @@ $font-size-large-heading: 36px;
 
   #sidebar,
   #docs {
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    @media (min-width: $size-tablet) {
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
     @media (min-width: $size-sidebar-break) {
       padding-top: 40px;
       padding-bottom: 40px;
@@ -121,8 +141,12 @@ $font-size-large-heading: 36px;
   #nav,
   #logo,
   #docs {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    @media (min-width: $size-tablet) {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
     @media (min-width: $size-sidebar-break) {
       padding-left: 50px;
       padding-right: 50px;
@@ -163,15 +187,26 @@ $font-size-large-heading: 36px;
     }
   }
 
-  .operation .operation-heading,
-  .definition .definition-heading {
-    font-size: $font-size-large-heading;
-    code {
-      font-family: inherit;
-      font-size: inherit;
-      font-weight: inherit;
+  .operation,
+  .definition {
+    margin-bottom: 60px;
+
+    .operation-heading,
+    .definition-heading {
+      font-size: $font-size-large-heading-mobile;
+
+      code {
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+      }
+
+      @media (min-width: $size-tablet) {
+        font-size: $font-size-large-heading;
+      }
     }
   }
+
 
   .group-heading,
   .operation-group-name,
@@ -197,14 +232,12 @@ $font-size-large-heading: 36px;
 
     .example-section-is-code {
       h5 {
-        height: 34px;
-        line-height: 34px;
         color: #d8d8d8;
         text-transform: uppercase;
         background: black;
-        font-size: 12px;
+        font-size: $font-size-example-heading;
         font-weight: bold;
-        padding-left: $content-padding;
+        padding: 8px 0 8px $content-padding;
         margin: 0;
         opacity: 1;
       }
@@ -212,13 +245,6 @@ $font-size-large-heading: 36px;
   }
 
   .doc-copy {
-    h5 {
-      margin: 0 0 5px 0;
-      font-size: inherit;
-      font-weight: inherit;
-      color: $text-color-subtle;
-    }
-
     p {
       margin: 0 0 20px 0;
 
@@ -227,15 +253,89 @@ $font-size-large-heading: 36px;
       }
     }
 
-    .doc-copy-section {
-      margin-bottom: 30px;
+    table {
+      width: 100%;
+
+      tr th {
+        font-weight: normal;
+        border-bottom: 2px solid #d8d8d8;
+      }
+
+      tr td {
+        border-bottom: 1px solid #ddd;
+      }
+      tr:last-child td,
+      tr.row-has-field-arguments td {
+        border-bottom: none;
+      }
+
+      tr td,
+      tr th {
+        padding: 5px;
+      }
+
+      tr th:first-child,
+      tr td:first-child {
+        padding-left: 0;
+      }
+
+      tr th:last-child,
+      tr td:last-child {
+        padding-right: 0;
+      }
     }
 
-    .operation-description h5,
-    .definition-description h5,
-    .definition-properties h5 {
+    // Each section within the main content
+    .doc-copy-section {
+      margin-bottom: 30px;
+
+      > h5 {
+        margin: 0 0 5px 0;
+        font-size: inherit;
+        font-weight: inherit;
+        color: $text-color-subtle;
+      }
+    }
+
+    // Hide these titles
+    .operation-description > h5,
+    .definition-description > h5,
+    .definition-properties > h5 {
       display: none;
     }
   }
 
+
+  .field-arguments{
+    background-color: #fafbfc;
+    border: 1px #e6e6e6 solid;
+    padding: 10px;
+    margin-bottom: 5px;
+
+    p {
+      margin: 10px 0 0 0;
+    }
+
+    h5.field-arguments-heading {
+      margin: 0;
+      padding: 0 0 10px 0;
+      font-size: 14px;
+      font-weight: inherit;
+    }
+
+    .field-argument{
+      border-top: 1px #e6e6e6 solid;
+      padding: 10px 0;
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+
+    .field-argument-name {
+      margin: 0;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+  }
 }

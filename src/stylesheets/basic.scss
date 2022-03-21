@@ -43,12 +43,20 @@ $size-content-break: $size-desktop !default;
   }
 
   table {
+    table-layout: fixed;
     text-align: left;
     border-collapse: collapse;
     td {
       margin: 0;
       padding: 0;
     }
+  }
+
+  // These can cause issues in mobile
+  .operation-heading,
+  .definition-heading,
+  .license-url {
+    word-break: break-word
   }
 
   #page {
