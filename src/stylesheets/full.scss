@@ -75,6 +75,10 @@ $background-arguments: #fafbfc;
   font-size: $font-size-mobile;
   line-height: $line-height;
 
+  @media (min-width: $size-tablet) {
+    font-size: $font-size;
+  }
+
   a {
     color: $link-color;
     text-decoration: none;
@@ -115,8 +119,8 @@ $background-arguments: #fafbfc;
     font-size: $font-size-large-heading;
   }
 
-  @media (min-width: $size-tablet) {
-    font-size: $font-size;
+  #introduction {
+    margin-bottom: $container-padding-operation;
   }
 
   #sidebar {
@@ -201,7 +205,7 @@ $background-arguments: #fafbfc;
     }
 
     .nav-group-section-items {
-      margin-left: 12px;
+      margin-left: .75em;
     }
   }
 
@@ -224,7 +228,6 @@ $background-arguments: #fafbfc;
       }
     }
   }
-
 
   .group-heading,
   .operation-group-name,
@@ -303,7 +306,7 @@ $background-arguments: #fafbfc;
 
     // Each section within the main content
     .doc-copy-section {
-      margin-bottom: 30px;
+      margin-bottom: $content-padding * 1.5;
 
       > h5 {
         margin: 0 0 $content-padding / 4 0;
