@@ -24,10 +24,15 @@ $text-color: #222222;
 $text-color-subtle: #999999;
 $link-color: #0298bf;
 $link-color-hover: #0182a2;
+$border-color: #d8d8d8;
+$border-color-subtle: #e0e0e0;
+$border-size-thick: 2px;
+$border-size-thin: 1px;
+
+$logo-height: 18px;
 
 $line-height: 1.6;
 $line-height-heading: 1.2;
-$line-height-code-block: 1.4;
 
 $font-size: 16px;
 $font-size-mobile: 14px;
@@ -35,9 +40,22 @@ $font-size-mobile: 14px;
 $font-size-large-heading: 2.25em;
 $font-size-large-heading-mobile: 1.72em;
 $font-size-code: .875em;
-$font-size-code-block: .82em;
+$font-size-small-heading: .875em;
 $font-size-example-heading: .75em;
 
+$padding-code-block: 15px $content-padding;
+$font-size-code-block: .82em;
+$text-color-code-block: white;
+$background-code-block: #222222;
+$line-height-code-block: 1.4;
+
+$container-padding-mobile: $content-padding;
+$container-padding-tablet: 30px;
+$container-padding-desktop: 50px;
+
+$container-padding-operation: 60px;
+
+$background-arguments: #fafbfc;
 
 // Imports
 //////////////////////
@@ -45,7 +63,7 @@ $font-size-example-heading: .75em;
 @import 'basic';
 @import 'monokai';
 
-// @import url('https://fonts.googleapis.com/css?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+// Custom font
 @import url('https://fonts.googleapis.com/css?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 
@@ -76,24 +94,24 @@ $font-size-example-heading: .75em;
   }
 
   pre {
-    color: white;
+    color: $text-color-code-block;
 
     code {
-      background: #222222;
+      background: $background-code-block;
     }
   }
 
   pre code,
   pre code.hljs {
     font-size: $font-size-code-block;
-    line-height: 1.4;
-    padding: 15px 20px;
+    line-height: $line-height-code-block;
+    padding: $padding-code-block;
   }
 
   // Main docs heading
   .doc-heading {
-    margin-top: -10px;
-    line-height: 1.2;
+    margin-top: -$content-padding / 2;
+    line-height: $line-height-heading;
     font-size: $font-size-large-heading;
   }
 
@@ -120,65 +138,65 @@ $font-size-example-heading: .75em;
     }
 
     @media (min-width: $size-sidebar-break) {
-      border-right: 2px solid #ccc;
+      border-right: $border-size-thick solid $border-color;
     }
   }
 
   #sidebar,
   #docs {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: $container-padding-mobile;
+    padding-bottom: $container-padding-mobile;
     @media (min-width: $size-tablet) {
-      padding-top: 30px;
-      padding-bottom: 30px;
+      padding-top: $container-padding-tablet;
+      padding-bottom: $container-padding-tablet;
     }
     @media (min-width: $size-sidebar-break) {
-      padding-top: 40px;
-      padding-bottom: 40px;
+      padding-top: $container-padding-desktop - $content-padding / 2;
+      padding-bottom: $container-padding-desktop - $content-padding / 2;
     }
   }
 
   #nav,
   #logo,
   #docs {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: $container-padding-mobile;
+    padding-right: $container-padding-mobile;
     @media (min-width: $size-tablet) {
-      padding-left: 30px;
-      padding-right: 30px;
+      padding-left: $container-padding-tablet;
+      padding-right: $container-padding-tablet;
     }
     @media (min-width: $size-sidebar-break) {
-      padding-left: 50px;
-      padding-right: 50px;
+      padding-left: $container-padding-desktop;
+      padding-right: $container-padding-desktop;
     }
   }
 
   #logo {
     img {
-      max-height: 18px;
+      max-height: $logo-height;
     }
   }
 
   #nav {
     .nav-group {
-      margin-top: 20px;
+      margin-top: $content-padding;
 
       li {
-        margin-bottom: 5px;
+        margin-bottom: $content-padding / 4;
       }
     }
 
     .nav-group-title {
-      font-size: 14px;
+      font-size: $font-size-small-heading;
       font-weight: normal;
       margin: 0 0 6px 0;
       color: $text-color-subtle;
     }
 
     .nav-group-section-title {
-      font-size: 1rem;
+      font-size: inherit;
       margin: 0;
-      margin-bottom: 5px;
+      margin-bottom: $content-padding / 4;
       font-weight: normal;
     }
 
@@ -189,7 +207,7 @@ $font-size-example-heading: .75em;
 
   .operation,
   .definition {
-    margin-bottom: 60px;
+    margin-bottom: $container-padding-operation;
 
     .operation-heading,
     .definition-heading {
@@ -211,7 +229,7 @@ $font-size-example-heading: .75em;
   .group-heading,
   .operation-group-name,
   .definition-group-name {
-    border-top: 2px solid #d8d8d8;
+    border-top: $border-size-thick solid $border-color;
     padding-top: 3px;
     color: $text-color-subtle;
     font-size: inherit;
@@ -232,12 +250,12 @@ $font-size-example-heading: .75em;
 
     .example-section-is-code {
       h5 {
-        color: #d8d8d8;
+        color: $text-color-subtle;
         text-transform: uppercase;
         background: black;
         font-size: $font-size-example-heading;
         font-weight: bold;
-        padding: 8px 0 8px $content-padding;
+        padding: .6em 0 .6em $content-padding;
         margin: 0;
         opacity: 1;
       }
@@ -246,7 +264,7 @@ $font-size-example-heading: .75em;
 
   .doc-copy {
     p {
-      margin: 0 0 20px 0;
+      margin: 0 0 $content-padding 0;
 
       &:last-child {
         margin-bottom: 0;
@@ -254,15 +272,13 @@ $font-size-example-heading: .75em;
     }
 
     table {
-      width: 100%;
-
       tr th {
         font-weight: normal;
-        border-bottom: 2px solid #d8d8d8;
+        border-bottom: $border-size-thick solid $border-color;
       }
 
       tr td {
-        border-bottom: 1px solid #ddd;
+        border-bottom: $border-size-thin solid $border-color-subtle;
       }
       tr:last-child td,
       tr.row-has-field-arguments td {
@@ -271,7 +287,7 @@ $font-size-example-heading: .75em;
 
       tr td,
       tr th {
-        padding: 5px;
+        padding: $content-padding / 4;
       }
 
       tr th:first-child,
@@ -290,7 +306,7 @@ $font-size-example-heading: .75em;
       margin-bottom: 30px;
 
       > h5 {
-        margin: 0 0 5px 0;
+        margin: 0 0 $content-padding / 4 0;
         font-size: inherit;
         font-weight: inherit;
         color: $text-color-subtle;
@@ -307,25 +323,25 @@ $font-size-example-heading: .75em;
 
 
   .field-arguments{
-    background-color: #fafbfc;
-    border: 1px #e6e6e6 solid;
-    padding: 10px;
-    margin-bottom: 5px;
+    background-color: $background-arguments;
+    border: $border-size-thin solid $border-color-subtle;
+    padding: $content-padding / 2;
+    margin-bottom: $content-padding / 4;
 
     p {
-      margin: 10px 0 0 0;
+      margin: $content-padding / 2 0 0 0;
     }
 
     h5.field-arguments-heading {
       margin: 0;
-      padding: 0 0 10px 0;
-      font-size: 14px;
+      padding: 0 0 $content-padding / 2 0;
+      font-size: $font-size-small-heading;
       font-weight: inherit;
     }
 
     .field-argument{
-      border-top: 1px #e6e6e6 solid;
-      padding: 10px 0;
+      border-top: $border-size-thin $border-color-subtle solid;
+      padding: $content-padding / 2 0;
 
       &:last-child {
         padding-bottom: 0;

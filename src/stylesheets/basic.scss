@@ -43,9 +43,12 @@ $size-content-break: $size-desktop !default;
   }
 
   table {
+    width: 100%;
     table-layout: fixed;
     text-align: left;
     border-collapse: collapse;
+
+    th,
     td {
       margin: 0;
       padding: 0;
