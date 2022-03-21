@@ -26,7 +26,8 @@
   {{#if description}}
     <div class="doc-row">
       <div class="doc-copy">
-        <div class="operation-description">
+        <div class="operation-description doc-copy-section">
+          <h5>Description</h5>
           {{ md (interpolateReferences description) }}
         </div>
       </div>
@@ -36,35 +37,38 @@
   <div class="doc-row">
     <div class="doc-copy">
       {{#if response}}
-        <div class="operation-responses">
-          Returns
-          {{! If it's got items, then it's an array, and we don't care about the indefiniteArticle }}
-          {{#unless response.isArray }}
-            {{ indefiniteArticle response.underlyingType.name }}
-          {{/unless}}
-          {{~ md (mdTypeLink . codify=true) stripParagraph=true }}
+        <div class="operation-response doc-copy-section">
+          <h5>Response</h5>
+          <p>
+            Returns
+            {{! If it's got items, then it's an array, and we don't care about the indefiniteArticle }}
+            {{#unless response.isArray }}
+              {{ indefiniteArticle response.underlyingType.name }}
+            {{/unless}}
+            {{~ md (mdTypeLink . codify=true) stripParagraph=true }}
+          </p>
         </div>
       {{/if}}
-      {{>graphql/_query-or-mutation-args}}
+      {{>graphql/_query-or-mutation-arguments}}
     </div>
 
     <div class="doc-examples">
       {{#if (firstTruthy query mutation subscription)}}
         <h4 class="example-heading">Example</h4>
 
-        <div class="example-section operation-query-example">
+        <div class="example-section example-section-is-code operation-query-example">
           <h5>Query</h5>
           {{printGraphQL (firstTruthy query mutation subscription)}}
         </div>
 
         {{#if variables}}
-          <div class="example-section operation-variables-example">
+          <div class="example-section example-section-is-code operation-variables-example">
             <h5>Variables</h5>
             {{printJSON variables}}
           </div>
         {{/if}}
         {{#if response.data}}
-          <div class="example-section operation-response-example">
+          <div class="example-section example-section-is-code operation-response-example">
             <h5>Response</h5>
             {{printJSON response.data}}
           </div>

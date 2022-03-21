@@ -1,11 +1,13 @@
 <div class="doc-copy">
   {{#if description}}
-    <div class="definition-description">
+    <div class="definition-description doc-copy-section">
+      <h5>Description</h5>
       {{md (interpolateReferences description)}}
     </div>
   {{/if}}
   {{#if possibleTypes}}
-    <div class="definition-properties">
+    <div class="definition-properties doc-copy-section">
+      <h5>Types</h5>
       <table>
         <thead>
           <tr>
@@ -28,7 +30,7 @@
 </div>
 <div class="doc-examples">
   {{#if example }}
-    <div class="example-section">
+    <div class="example-section example-section-is-code">
       <h5>Example</h5>
       {{printJSON example}}
     </div>

@@ -1,16 +1,19 @@
 <div class="doc-copy">
   {{#if description}}
-    <div class="definition-description">
+    <div class="definition-description doc-copy-section">
+      <h5>Description</h5>
       {{md (interpolateReferences description)}}
     </div>
   {{/if}}
   {{#if fields}}
-    <div class="definition-properties definition-fields">
+    <div class="definition-properties definition-fields doc-copy-section">
+      <h5>Fields</h5>
       {{>graphql/kinds/_fields .}}
     </div>
   {{/if}}
   {{#if possibleTypes}}
-    <div class="definition-properties definition-possible-types">
+    <div class="definition-properties definition-possible-types doc-copy-section">
+      <h5>Possible Types</h5>
       <table>
         <thead>
           <tr>
@@ -33,7 +36,7 @@
 </div>
 <div class="doc-examples">
   {{#if example }}
-    <div class="example-section">
+    <div class="example-section example-section-is-code">
       <h5>Example</h5>
       {{printJSON example}}
     </div>
