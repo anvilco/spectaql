@@ -18,7 +18,7 @@ $size-desktop-large: 64em;
 // Variables used in this theme
 //////////////////////
 
-$font-family: 'Barlow','Open Sans',serif;
+$font-family: 'Barlow','Open Sans',serif; // See Barlow import below...
 $font-family-monospaced: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
 $text-color: #222222;
 $text-color-subtle: #999999;
@@ -97,14 +97,15 @@ $background-arguments: #fafbfc;
     font-family: $font-family-monospaced;
   }
 
+  // Code block
   pre {
     color: $text-color-code-block;
-
     code {
       background: $background-code-block;
     }
   }
 
+  // Highlighted code block
   pre code,
   pre code.hljs {
     font-size: $font-size-code-block;
@@ -229,6 +230,7 @@ $background-arguments: #fafbfc;
     }
   }
 
+  // Style the subtle heading + border above each query / mutation / type
   .group-heading,
   .operation-group-name,
   .definition-group-name {
@@ -251,6 +253,7 @@ $background-arguments: #fafbfc;
       display: none;
     }
 
+    // The heading above each code example block
     .example-section-is-code {
       h5 {
         color: $text-color-subtle;
@@ -274,6 +277,7 @@ $background-arguments: #fafbfc;
       }
     }
 
+    // Fields and arguments tables
     table {
       tr th {
         font-weight: normal;
@@ -304,7 +308,8 @@ $background-arguments: #fafbfc;
       }
     }
 
-    // Each section within the main content
+    // Each section within each query / mutation / type. Like description,
+    // response, arguments, etc.
     .doc-copy-section {
       margin-bottom: $content-padding * 1.5;
 
@@ -324,7 +329,7 @@ $background-arguments: #fafbfc;
     }
   }
 
-
+  // Field arguments for a type's field/resolver
   .field-arguments{
     background-color: $background-arguments;
     border: $border-size-thin solid $border-color-subtle;
