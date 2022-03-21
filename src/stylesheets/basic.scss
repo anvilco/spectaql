@@ -42,6 +42,15 @@ $size-content-break: $size-desktop !default;
     background: $code-background;
   }
 
+  table {
+    text-align: left;
+    border-collapse: collapse;
+    td {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
   #page {
     display: flex;
 
