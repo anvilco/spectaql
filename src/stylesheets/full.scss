@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 // Overrides for basic
 //////////////////////
 
@@ -120,8 +122,17 @@ $background-arguments: #fafbfc;
 
     @media (min-width: $size-content-break) {
       // Align with the top of the logo
-      margin-top: -$content-padding / 2;
+      margin-top: math.div(-$content-padding, 2);
     }
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $text-color;
   }
 
   #introduction {
@@ -160,8 +171,8 @@ $background-arguments: #fafbfc;
       padding-bottom: $container-padding-tablet;
     }
     @media (min-width: $size-sidebar-break) {
-      padding-top: $container-padding-desktop - $content-padding / 2;
-      padding-bottom: $container-padding-desktop - $content-padding / 2;
+      padding-top: $container-padding-desktop - math.div($content-padding, 2);
+      padding-bottom: $container-padding-desktop - math.div($content-padding, 2);
     }
   }
 
@@ -191,7 +202,7 @@ $background-arguments: #fafbfc;
       margin-top: $content-padding;
 
       li {
-        margin-bottom: $content-padding / 4;
+        margin-bottom: math.div($content-padding, 4);
       }
     }
 
@@ -205,7 +216,7 @@ $background-arguments: #fafbfc;
     .nav-group-section-title {
       font-size: inherit;
       margin: 0;
-      margin-bottom: $content-padding / 4;
+      margin-bottom: math.div($content-padding, 4);
       font-weight: normal;
     }
 
@@ -298,7 +309,7 @@ $background-arguments: #fafbfc;
 
       tr td,
       tr th {
-        padding: $content-padding / 4;
+        padding: math.div($content-padding, 4);
       }
 
       tr th:first-child,
@@ -318,7 +329,7 @@ $background-arguments: #fafbfc;
       margin-bottom: $content-padding * 1.5;
 
       > h5 {
-        margin: 0 0 $content-padding / 4 0;
+        margin: 0 0 math.div($content-padding, 4) 0;
         font-size: inherit;
         font-weight: inherit;
         color: $text-color-subtle;
@@ -337,23 +348,23 @@ $background-arguments: #fafbfc;
   .field-arguments{
     background-color: $background-arguments;
     border: $border-size-thin solid $border-color-subtle;
-    padding: $content-padding / 2;
-    margin-bottom: $content-padding / 4;
+    padding: math.div($content-padding, 2);
+    margin-bottom: math.div($content-padding, 4);
 
     p {
-      margin: $content-padding / 2 0 0 0;
+      margin: math.div($content-padding, 2) 0 0 0;
     }
 
     h5.field-arguments-heading {
       margin: 0;
-      padding: 0 0 $content-padding / 2 0;
+      padding: 0 0 math.div($content-padding, 2) 0;
       font-size: $font-size-small-heading;
       font-weight: inherit;
     }
 
     .field-argument{
       border-top: $border-size-thin $border-color-subtle solid;
-      padding: $content-padding / 2 0;
+      padding: math.div($content-padding, 2) 0;
 
       &:last-child {
         padding-bottom: 0;
