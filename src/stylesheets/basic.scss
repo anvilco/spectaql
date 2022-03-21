@@ -109,6 +109,12 @@ $size-content-break: $size-desktop !default;
     }
   }
 
+  .sidebar-top-container {
+    display: flex;
+    align-items: center;
+    padding: 0 $sidebar-padding;
+  }
+
   .floating-menu-icon {
     display: block;
 
@@ -135,7 +141,7 @@ $size-content-break: $size-desktop !default;
     background: $overlay-background-hidden;
 
     @media (min-width: $size-sidebar-break) {
-      display: none;
+      display: none !important;
     }
   }
 
@@ -156,8 +162,9 @@ $size-content-break: $size-desktop !default;
   }
 
   #logo {
-    padding: 0 $sidebar-padding;
+    margin-right: auto;
     img {
+      display: block;
       max-width: 100%;
     }
   }

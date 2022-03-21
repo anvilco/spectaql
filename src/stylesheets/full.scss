@@ -115,9 +115,13 @@ $background-arguments: #fafbfc;
 
   // Main docs heading
   .doc-heading {
-    margin-top: -$content-padding / 2;
     line-height: $line-height-heading;
     font-size: $font-size-large-heading;
+
+    @media (min-width: $size-content-break) {
+      // Align with the top of the logo
+      margin-top: -$content-padding / 2;
+    }
   }
 
   #introduction {
@@ -162,8 +166,8 @@ $background-arguments: #fafbfc;
   }
 
   #nav,
-  #logo,
-  #docs {
+  #docs,
+  .sidebar-top-container {
     padding-left: $container-padding-mobile;
     padding-right: $container-padding-mobile;
     @media (min-width: $size-tablet) {

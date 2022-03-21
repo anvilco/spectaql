@@ -1,14 +1,16 @@
 <div id="page" class="drawer-layout">
   {{! DO THE NAVIGATION }}
   <div id="sidebar">
-    <button class="close-button" aria-label="Close menu" type="button">
-      <span aria-hidden="true">×</span>
-    </button>
-    {{#if logo}}
+    <div class="sidebar-top-container">
       <div id="logo">
-        <img src="images/{{logo}}" title="{{info.title}}" />
+        {{#if logo}}
+          <img src="images/{{logo}}" title="{{info.title}}" />
+        {{/if}}
       </div>
-    {{/if}}
+      <button class="close-button" aria-label="Close menu" type="button">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
     {{>layout/nav/main}}
   </div>
 
