@@ -3,7 +3,7 @@ function scrollSpy () {
   var SCROLL_DEBOUNCE_MS = 30
   var RESIZE_DEBOUNCE_MS = 50
 
-  var PADDING = 0 // TODO: dynamically figure this out
+  var PADDING = 5 // TODO: dynamically figure this out
   var ACTIVE_CLASS = 'nav-scroll-active'
   var EXPAND_CLASS = 'nav-scroll-expand'
   var EXPANDABLE_SELECTOR = '.nav-group-section'
@@ -84,7 +84,7 @@ function scrollSpy () {
     for (var i = 0; i < sections.length; i++) {
       var section = sections[i]
       var nextSection = sections[i + 1]
-      if (scrollPosition >= section.top && (!nextSection || scrollPosition < nextSection.top)) {
+      if (positionToCheck >= section.top && (!nextSection || positionToCheck < nextSection.top)) {
         return i
       }
     }
