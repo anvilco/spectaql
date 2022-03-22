@@ -32,6 +32,9 @@ $border-color-subtle: #e0e0e0;
 $border-size-thick: 2px;
 $border-size-thin: 1px;
 
+$background-error: #fed7d8;
+$text-color-error: #c60609;
+
 $logo-height: 18px;
 
 $line-height: 1.6;
@@ -42,7 +45,8 @@ $font-size-mobile: 14px;
 
 $font-size-large-heading: 2.25em;
 $font-size-large-heading-mobile: 1.72em;
-$font-size-code: .875em;
+$font-size-small: .875em;
+$font-size-code: $font-size-small;
 $font-size-small-heading: .875em;
 $font-size-example-heading: .75em;
 
@@ -372,7 +376,7 @@ $background-arguments: #fafbfc;
 
   // Field arguments for a type's field/resolver
   .field-arguments{
-    font-size: $font-size-small-heading;
+    font-size: $font-size-small;
     background-color: $background-arguments;
     border: $border-size-thin solid $border-color-subtle;
     padding: math.div($content-padding, 2);
@@ -402,6 +406,20 @@ $background-arguments: #fafbfc;
       margin: 0;
       font-size: inherit;
       font-weight: inherit;
+    }
+  }
+
+  .deprecation-reason {
+    &::before {
+      display: inline;
+      content: 'Deprecated';
+      padding: 2px math.div($content-padding, 4);
+      margin-right: math.div($content-padding, 4);
+
+      background: $background-error;
+      color: $text-color-error;
+      font-weight: bold;
+      font-size: $font-size-small;
     }
   }
 }
