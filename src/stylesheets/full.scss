@@ -372,6 +372,7 @@ $background-arguments: #fafbfc;
 
   // Field arguments for a type's field/resolver
   .field-arguments{
+    font-size: $font-size-small-heading;
     background-color: $background-arguments;
     border: $border-size-thin solid $border-color-subtle;
     padding: math.div($content-padding, 2);
@@ -384,8 +385,8 @@ $background-arguments: #fafbfc;
     h5.field-arguments-heading {
       margin: 0;
       padding: 0 0 math.div($content-padding, 2) 0;
-      font-size: $font-size-small-heading;
       font-weight: inherit;
+      color: $text-color-subtle;
     }
 
     .field-argument{
