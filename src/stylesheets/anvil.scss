@@ -1,0 +1,435 @@
+@use 'sass:math';
+
+// Overrides for basic
+//////////////////////
+
+$max-content-width: 88em;
+$drawer-size: 250px;
+$drawer-size-desktop-large: 300px;
+
+$content-padding: 20px;
+
+$sidebar-top: 0px;
+$sidebar-background: #fff;
+
+$size-tablet: 32em;
+$size-desktop: 48em;
+$size-desktop-large: 64em;
+
+
+// Variables used in this theme
+//////////////////////
+
+$font-family: 'Barlow','Open Sans',serif; // See Barlow import below...
+$font-family-monospaced: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+$text-color: #222222;
+$text-color-subtle: #999999;
+$link-color: #0298bf;
+$link-color-hover: #0182a2;
+$background: white;
+$border-color: #d8d8d8;
+$border-color-subtle: #e0e0e0;
+$border-size-thick: 2px;
+$border-size-thin: 1px;
+
+$background-error: #fed7d8;
+$text-color-error: #c60609;
+
+$logo-height: 18px;
+
+$line-height: 1.6;
+$line-height-heading: 1.2;
+
+$font-size: 16px;
+$font-size-mobile: 14px;
+
+$font-size-large-heading: 2.25em;
+$font-size-large-heading-mobile: 1.72em;
+$font-size-small: .875em;
+$font-size-code: $font-size-small;
+$font-size-small-heading: .875em;
+$font-size-example-heading: .75em;
+
+$padding-code-block: 15px $content-padding;
+$font-size-code-block: .82em;
+$text-color-code-block: white;
+$background-code-block: #222222;
+$line-height-code-block: 1.4;
+
+$container-padding-mobile: $content-padding;
+$container-padding-tablet: 30px;
+$container-padding-desktop: 50px;
+
+$container-padding-operation: 60px;
+
+$background-arguments: #fafbfc;
+
+// Imports
+//////////////////////
+
+@import 'basic';
+@import 'monokai';
+
+// Custom font
+@import url('https://fonts.googleapis.com/css?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+// Custom styles
+//////////////////////
+
+#spectaql {
+  font-family: $font-family;
+  font-size: $font-size-mobile;
+  line-height: $line-height;
+  background: $background;
+
+  @media (min-width: $size-tablet) {
+    font-size: $font-size;
+  }
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+
+    &:hover {
+      color: $link-color-hover;
+    }
+    &:focus,
+    &:active {
+      color: $link-color;
+    }
+  }
+
+  code {
+    font-size: $font-size-code;
+    font-family: $font-family-monospaced;
+  }
+
+  // Code block
+  pre {
+    color: $text-color-code-block;
+    code {
+      background: $background-code-block;
+    }
+  }
+
+  // Highlighted code block
+  pre code,
+  pre code.hljs {
+    font-size: $font-size-code-block;
+    line-height: $line-height-code-block;
+    padding: $padding-code-block;
+  }
+
+  // Main docs heading
+  .doc-heading {
+    line-height: $line-height-heading;
+    font-size: $font-size-large-heading;
+    margin-top: math.div($content-padding, 2);
+
+    @media (min-width: $size-content-break) {
+      // Align with the top of the logo
+      margin-top: math.div(-$content-padding, 2);
+    }
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $text-color;
+  }
+
+  #introduction {
+    margin-bottom: $container-padding-operation;
+
+    .example-section:not(.example-section-is-code) {
+      margin-bottom: $content-padding;
+
+      h5,
+      p {
+        margin: 0;
+        font-size: 1em;
+      }
+    }
+  }
+
+  #sidebar {
+    a {
+      color: $text-color;
+    }
+
+    a.nav-scroll-active,
+    a:hover {
+      font-weight: bold;
+    }
+
+    a.nav-scroll-active {
+      color: $text-color;
+    }
+
+    a:hover {
+      color: $link-color-hover;
+    }
+
+    @media (min-width: $size-sidebar-break) {
+      border-right: $border-size-thick solid $border-color;
+    }
+  }
+
+  #sidebar,
+  #docs,
+  #mobile-navbar {
+    padding-top: $container-padding-mobile;
+    padding-bottom: $container-padding-mobile;
+    @media (min-width: $size-tablet) {
+      padding-top: $container-padding-tablet;
+      padding-bottom: $container-padding-tablet;
+    }
+    @media (min-width: $size-sidebar-break) {
+      padding-top: $container-padding-desktop - math.div($content-padding, 2);
+      padding-bottom: $container-padding-desktop - math.div($content-padding, 2);
+    }
+  }
+
+  #nav,
+  #docs,
+  #mobile-navbar,
+  .sidebar-top-container {
+    padding-left: $container-padding-mobile;
+    padding-right: $container-padding-mobile;
+    @media (min-width: $size-tablet) {
+      padding-left: $container-padding-tablet;
+      padding-right: $container-padding-tablet;
+    }
+    @media (min-width: $size-sidebar-break) {
+      padding-left: $container-padding-desktop;
+      padding-right: $container-padding-desktop;
+    }
+  }
+
+  #logo {
+    img {
+      max-height: $logo-height;
+    }
+  }
+
+  #mobile-navbar {
+    background: $background;
+    margin-top: -$container-padding-mobile;
+    margin-left: -$container-padding-mobile;
+    margin-right: -$container-padding-mobile;
+
+    @media (min-width: $size-tablet) {
+      margin-top: -$container-padding-tablet;
+      margin-left: -$container-padding-tablet;
+      margin-right: -$container-padding-tablet;
+    }
+
+    .sidebar-open-button {
+      &::after {
+        display: block;
+        content: "All Topics";
+        margin-left: math.div($content-padding, 2);
+      }
+    }
+  }
+
+  #nav {
+    .nav-group {
+      margin-top: $content-padding;
+
+      li {
+        margin-bottom: math.div($content-padding, 4);
+      }
+    }
+
+    .nav-group-title {
+      font-size: $font-size-small-heading;
+      font-weight: normal;
+      margin: 0 0 6px 0;
+      color: $text-color-subtle;
+    }
+
+    .nav-group-section-title {
+      font-size: inherit;
+      margin: 0;
+      margin-bottom: math.div($content-padding, 4);
+      font-weight: normal;
+    }
+
+    .nav-group-section-items {
+      margin-left: .75em;
+    }
+  }
+
+  .operation,
+  .definition {
+    margin-bottom: $container-padding-operation;
+
+    .operation-heading,
+    .definition-heading {
+      font-size: $font-size-large-heading-mobile;
+
+      code {
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+      }
+
+      @media (min-width: $size-tablet) {
+        font-size: $font-size-large-heading;
+      }
+    }
+  }
+
+  // Style the subtle heading + border above each query / mutation / type
+  .group-heading,
+  .operation-group-name,
+  .definition-group-name {
+    border-top: $border-size-thick solid $border-color;
+    padding-top: 3px;
+    color: $text-color-subtle;
+    font-size: inherit;
+    font-weight: inherit;
+
+    a {
+      color: $text-color-subtle;
+      &:hover {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .doc-examples {
+    .example-heading {
+      display: none;
+    }
+
+    // The heading above each code example block
+    .example-section-is-code {
+      h5 {
+        color: $text-color-subtle;
+        text-transform: uppercase;
+        background: black;
+        font-size: $font-size-example-heading;
+        font-weight: bold;
+        padding: .6em 0 .6em $content-padding;
+        margin: 0;
+        opacity: 1;
+      }
+    }
+  }
+
+  .doc-copy {
+    p {
+      margin: 0 0 $content-padding 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    // Fields and arguments tables
+    table {
+      tr th {
+        font-weight: normal;
+        border-bottom: $border-size-thick solid $border-color;
+      }
+
+      tr td {
+        border-bottom: $border-size-thin solid $border-color-subtle;
+      }
+      tr:last-child td,
+      tr.row-has-field-arguments td {
+        border-bottom: none;
+      }
+
+      tr td,
+      tr th {
+        padding: math.div($content-padding, 4);
+      }
+
+      tr th:first-child,
+      tr td:first-child {
+        padding-left: 0;
+      }
+
+      tr th:last-child,
+      tr td:last-child {
+        padding-right: 0;
+      }
+    }
+
+    // Each section within each query / mutation / type. Like description,
+    // response, arguments, etc.
+    .doc-copy-section {
+      margin-bottom: $content-padding * 1.5;
+
+      > h5 {
+        margin: 0 0 math.div($content-padding, 4) 0;
+        font-size: inherit;
+        font-weight: inherit;
+        color: $text-color-subtle;
+      }
+    }
+
+    // Hide these titles
+    .operation-description > h5,
+    .definition-description > h5,
+    .definition-properties > h5 {
+      display: none;
+    }
+  }
+
+  // Field arguments for a type's field/resolver
+  .field-arguments{
+    font-size: $font-size-small;
+    background-color: $background-arguments;
+    border: $border-size-thin solid $border-color-subtle;
+    padding: math.div($content-padding, 2);
+    margin-bottom: math.div($content-padding, 4);
+
+    p {
+      margin: math.div($content-padding, 2) 0 0 0;
+    }
+
+    h5.field-arguments-heading {
+      margin: 0;
+      padding: 0 0 math.div($content-padding, 2) 0;
+      font-weight: inherit;
+      color: $text-color-subtle;
+    }
+
+    .field-argument{
+      border-top: $border-size-thin $border-color-subtle solid;
+      padding: math.div($content-padding, 2) 0;
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+
+    .field-argument-name {
+      margin: 0;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+  }
+
+  .deprecation-reason {
+    &::before {
+      display: inline;
+      content: 'Deprecated';
+      padding: 2px math.div($content-padding, 4);
+      margin-right: math.div($content-padding, 4);
+
+      background: $background-error;
+      color: $text-color-error;
+      font-weight: bold;
+      font-size: $font-size-small;
+    }
+  }
+}
