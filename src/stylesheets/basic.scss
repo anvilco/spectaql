@@ -115,11 +115,37 @@ $size-content-break: $size-desktop !default;
     padding: 0 $sidebar-padding;
   }
 
-  .floating-menu-icon {
-    display: block;
+  #mobile-navbar {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
 
     @media (min-width: $size-sidebar-break) {
       display: none;
+    }
+  }
+
+  .sidebar-open-button {
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+
+    .hamburger {
+      width: 16px;
+      height: 14px;
+      cursor: pointer;
+
+      &::after {
+        display: block;
+        content: "";
+        height: 2px;
+        background: black;
+        box-shadow: 0 5px 0 black, 0 10px 0 black;
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 function toggleMenu () {
-  var MOBILE_MENU_SELECTOR = '#spectaql button.floating-menu-icon'
+  var MOBILE_MENU_SELECTOR = '#spectaql .sidebar-open-button'
   var SIDEBAR_CLOSE_BUTTON_SELECTOR = '#spectaql #sidebar .close-button'
   var PAGE_SELECTOR = '#spectaql #page'
   var MENU_OPEN_CLASS = 'drawer-open'
