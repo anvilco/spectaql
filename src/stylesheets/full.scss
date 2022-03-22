@@ -144,6 +144,16 @@ $background-arguments: #fafbfc;
 
   #introduction {
     margin-bottom: $container-padding-operation;
+
+    .example-section:not(.example-section-is-code) {
+      margin-bottom: $content-padding;
+
+      h5,
+      p {
+        margin: 0;
+        font-size: 1em;
+      }
+    }
   }
 
   #sidebar {
