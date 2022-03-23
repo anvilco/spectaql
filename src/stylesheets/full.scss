@@ -95,6 +95,7 @@ $background-sidebar: $background-subtle;
     padding-left: $container-padding-tablet;
     padding-right: $container-padding-tablet;
   }
+
   @media (min-width: $size-sidebar-break) {
     padding-left: $container-padding-desktop;
     padding-right: $container-padding-desktop;
@@ -245,13 +246,9 @@ $background-sidebar: $background-subtle;
   #mobile-navbar {
     background: $background;
     margin-top: -$container-padding-mobile;
-    margin-left: -$container-padding-mobile;
-    margin-right: -$container-padding-mobile;
 
     @media (min-width: $size-tablet) {
       margin-top: -$container-padding-tablet;
-      margin-left: -$container-padding-tablet;
-      margin-right: -$container-padding-tablet;
     }
 
     .sidebar-open-button {
@@ -292,10 +289,10 @@ $background-sidebar: $background-subtle;
   }
 
   #docs {
-    @media (min-width: $size-sidebar-break) {
-      padding-left: 0;
-      padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 
+    @media (min-width: $size-content-break) {
       // display the dark sidebar background
       &::before {
         content: "";
@@ -311,8 +308,10 @@ $background-sidebar: $background-subtle;
   }
 
   #content {
-    // Show over top the dark right panel
-    position: relative;
+    @media (min-width: $size-content-break) {
+      // Show over top the dark right panel
+      position: relative;
+    }
   }
 
   .operation,
@@ -331,7 +330,6 @@ $background-sidebar: $background-subtle;
 
   // Style the subtle heading + border above each query / mutation / type
   .group-heading {
-    width: 50%;
     padding-top: math.div($content-padding, 2);
     padding-bottom: math.div($content-padding, 2);
     margin-bottom: $container-padding-desktop;
@@ -342,11 +340,14 @@ $background-sidebar: $background-subtle;
     background: $background-sidebar;
     border-top: 1px solid $border-color-subtle;
     border-bottom: 1px solid $border-color-subtle;
+
+    @media (min-width: $size-content-break) {
+      width: 50%;
+    }
   }
 
   .operation-group-name,
   .definition-group-name {
-    width: 50%;
     border-top: $border-size solid $border-color;
     font-size: inherit;
     font-weight: inherit;
@@ -361,6 +362,10 @@ $background-sidebar: $background-subtle;
         background: $link-color-hover;
       }
     }
+
+    @media (min-width: $size-content-break) {
+      width: 50%;
+    }
   }
 
   .doc-row .doc-copy,
@@ -371,16 +376,27 @@ $background-sidebar: $background-subtle;
   }
 
   .doc-examples {
-    color: $text-color-examples;
+    margin-top: $content-padding;
+    color: $text-color;
 
     // The heading above each code example block
     .example-section-is-code {
       h5 {
-        color: $text-color-dark-subtle;
         text-transform: capitalize;
         font-size: $font-size-example-heading;
         margin: 0 0 5px 0;
         font-weight: normal;
+      }
+    }
+
+    @media (min-width: $size-content-break) {
+      margin-top: 0;
+      color: $text-color-examples;
+
+      .example-section-is-code {
+        h5 {
+          color: $text-color-dark-subtle;
+        }
       }
     }
   }
