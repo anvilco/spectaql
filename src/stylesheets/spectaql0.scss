@@ -3,7 +3,7 @@
 // Overrides for basic
 //////////////////////
 
-$max-content-width: 88em;
+$max-content-width: 200em;
 $drawer-size: 250px;
 $drawer-size-desktop-large: 300px;
 
@@ -20,17 +20,22 @@ $size-desktop-large: 64em;
 // Variables used in this theme
 //////////////////////
 
-$font-family: 'Barlow','Open Sans',serif; // See Barlow import below...
-$font-family-monospaced: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
-$text-color: #222222;
+$font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, 'Helvetica Neue', Ubuntu, sans-serif;
+$font-family-monospaced: Menlo, Consolas, monospace;
+$text-color: #2d3134;
 $text-color-subtle: #999999;
-$link-color: #0298bf;
-$link-color-hover: #0182a2;
+$text-color-dark-subtle: #fefefe;
+$link-color: #1779ba;
+$link-color-hover: #1468a0;
+
 $background: white;
+$background-subtle: #fafafa;
+
 $border-color: #d8d8d8;
 $border-color-subtle: #e0e0e0;
-$border-size-thick: 2px;
-$border-size-thin: 1px;
+$border-size: 1px;
+
+$border-radius: 3px;
 
 $background-error: #fed7d8;
 $text-color-error: #c60609;
@@ -43,12 +48,13 @@ $line-height-heading: 1.2;
 $font-size: 16px;
 $font-size-mobile: 14px;
 
+$font-size-small: .875em;
+$font-size-extra-small: .75em;
 $font-size-large-heading: 2.25em;
 $font-size-large-heading-mobile: 1.72em;
-$font-size-small: .875em;
 $font-size-code: $font-size-small;
 $font-size-small-heading: .875em;
-$font-size-example-heading: .75em;
+$font-size-example-heading: .875em;
 
 $padding-code-block: 15px $content-padding;
 $font-size-code-block: .82em;
@@ -58,11 +64,16 @@ $line-height-code-block: 1.4;
 
 $container-padding-mobile: $content-padding;
 $container-padding-tablet: 30px;
-$container-padding-desktop: 50px;
+$container-padding-desktop: 40px;
 
 $container-padding-operation: 60px;
 
-$background-arguments: #fafbfc;
+$background-arguments: $background-subtle;
+
+$background-examples: #2d3134;
+$text-color-examples: white;
+
+$background-sidebar: $background-subtle;
 
 // Imports
 //////////////////////
@@ -76,6 +87,33 @@ $background-arguments: #fafbfc;
 
 // Custom styles
 //////////////////////
+
+@mixin containerPaddingHorizontal() {
+  padding-left: $container-padding-mobile;
+  padding-right: $container-padding-mobile;
+  @media (min-width: $size-tablet) {
+    padding-left: $container-padding-tablet;
+    padding-right: $container-padding-tablet;
+  }
+
+  @media (min-width: $size-sidebar-break) {
+    padding-left: $container-padding-desktop;
+    padding-right: $container-padding-desktop;
+  }
+}
+
+@mixin containerPaddingVertical() {
+  padding-top: $container-padding-mobile;
+  padding-bottom: $container-padding-mobile;
+  @media (min-width: $size-tablet) {
+    padding-top: $container-padding-tablet;
+    padding-bottom: $container-padding-tablet;
+  }
+  @media (min-width: $size-sidebar-break) {
+    padding-top: $container-padding-desktop - math.div($content-padding, 2);
+    padding-bottom: $container-padding-desktop - math.div($content-padding, 2);
+  }
+}
 
 #spectaql {
   font-family: $font-family;
@@ -108,6 +146,7 @@ $background-arguments: #fafbfc;
   // Code block
   pre {
     color: $text-color-code-block;
+    border-radius: $border-radius;
     code {
       background: $background-code-block;
     }
@@ -127,6 +166,8 @@ $background-arguments: #fafbfc;
     font-size: $font-size-large-heading;
     margin-top: math.div($content-padding, 2);
 
+    @include containerPaddingHorizontal();
+
     @media (min-width: $size-content-break) {
       // Align with the top of the logo
       margin-top: math.div(-$content-padding, 2);
@@ -145,29 +186,34 @@ $background-arguments: #fafbfc;
   #introduction {
     margin-bottom: $container-padding-operation;
 
-    .example-section:not(.example-section-is-code) {
+    .introduction-item-title {
+      @include containerPaddingHorizontal();
+    }
+
+    .example-section {
       margin-bottom: $content-padding;
+
+      h5 {
+        font-weight: bold;
+      }
 
       h5,
       p {
         margin: 0;
-        font-size: 1em;
+        font-size: $font-size-small;
       }
     }
   }
 
   #sidebar {
+    background: $background-sidebar;
+
     a {
       color: $text-color;
     }
 
-    a.nav-scroll-active,
-    a:hover {
-      font-weight: bold;
-    }
-
     a.nav-scroll-active {
-      color: $text-color;
+      color: $link-color;
     }
 
     a:hover {
@@ -175,39 +221,20 @@ $background-arguments: #fafbfc;
     }
 
     @media (min-width: $size-sidebar-break) {
-      border-right: $border-size-thick solid $border-color;
+      border-right: $border-size solid $border-color;
     }
   }
 
-  #sidebar,
   #docs,
+  #sidebar,
   #mobile-navbar {
-    padding-top: $container-padding-mobile;
-    padding-bottom: $container-padding-mobile;
-    @media (min-width: $size-tablet) {
-      padding-top: $container-padding-tablet;
-      padding-bottom: $container-padding-tablet;
-    }
-    @media (min-width: $size-sidebar-break) {
-      padding-top: $container-padding-desktop - math.div($content-padding, 2);
-      padding-bottom: $container-padding-desktop - math.div($content-padding, 2);
-    }
+    @include containerPaddingVertical();
   }
 
   #nav,
-  #docs,
   #mobile-navbar,
   .sidebar-top-container {
-    padding-left: $container-padding-mobile;
-    padding-right: $container-padding-mobile;
-    @media (min-width: $size-tablet) {
-      padding-left: $container-padding-tablet;
-      padding-right: $container-padding-tablet;
-    }
-    @media (min-width: $size-sidebar-break) {
-      padding-left: $container-padding-desktop;
-      padding-right: $container-padding-desktop;
-    }
+    @include containerPaddingHorizontal();
   }
 
   #logo {
@@ -219,13 +246,9 @@ $background-arguments: #fafbfc;
   #mobile-navbar {
     background: $background;
     margin-top: -$container-padding-mobile;
-    margin-left: -$container-padding-mobile;
-    margin-right: -$container-padding-mobile;
 
     @media (min-width: $size-tablet) {
       margin-top: -$container-padding-tablet;
-      margin-left: -$container-padding-tablet;
-      margin-right: -$container-padding-tablet;
     }
 
     .sidebar-open-button {
@@ -265,60 +288,115 @@ $background-arguments: #fafbfc;
     }
   }
 
+  #docs {
+    padding-left: 0;
+    padding-right: 0;
+
+    @media (min-width: $size-content-break) {
+      // display the dark sidebar background
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+        background: $background-examples;
+      }
+    }
+  }
+
+  #content {
+    @media (min-width: $size-content-break) {
+      // Show over top the dark right panel
+      position: relative;
+    }
+  }
+
   .operation,
   .definition {
     margin-bottom: $container-padding-operation;
 
     .operation-heading,
     .definition-heading {
-      font-size: $font-size-large-heading-mobile;
-
       code {
         font-family: inherit;
         font-size: inherit;
         font-weight: inherit;
       }
-
-      @media (min-width: $size-tablet) {
-        font-size: $font-size-large-heading;
-      }
     }
   }
 
   // Style the subtle heading + border above each query / mutation / type
-  .group-heading,
+  .group-heading {
+    padding-top: math.div($content-padding, 2);
+    padding-bottom: math.div($content-padding, 2);
+    margin-bottom: $container-padding-desktop;
+    font-weight: normal;
+
+    @include containerPaddingHorizontal();
+
+    background: $background-sidebar;
+    border-top: 1px solid $border-color-subtle;
+    border-bottom: 1px solid $border-color-subtle;
+
+    @media (min-width: $size-content-break) {
+      width: 50%;
+    }
+  }
+
   .operation-group-name,
   .definition-group-name {
-    border-top: $border-size-thick solid $border-color;
-    padding-top: 3px;
-    color: $text-color-subtle;
+    border-top: $border-size solid $border-color;
     font-size: inherit;
     font-weight: inherit;
 
     a {
-      color: $text-color-subtle;
+      font-size: $font-size-extra-small;
+      display: inline-block;
+      background: $link-color;
+      color: white;
+      padding: math.div($content-padding, 4) math.div($content-padding, 2);
       &:hover {
-        font-weight: bold;
+        background: $link-color-hover;
       }
+    }
+
+    @media (min-width: $size-content-break) {
+      width: 50%;
     }
   }
 
+  .doc-row .doc-copy,
+  .doc-row .doc-examples,
+  .operation-heading,
+  .definition-heading {
+    @include containerPaddingHorizontal();
+  }
+
   .doc-examples {
-    .example-heading {
-      display: none;
-    }
+    margin-top: $content-padding;
+    color: $text-color;
 
     // The heading above each code example block
     .example-section-is-code {
       h5 {
-        color: $text-color-subtle;
-        text-transform: uppercase;
-        background: black;
+        text-transform: capitalize;
         font-size: $font-size-example-heading;
-        font-weight: bold;
-        padding: .6em 0 .6em $content-padding;
-        margin: 0;
-        opacity: 1;
+        margin: 0 0 5px 0;
+        font-weight: normal;
+      }
+    }
+
+    @media (min-width: $size-content-break) {
+      margin-top: 0;
+      color: $text-color-examples;
+
+      .example-section-is-code {
+        h5 {
+          color: $text-color-dark-subtle;
+        }
       }
     }
   }
@@ -332,15 +410,22 @@ $background-arguments: #fafbfc;
       }
     }
 
+    code {
+      padding: 1px 4px;
+      border-radius: $border-radius;
+      background: $background-subtle;
+      border: $border-size solid $border-color-subtle;
+    }
+
     // Fields and arguments tables
     table {
       tr th {
         font-weight: normal;
-        border-bottom: $border-size-thick solid $border-color;
+        border-bottom: $border-size solid $border-color;
       }
 
       tr td {
-        border-bottom: $border-size-thin solid $border-color-subtle;
+        border-bottom: $border-size solid $border-color-subtle;
       }
       tr:last-child td,
       tr.row-has-field-arguments td {
@@ -388,7 +473,7 @@ $background-arguments: #fafbfc;
   .field-arguments{
     font-size: $font-size-small;
     background-color: $background-arguments;
-    border: $border-size-thin solid $border-color-subtle;
+    border: $border-size solid $border-color-subtle;
     padding: math.div($content-padding, 2);
     margin-bottom: math.div($content-padding, 4);
 
@@ -404,7 +489,7 @@ $background-arguments: #fafbfc;
     }
 
     .field-argument{
-      border-top: $border-size-thin $border-color-subtle solid;
+      border-top: $border-size $border-color-subtle solid;
       padding: math.div($content-padding, 2) 0;
 
       &:last-child {
