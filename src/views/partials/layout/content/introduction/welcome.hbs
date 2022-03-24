@@ -1,61 +1,51 @@
-<div class="doc-row">
+<div id="welcome" class="doc-row">
   <div class="doc-copy">
-      {{md info.description}}
+    {{md info.description}}
   </div>
   <div class="doc-examples">
-    <section>
-      {{#if info.contact}}
-          <h5>Contact</h5>
-          <p>
-            {{#if info.contact.name}}
-              {{info.contact.name}}<br/>
-            {{/if}}
-            {{#if info.contact.email}}
-              <a href="mailto:{{info.contact.email}}">{{info.contact.email}}</a>
-            {{/if}}
-          </p>
-      {{/if}}
+    {{#if info.contact}}
+      <div class="example-section welcome-contact-section">
+        <h5>Contact</h5>
+        {{#if info.contact.name}}
+          <p class="contact-name">{{info.contact.name}}</p>
+        {{/if}}
+        {{#if info.contact.email}}
+          <p class="contact-email"><a href="mailto:{{info.contact.email}}">{{info.contact.email}}</a></p>
+        {{/if}}
+      </div>
+    {{/if}}
 
-      {{#if info.license}}
-          <h5>License</h5>
-          <p>
-            {{#if info.license.name}}
-              {{info.license.name}}<br/>
-            {{/if}}
-            {{#if info.license.url}}
-              <a href="{{info.license.url}}">{{info.license.url}}</a>
-            {{/if}}
-          </p>
-      {{/if}}
+    {{#if info.license}}
+      <div class="example-section welcome-license-section">
+        <h5>License</h5>
+        {{#if info.license.name}}
+          <p class="license-name">{{info.license.name}}</p>
+        {{/if}}
+        {{#if info.license.url}}
+          <p class="license-url"><a href="{{info.license.url}}">{{info.license.url}}</a></p>
+        {{/if}}
+      </div>
+    {{/if}}
 
-      {{#if info.termsOfService}}
-        <p>Terms of Service:
-          <a href="{{info.termsOfService}}">{{info.termsOfService}}</a>
-        </p>
-      {{/if}}
+    {{#if info.termsOfService}}
+      <div class="example-section welcome-tos-section">
+        <h5>Terms of Service</h5>
+        <p><a href="{{info.termsOfService}}">{{info.termsOfService}}</a></p>
+      </div>
+    {{/if}}
 
-      {{#if url}}
+    {{#if url}}
+      <div class="example-section welcome-api-endpoints-section example-section-is-code">
         <h5>API Endpoints</h5>
-          <pre><code>{{url}}</code></pre>
-      {{/if}}
+        <pre><code>{{url}}</code></pre>
+      </div>
+    {{/if}}
 
-      {{#if consumes}}
-        <h5>Request Content-Types:
-          <span>{{#each consumes}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}</span>
-        </h5>
-      {{/if}}
-
-      {{#if produces}}
-        <h5>Response Content-Types:
-          <span>{{#each produces}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}</span>
-        </h5>
-      {{/if}}
-
-      {{#if info.version}}
-        <h5>Version:
-          <span>{{info.version}}</span>
-        </h5>
-      {{/if}}
-    </section>
+    {{#if info.version}}
+      <div class="example-section welcome-version-section">
+        <h5>Version</h5>
+        <p>{{info.version}}</p>
+      </div>
+    {{/if}}
   </div>
 </div>

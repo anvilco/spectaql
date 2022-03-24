@@ -1,24 +1,22 @@
-<div id="page" class="drawer-layout drawer-slide-right-large">
+<div id="page" class="drawer-layout">
   {{! DO THE NAVIGATION }}
   <div id="sidebar">
-    <button id="close-button" class="close-button" aria-label="Close menu" type="button" data-drawer-close>
-      <span aria-hidden="true">×</span>
-    </button>
-    {{#if logo}}
+    <div class="sidebar-top-container">
       <div id="logo">
-        <img src="images/{{logo}}" title="{{info.title}}" />
+        {{#if logo}}
+          <img src="images/{{logo}}" title="{{info.title}}" />
+        {{/if}}
       </div>
-    {{/if}}
+      <button class="close-button" aria-label="Close menu" type="button">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
     {{>layout/nav/main}}
   </div>
-  {{! DO THE CONTENT }}
-  <div id="docs" class="row collapse expanded drawer" data-drawer>
-    {{! The Hamburger for when Nav column has been collapsed }}
-    <button class="floating-menu-icon" type="button" data-drawer-slide="right">
-      <span class="hamburger"></span>
-    </button>
-    {{! Draws the rightmost dark column where examples usually go }}
-    <div class="example-box doc-content"></div>
+
+  <div id="docs">
+    {{>layout/nav/mobile-navbar}}
     {{>layout/content/main}}
+    <div class="drawer-overlay"></div>
   </div>
 </div>

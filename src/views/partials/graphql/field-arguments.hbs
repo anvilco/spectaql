@@ -1,11 +1,13 @@
 <div class="field-arguments">
-  <p class="field-arguments-header">
+  <h5 class="field-arguments-heading">
     Arguments
-  </p>
+  </h5>
+  <div class="field-argument-list">
     {{#each args }}
       <div class="field-argument">
-        <p class="field-argument-name">{{~>graphql/name-and-type . }}</p>
-        {{#if description}}<p>{{ md (interpolateReferences description) }}</p>{{/if}}
+        <h6 class="field-argument-name">{{~>graphql/name-and-type . }}</h6>
+        {{#if description}}{{ md (interpolateReferences description) }}{{/if}}
       </div>
     {{/each}}
+  </div>
 </div>

@@ -1,20 +1,22 @@
 <div class="doc-copy">
   {{#if description}}
-    <section class="json-schema-description">
+    <div class="definition-description doc-copy-section">
+      <h5>Description</h5>
       {{md (interpolateReferences description)}}
-    </section>
+    </div>
   {{/if}}
   {{#if fields}}
-    <section class="json-schema-properties-blank">
+    <div class="definition-properties doc-copy-section">
+      <h5>Fields</h5>
       {{>graphql/kinds/_fields .}}
-    </section>
+    </div>
   {{/if}}
 </div>
 <div class="doc-examples">
   {{#if example }}
-    <section>
+    <div class="example-section example-section-is-code">
       <h5>Example</h5>
       {{printJSON example}}
-    </section>
+    </div>
   {{/if}}
 </div>

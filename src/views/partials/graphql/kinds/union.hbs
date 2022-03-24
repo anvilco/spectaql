@@ -1,32 +1,38 @@
 <div class="doc-copy">
   {{#if description}}
-    <section class="json-schema-description">
+    <div class="definition-description doc-copy-section">
+      <h5>Description</h5>
       {{md (interpolateReferences description)}}
-    </section>
+    </div>
   {{/if}}
   {{#if possibleTypes}}
-    <section class="json-schema-properties-blank">
+    <div class="definition-properties doc-copy-section">
+      <h5>Types</h5>
       <table>
-        <tr>
-          <th>Union Types</th>
-        </tr>
-        {{#each possibleTypes}}
+        <thead>
           <tr>
-            <td>
-              {{! The Union Types column }}
-              {{md (mdTypeLink . codify=true) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "swagger-operation-deprecated" false)}}
-            </td>
+            <th>Union Types</th>
           </tr>
-        {{/each}}
+        </thead>
+        <tbody>
+          {{#each possibleTypes}}
+            <tr>
+              <td>
+                {{! The Union Types column }}
+                {{md (mdTypeLink . codify=true) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "definition-deprecated" false)}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
       </table>
-    </section>
+    </div>
   {{/if}}
 </div>
 <div class="doc-examples">
   {{#if example }}
-    <section>
+    <div class="example-section example-section-is-code">
       <h5>Example</h5>
       {{printJSON example}}
-    </section>
+    </div>
   {{/if}}
 </div>
