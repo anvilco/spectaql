@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars'
-import { printSchema } from '../lib/common'
+import { printSchema } from '../../../lib/common'
 
 module.exports = function (value, _options) {
   if (!value) {

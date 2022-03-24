@@ -24,6 +24,7 @@ const defaults = Object.freeze({
   targetFile: 'index.html',
   appDir: normalizePath('dist'), //path.resolve(root, 'dist'),
   gruntConfigFile: normalizePath('dist/lib/gruntConfig.js'), //path.resolve(root, 'dist/lib/gruntConfig.js'),
+  themeDir: normalizePath('dist/themes/default'),
   cacheDir: tmp.dirSync({
     unsafeCleanup: true,
     prefix: 'spectaql-',
@@ -122,6 +123,7 @@ function resolvePaths(
     'faviconFile',
     'specFile',
     'gruntConfigFile',
+    'themeDir',
   ]
 ) {
   keys.forEach((key) => {
@@ -305,11 +307,13 @@ export const run = function (cliOptions = {}) {
 
   if (!opts.disableCss) {
     if (opts.cssBuildMode === 'full') {
-      stylesheetsToBuild.push('full', 'foundation')
+      stylesheetsToBuild.push('full')
     } else {
       stylesheetsToBuild.push('basic')
     }
   }
+
+  grunt.registerTask('copy-theme', ['copy:theme-to-cache'])
 
   grunt.registerTask('stylesheets', [
     ...stylesheetsToBuild.map((name) => `sass:${name}`),
@@ -331,7 +335,12 @@ export const run = function (cliOptions = {}) {
     'prettify',
   ])
 
-  grunt.registerTask('default', ['stylesheets', 'javascripts', 'templates'])
+  grunt.registerTask('default', [
+    'copy-theme',
+    'stylesheets',
+    'javascripts',
+    'templates',
+  ])
 
   grunt.registerTask('server', ['connect'])
 
@@ -375,6 +384,8 @@ export const run = function (cliOptions = {}) {
   if (opts.startServer) {
     grunt.task.run('server')
   } else {
+    grunt.task.run('copy-theme')
+
     grunt.task.run('stylesheets')
 
     // If not oneFile/embedding JS/CSS, then we'll need to copy the files

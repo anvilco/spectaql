@@ -10,7 +10,7 @@ import {
 } from '../spectaql/graphql-hl'
 import { analyzeTypeIntrospection } from '../spectaql/type-helpers'
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
-import { getExampleForGraphQLScalar } from '../helpers/graphql-scalars'
+import { getExampleForGraphQLScalar } from '../themes/default/helpers/graphql-scalars'
 
 // Configure highlight.js
 hljs.configure({

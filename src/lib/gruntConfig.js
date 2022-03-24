@@ -9,10 +9,14 @@ const node_modules_dependency = path.resolve(root, '..')
 
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
+
+  // console.log(options)
+  console.log({cacheDir: options.cacheDir})
+
   // The basic JS paths
   const jsSrcPaths = [
-    options.appDir + '/javascripts/**/*.js',
-    '!' + options.appDir + '/javascripts/jquery*.js',
+    options.cacheDir + '/javascripts/**/*.js',
+    // '!' + options.appDir + '/javascripts/jquery*.js',
   ]
   // Add in the additional path if needed
   if (options.additionalJsFile) {
@@ -48,34 +52,34 @@ module.exports = function (grunt, options, spec) {
       options: {
         implementation: sass,
         // sourceMap: true,
-        includePaths: [
-          // A little JANK to reach into the node_modules directory like this but
-          // other option is to include in "app/vendor" folder (which had been done prior)
-          path.resolve(node_modules_clone, 'foundation-sites/scss'),
-          path.resolve(node_modules_dependency, 'foundation-sites/scss'),
-        ],
+        // includePaths: [
+        //   // A little JANK to reach into the node_modules directory like this but
+        //   // other option is to include in "app/vendor" folder (which had been done prior)
+        //   path.resolve(node_modules_clone, 'foundation-sites/scss'),
+        //   path.resolve(node_modules_dependency, 'foundation-sites/scss'),
+        // ],
       },
       basic: {
         files: {
           [path.resolve(options.cacheDir, 'stylesheets/basic.css')]:
-            path.resolve(options.appDir, 'stylesheets/basic.scss'),
+            path.resolve(options.cacheDir, 'stylesheets/basic.scss'),
         },
       },
       full: {
         files: {
           [path.resolve(options.cacheDir, 'stylesheets/full.css')]:
-            path.resolve(options.appDir, 'stylesheets/full.scss'),
+            path.resolve(options.cacheDir, 'stylesheets/full.scss'),
         },
       },
-      foundation: {
-        files: {
-          [path.resolve(options.cacheDir, 'stylesheets/foundation.css')]:
-            path.resolve(
-              options.appDir,
-              'stylesheets/foundation-includes.scss'
-            ),
-        },
-      },
+      // foundation: {
+      //   files: {
+      //     [path.resolve(options.cacheDir, 'stylesheets/foundation.css')]:
+      //       path.resolve(
+      //         options.appDir,
+      //         'stylesheets/foundation-includes.scss'
+      //       ),
+      //   },
+      // },
     },
 
     // Concatenate files into 1
@@ -118,7 +122,7 @@ module.exports = function (grunt, options, spec) {
         files: [
           {
             src:
-              options.cacheDir +
+              options.themeDir +
               '/views/' +
               (options.embeddable ? 'embedded.hbs' : 'normal.hbs'),
             dest: options.cacheDir + '/' + options.targetFile,
@@ -126,8 +130,8 @@ module.exports = function (grunt, options, spec) {
         ],
         templateData: spec,
         // TODO: allow helpers to be overridden/expanded, too
-        helpers: options.appDir + '/helpers/*.js',
-        partials: options.cacheDir + '/views/partials/**/*.hbs',
+        helpers: options.themeDir + '/helpers/*.js',
+        partials: options.themeDir + '/views/partials/**/*.hbs',
       },
     },
 
@@ -173,6 +177,7 @@ module.exports = function (grunt, options, spec) {
       assets: [
         options.cacheDir + '/stylesheets/**/*.css',
         options.cacheDir + '/javascripts/**/*.js',
+        options.cacheDir + '/helpers/**/*.js',
         options.cacheDir + '/views/**/*.hbs',
       ],
       // HTML from the build process
@@ -198,6 +203,13 @@ module.exports = function (grunt, options, spec) {
     // https://www.npmjs.com/package/grunt-contrib-copy
     // Copy files to the target directory
     copy: {
+      // Copy the whole theme directory to the cache directory
+      'theme-to-cache': {
+        expand: true,
+        cwd: options.themeDir,
+        src: '*/**',
+        dest: options.cacheDir,
+      },
       'views-tmp': {
         // We do an intermediate copy of the template files to the cache directory
         // so that we can combine the standard templates/files, with any custom ones
@@ -241,19 +253,19 @@ module.exports = function (grunt, options, spec) {
         spawn: false,
       },
       js: {
-        files: [options.appDir + '/javascripts/**/*.js'],
+        files: [options.themeDir + '/javascripts/**/*.js'],
         tasks: ['javascripts'],
       },
       css: {
-        files: [options.appDir + '/stylesheets/**/*.scss'],
+        files: [options.themeDir + '/stylesheets/**/*.scss'],
         tasks: ['stylesheets'],
       },
       templates: {
         files: [
           options.specFile,
-          options.appDir + '/views/**/*.hbs',
-          options.appDir + '/helpers/**/*.js',
-          options.appDir + '/lib/**/*.js',
+          options.themeDir + '/views/**/*.hbs',
+          options.themeDir + '/helpers/**/*.js',
+          options.themeDir + '/lib/**/*.js',
         ],
         tasks: ['templates'],
       },

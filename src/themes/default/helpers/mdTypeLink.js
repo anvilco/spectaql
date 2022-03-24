@@ -1,7 +1,7 @@
 import {
   analyzeTypeIntrospection,
   introspectionTypeToString,
-} from '../spectaql/type-helpers'
+} from '../../../spectaql/type-helpers'
 import mdLink from './mdLink'
 import schemaReferenceHref from './schemaReferenceHref'
 

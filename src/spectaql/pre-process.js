@@ -1,4 +1,4 @@
-import htmlId from '../helpers/htmlId'
+import htmlId from '../themes/default/helpers/htmlId'
 import generateQueryExample from './generate-graphql-example-data'
 import { generateIntrospectionTypeExample } from '../lib/common'
 import { analyzeTypeIntrospection } from './type-helpers'
