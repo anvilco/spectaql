@@ -6,698 +6,2062 @@
     <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
     <title>GraphQL API Reference</title>
     <link rel="stylesheet" href="stylesheets/spectaql.min.css" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="javascripts/spectaql.min.js"></script>
   </head>
-  <body id="spectacle">
-    <div id="page" class="drawer-layout drawer-slide-right-large">
+  <body id="spectaql">
+    <div id="page" class="drawer-layout">
       <div id="sidebar">
-        <button id="close-button" class="close-button" aria-label="Close menu" type="button" data-drawer-close>
-          <span aria-hidden="true">×</span>
-        </button>
-        <div id="logo">
-          <img src="images/logo.png" title="GraphQL API Reference" /> </div>
+        <div class="sidebar-top-container">
+          <div id="logo">
+            <img src="images/logo.png" title="GraphQL API Reference" /> </div>
+          <button class="close-button" aria-label="Close menu" type="button">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
         <nav id="nav" role="navigation">
-          <h5>Introduction</h5>
-          <a href="#introduction">Welcome</a>
-          <h5>Operations</h5>
-          <section>
-            <a href="#tag-Queries">Queries</a>
-            <ul>
-              <li>
-                <a href="#operation-getint-post"> getInt </a>
+          <div class="nav-group">
+            <h4 class="nav-group-title">Introduction</h5>
+              <ul class="nav-group-items">
+                <li>
+                  <a href="#introduction">Welcome</a>
+                </li>
+                <li>
+                  <a href="#introduction-item-0">Important thing 1</a>
+                </li>
+              </ul>
+          </div>
+          <div class="nav-group">
+            <h4 class="nav-group-title">Operations</h4>
+            <ul class="nav-group-items">
+              <li class="nav-group-section">
+                <h5 class="nav-group-section-title">
+                  <a href="#group-Operations-Queries">Queries</a>
+                </h5>
+                <ul class="nav-group-section-items">
+                  <li>
+                    <a href="#query-contactInfoInputQuery">contactInfoInputQuery</a>
+                  </li>
+                  <li>
+                    <a href="#query-enumsQuery">enumsQuery</a>
+                  </li>
+                  <li>
+                    <a href="#query-filterInputQuery">filterInputQuery</a>
+                  </li>
+                  <li>
+                    <a href="#query-getInts">getInts</a>
+                  </li>
+                  <li>
+                    <a href="#query-myQuery">myQuery</a>
+                  </li>
+                  <li>
+                    <a href="#query-myTypes">myTypes</a>
+                  </li>
+                  <li>
+                    <a href="#query-nodeQuery">nodeQuery</a>
+                  </li>
+                  <li>
+                    <a href="#query-optionalsQuery">optionalsQuery</a>
+                  </li>
+                  <li>
+                    <a href="#query-requiredsQuery">requiredsQuery</a>
+                  </li>
+                  <li>
+                    <a href="#query-simpleTypes">simpleTypes</a>
+                  </li>
+                  <li>
+                    <a href="#query-stringThing">stringThing</a>
+                  </li>
+                </ul>
               </li>
-              <li>
-                <a href="#operation-getints-post"> getInts </a>
-              </li>
-              <li>
-                <a href="#operation-myquery-post"> myQuery </a>
-              </li>
-              <li>
-                <a href="#operation-mytypes-post"> myTypes </a>
-              </li>
-              <li>
-                <a href="#operation-optionalsquery-post"> optionalsQuery </a>
-              </li>
-              <li>
-                <a href="#operation-requiredsquery-post"> requiredsQuery </a>
+              <li class="nav-group-section">
+                <h5 class="nav-group-section-title">
+                  <a href="#group-Operations-Mutations">Mutations</a>
+                </h5>
+                <ul class="nav-group-section-items">
+                  <li>
+                    <a href="#mutation-myMutation">myMutation</a>
+                  </li>
+                  <li>
+                    <a href="#mutation-stringThing">stringThing</a>
+                  </li>
+                </ul>
               </li>
             </ul>
-          </section>
-          <section>
-            <a href="#tag-Mutations">Mutations</a>
-            <ul>
+          </div>
+          <div class="nav-group">
+            <h4 class="nav-group-title">Types</h4>
+            <ul class="nav-group-items">
               <li>
-                <a href="#operation-mymutation-post"> myMutation </a>
+                <a href="#definition-AddressInput">AddressInput</a>
+              </li>
+              <li>
+                <a href="#definition-Boolean">Boolean</a>
+              </li>
+              <li>
+                <a href="#definition-ContactInfoInput">ContactInfoInput</a>
+              </li>
+              <li>
+                <a href="#definition-DateTime">DateTime</a>
+              </li>
+              <li>
+                <a href="#definition-EpisodeEnum">EpisodeEnum</a>
+              </li>
+              <li>
+                <a href="#definition-FilterInput">FilterInput</a>
+              </li>
+              <li>
+                <a href="#definition-ID">ID</a>
+              </li>
+              <li>
+                <a href="#definition-Int">Int</a>
+              </li>
+              <li>
+                <a href="#definition-MyType">MyType</a>
+              </li>
+              <li>
+                <a href="#definition-Node">Node</a>
+              </li>
+              <li>
+                <a href="#definition-PhoneNumber">PhoneNumber</a>
+              </li>
+              <li>
+                <a href="#definition-SimpleTypeOne">SimpleTypeOne</a>
+              </li>
+              <li>
+                <a href="#definition-SimpleTypeTwo">SimpleTypeTwo</a>
+              </li>
+              <li>
+                <a href="#definition-SimpleTypes">SimpleTypes</a>
+              </li>
+              <li>
+                <a href="#definition-String">String</a>
               </li>
             </ul>
-          </section>
-          <h5>Types</h5>
-          <a href="#definition-Boolean"> Boolean </a>
-          <a href="#definition-Int"> Int </a>
-          <a href="#definition-MyType"> MyType </a>
-          <a href="#definition-String"> String </a>
+          </div>
+          <div class="nav-group">
+            <h4 class="nav-group-title">Subscriptions</h4>
+            <ul class="nav-group-items">
+              <li>
+                <a href="#subscription-myTypeUpdatedSubscription">myTypeUpdatedSubscription</a>
+              </li>
+            </ul>
+          </div>
         </nav>
       </div>
-      <div id="docs" class="row collapse expanded drawer" data-drawer>
-        <button class="floating-menu-icon" type="button" data-drawer-slide="right">
-          <span class="hamburger"></span>
-        </button>
-        <div class="example-box doc-content"></div>
+      <div id="docs">
+        <div id="mobile-navbar">
+          <button class="sidebar-open-button" type="button">
+            <span class="hamburger"></span>
+          </button>
+        </div>
         <article id="content">
           <h1 class="doc-heading">GraphQL API Reference</h1>
           <div id="introduction" data-traverse-target="introduction">
-            <div class="doc-row">
+            <div id="welcome" class="doc-row">
               <div class="doc-copy">
                 <p>Welcome to the party!</p>
               </div>
               <div class="doc-examples">
-                <section>
-                  <h5>API Endpoints</h5> <pre><code>Production:
-https://example.com/graphql
-</code></pre>
-                  <p>Terms of Service:
-                    <a href="https://www.example.com/terms">https://www.example.com/terms</a>
-                  </p>
-                  <p>Contact:
+                <div class="example-section welcome-contact-section">
+                  <h5>Contact</h5>
+                  <p class="contact-name">API Support</p>
+                  <p class="contact-email">
                     <a href="mailto:support@example.com">support@example.com</a>
                   </p>
-                </section>
+                </div>
+                <div class="example-section welcome-license-section">
+                  <h5>License</h5>
+                  <p class="license-name">Apache 2.0</p>
+                  <p class="license-url">
+                    <a href="https://www.apache.org/licenses/LICENSE-2.0.html">https://www.apache.org/licenses/LICENSE-2.0.html</a>
+                  </p>
+                </div>
+                <div class="example-section welcome-tos-section">
+                  <h5>Terms of Service</h5>
+                  <p>
+                    <a href="https://www.example.com/terms">https://www.example.com/terms</a>
+                  </p>
+                </div>
+                <div class="example-section welcome-api-endpoints-section example-section-is-code">
+                  <h5>API Endpoints</h5> <pre><code>https://example.com/graphql</code></pre> </div>
               </div>
+            </div>
+            <div id="introduction-item-0" class="introduction-item" data-traverse-target="introduction-item-0">
+              <h2 class="introduction-item-title">Important thing 1</h5>
+                <div class="doc-row">
+                  <div class="doc-copy">
+                    <p>Some important stuff we wanted you to know. Supports <code>markdown</code></p>
+                  </div>
+                  <div class="doc-examples"> </div>
+                </div>
             </div>
           </div>
-          <h1 id="tag-Queries" class="swagger-summary-tag tag-name" data-traverse-target="tag-Queries">Queries</h1>
-          <div id="operation-getint-post" class="operation panel" data-traverse-target="operation-getint-post">
-            <h2 class="operation-name"> <code>getInt</code> </h2>
+          <h1 id="group-Operations-Queries" class="group-heading" data-traverse-target="group-Operations-Queries">Queries</h1>
+          <section id="query-contactInfoInputQuery" class="operation operation-query" data-traverse-target="query-contactInfoInputQuery">
+            <h2 class="operation-heading "> <code>contactInfoInputQuery</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-responses"> Returns an
-                  <a href="#definition-Int"><code>Int</code></a>
-                </section>
-                <br> </div>
-              <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Query</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getInt <span class="hljs-tag">{
-  <span class="hljs-symbol">getInt</span>
-}</span></span>
-</code></pre> </body>
-                    </html>
-                </section>
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>Without this Query, the <code>ContactInfoInput</code> would not be shown</p>
+                </div>
               </div>
             </div>
             <div class="doc-row">
-              <div class="doc-copy"> </div>
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-MyType"><code>MyType</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>input</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-ContactInfoInput"><code>ContactInfoInput</code></a>
+                          </span>
+                        </td>
+                        <td> Without this arg, the <code>ContactInfoInput</code> would not be shown </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
               <div class="doc-examples">
-                <section>
-                  <h5>Response </h5>
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;getInt&quot;</span>: <span class="hljs-number">123</span>}}
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> ContactInfoInputQuery<span class="hljs-tag">(<span class="hljs-code">$input</span>:<span class="hljs-type"> ContactInfoInput)</span> {
+  contactInfoInputQuery(input: <span class="hljs-code">$input</span>)</span> <span class="hljs-tag">{
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">nonRequiredField</span>
+    <span class="hljs-symbol">requiredField</span>
+    <span class="hljs-symbol">episode</span>
+    <span class="hljs-symbol">requiredArrayField</span>
+    <span class="hljs-symbol">doubleRequiredArrayField</span>
+  }</span></span>
+}
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"input"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">ContactInfoInput</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"contactInfoInputQuery"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"createdAt"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2007-12-03T10:15:30Z"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"nonRequiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Metadata example of `nonRequiredField`"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Field example for requiredField"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"episode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"NEWHOPE"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"Generated Field example for requiredArrayField"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"doubleRequiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"Generated Field example for doubleRequiredArrayField"</span>
+      <span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="operation-getints-post" class="operation panel" data-traverse-target="operation-getints-post">
-            <!-- <section class="operation-tags row"> -->
-            <!-- <div class="doc-copy"> -->
-            <div class="operation-tags">
-              <a class="label" href="#tag-Queries">Queries</a>
-              <!---->
+          </section>
+          <section id="query-enumsQuery" class="operation operation-query" data-traverse-target="query-enumsQuery">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <!-- </div> -->
-            <!-- </section> -->
-            <h2 class="operation-name"> <code>getInts</code> </h2>
+            <h2 class="operation-heading "> <code>enumsQuery</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-responses"> Returns
-                  <a href="#definition-Int"><code>[Int]</code></a>
-                </section>
-                <br> </div>
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-String"><code>String</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>enums</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-EpisodeEnum"><code>[EpisodeEnum!]!</code></a>
+                          </span>
+                        </td>
+                        <td> Default = <code>[EMPIRE, JEDI]</code> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>enum</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-EpisodeEnum"><code>EpisodeEnum!</code></a>
+                          </span>
+                        </td>
+                        <td> enum defaults should get literalized. Default = <code>EMPIRE</code> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>ints</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-Int"><code>[Int]</code></a>
+                          </span>
+                        </td>
+                        <td> everything else should get JSON5.parsed. Default = <code>[1, 2, 3]</code> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
               <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Query</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> getInts <span class="hljs-tag">{
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> EnumsQuery<span class="hljs-tag">(
+  <span class="hljs-code">$enums</span>: <span class="hljs-type">[EpisodeEnum!</span>]!,
+  <span class="hljs-code">$enum</span>:<span class="hljs-type"> EpisodeEnum!</span>,
+  <span class="hljs-code">$ints</span>: <span class="hljs-type">[Int]</span>
+)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">enumsQuery<span class="hljs-tag">(
+    enums: <span class="hljs-code">$enums</span>,
+    enum: <span class="hljs-code">$enum</span>,
+    ints: <span class="hljs-code">$ints</span>
+  )</span></span>
+}</span></span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"enums"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"EMPIRE"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"JEDI"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"enum"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"EMPIRE"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"ints"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">,</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span> <span class="hljs-number">3</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"enumsQuery"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="query-filterInputQuery" class="operation operation-query" data-traverse-target="query-filterInputQuery">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
+            </div>
+            <h2 class="operation-heading "> <code>filterInputQuery</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>Without this Query, the <code>FilterInput</code> would not be shown</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-MyType"><code>MyType</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>filter</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-FilterInput"><code>FilterInput</code></a>
+                          </span>
+                        </td>
+                        <td> Without this Query, the <code>FilterInput</code> would not be shown </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> FilterInputQuery<span class="hljs-tag">(<span class="hljs-code">$filter</span>:<span class="hljs-type"> FilterInput)</span> {
+  filterInputQuery(filter: <span class="hljs-code">$filter</span>)</span> <span class="hljs-tag">{
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">nonRequiredField</span>
+    <span class="hljs-symbol">requiredField</span>
+    <span class="hljs-symbol">episode</span>
+    <span class="hljs-symbol">requiredArrayField</span>
+    <span class="hljs-symbol">doubleRequiredArrayField</span>
+  }</span></span>
+}
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"filter"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">FilterInput</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"filterInputQuery"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"createdAt"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2007-12-03T10:15:30Z"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"nonRequiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Metadata example of `nonRequiredField`"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Field example for requiredField"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"episode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"NEWHOPE"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"Generated Field example for requiredArrayField"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"doubleRequiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"Generated Field example for doubleRequiredArrayField"</span>
+      <span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="query-getInts" class="operation operation-query" data-traverse-target="query-getInts">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
+            </div>
+            <h2 class="operation-heading "> <code>getInts</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns
+                    <a href="#definition-Int"><code>[Int]</code></a>
+                  </p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> GetInts <span class="hljs-tag">{
   <span class="hljs-symbol">getInts</span>
 }</span></span>
 </code></pre> </body>
-                    </html>
-                </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy"> </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Response </h5>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;getInts&quot;</span>: [<span class="hljs-number">987</span>]}}
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"getInts"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">42</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="operation-myquery-post" class="operation panel" data-traverse-target="operation-myquery-post">
-            <!-- <section class="operation-tags row"> -->
-            <!-- <div class="doc-copy"> -->
-            <div class="operation-tags">
-              <a class="label" href="#tag-Queries">Queries</a>
-              <!---->
+          </section>
+          <section id="query-myQuery" class="operation operation-query" data-traverse-target="query-myQuery">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <!-- </div> -->
-            <!-- </section> -->
-            <h2 class="operation-name"> <code>myQuery</code> </h2>
+            <h2 class="operation-heading operation-deprecated"> <code>myQuery</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-operation-description operation-description">
-                  <p>This is a description of <code>myQuery</code></p>
-                </section>
+                <div class="doc-copy-section">
+                  <div class="deprecation-reason"> <code>myQuery</code> is going away </div>
+                </div>
               </div>
             </div>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-responses"> Returns a
-                  <a href="#definition-String"><code>String</code></a>
-                </section>
-                <br>
-                <section class="swagger-request-params">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p><code>Markdown</code> and reference interpolation like
+                    <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-String"><code>String</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
                   <table>
-                    <tr>
-                      <th>Name</th>
-                      <th>Description</th>
-                    </tr>
-                    <tr>
-                      <td><code>nonReqQueryArg</code> -
-                        <a href="#definition-String"><code>String</code></a>
-                      </td>
-                      <td> This is a description of a <code>nonRequiredQueryArg</code>. Default = <code>&quot;some default string&quot;</code> </td>
-                    </tr>
-                    <tr>
-                      <td><code>reqQueryArg</code> -
-                        <a href="#definition-String"><code>String!</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td><code>reqQueryArrayArg</code> -
-                        <a href="#definition-String"><code>[String]!</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td><code>dblReqQueryArrayArg</code> -
-                        <a href="#definition-String"><code>[String!]!</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>nonReqQueryArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> <code>Markdown</code> and reference interpolation like
+                          <a href="#definition-String"><code>[String!]!</code></a> are supported. Default = <code>"some default string"</code> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>reqQueryArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>reqQueryArrayArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String]!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>dblReqQueryArrayArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String!]!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
                   </table>
-                </section>
+                </div>
               </div>
               <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Query</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> myQuery<span class="hljs-tag">(<span class="hljs-code">$nonReqQueryArg</span>:<span class="hljs-type"> String,</span> <span class="hljs-code">$reqQueryArg</span>:<span class="hljs-type"> String!</span>, <span class="hljs-code">$reqQueryArrayArg</span>: <span class="hljs-type">[String]</span>!, <span class="hljs-code">$dblReqQueryArrayArg</span>: <span class="hljs-type">[String!</span>]!)</span> <span class="hljs-tag">{
-  <span class="hljs-symbol">myQuery<span class="hljs-tag">(nonReqQueryArg: <span class="hljs-code">$nonReqQueryArg</span>, reqQueryArg: <span class="hljs-code">$reqQueryArg</span>, reqQueryArrayArg: <span class="hljs-code">$reqQueryArrayArg</span>, dblReqQueryArrayArg: <span class="hljs-code">$dblReqQueryArrayArg</span>)</span></span>
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> MyQuery<span class="hljs-tag">(
+  <span class="hljs-code">$nonReqQueryArg</span>:<span class="hljs-type"> String,</span>
+  <span class="hljs-code">$reqQueryArg</span>:<span class="hljs-type"> String,</span>
+  <span class="hljs-code">$reqQueryArrayArg</span>: <span class="hljs-type">[String]</span>!,
+  <span class="hljs-code">$dblReqQueryArrayArg</span>: <span class="hljs-type">[String!</span>]!
+)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">myQuery<span class="hljs-tag">(
+    nonReqQueryArg: <span class="hljs-code">$nonReqQueryArg</span>,
+    reqQueryArg: <span class="hljs-code">$reqQueryArg</span>,
+    reqQueryArrayArg: <span class="hljs-code">$reqQueryArrayArg</span>,
+    dblReqQueryArrayArg: <span class="hljs-code">$dblReqQueryArrayArg</span>
+  )</span></span>
 }</span></span>
 </code></pre> </body>
-                    </html>
-                    <h5>Variables</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;nonReqQueryArg&quot;</span>: <span class="hljs-string">&quot;Special generated Argument example for myQuery nonReqQueryArg&quot;</span>,
-  <span class="hljs-attr">&quot;reqQueryArg&quot;</span>: <span class="hljs-string">&quot;Special generated Argument example for myQuery reqQueryArg&quot;</span>,
-  <span class="hljs-attr">&quot;reqQueryArrayArg&quot;</span>: [
-    <span class="hljs-string">&quot;Special generated Argument example for myQuery reqQueryArrayArg&quot;</span>
-  ],
-  <span class="hljs-attr">&quot;dblReqQueryArrayArg&quot;</span>: [
-    <span class="hljs-string">&quot;Special generated Argument example for myQuery dblReqQueryArrayArg&quot;</span>
-  ]
-}
-</code></pre> </body>
-                    </html>
-                </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy"> </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Response </h5>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;myQuery&quot;</span>: <span class="hljs-string">&quot;abc123&quot;</span>}}
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"nonReqQueryArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Metadata example of `nonReqQueryArg`"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"reqQueryArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Special generated Argument example for myQuery reqQueryArg"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"reqQueryArrayArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">"Special generated Argument example for myQuery reqQueryArrayArg"</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"dblReqQueryArrayArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">"Special generated Argument example for myQuery dblReqQueryArrayArg"</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"myQuery"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="operation-mytypes-post" class="operation panel" data-traverse-target="operation-mytypes-post">
-            <!-- <section class="operation-tags row"> -->
-            <!-- <div class="doc-copy"> -->
-            <div class="operation-tags">
-              <a class="label" href="#tag-Queries">Queries</a>
-              <!---->
+          </section>
+          <section id="query-myTypes" class="operation operation-query" data-traverse-target="query-myTypes">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <!-- </div> -->
-            <!-- </section> -->
-            <h2 class="operation-name"> <code>myTypes</code> </h2>
+            <h2 class="operation-heading "> <code>myTypes</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-responses"> Returns
-                  <a href="#definition-MyType"><code>[MyType]</code></a>
-                </section>
-                <br> </div>
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns
+                    <a href="#definition-MyType"><code>[MyType]</code></a>
+                  </p>
+                </div>
+              </div>
               <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Query</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> myTypes <span class="hljs-tag">{
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> MyTypes <span class="hljs-tag">{
   <span class="hljs-symbol">myTypes <span class="hljs-tag">{
-    <span class="hljs-symbol">nonRequiredField<span class="hljs-tag">(nonRequiredArg: <span class="hljs-code">$nonRequiredArg</span>, reqArg: <span class="hljs-code">$reqArg</span>, reqArrayArg: <span class="hljs-code">$reqArrayArg</span>, dblReqArrayArg: <span class="hljs-code">$dblReqArrayArg</span>)</span></span>
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">nonRequiredField</span>
     <span class="hljs-symbol">requiredField</span>
+    <span class="hljs-symbol">episode</span>
     <span class="hljs-symbol">requiredArrayField</span>
     <span class="hljs-symbol">doubleRequiredArrayField</span>
   }</span></span>
 }</span></span>
 </code></pre> </body>
-                    </html>
-                </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy"> </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Response </h5>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;data&quot;</span>: {
-    <span class="hljs-attr">&quot;myTypes&quot;</span>: [
-      {
-        <span class="hljs-attr">&quot;nonRequiredField&quot;</span>: <span class="hljs-string">&quot;xyz789&quot;</span>,
-        <span class="hljs-attr">&quot;requiredField&quot;</span>: <span class="hljs-string">&quot;xyz789&quot;</span>,
-        <span class="hljs-attr">&quot;requiredArrayField&quot;</span>: [<span class="hljs-string">&quot;abc123&quot;</span>],
-        <span class="hljs-attr">&quot;doubleRequiredArrayField&quot;</span>: [<span class="hljs-string">&quot;abc123&quot;</span>]
-      }
-    ]
-  }
-}
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"myTypes"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"createdAt"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2007-12-03T10:15:30Z"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"nonRequiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Metadata example of `nonRequiredField`"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Field example for requiredField"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"episode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"NEWHOPE"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"Generated Field example for requiredArrayField"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"doubleRequiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"Generated Field example for doubleRequiredArrayField"</span>
+      <span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="operation-optionalsquery-post" class="operation panel" data-traverse-target="operation-optionalsquery-post">
-            <!-- <section class="operation-tags row"> -->
-            <!-- <div class="doc-copy"> -->
-            <div class="operation-tags">
-              <a class="label" href="#tag-Queries">Queries</a>
-              <!---->
+          </section>
+          <section id="query-nodeQuery" class="operation operation-query" data-traverse-target="query-nodeQuery">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <!-- </div> -->
-            <!-- </section> -->
-            <h2 class="operation-name"> <code>optionalsQuery</code> </h2>
+            <h2 class="operation-heading "> <code>nodeQuery</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-responses"> Returns
-                  <a href="#definition-String"><code>[String]</code></a>
-                </section>
-                <br>
-                <section class="swagger-request-params">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-Node"><code>Node</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
                   <table>
-                    <tr>
-                      <th>Name</th>
-                      <th>Description</th>
-                    </tr>
-                    <tr>
-                      <td><code>optionalArg</code> -
-                        <a href="#definition-String"><code>[String]</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>id</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
                   </table>
-                </section>
+                </div>
               </div>
               <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Query</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> optionalsQuery<span class="hljs-tag">(<span class="hljs-code">$optionalArg</span>: <span class="hljs-type">[String]</span>)</span> <span class="hljs-tag">{
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> NodeQuery<span class="hljs-tag">(<span class="hljs-code">$id</span>:<span class="hljs-type"> String!</span>)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">nodeQuery<span class="hljs-tag">(id: <span class="hljs-code">$id</span>)</span> <span class="hljs-tag">{
+    <span class="hljs-symbol">id</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Argument example for nodeQuery id"</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"nodeQuery"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="query-optionalsQuery" class="operation operation-query" data-traverse-target="query-optionalsQuery">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
+            </div>
+            <h2 class="operation-heading "> <code>optionalsQuery</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>I&#39;m the optionals query</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns
+                    <a href="#definition-String"><code>[String]</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>optionalArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String]</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> OptionalsQuery<span class="hljs-tag">(<span class="hljs-code">$optionalArg</span>: <span class="hljs-type">[String]</span>)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">optionalsQuery<span class="hljs-tag">(optionalArg: <span class="hljs-code">$optionalArg</span>)</span></span>
 }</span></span>
 </code></pre> </body>
-                    </html>
-                    <h5>Variables</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;optionalArg&quot;</span>: [
-    <span class="hljs-string">&quot;Generated Argument example for optionalsQuery optionalArg&quot;</span>
-  ]
-}
-</code></pre> </body>
-                    </html>
-                </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy"> </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Response </h5>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;optionalsQuery&quot;</span>: [<span class="hljs-string">&quot;xyz789&quot;</span>]}}
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"optionalArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"Generated Argument example for optionalsQuery optionalArg"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"optionalsQuery"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"abc123"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="operation-requiredsquery-post" class="operation panel" data-traverse-target="operation-requiredsquery-post">
-            <!-- <section class="operation-tags row"> -->
-            <!-- <div class="doc-copy"> -->
-            <div class="operation-tags">
-              <a class="label" href="#tag-Queries">Queries</a>
-              <!---->
+          </section>
+          <section id="query-requiredsQuery" class="operation operation-query" data-traverse-target="query-requiredsQuery">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
             </div>
-            <!-- </div> -->
-            <!-- </section> -->
-            <h2 class="operation-name"> <code>requiredsQuery</code> </h2>
+            <h2 class="operation-heading "> <code>requiredsQuery</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-responses"> Returns
-                  <a href="#definition-String"><code>[String!]!</code></a>
-                </section>
-                <br>
-                <section class="swagger-request-params">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns
+                    <a href="#definition-String"><code>[String!]!</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
                   <table>
-                    <tr>
-                      <th>Name</th>
-                      <th>Description</th>
-                    </tr>
-                    <tr>
-                      <td><code>dblReqArg</code> -
-                        <a href="#definition-String"><code>[String!]!</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>dblReqArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String!]!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
                   </table>
-                </section>
+                </div>
               </div>
               <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Query</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> requiredsQuery<span class="hljs-tag">(<span class="hljs-code">$dblReqArg</span>: <span class="hljs-type">[String!</span>]!)</span> <span class="hljs-tag">{
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> RequiredsQuery<span class="hljs-tag">(<span class="hljs-code">$dblReqArg</span>: <span class="hljs-type">[String!</span>]!)</span> <span class="hljs-tag">{
   <span class="hljs-symbol">requiredsQuery<span class="hljs-tag">(dblReqArg: <span class="hljs-code">$dblReqArg</span>)</span></span>
 }</span></span>
 </code></pre> </body>
-                    </html>
-                    <h5>Variables</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;dblReqArg&quot;</span>: [
-    <span class="hljs-string">&quot;Generated Argument example for requiredsQuery dblReqArg&quot;</span>
-  ]
-}
-</code></pre> </body>
-                    </html>
-                </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy"> </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Response </h5>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;requiredsQuery&quot;</span>: [<span class="hljs-string">&quot;abc123&quot;</span>]}}
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"dblReqArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"Generated Argument example for requiredsQuery dblReqArg"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span>
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"requiredsQuery"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
               </div>
             </div>
-          </div>
-          <h1 id="tag-Mutations" class="swagger-summary-tag tag-name" data-traverse-target="tag-Mutations">Mutations</h1>
-          <div id="operation-mymutation-post" class="operation panel" data-traverse-target="operation-mymutation-post">
-            <h2 class="operation-name"> <code>myMutation</code> </h2>
+          </section>
+          <section id="query-simpleTypes" class="operation operation-query" data-traverse-target="query-simpleTypes">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
+            </div>
+            <h2 class="operation-heading "> <code>simpleTypes</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="swagger-request-body"> </section>
-                <section class="swagger-responses"> Returns a
-                  <a href="#definition-String"><code>String</code></a>
-                </section>
-                <br>
-                <section class="swagger-request-params">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>I return a list of the SimpleType Union</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns
+                    <a href="#definition-SimpleTypes"><code>[SimpleTypes]</code></a>
+                  </p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> SimpleTypes <span class="hljs-tag">{
+  <span class="hljs-symbol">simpleTypes</span>
+}</span></span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"simpleTypes"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">SimpleTypeOne</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="query-stringThing" class="operation operation-query" data-traverse-target="query-stringThing">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Queries">Queries</a>
+            </div>
+            <h2 class="operation-heading "> <code>stringThing</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>This Query has the same name as a Mutation</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-String"><code>String</code></a>
+                  </p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">query</span> StringThing <span class="hljs-tag">{
+  <span class="hljs-symbol">stringThing</span>
+}</span></span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"stringThing"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <h1 id="group-Operations-Mutations" class="group-heading" data-traverse-target="group-Operations-Mutations">Mutations</h1>
+          <section id="mutation-myMutation" class="operation operation-mutation" data-traverse-target="mutation-myMutation">
+            <h2 class="operation-heading "> <code>myMutation</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p><code>Markdown</code> and reference interpolation like
+                    <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-String"><code>String</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
                   <table>
-                    <tr>
-                      <th>Name</th>
-                      <th>Description</th>
-                    </tr>
-                    <tr>
-                      <td><code>myArg</code> -
-                        <a href="#definition-String"><code>String</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>nonReqMutationArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> <code>Markdown</code> and reference interpolation like
+                          <a href="#definition-String"><code>[String!]!</code></a> are supported. Default = <code>"some default string"</code> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>reqMutationArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>reqMutationArrayArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String]!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>dblReqMutationArrayArg</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String!]!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
                   </table>
-                </section>
+                </div>
               </div>
               <div class="doc-examples">
-                <section>
-                  <h4>Example</h3>
-                    <h5>Query</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> myMutation<span class="hljs-tag">(<span class="hljs-code">$myArg</span>:<span class="hljs-type"> String)</span> {
-  myMutation(myArg: <span class="hljs-code">$myArg</span>)</span></span>
-}
-</code></pre> </body>
-                    </html>
-                    <h5>Variables</h5>
-                    <html>
-                    <head></head>
-                    <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;myArg&quot;</span>: <span class="hljs-string">&quot;Generated Argument example for myMutation myArg&quot;</span>
-}
-</code></pre> </body>
-                    </html>
-                </section>
-              </div>
-            </div>
-            <div class="doc-row">
-              <div class="doc-copy"> </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Response </h5>
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{<span class="hljs-attr">&quot;data&quot;</span>: {<span class="hljs-attr">&quot;myMutation&quot;</span>: <span class="hljs-string">&quot;abc123&quot;</span>}}
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> MyMutation<span class="hljs-tag">(
+  <span class="hljs-code">$nonReqMutationArg</span>:<span class="hljs-type"> String,</span>
+  <span class="hljs-code">$reqMutationArg</span>:<span class="hljs-type"> String!</span>,
+  <span class="hljs-code">$reqMutationArrayArg</span>: <span class="hljs-type">[String]</span>!,
+  <span class="hljs-code">$dblReqMutationArrayArg</span>: <span class="hljs-type">[String!</span>]!
+)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">myMutation<span class="hljs-tag">(
+    nonReqMutationArg: <span class="hljs-code">$nonReqMutationArg</span>,
+    reqMutationArg: <span class="hljs-code">$reqMutationArg</span>,
+    reqMutationArrayArg: <span class="hljs-code">$reqMutationArrayArg</span>,
+    dblReqMutationArrayArg: <span class="hljs-code">$dblReqMutationArrayArg</span>
+  )</span></span>
+}</span></span>
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"nonReqMutationArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Argument example for myMutation nonReqMutationArg"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"reqMutationArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Argument example for myMutation reqMutationArg"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"reqMutationArrayArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">"Generated Argument example for myMutation reqMutationArrayArg"</span>
+  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"dblReqMutationArrayArg"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">"Generated Argument example for myMutation dblReqMutationArrayArg"</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"myMutation"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
               </div>
             </div>
-          </div>
-          <span id="tag-types"></span>
-          <h1>Types</h1>
-          <div id="definition-Boolean" class="definition panel" data-traverse-target="definition-Boolean">
-            <h2 class="panel-title">
-              <a name="/definitions/Boolean"></a>
-              <p><code>Boolean</code></p>
-            </h2>
+          </section>
+          <section id="mutation-stringThing" class="operation operation-mutation" data-traverse-target="mutation-stringThing">
+            <div class="operation-group-name">
+              <a href="#group-Operations-Mutations">Mutations</a>
+            </div>
+            <h2 class="operation-heading "> <code>stringThing</code> </h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="json-schema-description">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>This Mutation has the same name as a Query</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-String"><code>String</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>anArgument</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">mutation</span> StringThing<span class="hljs-tag">(<span class="hljs-code">$anArgument</span>:<span class="hljs-type"> String)</span> {
+  stringThing(anArgument: <span class="hljs-code">$anArgument</span>)</span></span>
+}
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"anArgument"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Argument example for stringThing anArgument"</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">"stringThing"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <h1 id="group-Types" class="group-heading" data-traverse-target="group-Types">Types</h1>
+          <section id="definition-AddressInput" class="definition definition-input-object" data-traverse-target="definition-AddressInput">
+            <h2 class="definition-heading">AddressInput</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>AddresInput description</p>
+                </div>
+                <div class="definition-properties doc-copy-section">
+                  <h5>Fields</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Input Field</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>lat</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>lon</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>planet</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"lat"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"lon"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"planet"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"xyz789"</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-Boolean" class="definition definition-scalar" data-traverse-target="definition-Boolean">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">Boolean</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
                   <p>The <code>Boolean</code> scalar type represents <code>true</code> or <code>false</code>.</p>
-                </section>
+                </div>
               </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-literal">false</span></span>
-</code></pre> </body>
-                  </html>
-                </section>
-              </div>
+              <div class="doc-examples"> </div>
             </div>
-          </div>
-          <div id="definition-Int" class="definition panel" data-traverse-target="definition-Int">
-            <div class="definition-tags">
-              <a class="label" href="#tag-types">Types</a>
+          </section>
+          <section id="definition-ContactInfoInput" class="definition definition-input-object" data-traverse-target="definition-ContactInfoInput">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
             </div>
-            <h2 class="panel-title">
-              <a name="/definitions/Int"></a>
-              <p><code>Int</code></p>
-            </h2>
+            <h2 class="definition-heading">ContactInfoInput</h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="json-schema-description">
-                  <p>The <code>Int</code> scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.</p>
-                </section>
-              </div>
-              <div class="doc-examples">
-                <section>
-                  <h5>Example</h5>
-                  <html>
-                  <head></head>
-                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">123</span>
-</code></pre> </body>
-                  </html>
-                </section>
-              </div>
-            </div>
-          </div>
-          <div id="definition-MyType" class="definition panel" data-traverse-target="definition-MyType">
-            <div class="definition-tags">
-              <a class="label" href="#tag-types">Types</a>
-            </div>
-            <h2 class="panel-title">
-              <a name="/definitions/MyType"></a>
-              <p><code>MyType</code></p>
-            </h2>
-            <div class="doc-row">
-              <div class="doc-copy">
-                <section class="json-schema-description">
-                  <p>This is a description of <code>MyType</code></p>
-                </section>
-                <section class="json-schema-properties">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>ContactInfoInput description</p>
+                </div>
+                <div class="definition-properties doc-copy-section">
+                  <h5>Fields</h5>
                   <table>
-                    <tr>
-                      <th>Name</th>
-                      <th>Description</th>
-                    </tr>
-                    <tr>
-                      <td data-property-name="nonRequiredField"> <code>nonRequiredField</code> -
-                        <a href="#definition-String"><code>String</code></a>
-                      </td>
-                      <td>
-                        <p>This is a description of <code>nonRequiredField</code></p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="no-top-border">
-                        <div class="field-arguments">
-                          <p class="field-arguments-header"> Arguments </p>
-                          <div class="field-argument">
-                            <p class="field-argument-name"><code>nonRequiredArg</code> -
-                              <a href="#definition-String"><code>String</code></a> default = <code>&quot;some default string&quot;</code></p>
-                            <p>
-                              <p>This is a description of a <code>nonRequiredArg</code></p>
-                            </p>
-                          </div>
-                          <div class="field-argument">
-                            <p class="field-argument-name"><code>reqArg</code> -
-                              <a href="#definition-String"><code>String!</code></a>
-                            </p>
-                          </div>
-                          <div class="field-argument">
-                            <p class="field-argument-name"><code>reqArrayArg</code> -
-                              <a href="#definition-String"><code>[String]!</code></a>
-                            </p>
-                          </div>
-                          <div class="field-argument">
-                            <p class="field-argument-name"><code>dblReqArrayArg</code> -
-                              <a href="#definition-String"><code>[String!]!</code></a>
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td data-property-name="requiredField"> <code>requiredField</code> -
-                        <a href="#definition-String"><code>String!</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td data-property-name="requiredArrayField"> <code>requiredArrayField</code> -
-                        <a href="#definition-String"><code>[String]!</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <td data-property-name="doubleRequiredArrayField"> <code>doubleRequiredArrayField</code> -
-                        <a href="#definition-String"><code>[String!]!</code></a>
-                      </td>
-                      <td> </td>
-                    </tr>
+                    <thead>
+                      <tr>
+                        <th>Input Field</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>email</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>address</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-AddressInput"><code>AddressInput</code></a>
+                          </span>
+                        </td>
+                        <td>
+                          <p>Without this InputField, the <code>AddressInput</code> would not be shown</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>phoneNumber</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-PhoneNumber"><code>PhoneNumber</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
                   </table>
-                </section>
+                </div>
               </div>
               <div class="doc-examples">
-                <section>
+                <div class="example-section example-section-is-code">
                   <h5>Example</h5>
                   <html>
                   <head></head>
-                  <body><pre><code class="hljs language-json">{
-  <span class="hljs-attr">&quot;nonRequiredField&quot;</span>: <span class="hljs-string">&quot;Generated Field example for nonRequiredField&quot;</span>,
-  <span class="hljs-attr">&quot;requiredField&quot;</span>: <span class="hljs-string">&quot;Generated Field example for requiredField&quot;</span>,
-  <span class="hljs-attr">&quot;requiredArrayField&quot;</span>: [
-    <span class="hljs-string">&quot;Generated Field example for requiredArrayField&quot;</span>
-  ],
-  <span class="hljs-attr">&quot;doubleRequiredArrayField&quot;</span>: [
-    <span class="hljs-string">&quot;Generated Field example for doubleRequiredArrayField&quot;</span>
-  ]
-}
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"email"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"address"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">AddressInput</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"phoneNumber"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"+17895551234"</span>
+<span class="hljs-punctuation">}</span>
 </code></pre> </body>
                   </html>
-                </section>
+                </div>
               </div>
             </div>
-          </div>
-          <div id="definition-String" class="definition panel" data-traverse-target="definition-String">
-            <div class="definition-tags">
-              <a class="label" href="#tag-types">Types</a>
+          </section>
+          <section id="definition-DateTime" class="definition definition-scalar" data-traverse-target="definition-DateTime">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
             </div>
-            <h2 class="panel-title">
-              <a name="/definitions/String"></a>
-              <p><code>String</code></p>
-            </h2>
+            <h2 class="definition-heading">DateTime</h2>
             <div class="doc-row">
               <div class="doc-copy">
-                <section class="json-schema-description">
-                  <p>The <code>String</code> scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.</p>
-                </section>
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>This is a <code>DateTime</code> scalar</p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">"2007-12-03T10:15:30Z"</span>
+</code></pre> </body>
+                  </html>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
+          <section id="definition-EpisodeEnum" class="definition definition-enum" data-traverse-target="definition-EpisodeEnum">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">EpisodeEnum</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>These are very important <code>enum</code>s. <code>Markdown</code> and reference interpolation like
+                    <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                </div>
+                <div class="definition-properties doc-copy-section">
+                  <h5>Values</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Enum Value</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p class="definition-deprecated"><code>NEWHOPE</code></p>
+                        </td>
+                        <td> Who is Luke? <code>Markdown</code> and reference interpolation like
+                          <a href="#definition-String"><code>[String!]!</code></a> are supported
+                          <span class="deprecation-reason definition-enum-deprecation-reason"><code>NEWHOPE</code> is going away</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p><code>EMPIRE</code></p>
+                        </td>
+                        <td> Who is Darth? </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p><code>JEDI</code></p>
+                        </td>
+                        <td> Who are the Ewoks? </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">"NEWHOPE"</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-FilterInput" class="definition definition-input-object" data-traverse-target="definition-FilterInput">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">FilterInput</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>An Input Type for filtering things. <code>Markdown</code> and reference interpolation like
+                    <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                </div>
+                <div class="definition-properties doc-copy-section">
+                  <h5>Fields</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Input Field</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>someField</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-Boolean"><code>Boolean</code></a>
+                          </span>
+                        </td>
+                        <td>
+                          <p>Comment for someField. <code>Markdown</code> and reference interpolation like
+                            <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>anotherField</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td>
+                          <p>Comment for anotherField</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>episodeEnums</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-EpisodeEnum"><code>[EpisodeEnum!]</code></a>
+                          </span>
+                        </td>
+                        <td>
+                          <p>Comment for episodeEnums</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"someField"</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"anotherField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Metadata example of `anotherField`"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"episodeEnums"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"EMPIRE"</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-ID" class="definition definition-scalar" data-traverse-target="definition-ID">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">ID</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>The <code>ID</code> scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as <code>&quot;4&quot;</code>) or integer (such as <code>4</code>) input value will be accepted as an ID.</p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-number">4</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-Int" class="definition definition-scalar" data-traverse-target="definition-Int">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">Int</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>The <code>Int</code> scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.</p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-number">42</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-MyType" class="definition definition-object" data-traverse-target="definition-MyType">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">MyType</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p><code>Markdown</code> and reference interpolation like
+                    <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                </div>
+                <div class="definition-properties doc-copy-section">
+                  <h5>Fields</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Field Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>createdAt</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-DateTime"><code>DateTime</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr class="row-has-field-arguments">
+                        <td data-property-name="">
+                          <span class="property-name"><code>nonRequiredField</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> <code>Markdown</code> and reference interpolation like
+                          <a href="#definition-String"><code>[String!]!</code></a> are supported </td>
+                      </tr>
+                      <tr class="row-field-arguments">
+                        <td colspan="2">
+                          <div class="field-arguments">
+                            <h5 class="field-arguments-heading"> Arguments </h5>
+                            <div class="field-argument-list">
+                              <div class="field-argument">
+                                <h6 class="field-argument-name">
+                                  <span class="property-name"><code>nonRequiredArg</code></span> -
+                                  <span class="property-type">
+                                    <a href="#definition-String"><code>String</code></a>
+                                  </span>
+                                </h6>
+                                <p><code>Markdown</code> and reference interpolation like
+                                  <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                              </div>
+                              <div class="field-argument">
+                                <h6 class="field-argument-name">
+                                  <span class="property-name"><code>reqArg</code></span> -
+                                  <span class="property-type">
+                                    <a href="#definition-String"><code>String!</code></a>
+                                  </span>
+                                </h6>
+                              </div>
+                              <div class="field-argument">
+                                <h6 class="field-argument-name">
+                                  <span class="property-name"><code>reqArrayArg</code></span> -
+                                  <span class="property-type">
+                                    <a href="#definition-String"><code>[String]!</code></a>
+                                  </span>
+                                </h6>
+                              </div>
+                              <div class="field-argument">
+                                <h6 class="field-argument-name">
+                                  <span class="property-name"><code>dblReqArrayArg</code></span> -
+                                  <span class="property-type">
+                                    <a href="#definition-String"><code>[String!]!</code></a>
+                                  </span>
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td data-property-name="" class="definition-deprecated">
+                          <span class="property-name"><code>requiredField</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String!</code></a>
+                          </span>
+                        </td>
+                        <td>
+                          <span class="deprecation-reason"><code>requiredField</code> is going away</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>episode</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-EpisodeEnum"><code>EpisodeEnum!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>requiredArrayField</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String]!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>doubleRequiredArrayField</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>[String!]!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"createdAt"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2007-12-03T10:15:30Z"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"nonRequiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Metadata example of `nonRequiredField`"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"requiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Field example for requiredField"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"episode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"NEWHOPE"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"requiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"Generated Field example for requiredArrayField"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"doubleRequiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">"Generated Field example for doubleRequiredArrayField"</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-Node" class="definition definition-interface" data-traverse-target="definition-Node">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">Node</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>Anything with an ID can be a node</p>
+                </div>
+                <div class="definition-properties definition-fields doc-copy-section">
+                  <h5>Fields</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Field Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>id</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String!</code></a>
+                          </span>
+                        </td>
+                        <td> A unique identifier </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="definition-properties definition-possible-types doc-copy-section">
+                  <h5>Possible Types</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Node Types</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p>
+                            <a href="#definition-SimpleTypeOne"><code>SimpleTypeOne</code></a>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-PhoneNumber" class="definition definition-scalar" data-traverse-target="definition-PhoneNumber">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">PhoneNumber</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>This is a Phone</p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">"+17895551234"</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-SimpleTypeOne" class="definition definition-object" data-traverse-target="definition-SimpleTypeOne">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">SimpleTypeOne</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p><code>Markdown</code> and reference interpolation like
+                    <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                </div>
+                <div class="definition-properties doc-copy-section">
+                  <h5>Fields</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Field Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>id</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String!</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>myType</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-MyType"><code>[MyType!]!</code></a>
+                          </span>
+                        </td>
+                        <td> <code>Markdown</code> and reference interpolation like
+                          <a href="#definition-String"><code>[String!]!</code></a> are supported </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"myType"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">MyType</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-SimpleTypeTwo" class="definition definition-object" data-traverse-target="definition-SimpleTypeTwo">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">SimpleTypeTwo</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-properties doc-copy-section">
+                  <h5>Fields</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Field Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td data-property-name="">
+                          <span class="property-name"><code>simpleTypeTwoField</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-String"><code>String</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"simpleTypeTwoField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"abc123"</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-SimpleTypes" class="definition definition-union" data-traverse-target="definition-SimpleTypes">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">SimpleTypes</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>A Union of <code>SimpleTypeOne</code> and <code>SimpleTypeTwo</code>. <code>Markdown</code> and reference interpolation like
+                    <a href="#definition-String"><code>[String!]!</code></a> are supported</p>
+                </div>
+                <div class="definition-properties doc-copy-section">
+                  <h5>Types</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Union Types</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p>
+                            <a href="#definition-SimpleTypeOne"><code>SimpleTypeOne</code></a>
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p>
+                            <a href="#definition-SimpleTypeTwo"><code>SimpleTypeTwo</code></a>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">SimpleTypeOne</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="definition-String" class="definition definition-scalar" data-traverse-target="definition-String">
+            <div class="definition-group-name">
+              <a href="#group-Types">Types</a>
+            </div>
+            <h2 class="definition-heading">String</h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="definition-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>The <code>String</code> scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.</p>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <div class="example-section example-section-is-code">
+                  <h5>Example</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol">"abc123"</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
+          <h1 id="group-Subscriptions" class="group-heading" data-traverse-target="group-Subscriptions">Subscriptions</h1>
+          <section id="subscription-myTypeUpdatedSubscription" class="operation operation-subscription" data-traverse-target="subscription-myTypeUpdatedSubscription">
+            <h2 class="operation-heading "> <code>myTypeUpdatedSubscription</code> </h2>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-description doc-copy-section">
+                  <h5>Description</h5>
+                  <p>The <code>myTypeUpdatedSubscription</code>, baby!</p>
+                </div>
+              </div>
+            </div>
+            <div class="doc-row">
+              <div class="doc-copy">
+                <div class="operation-response doc-copy-section">
+                  <h5>Response</h5>
+                  <p> Returns a
+                    <a href="#definition-MyType"><code>MyType!</code></a>
+                  </p>
+                </div>
+                <div class="operation-arguments doc-copy-section">
+                  <h5>Arguments</h5>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <span class="property-name"><code>input</code></span> -
+                          <span class="property-type">
+                            <a href="#definition-ID"><code>ID</code></a>
+                          </span>
+                        </td>
+                        <td> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="doc-examples">
+                <h4 class="example-heading">Example</h4>
+                <div class="example-section example-section-is-code operation-query-example">
+                  <h5>Query</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-gql"><span class="hljs-symbol"><span class="hljs-keyword">subscription</span> MyTypeUpdatedSubscription<span class="hljs-tag">(<span class="hljs-code">$input</span>: ID)</span> <span class="hljs-tag">{
+  <span class="hljs-symbol">myTypeUpdatedSubscription<span class="hljs-tag">(input: <span class="hljs-code">$input</span>)</span> <span class="hljs-tag">{
+    <span class="hljs-symbol">createdAt</span>
+    <span class="hljs-symbol">nonRequiredField</span>
+    <span class="hljs-symbol">requiredField</span>
+    <span class="hljs-symbol">episode</span>
+    <span class="hljs-symbol">requiredArrayField</span>
+    <span class="hljs-symbol">doubleRequiredArrayField</span>
+  }</span></span>
+}</span></span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-variables-example">
+                  <h5>Variables</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">"input"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"4"</span><span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+                <div class="example-section example-section-is-code operation-response-example">
+                  <h5>Response</h5>
+                  <html>
+                  <head></head>
+                  <body><pre><code class="hljs language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"data"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"myTypeUpdatedSubscription"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"createdAt"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2007-12-03T10:15:30Z"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"nonRequiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Metadata example of `nonRequiredField`"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredField"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Generated Field example for requiredField"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"episode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"NEWHOPE"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"requiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"Generated Field example for requiredArrayField"</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"doubleRequiredArrayField"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+        <span class="hljs-string">"Generated Field example for doubleRequiredArrayField"</span>
+      <span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre> </body>
+                  </html>
+                </div>
+              </div>
+            </div>
+          </section>
           <div class="doc-row no-margin">
             <div class="doc-copy doc-separator">
               <a class="powered-by" href="https://github.com/anvilco/spectaql">Documentation by
@@ -706,6 +2070,7 @@ https://example.com/graphql
             </div>
           </div>
         </article>
+        <div class="drawer-overlay"></div>
       </div>
     </div>
   </body>
