@@ -5,7 +5,7 @@ spectaql:
   # themeDir: 'default'
   # themeDir: 'basic'
   # themeDir: 'spectaql'
-  themeDir: ./examples/themes/my-partial-theme
+  # themeDir: ./examples/themes/my-partial-theme
 
 
 introspection:
