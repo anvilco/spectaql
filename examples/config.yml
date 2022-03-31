@@ -1,22 +1,12 @@
 spectaql:
   logoFile: ./test/fixtures/logo.png
   faviconFile: ./test/fixtures/favicon.png
-  # dynamicDataArrangementProcessingModule: ./examples/customizations/data-arrangement
-  # themeDir: 'default'
-  # themeDir: 'basic'
-  # themeDir: 'spectaql'
-  # themeDir: ./examples/themes/my-partial-theme
-
 
 introspection:
-  # url: http://localhost:3000/graphql
   removeTrailingPeriodFromDescriptions: false
   schemaFile: ./examples/data/schema.gql
   metadataFile: ./examples/data/metadata.json
   dynamicExamplesProcessingModule: ./examples/customizations/examples
-
-  # subscriptionArgDocumentedDefault: false
-  # inputFieldDocumentedDefault: false
 
 extensions:
   graphqlScalarExamples: true
