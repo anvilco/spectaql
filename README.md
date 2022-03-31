@@ -111,7 +111,7 @@ You can also see a minimal-ish working example YAML in the [examples/config.yml]
 
 ## Command Line Options
 
-Several options are supported via the CLI. Some are exclusive to the CLI, while others are also possible to specify in the YAML config. Options specified in the CLI take precedence over those that exist in the YAML config. All the supported options and their descriptions can be found in [/bin/spectaql.js](https://github.com/anvilco/spectaql/blob/master/bin/spectaql.js).
+Several options are supported via the CLI. Some are exclusive to the CLI, while others are also possible to specify in the YAML config. Options specified in the CLI take precedence over those that exist in the YAML config. All the supported options and their descriptions can be found in [/src/cli.js][cli].
 
 ## Metadata
 
@@ -153,7 +153,7 @@ _NOTE:_ Again, this is an experimental API and it could change in a breaking man
 
 SpectaQL supports a "theme" system that can be used to make minor tweaks to the default look, or to completely overhaul the output.
 
-SpectaQL ships with 3 included themes that can be specified via the `themeDir` options:
+SpectaQL ships with 3 included themes that can be specified via the `themeDir` option:
 
 - `default`: Our default theme. This is the theme that will be used if do not specify any `themeDir` option.
 - `basic`: Outputs the same HTML structure as the `default` theme, but with minimal CSS styling.
@@ -178,7 +178,7 @@ Examples:
 The best option for customizing your output is to see if what you want to do is already supported out of the box:
 
 - There are various options in the [CLI](#command-line-options) and [YAML](#yaml-options) config for customizing your results.
-- Overriding CSS is already supported. Check [examples/customizations/css/custom.css](https://github.com/anvilco/spectaql/blob/master/examples/customizations/css/custom.css) for more.
+- Overriding CSS, JS and HTML is already supported via themes. Check [themes README][themes-readme] for more.
 - Overriding "examples" for things is already supported via [metadata](#metadata), or via a [dynamic example generator](#dynamic-example-generators).
 
 If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `master` branch.
@@ -245,4 +245,5 @@ Good luck and enjoy SpectaQL!
 [themes-readme]: /examples/themes/README.md
 [default-data-arranger]: /src/spectaql/arrange-data.js
 [custom-data-arranger]: /examples/customizations/data-arrangement/index.js
+[cli]: /src/cli.js
 [microfiber]: https://www.npmjs.com/package/microfiber
