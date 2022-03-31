@@ -14,25 +14,18 @@ spectaql:
   # If false, the favicon name will default to "favicon"
   preserveFaviconName: false
 
-  # Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
-  # required JS. Can be useful for setting some values, such as for the Traverse.defaults object
-  additionalJsFile: path/to/additional.js
-  # Optional path to a CSS file that will be bundled into the spectaql.min.css with all the other CSS
-  # from foundation, etc. Useful for overriding CSS styles to your liking.
-  additionalCssFile: path/to/additional.css
-
-  # Optional string specifying how to build and include CSS for the output:
-  #   full: will include a very opinionated set of CSS to make the output look good
-  #   basic: will include a very minimal set of CSS mostly used for layout purposes.
-  #     You can then season to taste with your own additional CSS
+  # Optional string specifying a path to a theme directory to use for your build.
   #
-  # Default: full
-  cssBuildMode: full # or basic
-
-  # Optional path to a directory containing any view customization files you want SpectaQL to use.
-  # The files provided will be merged over the standard files found in `src/views`. This means that
-  # you can override as much or as little of the existing/default views as you like.
-  viewsOverlay: path/to/custom/views
+  # Themes rely on a directory structure convention that overlays your customizations and enhancements
+  # on top of the default theme provided by SpectaQL. See /examples/themes for more.
+  #
+  # Also, a few built-in themes can be used by specifying them by name:
+  # "default": Our default theme
+  # "basic": Outputs the same HTML structure as the "default" theme, but with minimal CSS styling
+  # "spectaql": Outputs the same HTML structure as the "default" theme, but with some CSS enhancements
+  #
+  # Default: "default"
+  themeDir: path/to/theme
 
   dynamicDataArrangementProcessingModule: path/to/data-arranger.js
 

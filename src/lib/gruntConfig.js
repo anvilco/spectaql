@@ -1,45 +1,10 @@
 import path from 'path'
 import sass from 'sass'
 
-import { normalizePath } from '../spectaql/utils'
-
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
   // console.log(options)
   console.log({ cacheDir: options.cacheDir, themeDir: options.themeDir })
-
-  // The basic JS paths
-  const jsSrcPaths = [
-    options.cacheDir + '/javascripts/**/*.js',
-    // '!' + options.appDir + '/javascripts/jquery*.js',
-  ]
-  // Add in the additional path if needed
-  if (options.additionalJsFile) {
-    jsSrcPaths.push(options.additionalJsFile)
-  }
-
-  const cssSrcPaths = [options.cacheDir + '/stylesheets/**/*.css']
-  if (options.additionalCssFile) {
-    cssSrcPaths.push(options.additionalCssFile)
-  }
-
-  const copyViewsTempFiles = [
-    {
-      expand: true,
-      cwd: options.appDir,
-      src: 'views/**/*.hbs',
-      dest: options.cacheDir,
-    },
-  ]
-
-  if (options.viewsOverlay) {
-    copyViewsTempFiles.push({
-      expand: true,
-      cwd: normalizePath(options.viewsOverlay + '/..'),
-      src: '**/*.hbs',
-      dest: options.cacheDir,
-    })
-  }
 
   return {
     // Compile SCSS source files into the cache directory
@@ -65,11 +30,11 @@ module.exports = function (grunt, options, spec) {
     // Concatenate files into 1
     concat: {
       js: {
-        src: jsSrcPaths,
+        src: [options.cacheDir + '/javascripts/**/*.js'],
         dest: options.cacheDir + '/javascripts/spectaql.js',
       },
       css: {
-        src: cssSrcPaths,
+        src: [options.cacheDir + '/stylesheets/**/*.css'],
         dest: options.cacheDir + '/stylesheets/spectaql.css',
       },
     },
@@ -104,7 +69,7 @@ module.exports = function (grunt, options, spec) {
             src:
               options.cacheDir +
               '/views/' +
-              (options.embeddable ? 'embedded.hbs' : 'standard.hbs'),
+              (options.embeddable ? 'embedded.hbs' : 'main.hbs'),
             dest: options.cacheDir + '/' + options.targetFile,
           },
         ],
@@ -150,8 +115,6 @@ module.exports = function (grunt, options, spec) {
     },
 
     // Cleanup cache and target files
-    // TODO: This only cleans up cacheDir for now. Would be better if it cleaned up target directory
-    //   but that is a bit tricky/risky
     clean: {
       options: {
         force: true,
@@ -203,10 +166,6 @@ module.exports = function (grunt, options, spec) {
       'favicon-to-target': {
         src: options.faviconFile,
         dest: options.targetDir + '/images/' + options.faviconFileTargetName,
-      },
-      'custom-css': {
-        src: options.additionalCssFile,
-        dest: options.cacheDir + '/stylesheets/custom.css',
       },
       'css-to-target': {
         expand: true,
