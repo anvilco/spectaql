@@ -16,6 +16,8 @@ let gruntConfigFn
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
 tmp.setGracefulCleanup()
 
+const defaultThemeDir = normalizePath('dist/themes/default')
+
 const defaults = Object.freeze({
   quiet: false,
   port: 4400,
@@ -24,7 +26,8 @@ const defaults = Object.freeze({
   targetFile: 'index.html',
   appDir: normalizePath('dist'), //path.resolve(root, 'dist'),
   gruntConfigFile: normalizePath('dist/lib/gruntConfig.js'), //path.resolve(root, 'dist/lib/gruntConfig.js'),
-  themeDir: normalizePath('dist/themes/default'),
+  themeDir: defaultThemeDir,
+  defaultThemeDir,
   cacheDir: tmp.dirSync({
     unsafeCleanup: true,
     prefix: 'spectaql-',
@@ -313,7 +316,12 @@ export const run = function (cliOptions = {}) {
     }
   }
 
-  grunt.registerTask('copy-theme', ['copy:theme-to-cache'])
+  const themeCopyTasks = ['copy:default-theme-to-cache']
+  if (opts.themeDir !== defaultThemeDir) {
+    themeCopyTasks.push('copy:overlay-custom-theme-to-cache')
+  }
+
+  grunt.registerTask('copy-theme-stuff', themeCopyTasks)
 
   grunt.registerTask('stylesheets', [
     ...stylesheetsToBuild.map((name) => `sass:${name}`),
@@ -324,10 +332,10 @@ export const run = function (cliOptions = {}) {
   grunt.registerTask('javascripts', ['concat:js', 'uglify'])
   grunt.registerTask('templates', [
     'clean:html',
-    'clean:views-tmp',
+    // 'clean:views-tmp',
     // TODO:
     // 'clean:helpers',
-    'copy:views-tmp',
+    // 'copy:views-tmp',
     // TODO:
     // 'copy:helpers',
     'compile-handlebars',
@@ -336,7 +344,7 @@ export const run = function (cliOptions = {}) {
   ])
 
   grunt.registerTask('default', [
-    'copy-theme',
+    'copy-theme-stuff',
     'stylesheets',
     'javascripts',
     'templates',
@@ -384,7 +392,7 @@ export const run = function (cliOptions = {}) {
   if (opts.startServer) {
     grunt.task.run('server')
   } else {
-    grunt.task.run('copy-theme')
+    grunt.task.run('copy-theme-stuff')
 
     grunt.task.run('stylesheets')
 

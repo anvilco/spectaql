@@ -3,15 +3,10 @@ import sass from 'sass'
 
 import { normalizePath } from '../spectaql/utils'
 
-const root = path.resolve(__dirname, '../..')
-const node_modules_clone = path.resolve(root, 'node_modules')
-const node_modules_dependency = path.resolve(root, '..')
-
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
-
   // console.log(options)
-  console.log({cacheDir: options.cacheDir})
+  console.log({ cacheDir: options.cacheDir })
 
   // The basic JS paths
   const jsSrcPaths = [
@@ -71,15 +66,6 @@ module.exports = function (grunt, options, spec) {
             path.resolve(options.cacheDir, 'stylesheets/full.scss'),
         },
       },
-      // foundation: {
-      //   files: {
-      //     [path.resolve(options.cacheDir, 'stylesheets/foundation.css')]:
-      //       path.resolve(
-      //         options.appDir,
-      //         'stylesheets/foundation-includes.scss'
-      //       ),
-      //   },
-      // },
     },
 
     // Concatenate files into 1
@@ -122,16 +108,22 @@ module.exports = function (grunt, options, spec) {
         files: [
           {
             src:
-              options.themeDir +
+              options.cacheDir +
               '/views/' +
-              (options.embeddable ? 'embedded.hbs' : 'normal.hbs'),
+              (options.embeddable ? 'embedded.hbs' : 'standard.hbs'),
             dest: options.cacheDir + '/' + options.targetFile,
           },
         ],
         templateData: spec,
         // TODO: allow helpers to be overridden/expanded, too
-        helpers: options.themeDir + '/helpers/*.js',
-        partials: options.themeDir + '/views/partials/**/*.hbs',
+        helpers: [
+          // You get all the built-in helpers for free
+          options.appDir + '/themes/default/helpers/**/*.js',
+          // Plus any others from the theme directory
+          // options.cacheDir + '/helpers/**/*.js',
+          options.themeDir + '/helpers/**/*.js',
+        ],
+        partials: options.cacheDir + '/views/partials/**/*.hbs',
       },
     },
 
@@ -174,12 +166,12 @@ module.exports = function (grunt, options, spec) {
       // Delete the entire temp directory used in the build process
       cache: [options.cacheDir],
       // CSS and JS from the build process
-      assets: [
-        options.cacheDir + '/stylesheets/**/*.css',
-        options.cacheDir + '/javascripts/**/*.js',
-        options.cacheDir + '/helpers/**/*.js',
-        options.cacheDir + '/views/**/*.hbs',
-      ],
+      // assets: [
+      //   options.cacheDir + '/stylesheets/**/*.css',
+      //   options.cacheDir + '/javascripts/**/*.js',
+      //   options.cacheDir + '/helpers/**/*.js',
+      //   options.cacheDir + '/views/**/*.hbs',
+      // ],
       // HTML from the build process
       html: [options.cacheDir + '/**/*.html'],
       // HBS from the build process
@@ -203,6 +195,20 @@ module.exports = function (grunt, options, spec) {
     // https://www.npmjs.com/package/grunt-contrib-copy
     // Copy files to the target directory
     copy: {
+      // Copy the whole default theme directory
+      'default-theme-to-cache': {
+        expand: true,
+        cwd: options.defaultThemeDir,
+        src: '*/**',
+        dest: options.cacheDir,
+      },
+      'overlay-custom-theme-to-cache': {
+        expand: true,
+        // cwd: normalizePath(options.themeDir + '/..'),
+        cwd: options.themeDir,
+        src: ['**/*', '!helpers/**/*'],
+        dest: options.cacheDir,
+      },
       // Copy the whole theme directory to the cache directory
       'theme-to-cache': {
         expand: true,

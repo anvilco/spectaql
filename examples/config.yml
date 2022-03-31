@@ -6,6 +6,7 @@ spectaql:
   # cssBuildMode: basic
   viewsOverlay: ./examples/customizations/views
   # dynamicDataArrangementProcessingModule: ./examples/customizations/data-arrangement
+  themeDir: ./examples/themes/my-partial-theme
 
 
 introspection:
