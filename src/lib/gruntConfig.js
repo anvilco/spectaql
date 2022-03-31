@@ -6,7 +6,7 @@ import { normalizePath } from '../spectaql/utils'
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
   // console.log(options)
-  console.log({ cacheDir: options.cacheDir })
+  console.log({ cacheDir: options.cacheDir, themeDir: options.themeDir })
 
   // The basic JS paths
   const jsSrcPaths = [
@@ -54,16 +54,10 @@ module.exports = function (grunt, options, spec) {
         //   path.resolve(node_modules_dependency, 'foundation-sites/scss'),
         // ],
       },
-      basic: {
+      main: {
         files: {
-          [path.resolve(options.cacheDir, 'stylesheets/basic.css')]:
-            path.resolve(options.cacheDir, 'stylesheets/basic.scss'),
-        },
-      },
-      full: {
-        files: {
-          [path.resolve(options.cacheDir, 'stylesheets/full.css')]:
-            path.resolve(options.cacheDir, 'stylesheets/full.scss'),
+          [path.resolve(options.cacheDir, 'stylesheets/main.css')]:
+            path.resolve(options.cacheDir, 'stylesheets/main.scss'),
         },
       },
     },
@@ -115,15 +109,14 @@ module.exports = function (grunt, options, spec) {
           },
         ],
         templateData: spec,
-        // TODO: allow helpers to be overridden/expanded, too
+        partials: options.cacheDir + '/views/partials/**/*.hbs',
         helpers: [
           // You get all the built-in helpers for free
           options.appDir + '/themes/default/helpers/**/*.js',
-          // Plus any others from the theme directory
-          // options.cacheDir + '/helpers/**/*.js',
+          // Plus any others from the theme directory. The build process may complain/warn about colliding
+          // names, but it will still work as expected.
           options.themeDir + '/helpers/**/*.js',
         ],
-        partials: options.cacheDir + '/views/partials/**/*.hbs',
       },
     },
 
@@ -165,19 +158,13 @@ module.exports = function (grunt, options, spec) {
       },
       // Delete the entire temp directory used in the build process
       cache: [options.cacheDir],
-      // CSS and JS from the build process
-      // assets: [
-      //   options.cacheDir + '/stylesheets/**/*.css',
-      //   options.cacheDir + '/javascripts/**/*.js',
-      //   options.cacheDir + '/helpers/**/*.js',
-      //   options.cacheDir + '/views/**/*.hbs',
-      // ],
-      // HTML from the build process
+      css: [options.cacheDir + '/stylesheets/**/*.css'],
+      js: [options.cacheDir + '/javascripts/**/*.js'],
       html: [options.cacheDir + '/**/*.html'],
       // HBS from the build process
-      'views-tmp': [options.cacheDir + '/views/**/*.hbs'],
-      // helpers: [options.cacheDir + '/helpers/*.js'],
+      views: [options.cacheDir + '/views/**/*.hbs'],
       // partials: options.cacheDir + '/views/partials/**/*.hbs',
+      helpers: [options.cacheDir + '/helpers/**/*.js'],
     },
 
     // Raise a HTTP server for previewing generated docs
@@ -209,24 +196,11 @@ module.exports = function (grunt, options, spec) {
         src: ['**/*', '!helpers/**/*'],
         dest: options.cacheDir,
       },
-      // Copy the whole theme directory to the cache directory
-      'theme-to-cache': {
-        expand: true,
-        cwd: options.themeDir,
-        src: '*/**',
-        dest: options.cacheDir,
-      },
-      'views-tmp': {
-        // We do an intermediate copy of the template files to the cache directory
-        // so that we can combine the standard templates/files, with any custom ones
-        // the user has provided.
-        files: copyViewsTempFiles,
-      },
-      logo: {
+      'logo-to-target': {
         src: options.logoFile,
         dest: options.targetDir + '/images/' + options.logoFileTargetName,
       },
-      favicon: {
+      'favicon-to-target': {
         src: options.faviconFile,
         dest: options.targetDir + '/images/' + options.faviconFileTargetName,
       },
@@ -234,19 +208,19 @@ module.exports = function (grunt, options, spec) {
         src: options.additionalCssFile,
         dest: options.cacheDir + '/stylesheets/custom.css',
       },
-      css: {
+      'css-to-target': {
         expand: true,
         cwd: options.cacheDir,
         src: 'stylesheets/*.min.css',
         dest: options.targetDir,
       },
-      js: {
+      'js-to-target': {
         expand: true,
         cwd: options.cacheDir,
         src: 'javascripts/*.min.js',
         dest: options.targetDir,
       },
-      html: {
+      'html-to-target': {
         src: options.cacheDir + '/' + options.targetFile,
         dest: options.targetDir + '/' + options.targetFile,
       },

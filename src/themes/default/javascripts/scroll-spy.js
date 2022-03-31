@@ -1,4 +1,4 @@
-function scrollSpy () {
+function scrollSpy() {
   var INIT_DELAY_MS = 300
   var SCROLL_DEBOUNCE_MS = 30
   var RESIZE_DEBOUNCE_MS = 50
@@ -11,14 +11,14 @@ function scrollSpy () {
   var currentIndex = null
   var sections = [] // [{ id: 'query-someQuery', top: 1234 }]
 
-  function init () {
+  function init() {
     findScrollPositions()
     handleScroll()
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('resize', handleResize)
   }
 
-  function findScrollPositions () {
+  function findScrollPositions() {
     // Inspired by: https://codepen.io/zchee/pen/ogzvZZ
     currentIndex = null
     var allScrollableItems = document.querySelectorAll('[data-traverse-target]')
@@ -27,13 +27,14 @@ function scrollSpy () {
     })
   }
 
-  handleResize = debounce(function () {
+  var handleResize = debounce(function () {
     findScrollPositions()
     handleScroll()
   }, RESIZE_DEBOUNCE_MS)
 
-  handleScroll = debounce(function () {
-    var scrollPosition = document.documentElement.scrollTop || document.body.scrollTop
+  var handleScroll = debounce(function () {
+    var scrollPosition =
+      document.documentElement.scrollTop || document.body.scrollTop
     var index = getVisibleSectionIndex(scrollPosition)
 
     if (index === currentIndex) {
@@ -78,13 +79,15 @@ function scrollSpy () {
     }
   }, SCROLL_DEBOUNCE_MS)
 
-
-  function getVisibleSectionIndex (scrollPosition) {
+  function getVisibleSectionIndex(scrollPosition) {
     var positionToCheck = scrollPosition + PADDING
     for (var i = 0; i < sections.length; i++) {
       var section = sections[i]
       var nextSection = sections[i + 1]
-      if (positionToCheck >= section.top && (!nextSection || positionToCheck < nextSection.top)) {
+      if (
+        positionToCheck >= section.top &&
+        (!nextSection || positionToCheck < nextSection.top)
+      ) {
         return i
       }
     }

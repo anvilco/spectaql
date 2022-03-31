@@ -16,7 +16,23 @@ let gruntConfigFn
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
 tmp.setGracefulCleanup()
 
+//*********************************************************************
+//
+//  These possible "themeDir" values are special and get translated
+//
+
+const DEFAULT_THEM_NAME = 'default'
 const defaultThemeDir = normalizePath('dist/themes/default')
+
+const BASIC_THEME_NAME = 'basic'
+const basicThemeDir = normalizePath('dist/themes/basic')
+
+const SPECTAQL_THEME_NAME = 'spectaql'
+const spectaqlThemeDir = normalizePath('dist/themes/spectaql')
+
+//
+//
+//*********************************************************************
 
 const defaults = Object.freeze({
   quiet: false,
@@ -168,6 +184,14 @@ function resolveOptions(cliOptions) {
     }
   }
 
+  if (!opts.themeDir || opts.themeDir === DEFAULT_THEM_NAME) {
+    opts.themeDir = defaultThemeDir
+  } else if (opts.themeDir === BASIC_THEME_NAME) {
+    opts.themeDir = basicThemeDir
+  } else if (opts.themeDir === SPECTAQL_THEME_NAME) {
+    opts.themeDir = spectaqlThemeDir
+  }
+
   // Add in defaults for things that were not set via CLI or YAML config
   opts = _.defaults({}, opts, defaults)
 
@@ -306,44 +330,38 @@ export const run = function (cliOptions = {}) {
     }
   )
 
-  const stylesheetsToBuild = []
-
-  if (!opts.disableCss) {
-    if (opts.cssBuildMode === 'full') {
-      stylesheetsToBuild.push('full')
-    } else {
-      stylesheetsToBuild.push('basic')
-    }
-  }
-
   const themeCopyTasks = ['copy:default-theme-to-cache']
+  // Only need to copy again if it's a custom theme
   if (opts.themeDir !== defaultThemeDir) {
     themeCopyTasks.push('copy:overlay-custom-theme-to-cache')
   }
 
   grunt.registerTask('copy-theme-stuff', themeCopyTasks)
 
-  grunt.registerTask('stylesheets', [
-    ...stylesheetsToBuild.map((name) => `sass:${name}`),
-    'concat:css',
-    'cssmin:css',
+  grunt.registerTask('clean-things', [
+    'clean:css',
+    'clean:js',
+    'clean:html',
+    'clean:views',
+    'clean:helpers',
   ])
 
+  const stylesheetsTasks = []
+  if (!opts.disableCss) {
+    stylesheetsTasks.push('sass:main', 'concat:css', 'cssmin:css')
+  }
+  grunt.registerTask('stylesheets', stylesheetsTasks)
+
   grunt.registerTask('javascripts', ['concat:js', 'uglify'])
+
   grunt.registerTask('templates', [
-    'clean:html',
-    // 'clean:views-tmp',
-    // TODO:
-    // 'clean:helpers',
-    // 'copy:views-tmp',
-    // TODO:
-    // 'copy:helpers',
     'compile-handlebars',
     'predentation',
     'prettify',
   ])
 
   grunt.registerTask('default', [
+    'clean-things',
     'copy-theme-stuff',
     'stylesheets',
     'javascripts',
@@ -385,20 +403,21 @@ export const run = function (cliOptions = {}) {
     })
   })
 
-  // Run the shiz
+  // Grunt it up.
 
-  const copies = ['html']
+  const copiesToTarget = ['html-to-target']
 
   if (opts.startServer) {
     grunt.task.run('server')
   } else {
+    grunt.task.run('clean-things')
     grunt.task.run('copy-theme-stuff')
 
     grunt.task.run('stylesheets')
 
     // If not oneFile/embedding JS/CSS, then we'll need to copy the files
     if (!opts.oneFile) {
-      copies.unshift('css')
+      copiesToTarget.unshift('css-to-target')
     }
 
     if (!opts.disableJs) {
@@ -406,14 +425,14 @@ export const run = function (cliOptions = {}) {
 
       // If not oneFile/embedding JS/CSS, then we'll need to copy the files
       if (!opts.oneFile) {
-        copies.unshift('js')
+        copiesToTarget.unshift('js-to-target')
       }
     }
     if (opts.logoFile) {
-      copies.unshift('logo')
+      copiesToTarget.unshift('logo-to-target')
     }
     if (opts.faviconFile) {
-      copies.unshift('favicon')
+      copiesToTarget.unshift('favicon-to-target')
     }
 
     grunt.task.run('templates')
@@ -424,7 +443,7 @@ export const run = function (cliOptions = {}) {
       grunt.task.run('embed')
     }
 
-    copies.forEach((flavor) => {
+    copiesToTarget.forEach((flavor) => {
       grunt.task.run(`copy:${flavor}`)
     })
 

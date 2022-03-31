@@ -21,5 +21,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['src/javascripts/**/*.js'],
+  ignorePatterns: ['src/**/javascripts/**/*.js'],
 }
