@@ -15,7 +15,6 @@ describe('index', function () {
       const options = resolveOptions($.options)
 
       expect(options.oneFile).to.be.false
-      expect(options.cssBuildMode).to.be.eql('full')
 
       expect(options.specData.introspection).to.include({
         removeTrailingPeriodFromDescriptions: false,
@@ -65,9 +64,7 @@ describe('index', function () {
       def('config', () => ({
         spectaql: {
           oneFile: true,
-          cssBuildMode: 'basic',
-          additionalJsFile: './foo.js',
-          additionalCssFile: './foo.css',
+          themeDir: './my-custom-theme',
         },
         introspection: {
           url: 'http://mysite.com/graphql',
@@ -85,9 +82,7 @@ describe('index', function () {
         const options = resolveOptions($.options)
 
         expect(options.oneFile).to.be.true
-        expect(options.cssBuildMode).to.eql('basic')
-        expect(options.additionalJsFile.endsWith('foo.js')).to.be.true
-        expect(options.additionalCssFile.endsWith('foo.css')).to.be.true
+        expect(options.themeDir.endsWith('my-custom-theme')).to.be.true
         // Not a path
         expect(options.specData.introspection.url).to.eql(
           'http://mysite.com/graphql'
@@ -104,9 +99,7 @@ describe('index', function () {
         def('options', () => ({
           ...$._options,
           oneFile: false,
-          cssBuildMode: 'ridiculous',
-          additionalJsFile: 'bar.js',
-          additionalCssFile: 'bar.css',
+          themeDir: './my-custom-theme-yo-yo',
         }))
 
         it('uses CLI options', function () {
@@ -114,9 +107,7 @@ describe('index', function () {
           const options = resolveOptions($.options)
 
           expect(options.oneFile).to.be.false
-          expect(options.cssBuildMode).to.be.eql('ridiculous')
-          expect(options.additionalJsFile.endsWith('bar.js')).to.be.true
-          expect(options.additionalCssFile.endsWith('bar.css')).to.be.true
+          expect(options.themeDir.endsWith('my-custom-theme-yo-yo')).to.be.true
         })
       })
     })

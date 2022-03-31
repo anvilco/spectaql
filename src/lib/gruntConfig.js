@@ -1,46 +1,10 @@
 import path from 'path'
 import sass from 'sass'
 
-import { normalizePath } from '../spectaql/utils'
-
-const root = path.resolve(__dirname, '../..')
-const node_modules_clone = path.resolve(root, 'node_modules')
-const node_modules_dependency = path.resolve(root, '..')
-
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
-  // The basic JS paths
-  const jsSrcPaths = [
-    options.appDir + '/javascripts/**/*.js',
-    '!' + options.appDir + '/javascripts/jquery*.js',
-  ]
-  // Add in the additional path if needed
-  if (options.additionalJsFile) {
-    jsSrcPaths.push(options.additionalJsFile)
-  }
-
-  const cssSrcPaths = [options.cacheDir + '/stylesheets/**/*.css']
-  if (options.additionalCssFile) {
-    cssSrcPaths.push(options.additionalCssFile)
-  }
-
-  const copyViewsTempFiles = [
-    {
-      expand: true,
-      cwd: options.appDir,
-      src: 'views/**/*.hbs',
-      dest: options.cacheDir,
-    },
-  ]
-
-  if (options.viewsOverlay) {
-    copyViewsTempFiles.push({
-      expand: true,
-      cwd: normalizePath(options.viewsOverlay + '/..'),
-      src: '**/*.hbs',
-      dest: options.cacheDir,
-    })
-  }
+  // console.log(options)
+  console.log({ cacheDir: options.cacheDir, themeDir: options.themeDir })
 
   return {
     // Compile SCSS source files into the cache directory
@@ -48,32 +12,17 @@ module.exports = function (grunt, options, spec) {
       options: {
         implementation: sass,
         // sourceMap: true,
-        includePaths: [
-          // A little JANK to reach into the node_modules directory like this but
-          // other option is to include in "app/vendor" folder (which had been done prior)
-          path.resolve(node_modules_clone, 'foundation-sites/scss'),
-          path.resolve(node_modules_dependency, 'foundation-sites/scss'),
-        ],
+        // includePaths: [
+        //   // A little JANK to reach into the node_modules directory like this but
+        //   // other option is to include in "app/vendor" folder (which had been done prior)
+        //   path.resolve(node_modules_clone, 'foundation-sites/scss'),
+        //   path.resolve(node_modules_dependency, 'foundation-sites/scss'),
+        // ],
       },
-      basic: {
+      main: {
         files: {
-          [path.resolve(options.cacheDir, 'stylesheets/basic.css')]:
-            path.resolve(options.appDir, 'stylesheets/basic.scss'),
-        },
-      },
-      full: {
-        files: {
-          [path.resolve(options.cacheDir, 'stylesheets/full.css')]:
-            path.resolve(options.appDir, 'stylesheets/full.scss'),
-        },
-      },
-      foundation: {
-        files: {
-          [path.resolve(options.cacheDir, 'stylesheets/foundation.css')]:
-            path.resolve(
-              options.appDir,
-              'stylesheets/foundation-includes.scss'
-            ),
+          [path.resolve(options.cacheDir, 'stylesheets/main.css')]:
+            path.resolve(options.cacheDir, 'stylesheets/main.scss'),
         },
       },
     },
@@ -81,11 +30,11 @@ module.exports = function (grunt, options, spec) {
     // Concatenate files into 1
     concat: {
       js: {
-        src: jsSrcPaths,
+        src: [options.cacheDir + '/javascripts/**/*.js'],
         dest: options.cacheDir + '/javascripts/spectaql.js',
       },
       css: {
-        src: cssSrcPaths,
+        src: [options.cacheDir + '/stylesheets/**/*.css'],
         dest: options.cacheDir + '/stylesheets/spectaql.css',
       },
     },
@@ -120,14 +69,19 @@ module.exports = function (grunt, options, spec) {
             src:
               options.cacheDir +
               '/views/' +
-              (options.embeddable ? 'embedded.hbs' : 'normal.hbs'),
+              (options.embeddable ? 'embedded.hbs' : 'main.hbs'),
             dest: options.cacheDir + '/' + options.targetFile,
           },
         ],
         templateData: spec,
-        // TODO: allow helpers to be overridden/expanded, too
-        helpers: options.appDir + '/helpers/*.js',
         partials: options.cacheDir + '/views/partials/**/*.hbs',
+        helpers: [
+          // You get all the built-in helpers for free
+          options.appDir + '/themes/default/helpers/**/*.js',
+          // Plus any others from the theme directory. The build process may complain/warn about colliding
+          // names, but it will still work as expected.
+          options.themeDir + '/helpers/**/*.js',
+        ],
       },
     },
 
@@ -161,26 +115,19 @@ module.exports = function (grunt, options, spec) {
     },
 
     // Cleanup cache and target files
-    // TODO: This only cleans up cacheDir for now. Would be better if it cleaned up target directory
-    //   but that is a bit tricky/risky
     clean: {
       options: {
         force: true,
       },
       // Delete the entire temp directory used in the build process
       cache: [options.cacheDir],
-      // CSS and JS from the build process
-      assets: [
-        options.cacheDir + '/stylesheets/**/*.css',
-        options.cacheDir + '/javascripts/**/*.js',
-        options.cacheDir + '/views/**/*.hbs',
-      ],
-      // HTML from the build process
+      css: [options.cacheDir + '/stylesheets/**/*.css'],
+      js: [options.cacheDir + '/javascripts/**/*.js'],
       html: [options.cacheDir + '/**/*.html'],
       // HBS from the build process
-      'views-tmp': [options.cacheDir + '/views/**/*.hbs'],
-      // helpers: [options.cacheDir + '/helpers/*.js'],
+      views: [options.cacheDir + '/views/**/*.hbs'],
       // partials: options.cacheDir + '/views/partials/**/*.hbs',
+      helpers: [options.cacheDir + '/helpers/**/*.js'],
     },
 
     // Raise a HTTP server for previewing generated docs
@@ -198,37 +145,41 @@ module.exports = function (grunt, options, spec) {
     // https://www.npmjs.com/package/grunt-contrib-copy
     // Copy files to the target directory
     copy: {
-      'views-tmp': {
-        // We do an intermediate copy of the template files to the cache directory
-        // so that we can combine the standard templates/files, with any custom ones
-        // the user has provided.
-        files: copyViewsTempFiles,
+      // Copy the whole default theme directory
+      'default-theme-to-cache': {
+        expand: true,
+        cwd: options.defaultThemeDir,
+        src: '*/**',
+        dest: options.cacheDir,
       },
-      logo: {
+      'overlay-custom-theme-to-cache': {
+        expand: true,
+        // cwd: normalizePath(options.themeDir + '/..'),
+        cwd: options.themeDir,
+        src: ['**/*', '!helpers/**/*'],
+        dest: options.cacheDir,
+      },
+      'logo-to-target': {
         src: options.logoFile,
         dest: options.targetDir + '/images/' + options.logoFileTargetName,
       },
-      favicon: {
+      'favicon-to-target': {
         src: options.faviconFile,
         dest: options.targetDir + '/images/' + options.faviconFileTargetName,
       },
-      'custom-css': {
-        src: options.additionalCssFile,
-        dest: options.cacheDir + '/stylesheets/custom.css',
-      },
-      css: {
+      'css-to-target': {
         expand: true,
         cwd: options.cacheDir,
         src: 'stylesheets/*.min.css',
         dest: options.targetDir,
       },
-      js: {
+      'js-to-target': {
         expand: true,
         cwd: options.cacheDir,
         src: 'javascripts/*.min.js',
         dest: options.targetDir,
       },
-      html: {
+      'html-to-target': {
         src: options.cacheDir + '/' + options.targetFile,
         dest: options.targetDir + '/' + options.targetFile,
       },
@@ -241,19 +192,19 @@ module.exports = function (grunt, options, spec) {
         spawn: false,
       },
       js: {
-        files: [options.appDir + '/javascripts/**/*.js'],
+        files: [options.themeDir + '/javascripts/**/*.js'],
         tasks: ['javascripts'],
       },
       css: {
-        files: [options.appDir + '/stylesheets/**/*.scss'],
+        files: [options.themeDir + '/stylesheets/**/*.scss'],
         tasks: ['stylesheets'],
       },
       templates: {
         files: [
           options.specFile,
-          options.appDir + '/views/**/*.hbs',
-          options.appDir + '/helpers/**/*.js',
-          options.appDir + '/lib/**/*.js',
+          options.themeDir + '/views/**/*.hbs',
+          options.themeDir + '/helpers/**/*.js',
+          options.themeDir + '/lib/**/*.js',
         ],
         tasks: ['templates'],
       },

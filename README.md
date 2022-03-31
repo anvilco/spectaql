@@ -56,8 +56,7 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
 - Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
 - Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
 - Supports (beta) dynamic grouping and arranging of data via a custom data arrangment plugin that you control.
-- Supports customization of CSS to allow overriding the styles.
-- Supports customization of HTML output templates to allow overriding the HTML output.
+- Supports light tweaking or complete customization of CSS, JS and HTML output via themes.
 - Supports markdown just about everywhere you can provide text.
 - Live preview mode while developing.
 - Many options for output:
@@ -128,6 +127,8 @@ SpectaQL supports 2 ways to include metadata to be used during processing:
 1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to "weave" our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/master/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
 2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/master/examples/data/metadata.json) file to understand its format.
 
+**NOTE**: Another way to ensure that things are not documented is to pass your GraphQL Instrospection Results through [Microfiber][microfiber] and perform the removal of any Types, Fields, Queries etc before they even reach SpectaQL. Just a thought.
+
 ## Dynamic Example Generators
 
 In addition to being able to use any static examples you've provided, SpectaQL also supports dynamically generating examples for Scalars, Fields and Arguments. When it comes time to generate an example, SpectaQL can pass all the necessary information about the Scalar, Field or Argument to your generator in order for it to decide what the example should look like. See the included [example generator](https://github.com/anvilco/spectaql/blob/master/examples/customizations/examples/index.js) to see how it works.
@@ -148,25 +149,19 @@ However, if you'd like to completely customize the data that's displayed, and ha
 
 _NOTE:_ Again, this is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
 
-## Customizing CSS
+## Customizing CSS, JS and HTML output via Themes
 
-If you'd like to customize the CSS for your build, you can do so easily:
+SpectaQL supports a "theme" system that can be used to make minor tweaks to the default look, or to completely overhaul the output.
 
-- Create your customized CSS file. See [this example][custom-css-example] for an idea.
-- Tell SpectaQL to load it either via the `--additional-css-file` in the CLI, or the `spectaql.additionalCssFile` option in your configuration YAML.
-- Profit!
+SpectaQL ships with 3 included themes that can be specified via the `themeDir` options:
 
-_NOTE:_ The default behavior is to use the CSS in the `additionalCssFile` in addition to the default CSS that SpectaQL generates as way to add-to or override that default build CSS. If you'd like to only include the `additionalCssFile` in your CSS output, the `--disable-css` CLI option can be specified to have that effect.
+- `default`: Our default theme. This is the theme that will be used if do not specify any `themeDir` option.
+- `basic`: Outputs the same HTML structure as the `default` theme, but with minimal CSS styling.
+- `spectaql`: Outputs the same HTML structure as the `default` theme, but with some CSS enhancements.
 
-## Customizing HTML
+In addition to those built-in themes, you can specify a path to a custom theme directory to the `themeDir` option. Your custom theme directory will be overlayed on top of the default theme directory, and therefore can include as much or as little overridden or additional files as necessary to obtain your desired output.
 
-If you'd like to really dig in and control the HTML output of SpectaQL, you can override as much or as little of the default [Handlebars][handlebars] templates. Here's how:
-
-- Create your customized Handlebars view directory. You can add, remove, or replace as much or as little of the [default views][default-views-dir] as you like. Here is an [example views directory overlay][custom-views-overlay-example] that changes just one of the templates.
-- Tell SpectaQL to load it via the the `spectaql.viewsOverlay` option in your configuration YAML.
-- Profit!
-
-_NOTE:_ If you're just trying to make small changes, you'll want to mimic the existing default folder structure to have the same relative directory location as the templates you want to overlay, but you do not need to includes any files that you do not intend to customize. If you'd like to completely redo the HTML output, you can create whatever templates, files and directory structure you need, and just ensure that either the `normal.hbs` or `embedded.hbs` entry point(s) exist, depending on your `--embeddable` CLI option.
+See [/examples/themes/README.md][themes-readme] for more information on how you can customize SpectaQL's output with themes.
 
 ## Reference Interpolation
 
@@ -247,8 +242,7 @@ Good luck and enjoy SpectaQL!
 [changelog]: /CHANGELOG.md
 [breaking-1]: /BREAKING_CHANGES_1.md
 [handlebars]: https://handlebarsjs.com/
-[custom-css-example]: /examples/customizations/css/custom.css
-[default-views-dir]: /src/views
-[custom-views-overlay-example]: /examples/customizations/views
+[themes-readme]: /examples/themes/README.md
 [default-data-arranger]: /src/spectaql/arrange-data.js
 [custom-data-arranger]: /examples/customizations/data-arrangement/index.js
+[microfiber]: https://www.npmjs.com/package/microfiber

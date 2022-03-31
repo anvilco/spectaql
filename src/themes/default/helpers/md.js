@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars'
-import { markdown } from '../lib/common'
+import { markdown } from '../../../lib/common'
 
 /**
  * Render a markdown formatted text as HTML.

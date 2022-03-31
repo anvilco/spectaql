@@ -9,7 +9,7 @@ import {
 
 import { analyzeTypeIntrospection } from './type-helpers'
 
-import stripTrailing from '../helpers/stripTrailing'
+import stripTrailing from '../themes/default/helpers/stripTrailing'
 
 // const METADATA_OUTPUT_PATH = 'metadata'
 

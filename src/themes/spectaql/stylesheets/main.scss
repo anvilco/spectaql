@@ -1,6 +1,6 @@
 @use 'sass:math';
 
-// Overrides for basic
+// Overrides for base
 //////////////////////
 
 $max-content-width: 200em;
@@ -78,7 +78,7 @@ $background-sidebar: $background-subtle;
 // Imports
 //////////////////////
 
-@import 'basic';
+@import 'base';
 @import 'monokai';
 
 // Custom font

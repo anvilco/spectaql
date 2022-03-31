@@ -1,4 +1,4 @@
-const interpolateReferences = require('../../../dist/helpers/interpolateReferences')
+const interpolateReferences = require('../../../dist/themes/default/helpers/interpolateReferences')
 
 describe('interpolateReferences', function () {
   it('works', function () {

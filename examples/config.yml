@@ -1,11 +1,11 @@
 spectaql:
   logoFile: ./test/fixtures/logo.png
   faviconFile: ./test/fixtures/favicon.png
-  # additionalJsFile: ./examples/customizations/js/custom.js
-  additionalCssFile: ./examples/customizations/css/custom.css
-  # cssBuildMode: basic
-  viewsOverlay: ./examples/customizations/views
   # dynamicDataArrangementProcessingModule: ./examples/customizations/data-arrangement
+  # themeDir: 'default'
+  # themeDir: 'basic'
+  # themeDir: 'spectaql'
+  # themeDir: ./examples/themes/my-partial-theme
 
 
 introspection:
