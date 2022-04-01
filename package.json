@@ -29,12 +29,23 @@
   "bin": {
     "spectaql": "./bin/spectaql.js"
   },
+  "files": [
+    "package.json",
+    "README.md",
+    "LICENSE.md",
+    "CHANGELOG.md",
+    "dist/",
+    "examples/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
+  ],
   "scripts": {
     "clean": "yarn rimraf ./dist",
     "build": "babel src --out-dir ./dist --copy-files",
     "build:with-maps": "yarn build --source-maps",
     "clean-build": "yarn clean && yarn build",
     "prepare": "husky install && yarn clean && yarn build",
+    "pub:dry-run": "yarn prepare && npm publish --dry-run",
     "test": "mocha --config ./test/mocha-config.js",
     "test:watch": "nodemon -x 'yarn clean-build && yarn test'",
     "develop": "nodemon -x 'yarn clean-build && node bin/spectaql' -D",
