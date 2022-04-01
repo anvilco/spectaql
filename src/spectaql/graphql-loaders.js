@@ -13,12 +13,7 @@ import { loadFilesSync } from '@graphql-tools/load-files'
 import { mergeTypeDefs } from '@graphql-tools/merge'
 
 import request from 'sync-request'
-import {
-  fileExists,
-  fileExtensionIs,
-  readTextFile,
-  fileToObject,
-} from './utils'
+import { fileExtensionIs, readTextFile, fileToObject } from './utils'
 
 const GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS = [
   'gql',
@@ -49,9 +44,6 @@ export const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
   const paths = Array.isArray(pathToFile) ? pathToFile : [pathToFile]
   const typesArray = []
   for (const path of paths) {
-    if (!fileExists(path)) {
-      throw new Error(`GraphQL schema file does not exist at ${path}`)
-    }
     let types
     // loadFilesSync won't load .txt files, so we'll load them ourselves
     if (path.endsWith('.txt')) {
@@ -66,7 +58,15 @@ export const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
       }
       types = loadFilesSync(path)
     }
-    typesArray.push(types)
+
+    if (types.length) {
+      typesArray.push(types)
+    } else {
+      console.warn(`WARNING: No GraphqQL schema file(s) found at ${path}.`)
+    }
+  }
+  if (!typesArray.length) {
+    throw new Error(`No GraphQL schema files found in paths ${paths.join(',')}`)
   }
 
   const mergedTypeDefs = mergeTypeDefs(typesArray)
