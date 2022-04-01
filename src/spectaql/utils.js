@@ -1,23 +1,32 @@
 import path from 'path'
 import fs from 'fs'
 
+const cwd = process.cwd()
+
 // How far is this file from the Root?
 const numDirsToRoot = 2
 
 export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
 
-function normalizePathFn(pth) {
+function normalizePathFn(pth, { start = cwd } = {}) {
   if (!pth.startsWith('/')) {
-    pth = pathToRoot + '/' + pth
+    pth = start + '/' + pth
   }
 
-  return path.resolve(pth)
+  return path.normalize(pth)
 }
-export const normalizePath = normalizePathFn
+
+export function normalizePathFromRoot(pth) {
+  return normalizePathFn(pth, { start: pathToRoot })
+}
+
+export function normalizePathFromCwd(pth) {
+  return normalizePathFn(pth, { start: cwd })
+}
 
 export function fileExists(pth, { normalizePath = true } = {}) {
   if (normalizePath) {
-    pth = normalizePathFn(pth)
+    pth = normalizePathFromCwd(pth)
   }
   return fs.existsSync(pth)
 }
@@ -30,7 +39,7 @@ export function readTextFile(pth, options = {}) {
     ...optionsForReadFileSync,
   }
   if (normalizePath) {
-    pth = normalizePathFn(pth)
+    pth = normalizePathFromCwd(pth)
   }
 
   return fs.readFileSync(pth, optionsForReadFileSync)
@@ -39,7 +48,7 @@ export function readTextFile(pth, options = {}) {
 export function fileToObject(pathToFile, options = {}) {
   let { normalizePath = true, ...otherOptions } = options
   if (normalizePath) {
-    pathToFile = normalizePathFn(pathToFile)
+    pathToFile = normalizePathFromCwd(pathToFile)
   }
   return path.extname(pathToFile) === '.js'
     ? readJSFile(pathToFile, otherOptions)
@@ -49,14 +58,14 @@ export function fileToObject(pathToFile, options = {}) {
 export function readJSONFile(pth, options = {}) {
   let { normalizePath = true, ...optionsForReadJSONParse } = options
   if (normalizePath) {
-    pth = normalizePathFn(pth)
+    pth = normalizePathFromCwd(pth)
   }
   return JSON.parse(readTextFile(pth, optionsForReadJSONParse))
 }
 
 export function readJSFile(pth, { normalizePath = true } = {}) {
   if (normalizePath) {
-    pth = normalizePathFn(pth)
+    pth = normalizePathFromCwd(pth)
   }
   return require(pth)
 }
