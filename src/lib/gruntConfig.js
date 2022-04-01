@@ -3,9 +3,6 @@ import sass from 'sass'
 
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
-  // console.log(options)
-  console.log({ cacheDir: options.cacheDir, themeDir: options.themeDir })
-
   return {
     // Compile SCSS source files into the cache directory
     sass: {
@@ -154,7 +151,6 @@ module.exports = function (grunt, options, spec) {
       },
       'overlay-custom-theme-to-cache': {
         expand: true,
-        // cwd: normalizePath(options.themeDir + '/..'),
         cwd: options.themeDir,
         src: ['**/*', '!helpers/**/*'],
         dest: options.cacheDir,

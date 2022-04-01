@@ -1,7 +1,8 @@
 import url from 'url'
+import path from 'path'
 import buildSchemas from './build-schemas'
 import arrangeDataDefaultFn from '../themes/default/data'
-import { fileExists, normalizePath } from './utils'
+import { fileExists } from './utils'
 import preProcessData from './pre-process'
 
 function run(opts) {
@@ -35,11 +36,11 @@ function run(opts) {
   // Figure out what data arranger to use...the default one, or the one from the theme
   const customDataArrangerExists = ['data/index.js', 'data.js'].some(
     (pathSuffix) => {
-      return fileExists(normalizePath(`${themeDir}/${pathSuffix}`))
+      return fileExists(path.normalize(`${themeDir}/${pathSuffix}`))
     }
   )
   const arrangeDataModule = customDataArrangerExists
-    ? require(normalizePath(`${themeDir}/data`))
+    ? require(path.normalize(`${themeDir}/data`))
     : arrangeDataDefaultFn
   const arrangeData = arrangeDataModule.default
     ? arrangeDataModule.default

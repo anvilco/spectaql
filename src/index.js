@@ -6,7 +6,11 @@ import grunt from 'grunt'
 
 import pkg from '../package.json'
 import loadYaml from './lib/loadYaml'
-import { normalizePath, pathToRoot } from './spectaql/utils'
+import {
+  normalizePathFromRoot,
+  normalizePathFromCwd,
+  pathToRoot,
+} from './spectaql/utils'
 
 export { default as parseCliOptions } from './cli'
 
@@ -22,13 +26,13 @@ tmp.setGracefulCleanup()
 //
 
 const DEFAULT_THEM_NAME = 'default'
-const defaultThemeDir = normalizePath('dist/themes/default')
+const defaultThemeDir = normalizePathFromRoot('dist/themes/default')
 
 const BASIC_THEME_NAME = 'basic'
-const basicThemeDir = normalizePath('dist/themes/basic')
+const basicThemeDir = normalizePathFromRoot('dist/themes/basic')
 
 const SPECTAQL_THEME_NAME = 'spectaql'
-const spectaqlThemeDir = normalizePath('dist/themes/spectaql')
+const spectaqlThemeDir = normalizePathFromRoot('dist/themes/spectaql')
 
 //
 //
@@ -40,8 +44,8 @@ const defaults = Object.freeze({
   portLive: 4401,
   targetDir: path.resolve(process.cwd(), 'public'),
   targetFile: 'index.html',
-  appDir: normalizePath('dist'), //path.resolve(root, 'dist'),
-  gruntConfigFile: normalizePath('dist/lib/gruntConfig.js'), //path.resolve(root, 'dist/lib/gruntConfig.js'),
+  appDir: normalizePathFromRoot('dist'),
+  gruntConfigFile: normalizePathFromRoot('dist/lib/gruntConfig.js'),
   themeDir: defaultThemeDir,
   defaultThemeDir,
   cacheDir: tmp.dirSync({
@@ -142,7 +146,7 @@ function resolvePaths(
   keys.forEach((key) => {
     const pth = options[key]
     if (typeof pth === 'string') {
-      options[key] = normalizePath(pth)
+      options[key] = normalizePathFromCwd(pth)
     }
   })
 }
