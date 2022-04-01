@@ -1,14 +1,15 @@
 spectaql:
   logoFile: ./test/fixtures/logo.png
   faviconFile: ./test/fixtures/favicon.png
-  additionalJsFile: ./examples/customizations/js/custom.js
-  additionalCssFile: ./examples/customizations/css/custom.css
 
 introspection:
   removeTrailingPeriodFromDescriptions: false
   schemaFile: ./examples/data/schema.gql
   metadataFile: ./examples/data/metadata.json
   dynamicExamplesProcessingModule: ./examples/customizations/examples
+
+extensions:
+  graphqlScalarExamples: true
 
 info:
   title: GraphQL API Reference
@@ -21,6 +22,9 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-introItems:
+    - title: Important thing 1
+      description: Some important stuff we wanted you to know. Supports `markdown`
 
 servers:
   - url: https://example.com/graphql

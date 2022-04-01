@@ -1,0 +1,32 @@
+<section id="{{./htmlId}}"
+  class="definition definition-{{ kebabCase ./kind defaultValue='unknown' }}"
+  data-traverse-target="{{./htmlId}}">
+  {{#unless @first }}
+    {{#if parentHtmlId }}
+      <div class="definition-group-name">
+        <a href="#group-{{parentHtmlId}}">{{./parentName}}</a>
+      </div>
+    {{/if}}
+  {{/unless}}
+  {{#if name}}
+    <h2 class="definition-heading">{{name}}{{!--  - {{kind}} --}}</h2>
+  {{/if}}
+
+  <div class="doc-row">
+    {{#if (equal ./kind "SCALAR")}}
+      {{>graphql/kinds/scalar .}}
+    {{else if (equal ./kind "OBJECT")}}
+      {{>graphql/kinds/object .}}
+    {{else if (equal ./kind "ENUM")}}
+      {{>graphql/kinds/enum .}}
+    {{else if (equal ./kind "INPUT_OBJECT")}}
+      {{>graphql/kinds/input-object .}}
+    {{else if (equal ./kind "UNION")}}
+      {{>graphql/kinds/union .}}
+    {{else if (equal ./kind "INTERFACE")}}
+      {{>graphql/kinds/interface .}}
+    {{else}}
+      {{ log "unknown type.hbs" . }}
+    {{/if}}
+  </div>
+</section>

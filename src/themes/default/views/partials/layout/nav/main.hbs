@@ -1,0 +1,34 @@
+<nav id="nav" role="navigation">
+  {{! Check if there is effectively nothing to do }}
+  {{#unless (or info.x-hideIntroduction (and info.x-hideWelcome (or info.x-hideIntroItems (empty info.x-introItems)))) }}
+    <div class="nav-group">
+      <h4 class="nav-group-title">Introduction</h5>
+      <ul class="nav-group-items">
+        {{#unless info.x-hideWelcome }}
+          <li><a href="#introduction">Welcome</a></li>
+        {{/unless}}
+        {{#unless (or info.x-hideIntroItems (empty info.x-introItems)) }}
+          {{#each info.x-introItems }}
+            {{! If it has a description, then it's a mini-section to be rendered, and needs an anchor ref
+              to there
+            }}
+            {{#if (firstTruthy description file)}}
+              <li><a href="#introduction-item-{{@index}}">{{title}}</a></li>
+            {{else}}{{#if url }}
+              {{!
+                If it has a URL, then it's just a straight link from the Nav
+                Also we need to ignore it from the Traverse stuff so that the "active" nav element works
+              }}
+              <li><a data-traverse-ignore="" href="{{url}}">{{title}}</a></li>
+            {{/if}}{{/if}}
+          {{/each}}
+        {{/unless}}
+      </ul>
+    </div>
+  {{/unless}}
+  {{#if (nempty items)}}
+    {{#each items}}
+      {{>layout/nav/item}}
+    {{/each}}
+  {{/if}}
+</nav>

@@ -1,0 +1,256 @@
+$max-content-width: 88em !default;
+$drawer-size: 250px !default;
+$drawer-size-desktop-large: 300px !default;
+
+$content-padding: 20px !default;
+
+$sidebar-top: 0px !default;
+$sidebar-padding: $content-padding !default;
+$sidebar-background: #fff !default;
+
+$overlay-background: rgba(0, 0, 0, .5) !default;
+$overlay-background-hidden: rgba(0, 0, 0, 0) !default;
+
+$code-background: #ccc !default;
+
+$size-tablet: 32em !default;
+$size-desktop: 48em !default;
+$size-desktop-large: 64em !default;
+
+// Below this size, the sidebar will be a mobile-style drawer
+$size-sidebar-break: $size-desktop !default;
+
+// Below this size, the content will stack
+$size-content-break: $size-desktop !default;
+
+#spectaql {
+  padding: 0;
+  margin: 0;
+
+  // These styles should be limited to providing the "basic" layout and
+  // structure for documentation. Styles related to aesthetics should be applied
+  // elsewhere.
+
+  pre {
+    overflow: auto;
+    margin-top: 0;
+    margin-bottom: $content-padding;
+  }
+
+  pre code {
+    display: block;
+    background: $code-background;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    text-align: left;
+    border-collapse: collapse;
+
+    th,
+    td {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  // These can cause issues in mobile
+  .operation-heading,
+  .definition-heading,
+  .license-url {
+    word-break: break-word
+  }
+
+  #page {
+    display: flex;
+
+    * {
+      box-sizing: border-box;
+    }
+
+    &.drawer-open {
+      #sidebar {
+        z-index: 1000;
+        transform: translateX(0);
+      }
+
+      .drawer-overlay {
+        display: block;
+        background: $overlay-background;
+        z-index: 10;
+      }
+    }
+  }
+
+  // Sidebar related styles
+  //////////////////////////
+
+  #sidebar {
+    position: fixed;
+    min-width: $drawer-size;
+    max-width: $drawer-size;
+    flex-shrink: 0;
+    transition: transform .2s ease-out;
+    transform: translateX(-100%);
+    z-index: 10;
+
+    padding-top: $sidebar-padding;
+    background: $sidebar-background;
+
+    @media (min-width: $size-sidebar-break) {
+      position: relative;
+      transform: none;
+    }
+
+    @media (min-width: $size-desktop-large) {
+      min-width: $drawer-size-desktop-large;
+      max-width: $drawer-size-desktop-large;
+    }
+  }
+
+  .sidebar-top-container {
+    display: flex;
+    align-items: center;
+    padding: 0 $sidebar-padding;
+  }
+
+  #mobile-navbar {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+
+    @media (min-width: $size-sidebar-break) {
+      display: none;
+    }
+  }
+
+  .sidebar-open-button {
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+
+    .hamburger {
+      width: 16px;
+      height: 14px;
+      cursor: pointer;
+
+      &::after {
+        display: block;
+        content: "";
+        height: 2px;
+        background: black;
+        box-shadow: 0 5px 0 black, 0 10px 0 black;
+      }
+    }
+  }
+
+  .close-button {
+    display: block;
+
+    @media (min-width: $size-sidebar-break) {
+      display: none;
+    }
+  }
+
+  .drawer-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: $overlay-background-hidden;
+
+    @media (min-width: $size-sidebar-break) {
+      display: none !important;
+    }
+  }
+
+  // Nav related styles
+  //////////////////////////
+
+  #nav {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - #{$sidebar-top});
+    padding: 0 $sidebar-padding;
+    padding-bottom: $sidebar-padding;
+
+    position: sticky;
+    top: 0;
+
+    overflow: auto;
+  }
+
+  #logo {
+    margin-right: auto;
+    img {
+      display: block;
+      max-width: 100%;
+    }
+  }
+
+  .nav-group-items,
+  .nav-group-section-items {
+    padding: 0;
+    margin: 0;
+
+    > li {
+      list-style: none;
+    }
+  }
+
+  .nav-group-section-items {
+    display: none;
+  }
+  .nav-scroll-expand {
+    .nav-group-section-items {
+      display: block;
+    }
+  }
+
+  // Main content styles
+  //////////////////////////
+
+  #docs {
+    position: relative;
+    margin: 0 auto;
+    min-width: 100px;
+    max-width: $max-content-width;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding: $content-padding;
+  }
+
+  .doc-row {
+    @media (min-width: $size-content-break) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .doc-copy,
+    .doc-examples {
+      width: 100%;
+      @media (min-width: $size-content-break) {
+        width: 50%;
+      }
+    }
+
+    .doc-copy {
+      @media (min-width: $size-content-break) {
+        padding-right: $content-padding;
+      }
+    }
+
+    .doc-examples {
+      @media (min-width: $size-content-break) {
+        padding-left: $content-padding;
+      }
+    }
+  }
+}

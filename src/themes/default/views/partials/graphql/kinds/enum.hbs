@@ -1,0 +1,46 @@
+<div class="doc-copy">
+  {{#if description}}
+    <div class="definition-description doc-copy-section">
+      <h5>Description</h5>
+      {{md (interpolateReferences description)}}
+    </div>
+  {{/if}}
+  {{#if enumValues}}
+    <div class="definition-properties doc-copy-section">
+      <h5>Values</h5>
+      <table>
+        <thead>
+          <tr>
+            <th>Enum Value</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each enumValues}}
+            <tr>
+              {{! The Value column }}
+              <td>{{md (codify name) addClass=(ternary (and isDeprecated (not @root.info.x-hideIsDeprecated)) "definition-deprecated" false)}}</td>
+              {{! The Description column }}
+              <td>
+                {{#if description}}
+                  {{md (interpolateReferences description) stripParagraph=true}}
+                {{/if}}
+                {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+                  <span class="deprecation-reason definition-enum-deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{/if}}
+</div>
+<div class="doc-examples">
+  {{#if example }}
+    <div class="example-section example-section-is-code">
+      <h5>Example</h5>
+      {{printJSON example}}
+    </div>
+  {{/if}}
+</div>
