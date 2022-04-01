@@ -229,7 +229,7 @@ function resolveOptions(cliOptions) {
   }
 
   // Set the spectaql object
-  spectaql = require(path.resolve(opts.appDir + '/spectaql/index'))
+  spectaql = require(path.resolve(opts.appDir, 'spectaql/index'))
   gruntConfigFn = require(opts.gruntConfigFile)
 
   return opts
