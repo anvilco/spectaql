@@ -1,5 +1,4 @@
 import _ from 'lodash'
-
 import {
   Microfiber as IntrospectionManipulator,
   KINDS,
@@ -8,10 +7,7 @@ import {
 } from 'microfiber'
 
 import { analyzeTypeIntrospection } from './type-helpers'
-
 import stripTrailing from '../themes/default/helpers/stripTrailing'
-
-// const METADATA_OUTPUT_PATH = 'metadata'
 
 export const calculateShouldDocument = ({ undocumented, documented, def }) => {
   return undocumented !== true && (documented === true || def === true)
@@ -50,7 +46,6 @@ export function createIntrospectionManipulator(args) {
     // TODO: support this granularly in microfiber
     hideSubscriptionsWithUndocumentedReturnType:
       removeSubscriptionsWithMissingTypes,
-    // } = introspectionOptions
   } = introspectionOptions
 
   return new IntrospectionManipulator(introspectionResponse, {

@@ -124,11 +124,8 @@ function generateQueryInternal({
       .map((childField) => {
         return generateQueryInternal({
           field: childField,
-          // expandGraph,
           args: fieldArgs,
           depth: depth + 1,
-          // typeCounts,
-          // log,
           introspectionManipulator,
         }).query
       })

@@ -77,6 +77,7 @@ module.exports = ({
             }))
             .sort(sortByName),
         },
+        // Just Queries...gonna leave out Mutations just to prove the point.
       ],
     },
     {

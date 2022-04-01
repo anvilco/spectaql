@@ -22,7 +22,10 @@ your-theme-dir/
 │    ├── main.hbs
 │    └── embedded.hbs
 │
-└── helpers/
+├── helpers/
+│
+└── data/
+     └── index.js
 ```
 
 Let's discuss each directory:
@@ -51,5 +54,20 @@ SpectaQL also supports running a theme in "embeddable" mode to produce output th
 All of SpectaQL's default theme helpers will be available to any custom theme "for free".
 If you'd like to add more helpers or overwrite an existing helper, simply put your JS file(s) into this folder and they will be copied on top of the default theme's directory and will be available for use in your templates.
 
+### `data`
+
+_NOTE:_ This is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
+
+By default, SpectaQL will use all the non-hidden data that your GraphQL schema has provided, and arrange it in an sane, but opinionated default manner. It will group `Queries` and `Mutations` under an `Operations` header, then it will display all regular `Types`, and finally it will display all `Subscriptions`. You can see the [default arranger source][default-data-arranger] for more on how the default is done.
+
+However, if you'd like to completely customize the data that's displayed, and have some basic control over how it's displayed, you can provide a "dynamic data arranger" module. Here's how:
+
+- Create your dynamic data arranger module. It should export a function that expects the same arguments that are provided in the [example dynamic data arranger][custom-data-arranger]
+- Save it to `data/index.js` in your theme directory.
+
+_NOTE:_ Again, this is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
+
 [default-theme-dir]: /src/themes/default/
 [handlebars]: https://handlebarsjs.com
+[default-data-arranger]: /src/spectaql/arrange-data.js
+[custom-data-arranger]: /examples/themes/my-partial-theme/data/index.js

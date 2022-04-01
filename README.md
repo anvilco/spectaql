@@ -135,21 +135,7 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata _before_ SpectaQL even gets involved. Just a thought.
 
-## Dynamic Data Arrangement
-
-_NOTE:_ This is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
-
-By default, SpectaQL will use all the non-hidden data that your GraphQL schema has provided, and arrange it in an sane, but opinionated default manner. It will group `Queries` and `Mutations` under an `Operations` header, then it will display all regular `Types`, and finally it will display all `Subscriptions`. You can see the [default arranger source][default-data-arranger] for more on how the default is done.
-
-However, if you'd like to completely customize the data that's displayed, and have some basic control over how it's displayed, you can provide a "dynamic data arranger" module. Here's how:
-
-- Create your dynamic data arranger module. It should export a function that expects the same arguments that are provided in the [example dynamic data arranger][custom-data-arranger]
-- Tell SpectaQL to load it via the the `spectaql.dynamicDataArrangementProcessingModule` option in your configuration YAML.
-- Profit!
-
-_NOTE:_ Again, this is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
-
-## Customizing CSS, JS and HTML output via Themes
+## Customizing CSS, JS, HTML, and Data Arrangement via Themes
 
 SpectaQL supports a "theme" system that can be used to make minor tweaks to the default look, or to completely overhaul the output.
 
@@ -243,7 +229,5 @@ Good luck and enjoy SpectaQL!
 [breaking-1]: /BREAKING_CHANGES_1.md
 [handlebars]: https://handlebarsjs.com/
 [themes-readme]: /examples/themes/README.md
-[default-data-arranger]: /src/spectaql/arrange-data.js
-[custom-data-arranger]: /examples/customizations/data-arrangement/index.js
 [cli]: /src/cli.js
 [microfiber]: https://www.npmjs.com/package/microfiber

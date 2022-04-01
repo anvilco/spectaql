@@ -94,14 +94,11 @@ export function buildSchemas(opts) {
 
   const augmentedIntrospectionResponse = augmentData({
     introspectionResponse,
-    // jsonSchema,
-    // graphQLSchema,
     introspectionOptions,
   })
 
   if (removeTrailingPeriodFromDescriptions) {
     removeTrailingPeriodsFromDescriptions(augmentedIntrospectionResponse)
-    // removeTrailingPeriodsFromDescriptions(definitions)
   }
 
   const graphQLSchema = graphQLSchemaFromIntrospectionResponse(

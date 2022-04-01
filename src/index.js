@@ -133,7 +133,6 @@ function resolvePaths(
     'targetDir',
     'appDir',
     'logoFile',
-    'dynamicDataArrangementProcessingModule',
     'faviconFile',
     'specFile',
     'gruntConfigFile',

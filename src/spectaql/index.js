@@ -1,15 +1,11 @@
 import url from 'url'
 import buildSchemas from './build-schemas'
-import arrangeDataDefault from './arrange-data'
+import arrangeDataDefaultFn from '../themes/default/data'
+import { fileExists, normalizePath } from './utils'
 import preProcessData from './pre-process'
 
 function run(opts) {
-  const {
-    logo,
-    favicon,
-    dynamicDataArrangementProcessingModule,
-    specData: spec,
-  } = opts
+  const { logo, favicon, specData: spec, themeDir } = opts
 
   const {
     introspection: { url: introspectionUrl },
@@ -36,27 +32,20 @@ function run(opts) {
 
   const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
-  let arrangeDataFn = arrangeDataDefault
-  if (dynamicDataArrangementProcessingModule) {
-    try {
-      arrangeDataFn = require(dynamicDataArrangementProcessingModule)
-      if (!arrangeDataFn) {
-        throw new Error('Please provide either')
-      }
-
-      if (typeof arrangeDataFn !== 'function') {
-        throw new Error('foo')
-      }
-    } catch (e) {
-      if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
-        throw new Error('')
-      } else {
-        throw e
-      }
+  // Figure out what data arranger to use...the default one, or the one from the theme
+  const customDataArrangerExists = ['data/index.js', 'data.js'].some(
+    (pathSuffix) => {
+      return fileExists(normalizePath(`${themeDir}/${pathSuffix}`))
     }
-  }
+  )
+  const arrangeDataModule = customDataArrangerExists
+    ? require(normalizePath(`${themeDir}/data`))
+    : arrangeDataDefaultFn
+  const arrangeData = arrangeDataModule.default
+    ? arrangeDataModule.default
+    : arrangeDataModule
 
-  const items = arrangeDataFn({
+  const items = arrangeData({
     introspectionResponse,
     graphQLSchema,
   })

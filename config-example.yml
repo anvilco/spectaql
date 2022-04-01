@@ -27,15 +27,6 @@ spectaql:
   # Default: "default"
   themeDir: path/to/theme
 
-  # ** BETA - could change at any time **
-  #
-  # This allows you to specify a custom path to a JS module to handle the arrangement of data from
-  # your schema for SpectaQL to run through during its output.
-  #
-  # ** BETA - could change at any time **
-  #
-  # Default: none
-  dynamicDataArrangementProcessingModule: path/to/data-arranger.js
 
 introspection:
   ##############################################
