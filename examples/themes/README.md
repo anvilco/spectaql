@@ -69,5 +69,5 @@ _NOTE:_ Again, this is an experimental API and it could change in a breaking man
 
 [default-theme-dir]: /src/themes/default/
 [handlebars]: https://handlebarsjs.com
-[default-data-arranger]: /src/spectaql/arrange-data.js
+[default-data-arranger]: /src/themes/default/data/index.js
 [custom-data-arranger]: /examples/themes/my-partial-theme/data/index.js
