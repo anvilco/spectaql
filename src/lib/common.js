@@ -73,7 +73,7 @@ function jsonReplacer(name, value) {
   // return addSpecialTags(value)
 }
 
-export function addSpecialTags(value) {
+function addSpecialTags(value) {
   if (typeof value !== 'string') return value
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
