@@ -4,6 +4,12 @@ scalar DateTime
 "This is a Phone"
 scalar PhoneNumber
 
+scalar URL
+scalar JSON
+scalar JSONObject
+scalar Void
+scalar Byte
+
 "Anything with an ID can be a node"
 interface Node {
   "A unique identifier"
@@ -29,6 +35,11 @@ union SimpleTypes =
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 type MyType {
+  url: URL,
+  json: JSON,
+  jso: JSONObject,
+  vd: Void,
+  byte: Byte,
   createdAt: DateTime,
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   nonRequiredField(
