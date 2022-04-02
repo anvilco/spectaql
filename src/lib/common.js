@@ -73,7 +73,7 @@ function jsonReplacer(name, value) {
   // return addSpecialTags(value)
 }
 
-function addSpecialTags(value) {
+export function addSpecialTags(value) {
   if (typeof value !== 'string') return value
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
@@ -173,6 +173,7 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
     return
   }
   let replacement
+  let wasFromGraphQLScalar = false
 
   const useGraphqlScalarExamples =
     otherOptions?.extensions?.graphqlScalarExamples
@@ -180,6 +181,9 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
   // If the extension for this is enabled let's see if it's supported by graphql-scalars
   if (useGraphqlScalarExamples) {
     replacement = getExampleForGraphQLScalar(name)
+    if (typeof replacement !== undefined) {
+      wasFromGraphQLScalar = true
+    }
   }
 
   if (typeof replacement === 'undefined') {
@@ -189,9 +193,10 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
   if (typeof replacement === 'undefined') {
     return
   }
-  replacement = Array.isArray(replacement)
-    ? replacement[Math.floor(Math.random() * replacement.length)]
-    : replacement
+  replacement =
+    !wasFromGraphQLScalar && Array.isArray(replacement)
+      ? replacement[Math.floor(Math.random() * replacement.length)]
+      : replacement
 
   if (typeof replacement === 'string') {
     replacement = addSpecialTags(addQuoteTags(replacement))
@@ -244,13 +249,6 @@ function introspectionArgToVariable({
       isArray,
       // itemsRequired,
     } = analyzeTypeIntrospection(arg.type)
-
-    // console.log({
-    //   arg,
-    //   // underlyingTypeDefinition,
-    //   underlyingType,
-    //   isArray,
-    // })
 
     if (typeof arg.defaultValue === 'string') {
       if (underlyingType.kind !== 'ENUM') {
@@ -355,7 +353,6 @@ function generateIntrospectionReturnTypeExample(
       addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
     getExampleForScalarDefinition(underlyingTypeDefinition, otherOptions)
 
-  // console.log({example})
   if (typeof example !== 'undefined') {
     // example = unwindTags(example)
   } else {

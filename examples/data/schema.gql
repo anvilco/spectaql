@@ -4,6 +4,20 @@ scalar DateTime
 "This is a Phone"
 scalar PhoneNumber
 
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+scalar JSON
+
+scalar JSONObject
+
+scalar Void
+
+
+scalar Byte
+
 "Anything with an ID can be a node"
 interface Node {
   "A unique identifier"
@@ -29,6 +43,11 @@ union SimpleTypes =
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 type MyType {
+  url: URL,
+  json: JSON,
+  jso: JSONObject,
+  vd: Void,
+  byte: Byte,
   createdAt: DateTime,
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   nonRequiredField(
