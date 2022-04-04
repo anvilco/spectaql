@@ -194,12 +194,6 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
     return
   }
 
-  console.log({
-    replacement,
-    wasFromGraphQLScalar,
-    name,
-  })
-
   replacement =
     !wasFromGraphQLScalar && Array.isArray(replacement)
       ? replacement[Math.floor(Math.random() * replacement.length)]
