@@ -268,6 +268,11 @@ servers:
     # If no server entries have this indicator, the first server's URL will be used.
     # If no server entries are defined at all, the Introspection URL will be used.
     production: true
+    # A place to list any Headers for your GraphQL API calls
+    headers:
+      - name: Authorization
+        example: Bearer <YOUR_TOKEN_HERE>
+        comment: Your API token from the dashboard. Must be included in all API calls.
 
 info:
   # Tries to adhere to OpenAPI Specification https://swagger.io/specification/#info-object
