@@ -181,7 +181,7 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
   // If the extension for this is enabled let's see if it's supported by graphql-scalars
   if (useGraphqlScalarExamples) {
     replacement = getExampleForGraphQLScalar(name)
-    if (typeof replacement !== undefined) {
+    if (typeof replacement !== 'undefined') {
       wasFromGraphQLScalar = true
     }
   }
@@ -193,6 +193,7 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
   if (typeof replacement === 'undefined') {
     return
   }
+
   replacement =
     !wasFromGraphQLScalar && Array.isArray(replacement)
       ? replacement[Math.floor(Math.random() * replacement.length)]
