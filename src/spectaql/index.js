@@ -15,13 +15,25 @@ function run(opts) {
     info = {},
   } = spec
 
+  const server =
+    servers.find((server) => server.production === true) || servers[0]
+  const headers = server?.headers
+    ? server.headers
+        .map((header) => {
+          const { name, example, comment } = header
+          if (name && example) {
+            return [comment ? `// ${comment}` : '', `${name}: ${example}`]
+              .filter(Boolean)
+              .join('\n')
+          }
+        })
+        .filter(Boolean)
+        .join('\n')
+    : false
+
   // Find the 1 marked Production. Or take the first one if there are any. Or use
   // the URL provided
-  const urlToParse =
-    info['x-url'] ||
-    (servers.find((server) => server.production === true) || servers[0] || {})
-      .url ||
-    introspectionUrl
+  const urlToParse = info['x-url'] || (server || {}).url || introspectionUrl
 
   if (!urlToParse) {
     throw new Error(
@@ -63,6 +75,8 @@ function run(opts) {
     logo,
     favicon,
     info,
+    server,
+    headers,
     servers,
     host,
     url: urlToParse,

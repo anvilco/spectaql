@@ -65,12 +65,23 @@ describe('index', function () {
         def('servers', () => [
           {
             url: 'http://foo.com',
+            production: true,
+            headers: [
+              {
+                name: 'Foo',
+                example: 'Bar <yo>',
+                comment: 'Get your Foo from Bar',
+              },
+            ],
           },
         ])
 
-        it("doesn't error", function () {
+        it("doesn't error and processes headers", function () {
           const result = spectaql($.opts)
-          return expect(result).to.be.ok
+          expect(result).to.be.ok
+          expect(result.headers).to.eql(
+            `// Get your Foo from Bar\nFoo: Bar <yo>`
+          )
         })
       })
 

@@ -30,3 +30,7 @@ servers:
   - url: https://example.com/graphql
     description: Production
     production: true
+    headers:
+      - name: Authorization
+        example: Bearer <YOUR_TOKEN_HERE>
+        comment: Your foo from bar
