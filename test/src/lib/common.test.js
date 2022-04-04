@@ -62,6 +62,36 @@ describe('common', function () {
     }))
     const { getExampleForScalarDefinition } = common
 
+    // Make sure some built-in Scalars still work right.
+    it('String', function () {
+      expect(
+        ['abc123', 'xyz789'].map(
+          (val) => `${SPECIAL_TAG}${QUOTE_TAG}${val}${QUOTE_TAG}${SPECIAL_TAG}`
+        )
+      ).to.include(
+        getExampleForScalarDefinition(
+          {
+            kind: 'SCALAR',
+            name: 'String',
+          },
+          $.otherOptions
+        )
+      )
+    })
+
+    // Make sure some built-in Scalars still work right.
+    it('Int', function () {
+      expect([123, 987]).to.include(
+        getExampleForScalarDefinition(
+          {
+            kind: 'SCALAR',
+            name: 'Int',
+          },
+          $.otherOptions
+        )
+      )
+    })
+
     it('BigInt', function () {
       expect(
         getExampleForScalarDefinition(
@@ -102,6 +132,37 @@ describe('common', function () {
 
     context('graphqlScalarExamples extension is false', function () {
       def('graphqlScalarExamples', () => false)
+
+      // Make sure some built-in Scalars still work right.
+      it('String', function () {
+        expect(
+          ['abc123', 'xyz789'].map(
+            (val) =>
+              `${SPECIAL_TAG}${QUOTE_TAG}${val}${QUOTE_TAG}${SPECIAL_TAG}`
+          )
+        ).to.include(
+          getExampleForScalarDefinition(
+            {
+              kind: 'SCALAR',
+              name: 'String',
+            },
+            $.otherOptions
+          )
+        )
+      })
+
+      // Make sure some built-in Scalars still work right.
+      it('Int', function () {
+        expect([123, 987]).to.include(
+          getExampleForScalarDefinition(
+            {
+              kind: 'SCALAR',
+              name: 'Int',
+            },
+            $.otherOptions
+          )
+        )
+      })
 
       it('BigInt', function () {
         expect(
