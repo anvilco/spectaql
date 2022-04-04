@@ -1,3 +1,8 @@
+### 1.0.6
+
+- Add some basic support for Headers in the server info area.
+- Bug fix: Examples array problem. https://github.com/anvilco/spectaql/issues/265
+
 ### 1.0.1-1.0.5
 
 - Bug fix: Bad path resolution. https://github.com/anvilco/spectaql/issues/258
