@@ -36,7 +36,7 @@ export const introspectionResponseFromSchemaSDL = ({ schemaSDL }) => {
 
 export const introspectionResponseFromSchema = ({ schema }) => {
   return standardizeIntrospectionQueryResult(
-    graphqlSync(schema, getIntrospectionQuery())
+    graphqlSync({ schema, source: getIntrospectionQuery() })
   )
 }
 
