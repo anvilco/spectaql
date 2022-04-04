@@ -1,6 +1,10 @@
-### 1.0.1
+### 1.0.1-1.0.5
 
 - Bug fix: Bad path resolution. https://github.com/anvilco/spectaql/issues/258
+- Bug fix: Bad path resolution. https://github.com/anvilco/spectaql/issues/257
+- Bad publish of `1.0.3`.
+- Bug fix: Put back Glob support for multiple GraphQL files.
+- Bug fix: GraphQL Scalar example bug. https://github.com/anvilco/spectaql/issues/262
 
 `spectaql` was in a "beta" state in all versions before `1.0.0`. If you were using a version before `1.0.0` you will want to have a look at [these breaking changes](./BREAKING_CHANGES_1.md) that may impact you.
 
