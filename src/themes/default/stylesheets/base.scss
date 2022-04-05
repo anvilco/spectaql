@@ -55,11 +55,14 @@ $size-content-break: $size-desktop !default;
     }
   }
 
-  // These can cause issues in mobile
+  // These can cause issues in mobile or when query/mutation/type names are long
+  .doc-heading,
   .operation-heading,
   .definition-heading,
-  .license-url {
-    word-break: break-word
+  .introduction-item-title,
+  #introduction .example-section > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   #page {
@@ -191,6 +194,7 @@ $size-content-break: $size-desktop !default;
     margin-right: auto;
     img {
       display: block;
+      width: 100%;
       max-width: 100%;
     }
   }
@@ -202,6 +206,12 @@ $size-content-break: $size-desktop !default;
 
     > li {
       list-style: none;
+    }
+
+    > li,
+    .nav-group-section-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

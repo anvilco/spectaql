@@ -1,7 +1,7 @@
 function scrollSpy() {
   var INIT_DELAY_MS = 300
-  var SCROLL_DEBOUNCE_MS = 30
-  var RESIZE_DEBOUNCE_MS = 50
+  var SCROLL_DEBOUNCE_MS = 100
+  var RESIZE_DEBOUNCE_MS = 500
 
   var PADDING = 5 // TODO: dynamically figure this out
   var ACTIVE_CLASS = 'nav-scroll-active'
