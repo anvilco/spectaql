@@ -3,6 +3,7 @@
 - Add support for query name strategies. https://github.com/anvilco/spectaql/pull/282
 - Bug fix: support examples from metatdata for Scalars. https://github.com/anvilco/spectaql/pull/283
 - Bug fix: `themeDir` from CLI support. https://github.com/anvilco/spectaql/pull/284
+- Bug fix: Reference interpolation. https://github.com/anvilco/spectaql/pull/285
 
 ### 1.0.7
 
