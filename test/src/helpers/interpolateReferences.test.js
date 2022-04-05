@@ -4,10 +4,10 @@ describe('interpolateReferences', function () {
   it('works', function () {
     expect(
       interpolateReferences(
-        '{{Queries.myQuery}} and {{Mutations.myMutation}} and {{Types.MyType}}'
+        '{{Queries.myQuery}} and {{Mutations.myMutation}} and {{Types.MyType}} and {{Subscriptions.myTypeUpdatedSubscription}}'
       )
     ).to.eql(
-      '#operation-myquery-Queries and #operation-mymutation-Mutations and #definition-MyType'
+      '#query-myQuery and #mutation-myMutation and #definition-MyType and #subscription-myTypeUpdatedSubscription'
     )
   })
 
