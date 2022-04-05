@@ -7,6 +7,7 @@ import {
 } from 'microfiber'
 
 import { analyzeTypeIntrospection } from './type-helpers'
+import { addSpecialTags, addQuoteTags } from '../lib/common'
 import stripTrailing from '../themes/default/helpers/stripTrailing'
 
 export const calculateShouldDocument = ({ undocumented, documented, def }) => {
@@ -340,7 +341,7 @@ export function addExamples(args = {}) {
       !!(queryType && typesAreSame(type, queryType)) ||
       !!(mutationType && typesAreSame(type, mutationType))
 
-    handleExamples({ type, skipStatic: true })
+    handleExamples({ type, isType: true })
 
     for (const field of type.fields || []) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
@@ -378,28 +379,24 @@ export function addExamples(args = {}) {
     return example
   }
 
-  function handleExamples({
-    type,
-    field,
-    inputField,
-    arg,
-    skipStatic = false,
-  }) {
+  function handleExamples({ type, field, inputField, arg, isType }) {
     const thing = arg || inputField || field || type
     const typeForAnalysis = thing === type ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
 
     let example = getExistingExample(thing)
-    // We don't put static examples on top-level types for some reason...should we allow that? Only for
-    // certain "kinds" like scalars?
-    // Would be BREAKING CHANGE
-    if (!(skipStatic || isUndef(example))) {
+    // Allow Scalars to have examples from the metadata...not 100% sure why not everything
+    if (!isUndef(example) && (!isType || type.kind === KINDS.SCALAR)) {
       thing.example = example
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
     if (!isUndef(example)) {
       thing.example = example
+    }
+
+    if (thing.kind === KINDS.SCALAR && typeof thing.example === 'string') {
+      thing.example = addSpecialTags(addQuoteTags(thing.example))
     }
   }
 }

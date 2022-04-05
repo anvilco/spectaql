@@ -24,7 +24,7 @@
   },
   "SCALAR": {
     "DateTime": {
-      "documentation": { "example": "\"2016-10-07T01:08:03.420Z\"" }
+      "documentation": { "example": "2016-10-07T01:08:03.420Z" }
     }
   },
   "INPUT_OBJECT": {

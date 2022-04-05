@@ -73,8 +73,8 @@ function jsonReplacer(name, value) {
   // return addSpecialTags(value)
 }
 
-function addSpecialTags(value) {
-  if (typeof value !== 'string') return value
+export function addSpecialTags(value) {
+  if (typeof value !== 'string' || value.includes(SPECIAL_TAG)) return value
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
 
@@ -143,7 +143,7 @@ export function markdown(
 }
 
 function highlight(code, language) {
-  var highlighted
+  let highlighted
   if (language) {
     try {
       highlighted = hljs.highlight(code, { language }).value

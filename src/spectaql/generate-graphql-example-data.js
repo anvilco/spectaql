@@ -46,10 +46,8 @@ export function generateQuery({
   introspectionResponse,
   graphQLSchema,
   extensions,
-  // queryNameStategy = QUERY_NAME_STATEGY_NONE,
   queryNameStategy,
 }) {
-  console.log({ queryNameStategy })
   const introspectionManipulator = new IntrospectionManipulator(
     introspectionResponse
   )
