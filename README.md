@@ -151,7 +151,7 @@ See [/examples/themes/README.md][themes-readme] for more information on how you 
 
 ## Reference Interpolation
 
-All `description`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Types].<Query, Mutation, or Type name>}}`
+All `description`s are rendered in a way that supports markdown. If you'd like to reference a Type, Query or Mutation SpectaQL supports some basic custom interpolation that will return links to the desired target. The format is as follows: `{{[Queries | Mutations | Subscriptions | Types].<Query, Mutation, Subscription, or Type name>}}`
 
 Examples:
 
