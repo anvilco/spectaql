@@ -22,8 +22,9 @@ export default function () {
     //
     //
     .option(
-      '-T, --theme-dir',
-      'specify a path to a directory containing a theme to use. Or specify a built-in theme of "default", "basic" or "spectaql" (default: "default")'
+      '-T, --theme-dir <path-or-theme-name>',
+      'specify a path to a directory containing a theme to use. Or specify a built-in theme of "default", "basic" or "spectaql" (default: "default")',
+      String
     )
     //
     //
