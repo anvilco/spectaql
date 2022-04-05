@@ -58,6 +58,7 @@ $size-content-break: $size-desktop !default;
   // These can cause issues in mobile
   .operation-heading,
   .definition-heading,
+  .introduction-item-title,
   .license-url {
     overflow: hidden;
     text-overflow: ellipsis;
