@@ -428,6 +428,7 @@ $background-arguments: #fafbfc;
   .deprecation-reason {
     &::before {
       display: inline;
+      word-break: break-all;
       content: 'Deprecated';
       padding: 2px math.div($content-padding, 4);
       margin-right: math.div($content-padding, 4);
