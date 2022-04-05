@@ -140,7 +140,8 @@ function resolvePaths(
     'faviconFile',
     'specFile',
     'gruntConfigFile',
-    'themeDir',
+    // DO NOT DO themeDir because it's not always a path...it can be a special value.
+    // 'themeDir',
   ]
 ) {
   keys.forEach((key) => {
@@ -188,6 +189,8 @@ function resolveOptions(cliOptions) {
     opts.themeDir = basicThemeDir
   } else if (opts.themeDir === SPECTAQL_THEME_NAME) {
     opts.themeDir = spectaqlThemeDir
+  } else {
+    opts.themeDir = normalizePathFromCwd(opts.themeDir)
   }
 
   // Add in defaults for things that were not set via CLI or YAML config
