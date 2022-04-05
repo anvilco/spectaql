@@ -108,9 +108,6 @@ module.exports = function processor({
       case 'Int': {
         return LIFE_THE_UNIVERSE_AND_EVERYTHING
       }
-      case 'String': {
-        return '42: Life, the Universe and Everything'
-      }
     }
 
     return
