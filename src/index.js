@@ -168,12 +168,6 @@ function resolveOptions(cliOptions) {
     return acc
   }, {})
 
-  console.log({
-    cliOptions,
-    opts,
-    introspectionCliOptions,
-  })
-
   if (opts.specFile) {
     // Add the loaded YAML to the options
     const spec = (opts.specData = loadYaml(opts.specFile))
