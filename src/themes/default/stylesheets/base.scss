@@ -206,6 +206,10 @@ $size-content-break: $size-desktop !default;
 
     > li {
       list-style: none;
+    }
+
+    > li,
+    .nav-group-section-title {
       overflow: hidden;
       text-overflow: ellipsis;
     }
