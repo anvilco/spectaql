@@ -73,8 +73,8 @@ function jsonReplacer(name, value) {
   // return addSpecialTags(value)
 }
 
-function addSpecialTags(value) {
-  if (typeof value !== 'string') return value
+export function addSpecialTags(value) {
+  if (typeof value !== 'string' || value.includes(SPECIAL_TAG)) return value
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
 }
 
@@ -143,7 +143,7 @@ export function markdown(
 }
 
 function highlight(code, language) {
-  var highlighted
+  let highlighted
   if (language) {
     try {
       highlighted = hljs.highlight(code, { language }).value
@@ -154,6 +154,14 @@ function highlight(code, language) {
   if (!highlighted) {
     highlighted = hljs.highlightAuto(code).value
   }
+
+  // if (typeof code === 'string' && code.indexOf('2016-10') > -1) {
+  //   console.log({
+  //     code,
+  //     highlighted,
+  //     language,
+  //   })
+  // }
 
   return (
     '<pre><code' +
@@ -183,6 +191,10 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
     replacement = getExampleForGraphQLScalar(name)
     if (typeof replacement !== 'undefined') {
       wasFromGraphQLScalar = true
+      console.log({
+        name,
+        replacement,
+      })
     }
   }
 
