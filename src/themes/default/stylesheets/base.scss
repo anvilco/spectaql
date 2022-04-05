@@ -59,7 +59,8 @@ $size-content-break: $size-desktop !default;
   .operation-heading,
   .definition-heading,
   .license-url {
-    word-break: break-word
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   #page {
@@ -202,6 +203,8 @@ $size-content-break: $size-desktop !default;
 
     > li {
       list-style: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
