@@ -33,7 +33,7 @@ union SimpleTypes =
   | SimpleTypeTwo
 
 
-"`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
+"`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) and [`myQuery`]({{Queries.myQuery}}) and [`myMutation`]({{Mutations.myMutation}}) are supported"
 type MyType {
   url: URL,
   json: JSON,
