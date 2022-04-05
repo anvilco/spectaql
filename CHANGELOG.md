@@ -1,3 +1,7 @@
+### 1.0.9
+
+- Bug fixes: Overflow text. SVG logos. Slow resize. https://github.com/anvilco/spectaql/pull/286
+
 ### 1.0.8
 
 - Add support for query name strategies. https://github.com/anvilco/spectaql/pull/282
