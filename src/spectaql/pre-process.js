@@ -8,11 +8,13 @@ export default function preProcess({
   introspectionResponse,
   graphQLSchema,
   extensions = {},
+  queryNameStategy,
 }) {
   handleItems(items, {
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStategy,
   })
 }
 
@@ -24,6 +26,7 @@ function handleItems(
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStategy,
   } = {}
 ) {
   if (!Array.isArray(items)) {
@@ -37,13 +40,21 @@ function handleItems(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStategy,
     })
   }
 }
 
 function handleItem(
   item,
-  { depth, names, introspectionResponse, graphQLSchema, extensions }
+  {
+    depth,
+    names,
+    introspectionResponse,
+    graphQLSchema,
+    extensions,
+    queryNameStategy,
+  }
 ) {
   if (!item) {
     return
@@ -68,6 +79,7 @@ function handleItem(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStategy,
     })
   }
 
@@ -76,7 +88,13 @@ function handleItem(
   let anchorPrefix
   if (item.isQuery) {
     anchorPrefix = 'query'
-    addQueryToItem({ item, introspectionResponse, graphQLSchema, extensions })
+    addQueryToItem({
+      item,
+      introspectionResponse,
+      graphQLSchema,
+      extensions,
+      queryNameStategy,
+    })
   } else if (item.isMutation) {
     anchorPrefix = 'mutation'
     addMutationToItem({
@@ -84,6 +102,7 @@ function handleItem(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStategy,
     })
   } else if (item.isSubscription) {
     anchorPrefix = 'subscription'
@@ -92,6 +111,7 @@ function handleItem(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStategy,
     })
   } else {
     // It's a definition
@@ -112,6 +132,7 @@ function addQueryToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStategy,
 }) {
   return _addQueryToItem({
     item,
@@ -119,6 +140,7 @@ function addQueryToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStategy,
   })
 }
 
@@ -127,6 +149,7 @@ function addMutationToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStategy,
 }) {
   return _addQueryToItem({
     item,
@@ -134,6 +157,7 @@ function addMutationToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStategy,
   })
 }
 
@@ -142,6 +166,7 @@ function addSubscriptionToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStategy,
 }) {
   return _addQueryToItem({
     item,
@@ -149,6 +174,7 @@ function addSubscriptionToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStategy,
   })
 }
 
@@ -158,6 +184,7 @@ function _addQueryToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStategy,
 }) {
   const stuff = generateQueryExample({
     prefix: flavor,
@@ -165,6 +192,7 @@ function _addQueryToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStategy,
   })
   const { query, variables, response } = stuff
 
