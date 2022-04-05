@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import _ from 'lodash'
 
 const cwd = process.cwd()
 
@@ -141,4 +142,24 @@ export function relative(from, to) {
 
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+export function capitalize(string) {
+  return _.capitalize(string)
+}
+
+export function camelCase(string) {
+  return _.camelCase(string)
+}
+
+export function snakeCase(string) {
+  return _.snakeCase(string)
+}
+
+export function upperCase(string) {
+  return string.toUpperCase()
+}
+
+export function lowerCase(string) {
+  return string.toLowerCase()
 }

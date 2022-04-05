@@ -9,7 +9,7 @@ function run(opts) {
   const { logo, favicon, specData: spec, themeDir } = opts
 
   const {
-    introspection: { url: introspectionUrl },
+    introspection: { url: introspectionUrl, queryNameStategy },
     extensions = {},
     servers = [],
     info = {},
@@ -69,6 +69,7 @@ function run(opts) {
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStategy,
   })
 
   const data = {

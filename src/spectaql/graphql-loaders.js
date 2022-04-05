@@ -105,10 +105,16 @@ export const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
 export const graphQLSchemaFromIntrospectionResponse = (
   introspectionResponse
 ) => {
-  return buildClientSchema(
-    normalizeIntrospectionQueryResult(introspectionResponse),
-    { assumeValid: true }
-  )
+  try {
+    return buildClientSchema(
+      normalizeIntrospectionQueryResult(introspectionResponse),
+      { assumeValid: true }
+    )
+  } catch (err) {
+    console.log('Here is your Introspection Query Response:')
+    console.log(JSON.stringify(introspectionResponse))
+    throw err
+  }
 }
 
 // For some reason, if there's a non-standard queryType or mutationType

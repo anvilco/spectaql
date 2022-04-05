@@ -74,6 +74,18 @@ introspection:
   # Default: false
   removeTrailingPeriodFromDescriptions: false
 
+  # What manipulation of the query/mutation/subscription name would you like to perform to determine
+  # the name in query examples? Possible values:
+  #
+  # - none: will use same exact name as query)
+  # - capitalizeFirst: will capitalize the first letter and leave the rest.
+  # - capitalize: will capitalize the first letter and convert the rest to lower case.
+  # - camelCase
+  # - snakeCase
+  # - upperCase: all letters to upper case.
+  # - lowerCase: all letters to lower case.
+  queryNameStategy: none
+
   #
   #
   ##############################################

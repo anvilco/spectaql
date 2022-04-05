@@ -4,7 +4,22 @@ import {
   introspectionArgsToVariables,
   introspectionQueryOrMutationToResponse,
 } from '../lib/common'
-import { capitalizeFirstLetter } from './utils'
+import {
+  capitalizeFirstLetter,
+  capitalize,
+  camelCase,
+  snakeCase,
+  upperCase,
+  lowerCase,
+} from './utils'
+
+const QUERY_NAME_STATEGY_NONE = 'none'
+const QUERY_NAME_STATEGY_CAPITALIZE_FIRST = 'capitalizeFirst'
+const QUERY_NAME_STATEGY_CAPITALIZE = 'capitalize'
+const QUERY_NAME_STATEGY_CAMELCASE = 'camelCase'
+const QUERY_NAME_STATEGY_SNAKECASE = 'snakeCase'
+const QUERY_NAME_STATEGY_UPPERCASE = 'upperCase'
+const QUERY_NAME_STATEGY_LOWERCASE = 'lowerCase'
 
 // Create a sane/friendly indentation of args based on how many there are, and the depth
 function friendlyArgsString({ args, depth }) {
@@ -31,7 +46,10 @@ export function generateQuery({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  // queryNameStategy = QUERY_NAME_STATEGY_NONE,
+  queryNameStategy,
 }) {
+  console.log({ queryNameStategy })
   const introspectionManipulator = new IntrospectionManipulator(
     introspectionResponse
   )
@@ -51,7 +69,24 @@ export function generateQuery({
 
   const cleanedQuery = queryResult.query.replace(/ : [\w![\]]+/g, '')
 
-  const query = `${prefix} ${capitalizeFirstLetter(field.name)}${
+  let queryName = field.name
+  if (!queryNameStategy || queryNameStategy === QUERY_NAME_STATEGY_NONE) {
+    // no op
+  } else if (queryNameStategy === QUERY_NAME_STATEGY_CAPITALIZE_FIRST) {
+    queryName = capitalizeFirstLetter(queryName)
+  } else if (queryNameStategy === QUERY_NAME_STATEGY_CAPITALIZE) {
+    queryName = capitalize(queryName)
+  } else if (queryNameStategy === QUERY_NAME_STATEGY_CAMELCASE) {
+    queryName = camelCase(queryName)
+  } else if (queryNameStategy === QUERY_NAME_STATEGY_SNAKECASE) {
+    queryName = snakeCase(queryName)
+  } else if (queryNameStategy === QUERY_NAME_STATEGY_UPPERCASE) {
+    queryName = upperCase(queryName)
+  } else if (queryNameStategy === QUERY_NAME_STATEGY_LOWERCASE) {
+    queryName = lowerCase(queryName)
+  }
+
+  const query = `${prefix} ${queryName}${
     argStr ? `${argStr}` : ''
   } {\n${cleanedQuery}}`
 
