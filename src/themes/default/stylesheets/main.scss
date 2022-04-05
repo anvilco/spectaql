@@ -426,6 +426,7 @@ $background-arguments: #fafbfc;
   }
 
   .deprecation-reason {
+    word-break: break-word;
     &::before {
       display: inline;
       content: 'Deprecated';
