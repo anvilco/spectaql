@@ -155,14 +155,6 @@ function highlight(code, language) {
     highlighted = hljs.highlightAuto(code).value
   }
 
-  // if (typeof code === 'string' && code.indexOf('2016-10') > -1) {
-  //   console.log({
-  //     code,
-  //     highlighted,
-  //     language,
-  //   })
-  // }
-
   return (
     '<pre><code' +
     (language
@@ -191,10 +183,6 @@ export function getExampleForScalarDefinition(scalarDefinition, otherOptions) {
     replacement = getExampleForGraphQLScalar(name)
     if (typeof replacement !== 'undefined') {
       wasFromGraphQLScalar = true
-      console.log({
-        name,
-        replacement,
-      })
     }
   }
 

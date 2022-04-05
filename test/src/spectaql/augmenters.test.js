@@ -649,12 +649,12 @@ describe('augmenters', function () {
     // Same code for Types and [Queries / Mutations]?
     describe('Arguments', function () {
       it('shows at least some things by default', function () {
-        ;[
+        [
           ['Query', 'myQuery'],
           ['Mutation', 'myMutation'],
           ['MyType', 'myField'],
         ].forEach(([typeName, fieldName]) => {
-          ;['myArg', 'myOtherArg'].forEach((argName) => {
+          ['myArg', 'myOtherArg'].forEach((argName) => {
             expect(
               $.introspectionManipulator.getArg({
                 typeName,
@@ -989,7 +989,39 @@ describe('augmenters', function () {
               kind: KINDS.SCALAR,
               name: 'String',
             }).example
-          ).to.eql('42: Life, the Universe and Everything')
+          ).to.include('42: Life, the Universe and Everything')
+        })
+
+        context('example already exists in metadata', function () {
+          def('metadata', () => {
+            const metadata = {
+              ...$.metadataBase,
+            }
+
+            metadata.SCALAR = {
+              String: {
+                metadata: {
+                  example: 'Fourty-two: Life, the Universe and Everything',
+                },
+              },
+            }
+
+            return metadata
+          })
+
+          it('leaves example alone when it already exists from metadata', function () {
+            const responseBefore = _.cloneDeep($.introspectionResponse)
+            const response = $.response
+            expect(response).to.not.eql(responseBefore)
+
+            // OK, WTF were special tags again? And placeholding quotes?
+            expect(
+              $.introspectionManipulator.getType({
+                kind: KINDS.SCALAR,
+                name: 'String',
+              }).example
+            ).to.include('Fourty-two: Life, the Universe and Everything')
+          })
         })
       })
 
