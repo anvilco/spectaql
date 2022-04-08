@@ -11,7 +11,7 @@ export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
 
 function normalizePathFn(pth, { start = cwd } = {}) {
   if (!path.isAbsolute(pth)) {
-    pth = start + '/' + pth
+    pth = path.join(start, pth)
   }
 
   return path.normalize(pth)
