@@ -1,3 +1,11 @@
+### 1.0.11
+
+- Bug fix: Windows absolute path bug. https://github.com/anvilco/spectaql/pull/288
+
+### 1.0.10
+
+- Dependency updates
+
 ### 1.0.9
 
 - Bug fixes: Overflow text. SVG logos. Slow resize. https://github.com/anvilco/spectaql/pull/286

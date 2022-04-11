@@ -10,8 +10,8 @@ const numDirsToRoot = 2
 export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
 
 function normalizePathFn(pth, { start = cwd } = {}) {
-  if (!pth.startsWith('/')) {
-    pth = start + '/' + pth
+  if (!path.isAbsolute(pth)) {
+    pth = path.join(start, pth)
   }
 
   return path.normalize(pth)
