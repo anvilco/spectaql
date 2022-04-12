@@ -1,3 +1,7 @@
+### 1.0.12
+
+- Update `microfiber` to include bugfix.
+
 ### 1.0.11
 
 - Bug fix: Windows absolute path bug. https://github.com/anvilco/spectaql/pull/288
