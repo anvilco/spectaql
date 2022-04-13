@@ -1,3 +1,7 @@
+### 1.0.14
+
+- Bug fix: scrolling issues in Firefox. https://github.com/anvilco/spectaql/pull/299
+
 ### 1.0.12
 
 - Update `microfiber` to include bugfix.
