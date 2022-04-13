@@ -28,6 +28,7 @@ function scrollSpy() {
   }
 
   function isElementInViewport(el) {
+    // https://stackoverflow.com/a/7557433/347554
     var rect = el.getBoundingClientRect()
     return (
       rect.top >= 0 &&
