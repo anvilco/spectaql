@@ -156,29 +156,6 @@ $background-arguments: #fafbfc;
     }
   }
 
-  #sidebar {
-    a {
-      color: $text-color;
-    }
-
-    a.nav-scroll-active,
-    a:hover {
-      font-weight: bold;
-    }
-
-    a.nav-scroll-active {
-      color: $text-color;
-    }
-
-    a:hover {
-      color: $link-color-hover;
-    }
-
-    @media (min-width: $size-sidebar-break) {
-      border-right: $border-size-thick solid $border-color;
-    }
-  }
-
   #sidebar,
   #docs,
   #mobile-navbar {
@@ -207,6 +184,33 @@ $background-arguments: #fafbfc;
     @media (min-width: $size-content-break) {
       padding-left: $container-padding-desktop;
       padding-right: $container-padding-desktop;
+    }
+  }
+
+  #sidebar {
+    // When there is bottom padding, there is a weird scroll behavior when
+    // scrolling the main panel to the very bottom
+    padding-bottom: 0;
+
+    a {
+      color: $text-color;
+    }
+
+    a.nav-scroll-active,
+    a:hover {
+      font-weight: bold;
+    }
+
+    a.nav-scroll-active {
+      color: $text-color;
+    }
+
+    a:hover {
+      color: $link-color-hover;
+    }
+
+    @media (min-width: $size-sidebar-break) {
+      border-right: $border-size-thick solid $border-color;
     }
   }
 
