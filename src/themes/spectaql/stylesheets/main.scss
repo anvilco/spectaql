@@ -216,7 +216,22 @@ $background-sidebar: $background-subtle;
     }
   }
 
+  #docs,
+  #sidebar,
+  #mobile-navbar {
+    @include containerPaddingVertical();
+  }
+
+  #nav,
+  #mobile-navbar,
+  .sidebar-top-container {
+    @include containerPaddingHorizontal();
+  }
+
   #sidebar {
+    // When there is bottom padding, there is a weird scroll behavior when
+    // scrolling the main panel to the very bottom
+    padding-bottom: 0;
     background: $background-sidebar;
 
     a {
@@ -234,18 +249,6 @@ $background-sidebar: $background-subtle;
     @media (min-width: $size-sidebar-break) {
       border-right: $border-size solid $border-color;
     }
-  }
-
-  #docs,
-  #sidebar,
-  #mobile-navbar {
-    @include containerPaddingVertical();
-  }
-
-  #nav,
-  #mobile-navbar,
-  .sidebar-top-container {
-    @include containerPaddingHorizontal();
   }
 
   #logo {
