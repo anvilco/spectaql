@@ -57,6 +57,7 @@ export function generateQuery({
     introspectionResponse,
     graphQLSchema,
     depth: 1,
+    collapseSubQueryDepth: extensions.collapseSubQueryDepth
   })
 
   const args = queryResult.args
@@ -119,6 +120,7 @@ function generateQueryInternal({
   depth,
   // typeCounts = [],
   introspectionManipulator,
+  collapseSubQueryDepth
 } = {}) {
   const { name } = field
 
@@ -146,7 +148,7 @@ function generateQueryInternal({
 
   // If it is an expandable thing...i.e. not a SCALAR, take this path
   if (returnType.fields) {
-    if (depth > 1) {
+    if (depth > collapseSubQueryDepth) {
       return {
         query: `${queryStr} {\n${space}  ...${returnType.name}Fragment\n${space}}\n`,
         args: fieldArgs,
@@ -160,6 +162,7 @@ function generateQueryInternal({
           args: fieldArgs,
           depth: depth + 1,
           introspectionManipulator,
+          collapseSubQueryDepth: collapseSubQueryDepth
         }).query
       })
       .join('')

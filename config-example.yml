@@ -268,6 +268,10 @@ extensions:
   # thing to have on, but it is possible to turn it off.
   # Default: true
   graphqlScalarExamples: true
+  # It defines from which subQuery depth, the subqueries should be collapsed as a Fragments in preview
+  # instead of showing all properties.
+  # Default: 1
+  collapseSubQueryDepth: 3
 
 servers:
   # NOTE: If not using introspection.url OR servers[], you need to provide x-url
