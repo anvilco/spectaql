@@ -1,3 +1,7 @@
+### 1.1.0
+
+- Added option for "fieldExpansionDepth". https://github.com/anvilco/spectaql/pull/302
+
 ### 1.0.14
 
 - Bug fix: scrolling issues in Firefox. https://github.com/anvilco/spectaql/pull/299
