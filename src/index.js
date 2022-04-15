@@ -65,6 +65,8 @@ const introspectionOptionDefaults = Object.freeze({
 
   removeTrailingPeriodFromDescriptions: false,
 
+  fieldExpansionDepth: 1,
+
   metadatasReadPath: 'documentation',
   metadatasWritePath: 'documentation',
 

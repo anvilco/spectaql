@@ -70,6 +70,7 @@ function run(opts) {
     graphQLSchema,
     extensions,
     queryNameStategy,
+    allOptions: opts,
   })
 
   const data = {
