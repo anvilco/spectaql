@@ -47,15 +47,23 @@ export function generateQuery({
   graphQLSchema,
   extensions,
   queryNameStategy,
+  allOptions,
 }) {
+  let fieldExpansionDepth =
+    allOptions?.specData?.introspection?.fieldExpansionDepth
+  if (typeof fieldExpansionDepth === 'undefined') {
+    fieldExpansionDepth = 1
+  }
   const introspectionManipulator = new IntrospectionManipulator(
     introspectionResponse
   )
+
   const queryResult = generateQueryInternal({
     field,
     introspectionManipulator,
     introspectionResponse,
     graphQLSchema,
+    fieldExpansionDepth,
     depth: 1,
   })
 
@@ -116,6 +124,7 @@ export function generateQuery({
 function generateQueryInternal({
   field,
   args = [],
+  fieldExpansionDepth,
   depth,
   // typeCounts = [],
   introspectionManipulator,
@@ -146,7 +155,7 @@ function generateQueryInternal({
 
   // If it is an expandable thing...i.e. not a SCALAR, take this path
   if (returnType.fields) {
-    if (depth > 1) {
+    if (depth > fieldExpansionDepth) {
       return {
         query: `${queryStr} {\n${space}  ...${returnType.name}Fragment\n${space}}\n`,
         args: fieldArgs,
@@ -158,6 +167,7 @@ function generateQueryInternal({
         return generateQueryInternal({
           field: childField,
           args: fieldArgs,
+          fieldExpansionDepth,
           depth: depth + 1,
           introspectionManipulator,
         }).query

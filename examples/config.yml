@@ -8,6 +8,7 @@ introspection:
   metadataFile: ./examples/data/metadata.json
   dynamicExamplesProcessingModule: ./examples/customizations/examples
   queryNameStategy: capitalizeFirst
+  fieldExpansionDepth: 2
 
 extensions:
   graphqlScalarExamples: true
