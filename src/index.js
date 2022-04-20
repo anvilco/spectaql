@@ -14,7 +14,8 @@ import {
 
 export { default as parseCliOptions } from './cli'
 
-let spectaql
+const defaultAppDir = normalizePathFromRoot('dist')
+let spectaql = require(path.resolve(defaultAppDir, 'spectaql/index'))
 let gruntConfigFn
 
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
@@ -44,7 +45,7 @@ const defaults = Object.freeze({
   portLive: 4401,
   targetDir: path.resolve(process.cwd(), 'public'),
   targetFile: 'index.html',
-  appDir: normalizePathFromRoot('dist'),
+  appDir: defaultAppDir,
   gruntConfigFile: normalizePathFromRoot('dist/lib/gruntConfig.js'),
   themeDir: defaultThemeDir,
   defaultThemeDir,
@@ -154,7 +155,7 @@ function resolvePaths(
   })
 }
 
-function resolveOptions(cliOptions) {
+export function resolveOptions(cliOptions) {
   // Start with options from the CLI
   let opts = _.extend({}, cliOptions)
 
@@ -238,19 +239,13 @@ function resolveOptions(cliOptions) {
   }
 
   // Set the spectaql object
-  spectaql = require(path.resolve(opts.appDir, 'spectaql/index'))
+  const pathToSpectaql = path.resolve(opts.appDir, 'spectaql/index')
+  if (pathToSpectaql !== defaultAppDir) {
+    spectaql = require(pathToSpectaql)
+  }
   gruntConfigFn = require(opts.gruntConfigFile)
 
   return opts
-}
-
-function _loadData(options) {
-  return spectaql(options)
-}
-
-function _buildSchemas(options) {
-  const { buildSchemas } = spectaql
-  return buildSchemas(options)
 }
 
 /**
@@ -262,7 +257,7 @@ export const run = function (cliOptions = {}) {
   //
   //= Load the specification and init configuration
 
-  const gruntConfig = gruntConfigFn(grunt, opts, _loadData(opts))
+  const gruntConfig = gruntConfigFn(grunt, opts, loadData(opts))
 
   //
   //= Setup Grunt to do the heavy lifting
@@ -380,7 +375,7 @@ export const run = function (cliOptions = {}) {
     try {
       grunt.config.set(
         'compile-handlebars.compile.templateData',
-        _loadData(opts)
+        loadData(opts)
       )
     } catch (e) {
       grunt.fatal(e)
@@ -466,12 +461,16 @@ export const run = function (cliOptions = {}) {
   return donePromise
 }
 
-export const loadData = function (cliOptions = {}) {
-  const opts = resolveOptions(cliOptions)
-  return _loadData(opts)
+export const loadData = function (options) {
+  return spectaql(options)
 }
 
-export const buildSchemas = function (cliOptions = {}) {
-  const opts = resolveOptions(cliOptions)
-  return _buildSchemas(opts)
+export const buildSchemas = function (options) {
+  const { buildSchemas } = spectaql
+  return buildSchemas(options)
+}
+
+export const augmentData = function (options) {
+  const { augmentData } = spectaql
+  return augmentData(options)
 }
