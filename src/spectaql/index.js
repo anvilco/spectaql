@@ -1,6 +1,7 @@
 import url from 'url'
 import path from 'path'
 import buildSchemas from './build-schemas'
+import { augmentData } from './augmenters'
 import arrangeDataDefaultFn from '../themes/default/data'
 import { fileExists } from './utils'
 import preProcessData from './pre-process'
@@ -94,3 +95,4 @@ function run(opts) {
 module.exports = run
 module.exports.run = run
 module.exports.buildSchemas = buildSchemas
+module.exports.augmentData = augmentData
