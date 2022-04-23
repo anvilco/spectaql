@@ -1,0 +1,10 @@
+<div id="introduction" data-traverse-target="introduction">
+  {{#unless info.x-hideWelcome}}
+    {{>layout/content/introduction/welcome}}
+  {{/unless}}
+  {{#unless (or info.x-hideIntroItems (empty info.x-introItems))}}
+    {{#each info.x-introItems }}
+      {{#if (firstTruthy description file)}}{{>layout/content/introduction/item}}{{/if}}
+    {{/each}}
+  {{/unless}}
+</div>

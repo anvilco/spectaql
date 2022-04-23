@@ -1,0 +1,14 @@
+<div id="introduction-item-{{@index}}" class="introduction-item" data-traverse-target="introduction-item-{{@index}}">
+  <h2 class="introduction-item-title">{{title}}</h5>
+  <div class="doc-row">
+    <div class="doc-copy">
+      {{#if description}}
+        {{md (interpolateReferences description)}}
+      {{else if file }}
+        {{md (loadTextFromFile file)}}
+      {{/if}}
+    </div>
+    <div class="doc-examples">
+    </div>
+  </div>
+</div>

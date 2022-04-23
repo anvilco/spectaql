@@ -4,19 +4,28 @@
 spectaql:
   # Optional path to an image to use as the logo in the top-left of the output
   logoFile: path/to/logo.png
+  # Optional boolean indicating whether to preserve the filname of the logo provided.
+  # If false, the logo name will default to "logo"
+  preserveLogoName: false
+
   # Optional path to an image to use as a favicon for the site when it's not embedded
   faviconFile: path/to/favicon.png
-  # Optional path to a JS file that will be bundled into the spectaql.min.js with all the other
-  # required JS. Can be useful for setting some values, such as for the Traverse.defaults object
-  additionalJsFile: path/to/additional.js
+  # Optional boolean indicating whether to preserve the filname of the faviconFile provided.
+  # If false, the favicon name will default to "favicon"
+  preserveFaviconName: false
 
-  # Optional string specifying how to build and include CSS for the output:
-  #   full: will include a very opinionated set of CSS to make the output look good
-  #   basic: will include a very minimal set of CSS mostly used for layout purposes.
-  #     You can then season to taste with your own additional CSS
+  # Optional string specifying a path to a theme directory to use for your build.
   #
-  # Default: full
-  cssBuildMode: full # or basic
+  # Themes rely on a directory structure convention that overlays your customizations and enhancements
+  # on top of the default theme provided by SpectaQL. See /examples/themes for more.
+  #
+  # Also, a few built-in themes can be used by specifying them by name:
+  # "default": Our default theme
+  # "basic": Outputs the same HTML structure as the "default" theme, but with minimal CSS styling
+  # "spectaql": Outputs the same HTML structure as the "default" theme, but with some CSS enhancements
+  #
+  # Default: "default"
+  themeDir: path/to/theme
 
 
 introspection:
@@ -31,8 +40,7 @@ introspection:
   #
 
   # URL of the GraphQL endpoint to hit if you want to generate the documentation based on live Introspection Query results
-  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement.
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-url below
   url: https://yoursite.com/graphql
 
   # If using the "url" option above, any headers (such as Authorization) can be added here. This
@@ -65,6 +73,24 @@ introspection:
   #
   # Default: false
   removeTrailingPeriodFromDescriptions: false
+
+  # What manipulation of the query/mutation/subscription name would you like to perform to determine
+  # the name in query examples? Possible values:
+  #
+  # - none: will use same exact name as query)
+  # - capitalizeFirst: will capitalize the first letter and leave the rest.
+  # - capitalize: will capitalize the first letter and convert the rest to lower case.
+  # - camelCase
+  # - snakeCase
+  # - upperCase: all letters to upper case.
+  # - lowerCase: all letters to lower case.
+  queryNameStategy: none
+
+  # When generating a Query or Mutation example, to what maximum depth should any nested fields
+  # be represented before a fragment placeholder is rendered?
+  #
+  # Default: 1
+  fieldExpansionDepth: 1
 
   #
   #
@@ -131,10 +157,8 @@ introspection:
 
 
   # This allows you to specify a custom path to a JS moddule to handle the generation of
-  # example values for your schema. The default is "./customizations/examples" which starts
-  # out doing nothing
-  #
-  # Default: ./customizations/examples
+  # example values for your schema.
+  # Default: none
   dynamicExamplesProcessingModule: path/to/examples.js
 
   ##############################################
@@ -170,30 +194,89 @@ introspection:
   # Default: true
   hideMutationsWithUndocumentedReturnType: true
 
+  # Whether to document any Subscriptions at all
+  # Default: true
+  subscriptionsDocumentedDefault: true
+  # Whether to document an individual Subscription, in the absence of a metadata directive
+  # Default: true
+  subscriptionDocumentedDefault: true
+  # Whether to document a Subscription Argument, in the absence of a metadata directive
+  # Default: true
+  subscriptionArgDocumentedDefault: true
+  # Hide any Subscriptions with undocumented return types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideSubscriptionsWithUndocumentedReturnType: true
+
   # Whether to document any Types at all
   # Default: true
-  typesDocumented: true
+  objectsDocumentedDefault: true
   # Whether to document an individual Type, in the absence of a metadata directive
   # Default: true
-  typeDocumentedDefault: true
+  objectDocumentedDefault: true
+
+  # Whether to document any Input Object types at all
+  # Default: true
+  inputsDocumentedDefault: true
+  # Whether to document an individual Input Object, in the absence of a metadata directive
+  # Default: true
+  inputDocumentedDefault: true
+
+  # Whether to document any Enums at all
+  # Default: true
+  enumsDocumentedDefault: true
+  # Whether to document an individual Enum, in the absence of a metadata directive
+  # Default: true
+  enumDocumentedDefault: true
+
+  # Whether to document any Unions at all
+  # Default: true
+  unionsDocumentedDefault: true
+  # Whether to document an individual Union, in the absence of a metadata directive
+  # Default: true
+  unionDocumentedDefault: true
+  # Hide Union possibleTypes that are not documented so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideUnionTypesOfUndocumentedType: true
+
   # Whether to document an individual Field, in the absence of a metadata directive
   # Default: true
   fieldDocumentedDefault: true
+  # Hide any fields of undocumented types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideFieldsOfUndocumentedType: true
+
+  # Whether to document an individual Input Field, in the absence of a metadata directive
+  # Default: true
+  inputFieldDocumentedDefault: true
+  # Hide any inputFields of undocumented types so as not to reference something
+  # that seemingly does not exist.
+  # Default: true
+  hideInputFieldsOfUndocumentedType: true
+
   # Whether to document an individual Argument, in the absence of a metadata directive
   # Default: true
   argDocumentedDefault: true
-  # Hide any fields with undocumented return types so as not to reference something
+  # Hide any args of undocumented types so as not to reference something
   # that seemingly does not exist.
   # Default: true
-  hideFieldsWithUndocumentedReturnType: true
+  hideArgsOfUndocumentedType: true
 
   #
   #
   ##############################################
 
+extensions:
+  # Utilize the 'graphql-scalars' library when generating examples for scalars it supports that
+  # do not have an example already set via some other method. Usually this is a good
+  # thing to have on, but it is possible to turn it off.
+  # Default: true
+  graphqlScalarExamples: true
+
 servers:
-  # NOTE: If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement.
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-url
 
   # same format as for OpenAPI Specification https://swagger.io/specification/#server-object
 
@@ -203,6 +286,11 @@ servers:
     # If no server entries have this indicator, the first server's URL will be used.
     # If no server entries are defined at all, the Introspection URL will be used.
     production: true
+    # A place to list any Headers for your GraphQL API calls
+    headers:
+      - name: Authorization
+        example: Bearer <YOUR_TOKEN_HERE>
+        comment: Your API token from the dashboard. Must be included in all API calls.
 
 info:
   # Tries to adhere to OpenAPI Specification https://swagger.io/specification/#info-object
@@ -255,11 +343,13 @@ info:
     # Can be a Title (for the Nav panel) + description (for the Content panel)
     - title: Important thing 1
       description: Some important stuff we wanted you to know. Supports `markdown`
+    # Can be a Title (for the Nav panel) + file that gets loaded (for the Content panel)
+    - title: Content from file that supports markdown
+      file: ./examples/data/intro-items-markdown.md
 
   # If you really want to hide the "Documentation by" at the bottom of your output, you can do so here
   # Default: false
   x-hidePoweredBy: false
 
-  # If not using introspection.url OR servers[], you need to provide x-swaggerUrl
-  # to satisfy the URL Swagger requirement. This allows for that.
-  x-swaggerUrl: https://yoursite.com/graphql
+  # If not using introspection.url OR servers[], you need to provide x-url
+  x-url: https://yoursite.com/graphql

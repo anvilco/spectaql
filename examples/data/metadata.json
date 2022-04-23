@@ -24,20 +24,17 @@
   },
   "SCALAR": {
     "DateTime": {
-      "documentation": { "example": "\"2016-10-07T01:08:03.420Z\"" }
+      "documentation": { "example": "2016-10-07T01:08:03.420Z" }
     }
   },
   "INPUT_OBJECT": {
-    "FilterType": {
+    "FilterInput": {
       "inputFields": {
         "someField": {
           "documentation": { "example": true }
         },
         "anotherField": {
           "documentation": { "example": "Metadata example of `anotherField`" }
-        },
-        "lastName": {
-          "documentation": { "example": "Doe" }
         },
         "episodeEnums": {
           "documentation": { "example": ["EMPIRE"] }

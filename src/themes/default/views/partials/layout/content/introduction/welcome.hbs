@@ -1,0 +1,58 @@
+<div id="welcome" class="doc-row">
+  <div class="doc-copy">
+    {{md info.description}}
+  </div>
+  <div class="doc-examples">
+    {{#if info.contact}}
+      <div class="example-section welcome-contact-section">
+        <h5>Contact</h5>
+        {{#if info.contact.name}}
+          <p class="contact-name">{{info.contact.name}}</p>
+        {{/if}}
+        {{#if info.contact.email}}
+          <p class="contact-email"><a href="mailto:{{info.contact.email}}">{{info.contact.email}}</a></p>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    {{#if info.license}}
+      <div class="example-section welcome-license-section">
+        <h5>License</h5>
+        {{#if info.license.name}}
+          <p class="license-name">{{info.license.name}}</p>
+        {{/if}}
+        {{#if info.license.url}}
+          <p class="license-url"><a href="{{info.license.url}}">{{info.license.url}}</a></p>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    {{#if info.termsOfService}}
+      <div class="example-section welcome-tos-section">
+        <h5>Terms of Service</h5>
+        <p><a href="{{info.termsOfService}}">{{info.termsOfService}}</a></p>
+      </div>
+    {{/if}}
+
+    {{#if url}}
+      <div class="example-section welcome-api-endpoints-section example-section-is-code">
+        <h5>API Endpoints</h5>
+        <pre><code>{{url}}</code></pre>
+      </div>
+    {{/if}}
+
+    {{#if headers}}
+      <div class="example-section welcome-api-endpoints-section example-section-is-code">
+        <h5>Headers</h5>
+        <pre><code>{{headers}}</code></pre>
+      </div>
+    {{/if}}
+
+    {{#if info.version}}
+      <div class="example-section welcome-version-section">
+        <h5>Version</h5>
+        <p>{{info.version}}</p>
+      </div>
+    {{/if}}
+  </div>
+</div>

@@ -1,179 +1,115 @@
-const _ = require('lodash')
-
 const LIFE_THE_UNIVERSE_AND_EVERYTHING = 42
 
-/**
- * Accepts a bunch of information about a Scalar, and allows you to return an example
- * to be used in your documentation. If undefined is returned, a default example will
- * be used for you.
- *
- * @param  {Object} argz An object containing the following properties to help you generate your example:
- *
- *    {String} name - The name of this Scalar
- *    {Object} definition - The JSON Schema definition for this Scalar
- *
- *    {Object} args - All of the arguments originally passed to the augmentation method:
- *      {Object} introspectionResponse - The introspection query response Object
- *      {Object} jsonSchema - The JSON Schema representing the entire GraphQL Schema
- *      {Object} graphQLSchema - The GraphQL schema object
- *      {introspectionOptions} - Options from the CLI and YML related to generating the documentation
- *
- * @return {Any} The value to use as an example. Return undefined to just use the default.
- */
-function scalarProcessor (argz = {}) {
-  const {
-    name,
-  } = argz
-
-  switch (name) {
-    case 'Int': {
-      return LIFE_THE_UNIVERSE_AND_EVERYTHING
+module.exports = function processor({
+  // The type should always be provided
+  type,
+  // If the thing is a field or the argument on a field, field will be present
+  field,
+  // If the thing is an argument on a field, argument will be present
+  arg,
+  // If the thing being processed is an inputField on an input type, inputField will be present
+  inputField,
+  // This will be an object containing (at least) the 'kind' and 'name' properties of the "underlying type"
+  // of the thing being processed. "Underlying type" meaning whatever is at the bottom of any "LIST" and
+  // "NON_NULL" nesting. If the thing being processed is actually a Type, this object will be the entire
+  // Type.
+  //
+  // Eg: [String] => { kind: 'SCALAR', name: 'String' }
+  underlyingType,
+  // Is the thing required or not? Eg: String! or [String]! => true
+  // eslint-disable-next-line no-unused-vars
+  isRequired,
+  // Is the thing an array/list? Eg: [String] => true
+  isArray,
+  // Are the items in the array/list required? Eg: [String!] => true
+  // eslint-disable-next-line no-unused-vars
+  itemsRequired,
+}) {
+  // If "arg" is present, we know the thing being processed is an arg
+  if (arg) {
+    if (typeof arg.example !== 'undefined') {
+      return
     }
-  }
-}
 
-/**
- * Accepts a bunch of information about a Type Field, and allows you to return an example
- * to be used in your documentation. If undefined is returned, a default example will
- * be used for you.
- *
- * @param  {Object} argz An object containing the following properties to help you generate your example:
- *    {String} parentName - The name of the Type this Field is part of
- *
- *    {String} name - The name of this Field
- *    {String} returnType - The singular, when-non-null return Type of the Field (e.g. `[Foo!]!` would be `Foo` here)
- *    {Object} definition - The JSON Schema definition for this Field
- *
- *    {Boolean} isArray - Boolean indicating if the return Type is an array/list
- *    {Boolean} itemsRequired - Boolean indicating if the items in the array/list are required
- *
- *    {Object} args - All of the arguments originally passed to the augmentation method:
- *      {Object} introspectionResponse - The introspection query response Object
- *      {Object} jsonSchema - The JSON Schema representing the entire GraphQL Schema
- *      {Object} graphQLSchema - The GraphQL schema object
- *      {introspectionOptions} - Options from the CLI and YML related to generating the documentation
- *
- * @return {Any} The value to use as an example. Return undefined to just use the default.
- */
-function fieldProcessor (argz = {}) {
-  const {
-    parentName,
-    name,
-    returnType,
-    definition,
-    isArray,
-  } = argz
+    const argType = underlyingType
 
-  if (typeof _.get(definition, 'properties.return.example') !== 'undefined') {
+    // All String arguments on the myQuery Query get examples
+    if (
+      type.kind === 'OBJECT' &&
+      type.name === 'Query' &&
+      field.name === 'myQuery' &&
+      argType.kind === 'SCALAR' &&
+      argType.name === 'String'
+    ) {
+      const val = `Special generated Argument example for ${field.name} ${arg.name}`
+      // Might need to be an array
+      return isArray ? [val] : val
+    }
+
+    // All String arguments everywhere else get examples
+    if (argType.kind == 'SCALAR' && argType.name === 'String') {
+      const val = `Generated Argument example for ${field.name} ${arg.name}`
+      // Might need to be an array
+      return isArray ? [val] : val
+    }
+
     return
   }
 
-  // All String fields on MyType get an example, unless they already had one from somewhere
-  if (parentName === 'MyType' && returnType === 'String' && typeof definition.example === 'undefined') {
-    const val = `Generated Field example for ${name}`
-    // Might need to be an array
-    return isArray ? [val] : val
-  }
-}
+  // If we know it's not an arg, but "field" is present, we know the thing being processed is a field
+  if (field) {
+    if (typeof field.example !== 'undefined') {
+      return
+    }
 
-/**
- * Accepts a bunch of information about an Input Type Field, and allows you to return an example
- * to be used in your documentation. If undefined is returned, a default example will
- * be used for you.
- *
- * @param  {Object} argz An object containing the following properties to help you generate your example:
- *    {String} parentName - The name of the InputType this Field is part of
- *
- *    {String} name - The name of this Field
- *    {String} type - The singular, when-non-null return Type of the Field (e.g. `[Foo!]!` would be `Foo` here)
- *    {Object} definition - The JSON Schema definition for this Field
- *
- *    {Boolean} isArray - Boolean indicating if the return Type is an array/list
- *    {Boolean} itemsRequired - Boolean indicating if the items in the array/list are required
- *
- *    {Object} args - All of the arguments originally passed to the augmentation method:
- *      {Object} introspectionResponse - The introspection query response Object
- *      {Object} jsonSchema - The JSON Schema representing the entire GraphQL Schema
- *      {Object} graphQLSchema - The GraphQL schema object
- *      {introspectionOptions} - Options from the CLI and YML related to generating the documentation
- *
- * @return {Any} The value to use as an example. Return undefined to just use the default.
- */
-function inputFieldProcessor (argz = {}) {
-  const {
-    type,
-    isArray,
-  } = argz
+    const fieldType = underlyingType
 
-  if (type === 'Int') {
-    return isArray ? [LIFE_THE_UNIVERSE_AND_EVERYTHING] : LIFE_THE_UNIVERSE_AND_EVERYTHING
-  }
-}
+    // All String fields on MyType get an example, unless they already had one from somewhere
+    if (
+      type.kind === 'OBJECT' &&
+      type.name === 'MyType' &&
+      fieldType.kind === 'SCALAR' &&
+      fieldType.name === 'String'
+    ) {
+      const val = `Generated Field example for ${field.name}`
+      // Might need to be an array
+      return isArray ? [val] : val
+    }
 
-
-/**
- * Accepts a bunch of information about an Argument, and allows you to return an example
- * to be used in your documentation. If undefined is returned, a default example will
- * be used for you.
- *
- * @param  {Object} argz - An object containing the following properties to help you generate your example:
- *    {Enum of String} grandParentType - If the Argument is on a Field, this will be "Type". Otherise,
- *      the Argument is from a Query or Mutation and it will indicate "Query" or "Mutation".
- *    {String} grandParentName - If the Argument is on a Field, this will list the name of the Type that
- *      the Field is part of. Otherise, the Argument is from a Query or Mutation and it will indicate
- *      "Query" or "Mutation".
- *
- *    {Enum of String} parentType - If the Argument is on a Field, this will be "Field". Otherise,
- *      the Argument is from a Query or Mutation and it will indicate "Query" or "Mutation".
- *    {String} parentName - The name of the Field, Query or Mutation this Argument is on.
- *    {Object} parentDefinition - The JSON Schema definition for the parent of this Argument
- *
- *    {String} name - The name of this Argument
- *    {Object} definition - The JSON Schema definition for this Argument
- *    {String} type - The singular, when-non-null return Type of this Argument (e.g. `[Foo!]!` would be `Foo` here)
- *
- *    {Boolean} isArray - Boolean indicating if the return Type is an array/list
- *    {Boolean} itemsRequired - Boolean indicating if the items in the array/list are required
- *    {Object} args - All of the arguments originally passed to the augmentation method:
- *      {Object} introspectionResponse - The introspection query response Object
- *      {Object} jsonSchema - The JSON Schema representing the entire GraphQL Schema
- *      {Object} graphQLSchema - The GraphQL schema object
- *      {introspectionOptions} - Options from the CLI and YML related to generating the documentation
- *
- * @return {Any} The value to use as an example. Return undefined to just use the default.
- */
-function argumentProcessor (argz = {}) {
-  const {
-    definition,
-    parentType,
-    parentName,
-    name,
-    type,
-    isArray,
-  } = argz
-
-  if (typeof _.get(definition, 'example') !== 'undefined') {
     return
   }
 
-  // All String arguments on the myQuery Query get examples
-  if (parentType === 'Query' && parentName === 'myQuery' && type === 'String') {
-    const val = `Special generated Argument example for ${parentName} ${name}`
-    // Might need to be an array
-    return isArray ? [val] : val
+  // If we know it's not an arg or a field, but "inputField" is present, we know the thing
+  // being processed is an inputField
+  if (inputField) {
+    if (typeof inputField.example !== 'undefined') {
+      return
+    }
+
+    const inputFieldType = underlyingType
+
+    if (inputFieldType.kind === 'SCALAR' && inputFieldType.name === 'Int') {
+      return isArray
+        ? [LIFE_THE_UNIVERSE_AND_EVERYTHING]
+        : LIFE_THE_UNIVERSE_AND_EVERYTHING
+    }
+
+    return
   }
 
-  // All String arguments everywhere get examples
-  if (type === 'String') {
-    const val = `Generated Argument example for ${parentName} ${name}`
-    // Might need to be an array
-    return isArray ? [val] : val
-  }
-}
+  // If we know it's not an arg, field, or inputType, but "type" is present, we know the thing
+  // being processed is a type
+  if (type) {
+    if (typeof type.example !== 'undefined') {
+      return
+    }
 
-module.exports = {
-  fieldProcessor,
-  inputFieldProcessor,
-  argumentProcessor,
-  scalarProcessor,
+    switch (type.name) {
+      case 'Int': {
+        return LIFE_THE_UNIVERSE_AND_EVERYTHING
+      }
+    }
+
+    return
+  }
 }

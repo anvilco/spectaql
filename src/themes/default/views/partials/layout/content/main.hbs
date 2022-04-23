@@ -1,0 +1,24 @@
+{{! DO THE CONTENT }}
+<article id="content">
+  <h1 class="doc-heading">{{info.title}}</h1>
+  {{! Check if there is effectively nothing to do }}
+  {{#unless (or info.x-hideIntroduction (and info.x-hideWelcome (or info.x-hideIntroItems (empty info.x-introItems))))}}
+    {{>layout/content/introduction/main}}
+  {{/unless}}
+
+  {{! DO THE CONTENT }}
+  {{#if (nempty items)}}
+    {{#each items}}
+      {{>layout/content/item}}
+    {{/each}}
+  {{/if}}
+
+  {{! "Powered by" link }}
+  {{#unless info.x-hidePoweredBy }}
+  <div class="doc-row no-margin">
+    <div class="doc-copy doc-separator">
+      <a class="powered-by" href="https://github.com/anvilco/spectaql">Documentation by <span>Anvil SpectaQL</span></a>
+    </div>
+  </div>
+  {{/unless}}
+</article>

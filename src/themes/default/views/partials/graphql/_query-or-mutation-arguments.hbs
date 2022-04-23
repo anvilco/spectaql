@@ -1,0 +1,37 @@
+{{#if args}}
+  <div class="operation-arguments doc-copy-section">
+    <h5>Arguments</h5>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{#each args}}
+          <tr>
+            <td>
+              {{! The Name column }}
+              {{~> graphql/name-and-type }}
+            </td>
+            <td>
+              {{! The Description column }}
+              {{ md (
+                  concat
+                    (interpolateReferences description)
+                    (ternary defaultValue
+                      (concat "Default = "  (codify defaultValue))
+                      ""
+                    )
+                  joiner=". " filterFalsy=true
+                ) stripParagraph=true
+              }}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+{{/if}}
