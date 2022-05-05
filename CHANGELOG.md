@@ -1,3 +1,13 @@
+### 1.1.2
+
+- Fixed mismatched header tags
+- Fixed name of `queryNameStrategy` options
+
+### 1.1.1
+
+- Added `augmentData` to exports.
+- Updated dependencies.
+
 ### 1.1.0
 
 - Added option for "fieldExpansionDepth". https://github.com/anvilco/spectaql/pull/302
