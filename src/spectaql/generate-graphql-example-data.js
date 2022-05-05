@@ -46,6 +46,7 @@ export function generateQuery({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStrategy,
   queryNameStategy,
   allOptions,
 }) {
@@ -75,20 +76,26 @@ export function generateQuery({
 
   const cleanedQuery = queryResult.query.replace(/ : [\w![\]]+/g, '')
 
+  let consolidatedQueryNameStrategy = queryNameStrategy || queryNameStategy
   let queryName = field.name
-  if (!queryNameStategy || queryNameStategy === QUERY_NAME_STATEGY_NONE) {
+  if (
+    !consolidatedQueryNameStrategy ||
+    consolidatedQueryNameStrategy === QUERY_NAME_STATEGY_NONE
+  ) {
     // no op
-  } else if (queryNameStategy === QUERY_NAME_STATEGY_CAPITALIZE_FIRST) {
+  } else if (
+    consolidatedQueryNameStrategy === QUERY_NAME_STATEGY_CAPITALIZE_FIRST
+  ) {
     queryName = capitalizeFirstLetter(queryName)
-  } else if (queryNameStategy === QUERY_NAME_STATEGY_CAPITALIZE) {
+  } else if (consolidatedQueryNameStrategy === QUERY_NAME_STATEGY_CAPITALIZE) {
     queryName = capitalize(queryName)
-  } else if (queryNameStategy === QUERY_NAME_STATEGY_CAMELCASE) {
+  } else if (consolidatedQueryNameStrategy === QUERY_NAME_STATEGY_CAMELCASE) {
     queryName = camelCase(queryName)
-  } else if (queryNameStategy === QUERY_NAME_STATEGY_SNAKECASE) {
+  } else if (consolidatedQueryNameStrategy === QUERY_NAME_STATEGY_SNAKECASE) {
     queryName = snakeCase(queryName)
-  } else if (queryNameStategy === QUERY_NAME_STATEGY_UPPERCASE) {
+  } else if (consolidatedQueryNameStrategy === QUERY_NAME_STATEGY_UPPERCASE) {
     queryName = upperCase(queryName)
-  } else if (queryNameStategy === QUERY_NAME_STATEGY_LOWERCASE) {
+  } else if (consolidatedQueryNameStrategy === QUERY_NAME_STATEGY_LOWERCASE) {
     queryName = lowerCase(queryName)
   }
 

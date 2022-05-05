@@ -10,7 +10,13 @@ function run(opts) {
   const { logo, favicon, specData: spec, themeDir } = opts
 
   const {
-    introspection: { url: introspectionUrl, queryNameStategy },
+    introspection: {
+      url: introspectionUrl,
+      queryNameStrategy,
+      // Ugh. Typo but gotta leave it now.
+      // TODO: remove in next Major / breaking release
+      queryNameStategy,
+    },
     extensions = {},
     servers = [],
     info = {},
@@ -70,6 +76,7 @@ function run(opts) {
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions: opts,
   })
