@@ -8,6 +8,7 @@ export default function preProcess({
   introspectionResponse,
   graphQLSchema,
   extensions = {},
+  queryNameStrategy,
   queryNameStategy,
   allOptions,
 }) {
@@ -15,6 +16,7 @@ export default function preProcess({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions,
   })
@@ -28,6 +30,7 @@ function handleItems(
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions,
   } = {}
@@ -43,6 +46,7 @@ function handleItems(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStrategy,
       queryNameStategy,
       allOptions,
     })
@@ -57,6 +61,7 @@ function handleItem(
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions,
   }
@@ -84,6 +89,7 @@ function handleItem(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStrategy,
       queryNameStategy,
       allOptions,
     })
@@ -99,6 +105,7 @@ function handleItem(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStrategy,
       queryNameStategy,
       allOptions,
     })
@@ -109,6 +116,7 @@ function handleItem(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStrategy,
       queryNameStategy,
       allOptions,
     })
@@ -119,6 +127,7 @@ function handleItem(
       introspectionResponse,
       graphQLSchema,
       extensions,
+      queryNameStrategy,
       queryNameStategy,
       allOptions,
     })
@@ -142,6 +151,7 @@ function addQueryToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStrategy,
   queryNameStategy,
   allOptions,
 }) {
@@ -151,6 +161,7 @@ function addQueryToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions,
   })
@@ -161,6 +172,7 @@ function addMutationToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStrategy,
   queryNameStategy,
   allOptions,
 }) {
@@ -170,6 +182,7 @@ function addMutationToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions,
   })
@@ -180,6 +193,7 @@ function addSubscriptionToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStrategy,
   queryNameStategy,
   allOptions,
 }) {
@@ -189,6 +203,7 @@ function addSubscriptionToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions,
   })
@@ -200,6 +215,7 @@ function _addQueryToItem({
   introspectionResponse,
   graphQLSchema,
   extensions,
+  queryNameStrategy,
   queryNameStategy,
   allOptions,
 }) {
@@ -209,6 +225,7 @@ function _addQueryToItem({
     introspectionResponse,
     graphQLSchema,
     extensions,
+    queryNameStrategy,
     queryNameStategy,
     allOptions,
   })
