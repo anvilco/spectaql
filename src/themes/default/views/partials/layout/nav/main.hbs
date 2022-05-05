@@ -2,7 +2,7 @@
   {{! Check if there is effectively nothing to do }}
   {{#unless (or info.x-hideIntroduction (and info.x-hideWelcome (or info.x-hideIntroItems (empty info.x-introItems)))) }}
     <div class="nav-group">
-      <h4 class="nav-group-title">Introduction</h5>
+      <h4 class="nav-group-title">Introduction</h4>
       <ul class="nav-group-items">
         {{#unless info.x-hideWelcome }}
           <li><a href="#introduction">Welcome</a></li>
