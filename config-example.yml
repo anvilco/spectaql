@@ -84,7 +84,7 @@ introspection:
   # - snakeCase
   # - upperCase: all letters to upper case.
   # - lowerCase: all letters to lower case.
-  queryNameStategy: none
+  queryNameStrategy: none
 
   # When generating a Query or Mutation example, to what maximum depth should any nested fields
   # be represented before a fragment placeholder is rendered?
