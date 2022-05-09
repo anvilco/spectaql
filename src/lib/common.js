@@ -290,6 +290,13 @@ function introspectionArgToVariable({
   )
 }
 
+function isList(type) {
+  return (
+    type?.kind === 'LIST' ||
+    (type?.kind === 'NON_NULL' && type?.ofType?.kind === 'LIST')
+  )
+}
+
 export function introspectionQueryOrMutationToResponse({
   field,
   introspectionResponse,
@@ -320,7 +327,7 @@ export function introspectionQueryOrMutationToResponse({
   }
 
   // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
-  return underlyingTypeDefinition.fields.reduce((acc, field) => {
+  const exampleObject = underlyingTypeDefinition.fields.reduce((acc, field) => {
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
     )
@@ -334,6 +341,8 @@ export function introspectionQueryOrMutationToResponse({
     )
     return acc
   }, {})
+
+  return isList(field.type) ? [exampleObject] : exampleObject
 }
 
 function generateIntrospectionReturnTypeExample(
