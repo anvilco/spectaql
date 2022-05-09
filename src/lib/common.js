@@ -290,13 +290,6 @@ function introspectionArgToVariable({
   )
 }
 
-function isList(type) {
-  return (
-    type?.kind === 'LIST' ||
-    (type?.kind === 'NON_NULL' && type?.ofType?.kind === 'LIST')
-  )
-}
-
 export function introspectionQueryOrMutationToResponse({
   field,
   introspectionResponse,
@@ -306,6 +299,8 @@ export function introspectionQueryOrMutationToResponse({
   introspectionManipulator =
     introspectionManipulator ||
     new IntrospectionManipulator(introspectionResponse)
+
+  const { isArray } = analyzeTypeIntrospection(field.type)
   const underlyingTypeDefinition = introspectionManipulator.getType(
     IntrospectionManipulator.digUnderlyingType(field.type)
   )
@@ -342,7 +337,7 @@ export function introspectionQueryOrMutationToResponse({
     return acc
   }, {})
 
-  return isList(field.type) ? [exampleObject] : exampleObject
+  return isArray ? [exampleObject] : exampleObject
 }
 
 function generateIntrospectionReturnTypeExample(
