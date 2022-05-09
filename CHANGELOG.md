@@ -1,3 +1,9 @@
+### 1.1.3
+
+- Updated dependencies.
+- Fixed bug where List return type for Query or Mutation was not working properly. https://github.com/anvilco/spectaql/pull/342
+- Fixed navigation bug. https://github.com/anvilco/spectaql/pull/343
+
 ### 1.1.2
 
 - Fixed mismatched header tags
