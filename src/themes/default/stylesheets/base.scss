@@ -26,6 +26,10 @@ $size-content-break: $size-desktop !default;
 // This comes from the value passed in the config
 $logo-height: logoMaxHeightPx() !default;
 
+// In case there is a navbar. getScrollOffset if a function defined in the grunt
+// config file
+$scroll-offset: getScrollOffset() !default;
+
 #spectaql {
   padding: 0;
   margin: 0;
