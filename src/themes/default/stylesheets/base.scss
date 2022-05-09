@@ -23,6 +23,10 @@ $size-sidebar-break: $size-desktop !default;
 // Below this size, the content will stack
 $size-content-break: $size-desktop !default;
 
+// In case there is a navbar. getScrollOffset if a function defined in the grunt
+// config file
+$scroll-offset: getScrollOffset() !default;
+
 #spectaql {
   padding: 0;
   margin: 0;

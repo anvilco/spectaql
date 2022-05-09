@@ -27,6 +27,10 @@ spectaql:
   # Default: "default"
   themeDir: path/to/theme
 
+  # If you're embedding SpectaQL's output and you've got something like a Nav Bar that
+  # gets in the way, you can use this value to adjust the scroll offset
+  scrollPaddingTopPx: 0
+
 
 introspection:
   ##############################################
