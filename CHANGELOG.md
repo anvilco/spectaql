@@ -1,3 +1,11 @@
+### 1.1.5
+
+- CSS will be concatenated with SpectaQL's css coming before other CSS. https://github.com/anvilco/spectaql/pull/353
+
+### 1.1.4
+
+- Re-published from borked publish of `1.1.3`
+
 ### 1.1.3
 
 - Updated dependencies.
