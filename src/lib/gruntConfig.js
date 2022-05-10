@@ -31,7 +31,10 @@ module.exports = function (grunt, options, spec) {
         dest: options.cacheDir + '/javascripts/spectaql.js',
       },
       css: {
-        src: [options.cacheDir + '/stylesheets/**/*.css'],
+        src: [
+          options.cacheDir + '/stylesheets/main.css',
+          options.cacheDir + '/stylesheets/**/*.css',
+        ],
         dest: options.cacheDir + '/stylesheets/spectaql.css',
       },
     },
