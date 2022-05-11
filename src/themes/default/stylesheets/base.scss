@@ -8,7 +8,7 @@ $sidebar-top: 0px !default;
 $sidebar-padding: $content-padding !default;
 $sidebar-background: #fff !default;
 
-$overlay-background: rgba(0, 0, 0, .5) !default;
+$overlay-background: rgba(0, 0, 0, 0.5) !default;
 $overlay-background-hidden: rgba(0, 0, 0, 0) !default;
 
 $code-background: #ccc !default;
@@ -25,6 +25,16 @@ $size-content-break: $size-desktop !default;
 
 // This comes from the value passed in the config
 $logo-height: logoMaxHeightPx() !default;
+
+// In case there is a navbar. getScrollOffset if a function defined in the grunt
+// config file
+$scroll-offset: getScrollOffset() !default;
+
+@if $scroll-offset != false {
+  html {
+    scroll-padding-top: $scroll-offset;
+  }
+}
 
 #spectaql {
   padding: 0;
@@ -97,7 +107,7 @@ $logo-height: logoMaxHeightPx() !default;
     min-width: $drawer-size;
     max-width: $drawer-size;
     flex-shrink: 0;
-    transition: transform .2s ease-out;
+    transition: transform 0.2s ease-out;
     transform: translateX(-100%);
     z-index: 10;
 
@@ -147,7 +157,7 @@ $logo-height: logoMaxHeightPx() !default;
 
       &::after {
         display: block;
-        content: "";
+        content: '';
         height: 2px;
         background: black;
         box-shadow: 0 5px 0 black, 0 10px 0 black;

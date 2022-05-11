@@ -21,6 +21,11 @@ module.exports = function (grunt, options, spec) {
               ? sass.SassNumber(options.logoMaxHeightPx, 'px')
               : sass.sassFalse
           },
+          'getScrollOffset()': () => {
+            return options.scrollPaddingTopPx
+              ? sass.SassNumber(options.scrollPaddingTopPx, 'px')
+              : sass.sassFalse
+          },
         },
       },
       main: {

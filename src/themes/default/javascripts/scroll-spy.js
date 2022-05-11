@@ -3,7 +3,22 @@ function scrollSpy() {
   var SCROLL_DEBOUNCE_MS = 100
   var RESIZE_DEBOUNCE_MS = 500
 
-  var PADDING = 5 // TODO: dynamically figure this out
+  var PADDING = 5
+  // If we are applying a scroll padding, we'll be doing it to the HTML element
+  // so we'll check it to see if we should do something different than the default
+  // by trying to get the value from the styles
+  var htmlElement = document.querySelector('html')
+  if (htmlElement) {
+    var scrollPaddingTop = window.getComputedStyle(htmlElement).scrollPaddingTop
+    if (
+      scrollPaddingTop &&
+      typeof scrollPaddingTop === 'string' &&
+      scrollPaddingTop !== 'auto' &&
+      scrollPaddingTop.endsWith('px')
+    ) {
+      PADDING = PADDING + parseInt(scrollPaddingTop.split('px')[0])
+    }
+  }
   var ACTIVE_CLASS = 'nav-scroll-active'
   var EXPAND_CLASS = 'nav-scroll-expand'
   var EXPANDABLE_SELECTOR = '.nav-group-section'
