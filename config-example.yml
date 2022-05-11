@@ -7,11 +7,6 @@ spectaql:
   # Optional boolean indicating whether to preserve the filname of the logo provided.
   # If false, the logo name will default to "logo"
   preserveLogoName: false
-  # Control the max-height of your logo here. Can be useful if your logo is SVG or an
-  # inappropriate size.
-  #
-  # Default: None; No "max-height" property will be set on the logo
-  logoMaxHeightPx: 18
   # Control the height of your logo here. Can be useful if your logo is SVG or an
   # inappropriate size.
   #

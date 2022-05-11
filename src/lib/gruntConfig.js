@@ -16,6 +16,7 @@ module.exports = function (grunt, options, spec) {
         //   path.resolve(node_modules_dependency, 'foundation-sites/scss'),
         // ],
         functions: {
+          // TODO: deprecated and undocumented. Remove in the next Major version.
           'getLogoMaxHeightPx()': () => {
             return options.logoMaxHeightPx
               ? sass.SassNumber(options.logoMaxHeightPx, 'px')
