@@ -23,6 +23,8 @@ $size-sidebar-break: $size-desktop !default;
 // Below this size, the content will stack
 $size-content-break: $size-desktop !default;
 
+$logo-height: logoMaxHeightPx() !default;
+
 #spectaql {
   padding: 0;
   margin: 0;
@@ -196,6 +198,9 @@ $size-content-break: $size-desktop !default;
       display: block;
       width: 100%;
       max-width: 100%;
+      @if $logo-height != false {
+        max-height: $logo-height;
+      }
     }
   }
 
