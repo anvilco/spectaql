@@ -18,7 +18,7 @@ module.exports = function (grunt, options, spec) {
         functions: {
           'logoMaxHeightPx()': () => {
             return options.logoMaxHeightPx
-              ? sass.SassNumber(options.logoMaxHeightPx || 99, 'px')
+              ? sass.SassNumber(options.logoMaxHeightPx, 'px')
               : sass.sassFalse
           },
         },
