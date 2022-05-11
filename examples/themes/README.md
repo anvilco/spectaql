@@ -39,7 +39,8 @@ You can also replace/overwrite any of SpectaQL's default javascript files.
 ### `stylesheets`
 
 Any `.css` files that you add to this folder will be concatenated and minified into the `spectaql.min.css` file of your build's target directory along with the default CSS.
-SpectaQL supports SCSS, and the default CSS is built by processing the `main.scss` in the default theme's `stylesheets/` directory. If your theme provides a `main.scss` file, that will overwrite the default one and be used to direct the SCSS -> CSS build. You can also then include other `.scss` files that can be imported by your `main.scss` file.
+SpectaQL supports SCSS, and the default CSS is built by processing the `main.scss` in the default theme's `stylesheets/` directory. If your theme provides a `main.scss` file, that will overwrite the default one and be used to direct the SCSS -> CSS build. You can also then include other `.scss` files that can be imported by your `main.scss` file. Additionally, there is a `custom.scss` included in the default theme that will be imported by its
+`main.scss` file, but it will not contain any SCSS. You might consider overriding just this file in your custom theme in order to take advantage of any SCSS updates to this library as you update it.
 
 ### `views`
 
