@@ -2,6 +2,7 @@
 
 - Added a `custom.scss` file to the default theme to allow for simple theme customizations to easily get ohter CSS updates.
 - Added a `logoMaxHeightPx` option to set the logo's `max-height` property.
+- Added `scrollPaddingTopPx` option to set the `scroll-padding-top` property for when there's a Nav bar situation.
 
 ### 1.1.5
 
