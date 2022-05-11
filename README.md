@@ -72,15 +72,10 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
 1. Install SpectaQL:
 
    ```sh
-   npm install -g spectaql
+   npm install spectaql
    # OR
-   yarn global add spectaql
+   yarn add spectaql
    ```
-
-   This is a global installation, but you can also either:
-
-   - Clone this repository
-   - Add `spectaql` as a dependency to an existing project.
 
 2. Define a `config.yml` that specifies how you'd like to generate your docs.
    See [YAML Options](#yaml-options) for more.
