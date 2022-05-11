@@ -15,6 +15,13 @@ module.exports = function (grunt, options, spec) {
         //   path.resolve(node_modules_clone, 'foundation-sites/scss'),
         //   path.resolve(node_modules_dependency, 'foundation-sites/scss'),
         // ],
+        functions: {
+          'logoMaxHeightPx()': () => {
+            return options.logoMaxHeightPx
+              ? sass.SassNumber(options.logoMaxHeightPx, 'px')
+              : sass.sassFalse
+          },
+        },
       },
       main: {
         files: {
