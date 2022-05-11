@@ -12,6 +12,11 @@ spectaql:
   #
   # Default: None; No "max-height" property will be set on the logo
   logoMaxHeightPx: 18
+  # Control the height of your logo here. Can be useful if your logo is SVG or an
+  # inappropriate size.
+  #
+  # Default: None; No "height" property will be set on the logo
+  logoHeightPx: 18
 
   # Optional path to an image to use as a favicon for the site when it's not embedded
   faviconFile: path/to/favicon.png

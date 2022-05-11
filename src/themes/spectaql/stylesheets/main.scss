@@ -40,8 +40,6 @@ $border-radius: 3px;
 $background-error: #fed7d8;
 $text-color-error: #c60609;
 
-$logo-height: 18px;
-
 $line-height: 1.6;
 $line-height-heading: 1.2;
 
@@ -249,12 +247,6 @@ $background-sidebar: $background-subtle;
 
     @media (min-width: $size-sidebar-break) {
       border-right: $border-size solid $border-color;
-    }
-  }
-
-  #logo {
-    img {
-      max-height: $logo-height;
     }
   }
 
