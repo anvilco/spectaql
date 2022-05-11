@@ -8,11 +8,6 @@ module.exports = function (grunt, options, spec) {
     sass: {
       options: {
         implementation: sass,
-        functions: {
-          'getScrollOffset()': () => {
-            return sass.SassNumber(options.scrollPaddingTopPx || 0, 'px')
-          },
-        },
         // sourceMap: true,
         // includePaths: [
         //   // A little JANK to reach into the node_modules directory like this but
@@ -24,6 +19,11 @@ module.exports = function (grunt, options, spec) {
           'logoMaxHeightPx()': () => {
             return options.logoMaxHeightPx
               ? sass.SassNumber(options.logoMaxHeightPx, 'px')
+              : sass.sassFalse
+          },
+          'getScrollOffset()': () => {
+            return options.scrollPaddingTopPx
+              ? sass.SassNumber(options.scrollPaddingTopPx, 'px')
               : sass.sassFalse
           },
         },

@@ -30,8 +30,10 @@ $logo-height: logoMaxHeightPx() !default;
 // config file
 $scroll-offset: getScrollOffset() !default;
 
-html {
-  scroll-padding-top: $scroll-offset;
+@if $scroll-offset != false {
+  html {
+    scroll-padding-top: $scroll-offset;
+  }
 }
 
 #spectaql {

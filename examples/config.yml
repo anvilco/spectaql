@@ -1,7 +1,6 @@
 spectaql:
   logoFile: ./test/fixtures/logo.png
   faviconFile: ./test/fixtures/favicon.png
-  scrollPaddingTopPx: 50
 
 introspection:
   removeTrailingPeriodFromDescriptions: false
