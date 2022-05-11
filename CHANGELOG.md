@@ -1,3 +1,7 @@
+### 1.2.1
+
+- Added `logoHeightPx` and removed `logoMaxHeightPx`.
+
 ### 1.2.0
 
 - Added a `custom.scss` file to the default theme to allow for simple theme customizations to easily get ohter CSS updates.
