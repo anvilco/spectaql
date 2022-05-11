@@ -1,3 +1,8 @@
+### 1.2.0
+
+- Added a `custom.scss` file to the default theme to allow for simple theme customizations to easily get ohter CSS updates.
+- Added a `logoMaxHeightPx` option to set the logo's `max-height` property.
+
 ### 1.1.5
 
 - CSS will be concatenated with SpectaQL's css coming before other CSS. https://github.com/anvilco/spectaql/pull/353
