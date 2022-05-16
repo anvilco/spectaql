@@ -86,7 +86,7 @@
     "handlebars": "^4.3.0",
     "highlight.js": "^11.4.0",
     "js-yaml": "^4.1.0",
-    "json-stringify-pretty-compact": "^3.0.0",
+    "json-stringify-pretty-compact": "^4.0.0",
     "json5": "^2.2.0",
     "lodash": "^4.17.12",
     "marked": "^4.0.12",
