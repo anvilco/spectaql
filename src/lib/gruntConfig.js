@@ -15,6 +15,24 @@ module.exports = function (grunt, options, spec) {
         //   path.resolve(node_modules_clone, 'foundation-sites/scss'),
         //   path.resolve(node_modules_dependency, 'foundation-sites/scss'),
         // ],
+        functions: {
+          // TODO: deprecated and undocumented. Remove in the next Major version.
+          'getLogoMaxHeightPx()': () => {
+            return options.logoMaxHeightPx
+              ? sass.SassNumber(options.logoMaxHeightPx, 'px')
+              : sass.sassFalse
+          },
+          'getLogoHeightPx()': () => {
+            return options.logoHeightPx
+              ? sass.SassNumber(options.logoHeightPx, 'px')
+              : sass.sassFalse
+          },
+          'getScrollOffset()': () => {
+            return options.scrollPaddingTopPx
+              ? sass.SassNumber(options.scrollPaddingTopPx, 'px')
+              : sass.sassFalse
+          },
+        },
       },
       main: {
         files: {
@@ -31,7 +49,10 @@ module.exports = function (grunt, options, spec) {
         dest: options.cacheDir + '/javascripts/spectaql.js',
       },
       css: {
-        src: [options.cacheDir + '/stylesheets/**/*.css'],
+        src: [
+          options.cacheDir + '/stylesheets/main.css',
+          options.cacheDir + '/stylesheets/**/*.css',
+        ],
         dest: options.cacheDir + '/stylesheets/spectaql.css',
       },
     },

@@ -299,6 +299,8 @@ export function introspectionQueryOrMutationToResponse({
   introspectionManipulator =
     introspectionManipulator ||
     new IntrospectionManipulator(introspectionResponse)
+
+  const { isArray } = analyzeTypeIntrospection(field.type)
   const underlyingTypeDefinition = introspectionManipulator.getType(
     IntrospectionManipulator.digUnderlyingType(field.type)
   )
@@ -320,7 +322,7 @@ export function introspectionQueryOrMutationToResponse({
   }
 
   // Fields? OK, it's a complex Object/Type, so we'll have to go through all the top-level fields build an object
-  return underlyingTypeDefinition.fields.reduce((acc, field) => {
+  const exampleObject = underlyingTypeDefinition.fields.reduce((acc, field) => {
     const underlyingTypeDefinition = introspectionManipulator.getType(
       IntrospectionManipulator.digUnderlyingType(field.type)
     )
@@ -334,6 +336,8 @@ export function introspectionQueryOrMutationToResponse({
     )
     return acc
   }, {})
+
+  return isArray ? [exampleObject] : exampleObject
 }
 
 function generateIntrospectionReturnTypeExample(
