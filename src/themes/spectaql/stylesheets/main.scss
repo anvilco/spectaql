@@ -119,6 +119,7 @@ $background-sidebar: $background-subtle;
   font-size: $font-size-mobile;
   line-height: $line-height;
   background: $background;
+  color: $text-color;
 
   @media (min-width: $size-tablet) {
     font-size: $font-size;

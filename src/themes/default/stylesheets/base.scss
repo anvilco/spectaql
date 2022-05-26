@@ -31,6 +31,8 @@ $logo-height: getLogoHeightPx() !default;
 // config file
 $scroll-offset: getScrollOffset() !default;
 
+$text-color: black !default;
+
 @if $scroll-offset != false {
   html {
     scroll-padding-top: $scroll-offset;
@@ -160,8 +162,8 @@ $scroll-offset: getScrollOffset() !default;
         display: block;
         content: '';
         height: 2px;
-        background: black;
-        box-shadow: 0 5px 0 black, 0 10px 0 black;
+        background: $text-color;
+        box-shadow: 0 5px 0 $text-color, 0 10px 0 $text-color;
       }
     }
   }
