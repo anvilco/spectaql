@@ -52,6 +52,7 @@ $padding-code-block: 15px $content-padding;
 $font-size-code-block: .82em;
 $text-color-code-block: white;
 $background-code-block: #222222;
+$background-code-block-heading: #000000;
 $line-height-code-block: 1.4;
 
 $container-padding-mobile: $content-padding;
@@ -67,7 +68,7 @@ $background-arguments: #fafbfc;
 
 @import 'custom';
 @import 'base';
-@import 'monokai';
+@import 'syntax-highlighting';
 
 // Custom font
 @import url('https://fonts.googleapis.com/css?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&display=swap');
@@ -81,6 +82,7 @@ $background-arguments: #fafbfc;
   font-size: $font-size-mobile;
   line-height: $line-height;
   background: $background;
+  color: $text-color;
 
   @media (min-width: $size-tablet) {
     font-size: $font-size;
@@ -190,6 +192,7 @@ $background-arguments: #fafbfc;
     // When there is bottom padding, there is a weird scroll behavior when
     // scrolling the main panel to the very bottom
     padding-bottom: 0;
+    background: $background;
 
     a {
       color: $text-color;
@@ -230,6 +233,7 @@ $background-arguments: #fafbfc;
         display: block;
         content: "All Topics";
         margin-left: math.div($content-padding, 2);
+        color: $text-color;
       }
     }
   }
@@ -312,7 +316,7 @@ $background-arguments: #fafbfc;
       h5 {
         color: $text-color-subtle;
         text-transform: uppercase;
-        background: black;
+        background: $background-code-block-heading;
         font-size: $font-size-example-heading;
         font-weight: bold;
         padding: .6em 0 .6em $content-padding;
