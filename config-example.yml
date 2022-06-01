@@ -44,6 +44,12 @@ spectaql:
   # Default: true
   errorOnInterpolationReferenceNotFound: true
 
+  # Would you like to display all the servers listed in the servers area of your config? Otherwise
+  # it will try to display just the one marked "production: true".
+  #
+  # Default: false
+  displayAllServers: false
+
 
 introspection:
   ##############################################

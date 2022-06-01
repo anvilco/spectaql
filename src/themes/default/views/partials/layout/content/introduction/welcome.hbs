@@ -34,10 +34,10 @@
       </div>
     {{/if}}
 
-    {{#if url}}
+    {{#if (or url server servers)}}
       <div class="example-section welcome-api-endpoints-section example-section-is-code">
         <h5>API Endpoints</h5>
-        <pre><code>{{url}}</code></pre>
+        <pre><code>{{generateApiEndpoints}}</code></pre>
       </div>
     {{/if}}
 

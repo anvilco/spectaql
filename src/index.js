@@ -61,6 +61,7 @@ const defaults = Object.freeze({
 // is set, then use these:
 const spectaqlOptionDefaults = Object.freeze({
   errorOnInterpolationReferenceNotFound: true,
+  displayAllServers: false,
 })
 
 const introspectionOptionDefaults = Object.freeze({
