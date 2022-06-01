@@ -24,6 +24,7 @@ function run(opts) {
 
   const server =
     servers.find((server) => server.production === true) || servers[0]
+
   const headers = server?.headers
     ? server.headers
         .map((header) => {

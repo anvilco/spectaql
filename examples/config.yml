@@ -1,6 +1,7 @@
 spectaql:
   logoFile: ./test/fixtures/logo.png
   faviconFile: ./test/fixtures/favicon.png
+  # displayAllServers: true
 
 introspection:
   removeTrailingPeriodFromDescriptions: false
@@ -29,6 +30,13 @@ info:
       description: Some important stuff we wanted you to know. Supports `markdown`
 
 servers:
+  - url: https://staging.example.com/graphql
+    description: Staging
+    # production: true
+    headers:
+      - name: Authorization
+        example: Bearer <YOUR_TOKEN_HERE>
+        comment: Your foo from bar
   - url: https://example.com/graphql
     description: Production
     production: true
