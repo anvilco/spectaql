@@ -1,5 +1,13 @@
 SpectaQL's theming system is a powerful way to tweak or augment the default theme as much or as little as you like. If you want to just modify some things, you can do that. Or if you want to completely change any or all aspects of SpectaQL's output, you can do that, too.
 
+### Resources
+
+* [Building a SpectaQL theme tutorial][theme-blog-post] - A step-by-step blog post building a SpectaQL theme.
+* [`spectaql-dark-theme`][spectaql-dark-theme] - An example dark theme based on the default SpectaQL theme.
+* [`spectaql-theme-example`][spectaql-theme-example] - An example node project using SpectaQL and `spectaql-dark-theme`
+
+### Overview
+
 Any custom theme that you use will be "overlayed" on top of SpectaQL's [default theme directory][default-theme-dir] and structure. This means that your theme gets all the templates, javascripts, CSS and helpers included in the default theme "for free".
 
 Any files that your theme includes will be added on top of the default theme's structure. This means you can:
@@ -114,3 +122,6 @@ _NOTE:_ Again, this is an experimental API and it could change in a breaking man
 [highlightjs]: https://highlightjs.org
 [theme-demos]: https://highlightjs.org/static/demo/
 [theme-styles]: https://github.com/highlightjs/highlight.js/tree/main/src/styles
+[theme-blog-post]: https://www.useanvil.com/blog/engineering/building-a-spectaql-theme-for-your-graphql-documentation
+[spectaql-dark-theme]: https://github.com/anvilco/spectaql-dark-theme
+[spectaql-theme-example]: https://github.com/anvilco/spectaql-theme-example
