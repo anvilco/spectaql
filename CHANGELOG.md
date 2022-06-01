@@ -1,3 +1,8 @@
+### 1.2.2
+
+- Added `displayAllServers` option. https://github.com/anvilco/spectaql/pull/381
+- Added `errorOnInterpolationReferenceNotFound` option. https://github.com/anvilco/spectaql/pull/380
+
 ### 1.2.1
 
 - Added `logoHeightPx` and removed `logoMaxHeightPx`.
