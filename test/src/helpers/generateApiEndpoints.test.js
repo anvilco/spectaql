@@ -72,7 +72,7 @@ describe('generateApiEndpoints', function () {
 
     it('works', function () {
       expect(generateApiEndpoints($.options)).to.eql(
-        'Server One:\nserver1url\nServer Two:\nserver2url\n'
+        '# Server One:\nserver1url\n# Server Two:\nserver2url\n'
       )
     })
 

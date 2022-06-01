@@ -80,7 +80,7 @@ describe('index', function () {
           const result = spectaql($.opts)
           expect(result).to.be.ok
           expect(result.headers).to.eql(
-            `// Get your Foo from Bar\nFoo: Bar <yo>`
+            `# Get your Foo from Bar\nFoo: Bar <yo>`
           )
         })
       })
