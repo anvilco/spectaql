@@ -38,6 +38,12 @@ spectaql:
   # Default: None; No "scroll-padding-top" style will be applied.
   scrollPaddingTopPx: 0
 
+  # If an interpolated reference is not found, should SpectaQL throw an error? Otherwise a warning
+  # will be logged.
+  #
+  # Default: true
+  errorOnInterpolationReferenceNotFound: true
+
 
 introspection:
   ##############################################
