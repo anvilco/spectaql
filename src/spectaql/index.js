@@ -82,6 +82,7 @@ function run(opts) {
   })
 
   const data = {
+    allOptions: opts,
     logo,
     favicon,
     info,
