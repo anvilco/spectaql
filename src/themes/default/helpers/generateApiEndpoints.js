@@ -26,6 +26,7 @@ module.exports = function (options) {
   return servers
     .map(
       (server) =>
+        '# ' +
         (server.description?.trim() || 'Endpoint') +
         ':\n' +
         (server.url?.trim() || '<<url is missing>>') +

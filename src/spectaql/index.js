@@ -30,7 +30,7 @@ function run(opts) {
         .map((header) => {
           const { name, example, comment } = header
           if (name && example) {
-            return [comment ? `// ${comment}` : '', `${name}: ${example}`]
+            return [comment ? `# ${comment}` : '', `${name}: ${example}`]
               .filter(Boolean)
               .join('\n')
           }
