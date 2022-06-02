@@ -5,6 +5,16 @@
 
 <a href="https://www.useanvil.com/docs"><img src="/static/SpectaQL.png" width="800"></a>
 
+SpectaQL is a Node.js library that generates static documentation for a [GraphQL](https://graphql.org) schema using a variety of options:
+
+1. From a live endpoint using the introspection query.
+2. From a file containing an introspection query result.
+3. From a file, files or glob leading to the schema definitions in SDL.
+
+The goal of SpectaQL is to help you keep your documentation complete, current and beautiful with the least amount of pain as possible.
+
+---
+
 **Repository sponsored by [Anvil](www.useanvil.com/developers)**
 
 ![Horizontal Lockupblack](https://user-images.githubusercontent.com/293079/169453889-ae211c6c-7634-4ccd-8ca9-8970c2621b6f.png#gh-light-mode-only)
@@ -30,17 +40,9 @@ Migrating from pre `1.0`?
 
 ---
 
-SpectaQL is a Node.js library that generates static documentation for a [GraphQL](https://graphql.org) schema using a variety of options:
-
-1. From a live endpoint using the introspection query.
-2. From a file containing an introspection query result.
-3. From a file, files or glob leading to the schema definitions in SDL.
-
-The goal of SpectaQL is to help you keep your documentation complete, current and beautiful with the least amount of pain as possible.
-
 Out of the box, SpectaQL delivers a 3-column page with a modern look and feel. However, many aspects can be customized with ease, and just about everything can be customized if you're willing to dig in.
 
-SpectaQL also has lots of advanced features and ways to enhance your GraphQL documentation.
+SpectaQL also has a lot of advanced features and ways to enhance your GraphQL documentation.
 
 :tada:&nbsp;&nbsp;[Anvil](https://www.useanvil.com) uses SpectaQL for our own docs, and you can see them [here][docs]. :tada:<br>
 :tada:&nbsp;&nbsp;This supporting [blog post][blog] outlines our use-case and implementation, and may be worth a read :tada:
