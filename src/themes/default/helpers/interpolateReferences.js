@@ -19,7 +19,10 @@ module.exports = function interpolateReferences(value, options) {
         options?.data?.root?.allOptions?.specData?.spectaql
           ?.errorOnInterpolationReferenceNotFound !== false
       ) {
-        throw new Error(msg)
+        throw new Error(
+          msg +
+            '. You can change this to be a warning via the "errorOnInterpolationReferenceNotFound" option'
+        )
       } else {
         console.warn('WARNING: ' + msg)
         return match
