@@ -59,7 +59,10 @@ const defaults = Object.freeze({
 
 // Things that may get set from either the CLI or the YAML.spectaql area, but if nothing
 // is set, then use these:
-const spectaqlOptionDefaults = Object.freeze({})
+const spectaqlOptionDefaults = Object.freeze({
+  errorOnInterpolationReferenceNotFound: true,
+  displayAllServers: false,
+})
 
 const introspectionOptionDefaults = Object.freeze({
   dynamicExamplesProcessingModule: false,

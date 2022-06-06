@@ -78,7 +78,7 @@ $background-sidebar: $background-subtle;
 
 @import 'custom';
 @import 'base';
-@import 'monokai';
+@import 'syntax-highlighting';
 
 // Custom font
 @import url('https://fonts.googleapis.com/css?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&display=swap');
@@ -119,6 +119,7 @@ $background-sidebar: $background-subtle;
   font-size: $font-size-mobile;
   line-height: $line-height;
   background: $background;
+  color: $text-color;
 
   @media (min-width: $size-tablet) {
     font-size: $font-size;

@@ -24,12 +24,13 @@ function run(opts) {
 
   const server =
     servers.find((server) => server.production === true) || servers[0]
+
   const headers = server?.headers
     ? server.headers
         .map((header) => {
           const { name, example, comment } = header
           if (name && example) {
-            return [comment ? `// ${comment}` : '', `${name}: ${example}`]
+            return [comment ? `# ${comment}` : '', `${name}: ${example}`]
               .filter(Boolean)
               .join('\n')
           }
@@ -82,6 +83,7 @@ function run(opts) {
   })
 
   const data = {
+    allOptions: opts,
     logo,
     favicon,
     info,
