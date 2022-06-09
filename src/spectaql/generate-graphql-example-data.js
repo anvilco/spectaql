@@ -161,7 +161,7 @@ function generateQueryInternal({
   )
 
   // If it is an expandable thing...i.e. not a SCALAR, take this path
-  if (returnType.fields) {
+  if (returnType.fields?.length) {
     if (depth > fieldExpansionDepth) {
       return {
         query: `${queryStr} {\n${space}  ...${returnType.name}Fragment\n${space}}\n`,
