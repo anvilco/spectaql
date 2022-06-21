@@ -73,7 +73,7 @@ function jsonReplacer(name, value) {
   // return addSpecialTags(value)
 }
 
-function enumToJsonFriendly(str) {
+export function enumToJsonFriendly(str) {
   return (
     str
       // { foo: BAR } => { foo: "BAR" }
