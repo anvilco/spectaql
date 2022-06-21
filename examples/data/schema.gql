@@ -125,6 +125,10 @@ type Query {
     filter: FilterInput
   ): MyType
 
+  filterInputQueryWithDefault(
+    filter: FilterInput = { someField: true, episodeEnum: JEDI }
+  ): MyType
+
   "Without this Query, the `ContactInfoInput` would not be shown"
   contactInfoInputQuery(
     "Without this arg, the `ContactInfoInput` would not be shown"
@@ -161,7 +165,8 @@ input FilterInput {
   "Comment for anotherField"
   anotherField: String
   "Comment for episodeEnums"
-  episodeEnums: [EpisodeEnum!]
+  episodeEnums: [EpisodeEnum!] = [EMPIRE, JEDI]
+  episodeEnum: EpisodeEnum
 }
 
 "ContactInfoInput description"
