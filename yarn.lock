@@ -17,6 +17,31 @@
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
 
+"@anvilco/grunt-embed@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@anvilco/grunt-embed/-/grunt-embed-0.0.1.tgz#6133b0b2d4af4e93da372eac024c7fcda465f330"
+  integrity sha512-l0jMjxbFejDZgThdd1he1d83sQ2QKdO02rmT+7d990G5QYygGpMvRJA2mR6+5D2byA1BV7G/16mU1sf1TWR09w==
+  dependencies:
+    "@anvilco/resource-embedder" "^0.0.4"
+
+"@anvilco/reorient-css@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@anvilco/reorient-css/-/reorient-css-0.0.1.tgz#f5bddb086abda808fd9bb86d80d0104b62812ccd"
+  integrity sha512-lVH45nOr/VQ53BlUfQLnm6TmdqRzyy7ZF+WAIdmBSHDNFiepHvZzAjdJMAH5e7RK789w32eeG4JAcvVTgPVL8Q==
+  dependencies:
+    postcss "^7.0.36"
+
+"@anvilco/resource-embedder@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@anvilco/resource-embedder/-/resource-embedder-0.0.4.tgz#d7aac91ee49ead0f10ce50844ffd553004d1f8c6"
+  integrity sha512-Yd6SPKWzjiUd16LvRHOavj6xmyc7n+vT96K4FP5hGOP4t6QE2Bf3sLstxyQy9jdxt2Yx3mRFNKGJ18CWCYjGDg==
+  dependencies:
+    "@anvilco/reorient-css" "^0.0.1"
+    coffee-script "~1.7.1"
+    graceful-fs "~2.0.2"
+    htmlparser2 "~3.5.0"
+    lodash "~2.4.1"
+
 "@babel/cli@^7.17.6":
   version "7.17.10"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.17.10.tgz#5ea0bf6298bb78f3b59c7c06954f9bd1c79d5943"
@@ -1268,11 +1293,6 @@ alce@^1.0.0:
     esprima "^1.2.0"
     estraverse "^1.5.0"
 
-amdefine@>=0.0.4:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
-  integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
-
 ansi-align@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-3.0.1.tgz#0cdf12e111ace773a86e9a1fad1225c43cb19a59"
@@ -1455,11 +1475,6 @@ balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
-
-base64-js@~0.0.6:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-0.0.8.tgz#1101e9544f4a76b1bc3b26d452ca96d7a35e7978"
-  integrity sha1-EQHpVE9KdrG8OybUUsqW16NeeXg=
 
 basic-auth@~2.0.1:
   version "2.0.1"
@@ -3016,13 +3031,6 @@ grunt-contrib-watch@^1.1.0:
     lodash "^4.17.10"
     tiny-lr "^1.1.1"
 
-grunt-embed@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/grunt-embed/-/grunt-embed-0.2.1.tgz#ea96e929e9b12f5aaf9479bf1a84f373c716b02e"
-  integrity sha1-6pbpKemxL1qvlHm/GoTzc8cWsC4=
-  dependencies:
-    resource-embedder "~0.2.1"
-
 grunt-known-options@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/grunt-known-options/-/grunt-known-options-2.0.0.tgz#cac641e897f9a0a680b8c9839803d35f3325103c"
@@ -4408,6 +4416,11 @@ pathval@^1.1.1:
   resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.1.tgz#8534e77a77ce7ac5a2512ea21e0fdb8fcf6c3d8d"
   integrity sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==
 
+picocolors@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-0.2.1.tgz#570670f793646851d1ba135996962abad587859f"
+  integrity sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
@@ -4453,13 +4466,13 @@ portscanner@^2.2.0:
     async "^2.6.0"
     is-number-like "^1.0.3"
 
-postcss@~0.3.2:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-0.3.5.tgz#5073a3d062ef3ce592ac4a5fe6b8c2862ab83ceb"
-  integrity sha1-UHOj0GLvPOWSrEpf5rjChiq4POs=
+postcss@^7.0.36:
+  version "7.0.39"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.39.tgz#9624375d965630e2e1f2c02a935c82a59cb48309"
+  integrity sha512-yioayjNbHn6z1/Bywyb2Y4s3yvDAeXGOyxqD+LnVOinq6Mdmd++SW2wUNVzavyyHxd6+DxzWGIuosg6P1Rj8uA==
   dependencies:
-    base64-js "~0.0.6"
-    source-map "~0.1.33"
+    picocolors "^0.2.1"
+    source-map "^0.6.1"
 
 prelude-ls@^1.2.1:
   version "1.2.1"
@@ -4694,13 +4707,6 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
-reorient-css@~0.2.1:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/reorient-css/-/reorient-css-0.2.2.tgz#6f66fc49f6a214400e0221d14c965d1abd21ac96"
-  integrity sha1-b2b8SfaiFEAOAiHRTJZdGr0hrJY=
-  dependencies:
-    postcss "~0.3.2"
-
 require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
@@ -4740,17 +4746,6 @@ resolve@^1.14.2:
     is-core-module "^2.8.1"
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
-
-resource-embedder@~0.2.1:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/resource-embedder/-/resource-embedder-0.2.2.tgz#20688fb5143737ec33a23b372c9144cb48196426"
-  integrity sha1-IGiPtRQ3N+wzojs3LJFEy0gZZCY=
-  dependencies:
-    coffee-script "~1.7.1"
-    graceful-fs "~2.0.2"
-    htmlparser2 "~3.5.0"
-    lodash "~2.4.1"
-    reorient-css "~0.2.1"
 
 responselike@^1.0.2:
   version "1.0.2"
@@ -5047,13 +5042,6 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
-
-source-map@~0.1.33:
-  version "0.1.43"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.1.43.tgz#c24bc146ca517c1471f5dacbe2571b2b7f9e3346"
-  integrity sha1-wkvBRspRfBRx9drL4lcbK3+eM0Y=
-  dependencies:
-    amdefine ">=0.0.4"
 
 sprintf-js@^1.0.3:
   version "1.1.2"
