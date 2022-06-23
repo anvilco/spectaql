@@ -1,3 +1,11 @@
+### 1.2.4
+
+- Handles defaults with enumerated types better. https://github.com/anvilco/spectaql/pull/400
+
+### 1.2.3
+
+- Checks for "lengthy" `fields` on a Type when determining how to handle fragmentation and expansion in example queries. https://github.com/anvilco/spectaql/issues/385
+
 ### 1.2.2
 
 - Added `displayAllServers` option. https://github.com/anvilco/spectaql/pull/381

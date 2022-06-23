@@ -73,6 +73,29 @@ function jsonReplacer(name, value) {
   // return addSpecialTags(value)
 }
 
+export function enumToJsonFriendly(str) {
+  return (
+    str
+      // { foo: BAR } => { foo: "BAR" }
+      .replace(
+        /(:\s*)([a-zA-Z]\w*)/g,
+        (match, keyPart, enumValue) => keyPart + '"' + enumValue + '"'
+      )
+      // { foo: [BAR, BAZ] } => { foo: ["BAR", "BAZ"] }
+      .replace(/\[(([a-zA-Z]\w*)[,\s]*)*\]/g, (match) => {
+        return (
+          '[' +
+          match
+            .substr(1, match.length - 2)
+            .split(',')
+            .map((enumValue) => '"' + enumValue.trim() + '"')
+            .join(', ') +
+          ']'
+        )
+      })
+  )
+}
+
 export function addSpecialTags(value) {
   if (typeof value !== 'string' || value.includes(SPECIAL_TAG)) return value
   return `${SPECIAL_TAG}${value}${SPECIAL_TAG}`
@@ -253,7 +276,7 @@ function introspectionArgToVariable({
 
     if (typeof arg.defaultValue === 'string') {
       if (underlyingType.kind !== 'ENUM') {
-        return JSON5.parse(arg.defaultValue)
+        return JSON5.parse(enumToJsonFriendly(arg.defaultValue))
       }
 
       if (!isArray) {

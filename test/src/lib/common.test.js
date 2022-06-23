@@ -13,6 +13,23 @@ describe('common', function () {
     unwindTags = common.__get__('unwindTags')
   })
 
+  describe('enumToJsonFriendly', function () {
+    it('works', function () {
+      const pairs = [
+        ['{foo: BAR, no: "change"}', '{foo: "BAR", no: "change"}'],
+        [
+          '{foo: [BAR, BAZ], no: "change"}',
+          '{foo: ["BAR", "BAZ"], no: "change"}',
+        ],
+        ['{no: "change"}', '{no: "change"}'],
+      ]
+
+      for (const [input, output] of pairs) {
+        expect(common.enumToJsonFriendly(input)).to.eql(output)
+      }
+    })
+  })
+
   describe('unwindTags', function () {
     it('works', function () {
       const pairs = [

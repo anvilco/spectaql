@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.1.1",
+    "@anvilco/grunt-embed": "^0.0.1",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
     "cheerio": "^1.0.0-rc.10",
@@ -80,7 +81,6 @@
     "grunt-contrib-handlebars": "^3.0.0",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-embed": "^0.2.1",
     "grunt-prettify": "^0.4.0",
     "grunt-sass": "^3.0.2",
     "handlebars": "^4.3.0",
