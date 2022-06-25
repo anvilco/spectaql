@@ -33,8 +33,14 @@ union SimpleTypes =
   | SimpleTypeTwo
 
 
+"A simple Interface"
+interface MyInterface {
+  id: String!
+}
+
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) and [`myQuery`]({{Queries.myQuery}}) and [`myMutation`]({{Mutations.myMutation}}) are supported"
-type MyType {
+type MyType implements MyInterface {
+  id: String!,
   url: URL,
   json: JSON,
   jso: JSONObject,
