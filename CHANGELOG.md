@@ -1,3 +1,7 @@
+### 1.3.0
+- Add (back) support for Interfaces.
+- Dependency updates to remove warnings.
+
 ### 1.2.4
 
 - Handles defaults with enumerated types better. https://github.com/anvilco/spectaql/pull/400
