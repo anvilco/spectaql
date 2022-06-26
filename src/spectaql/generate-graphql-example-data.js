@@ -160,8 +160,29 @@ function generateQueryInternal({
     IntrospectionManipulator.digUnderlyingType(field.type)
   )
 
+  if (returnType.kind === 'UNION') {
+    queryStr += ` {\n`
+    const subQuery = returnType.possibleTypes
+      .map((possibleType) => {
+        const returnType = introspectionManipulator.getType(possibleType)
+        const subQuery = generateQueryInternal({
+          field: {
+            name: returnType.name,
+            type: possibleType,
+          },
+          fieldExpansionDepth,
+          depth: depth + 1,
+          introspectionManipulator,
+        }).query
+        return `${space}  ... on ${subQuery.trim()}`
+      })
+      .join('\n')
+
+    queryStr += `${subQuery}\n${space}}`
+  }
+
   // If it is an expandable thing...i.e. not a SCALAR, take this path
-  if (returnType.fields?.length) {
+  else if (returnType.fields?.length) {
     if (depth > fieldExpansionDepth) {
       return {
         query: `${queryStr} {\n${space}  ...${returnType.name}Fragment\n${space}}\n`,
@@ -173,7 +194,7 @@ function generateQueryInternal({
       .map((childField) => {
         return generateQueryInternal({
           field: childField,
-          args: fieldArgs,
+          args: [],
           fieldExpansionDepth,
           depth: depth + 1,
           introspectionManipulator,

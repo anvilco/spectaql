@@ -31,9 +31,25 @@ export function ourFunction(hljs) {
   }
 
   const LITERALS = {
-    keyword:
-      'query mutation subscription|10 input schema directive interface union scalar fragment|10 enum on ...',
-    literal: 'true false null',
+    // keyword: 'query mutation subscription|10 input schema directive interface union scalar fragment|10 enum on ...',
+    // literal: 'true false null',
+    keyword: [
+      'query',
+      'mutation',
+      'subscription',
+      'type',
+      'input',
+      'schema',
+      'directive',
+      'interface',
+      'union',
+      'scalar',
+      'fragment',
+      'enum',
+      'on',
+      '...',
+    ],
+    literal: ['true', 'false', 'null'],
   }
 
   const FIELD = {
@@ -56,6 +72,15 @@ export function ourFunction(hljs) {
   }
 
   FIELD.contains = [ARGS, QUERY]
+
+  const INLINE_FRAGMENT = {
+    className: 'type',
+    begin: / \.\.\. on /,
+    end: /\}/,
+    contains: [QUERY],
+  }
+
+  QUERY.contains.push(INLINE_FRAGMENT)
 
   return {
     aliases: ['gql'],
