@@ -160,6 +160,7 @@ function generateQueryInternal({
     IntrospectionManipulator.digUnderlyingType(field.type)
   )
 
+  // Unions get inline fragments for each possibleType
   if (returnType.kind === KINDS.UNION) {
     try {
       const subQuery = returnType.possibleTypes
@@ -190,7 +191,7 @@ function generateQueryInternal({
   }
 
   // If it is an expandable thing...i.e. not a SCALAR, take this path
-  else if (returnType.fields?.length) {
+  else if (returnType?.fields?.length) {
     if (depth > fieldExpansionDepth) {
       return {
         query: `${queryStr} {\n${space}  ...${returnType.name}Fragment\n${space}}\n`,
@@ -202,7 +203,7 @@ function generateQueryInternal({
       .map((childField) => {
         return generateQueryInternal({
           field: childField,
-          args: [],
+          args: fieldArgs,
           fieldExpansionDepth,
           depth: depth + 1,
           introspectionManipulator,
