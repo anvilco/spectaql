@@ -31,25 +31,9 @@ export function ourFunction(hljs) {
   }
 
   const LITERALS = {
-    // keyword: 'query mutation subscription|10 input schema directive interface union scalar fragment|10 enum on ...',
-    // literal: 'true false null',
-    keyword: [
-      'query',
-      'mutation',
-      'subscription',
-      'type',
-      'input',
-      'schema',
-      'directive',
-      'interface',
-      'union',
-      'scalar',
-      'fragment',
-      'enum',
-      'on',
-      '...',
-    ],
-    literal: ['true', 'false', 'null'],
+    keyword:
+      'query mutation subscription|10 input schema directive interface union scalar fragment|10 enum on ...',
+    literal: 'true false null',
   }
 
   const FIELD = {

@@ -230,9 +230,6 @@ function _addQueryToItem({
     allOptions,
   })
   const { query, variables, response } = stuff
-  if (item.name === 'simpleTypes') {
-    console.log(stuff)
-  }
 
   item[flavor] = query
   item.variables = variables
