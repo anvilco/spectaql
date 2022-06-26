@@ -1,4 +1,9 @@
+### 1.4.0
+
+- Add support for inline fragments for Union queries. https://github.com/anvilco/spectaql/pull/407
+
 ### 1.3.0
+
 - Add (back) support for Interfaces.
 - Dependency updates to remove warnings.
 
