@@ -3877,9 +3877,9 @@ merge2@^1.3.0, merge2@^1.4.1:
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
 microfiber@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-1.1.0.tgz#920c9754a7931c4beacd54fc7d2e84ae12dc5898"
-  integrity sha512-r8bhKFKgSxBEKfVDkT5dWDcEn8Lpnk1++T6A50Rq66HWnG7Qh7alhMJj74wpXJCmqqqDF9YvvQJKpxuqagRPiA==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-1.1.1.tgz#588e7c45dddbbffebacd6f018579c5fc87354861"
+  integrity sha512-2ASA3WVKlrJh5Z/MLo43Nf2k03T4NnYrCsi6AUQ+fon2LfHBwo74ZwJ1h8qmi/T+gwnLEJoMBQqVaQpXgwU5dA==
   dependencies:
     lodash.defaults "^4.2.0"
     lodash.get "^4.4.2"
