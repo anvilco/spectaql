@@ -3877,9 +3877,9 @@ merge2@^1.3.0, merge2@^1.4.1:
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
 microfiber@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-1.1.0.tgz#920c9754a7931c4beacd54fc7d2e84ae12dc5898"
-  integrity sha512-r8bhKFKgSxBEKfVDkT5dWDcEn8Lpnk1++T6A50Rq66HWnG7Qh7alhMJj74wpXJCmqqqDF9YvvQJKpxuqagRPiA==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-1.1.1.tgz#588e7c45dddbbffebacd6f018579c5fc87354861"
+  integrity sha512-2ASA3WVKlrJh5Z/MLo43Nf2k03T4NnYrCsi6AUQ+fon2LfHBwo74ZwJ1h8qmi/T+gwnLEJoMBQqVaQpXgwU5dA==
   dependencies:
     lodash.defaults "^4.2.0"
     lodash.get "^4.4.2"
@@ -4828,9 +4828,9 @@ safe-json-parse@~1.0.1:
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
 sass@^1.32.13:
-  version "1.52.3"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.52.3.tgz#b7cc7ffea2341ccc9a0c4fd372bf1b3f9be1b6cb"
-  integrity sha512-LNNPJ9lafx+j1ArtA7GyEJm9eawXN8KlA1+5dF6IZyoONg1Tyo/g+muOsENWJH/2Q1FHbbV4UwliU0cXMa/VIA==
+  version "1.53.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.53.0.tgz#eab73a7baac045cc57ddc1d1ff501ad2659952eb"
+  integrity sha512-zb/oMirbKhUgRQ0/GFz8TSAwRq2IlR29vOUJZOx0l8sV+CkHUfHa4u5nqrG+1VceZp7Jfj59SVW9ogdhTvJDcQ==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"
