@@ -1,3 +1,7 @@
+### 1.4.1
+
+- Support interpolation of references in `loadTextFromFile` and add it to intro items area. https://github.com/anvilco/spectaql/pull/new/newhouse/416/interpolation-in-file-reads
+
 ### 1.4.0
 
 - Add support for inline fragments for Union queries. https://github.com/anvilco/spectaql/pull/407
