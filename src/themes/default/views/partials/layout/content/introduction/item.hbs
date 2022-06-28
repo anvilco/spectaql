@@ -5,7 +5,7 @@
       {{#if description}}
         {{md (interpolateReferences description)}}
       {{else if file }}
-        {{md (loadTextFromFile file)}}
+        {{md (loadTextFromFile file interpolateReferences=true)}}
       {{/if}}
     </div>
     <div class="doc-examples">
