@@ -40,6 +40,8 @@ Migrating from pre `1.0`?
 
 ---
 
+
+
 Out of the box, SpectaQL delivers a 3-column page with a modern look and feel. However, many aspects can be customized with ease, and just about everything can be customized if you're willing to dig in.
 
 SpectaQL also has a lot of advanced features and ways to enhance your GraphQL documentation.
