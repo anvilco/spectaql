@@ -308,7 +308,7 @@ $background-arguments: #fafbfc;
     margin-top: $content-padding;
 
     .example-heading {
-      display: none;
+      @include visually-hidden();
     }
 
     // The heading above each code example block
@@ -387,7 +387,7 @@ $background-arguments: #fafbfc;
     .operation-description > h5,
     .definition-description > h5,
     .definition-properties > h5 {
-      display: none;
+      @include visually-hidden();
     }
   }
 
