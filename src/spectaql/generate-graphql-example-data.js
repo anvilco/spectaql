@@ -1,5 +1,5 @@
 import { introspectionTypeToString } from './type-helpers'
-import { Microfiber as IntrospectionManipulator } from 'microfiber'
+import { KINDS, Microfiber as IntrospectionManipulator } from 'microfiber'
 import {
   introspectionArgsToVariables,
   introspectionQueryOrMutationToResponse,
@@ -160,8 +160,38 @@ function generateQueryInternal({
     IntrospectionManipulator.digUnderlyingType(field.type)
   )
 
+  // Unions get inline fragments for each possibleType
+  if (returnType.kind === KINDS.UNION) {
+    try {
+      const subQuery = returnType.possibleTypes
+        .map((possibleType) => {
+          const returnType = introspectionManipulator.getType(possibleType)
+          const subQuery = generateQueryInternal({
+            field: {
+              name: returnType.name,
+              type: possibleType,
+            },
+            fieldExpansionDepth,
+            depth: depth + 1,
+            introspectionManipulator,
+          }).query
+          return `${space}  ... on ${subQuery.trim()}`
+        })
+        .join('\n')
+
+      queryStr += ` {\n${subQuery}\n${space}}`
+    } catch (err) {
+      console.warn('Problem generating inline fragments for UNION type.')
+      console.warn(
+        'Please file an issue with SpectaQL at https://github.com/anvilco/spectaql/issues'
+      )
+      console.warn('The error:')
+      console.warn(err)
+    }
+  }
+
   // If it is an expandable thing...i.e. not a SCALAR, take this path
-  if (returnType.fields?.length) {
+  else if (returnType?.fields?.length) {
     if (depth > fieldExpansionDepth) {
       return {
         query: `${queryStr} {\n${space}  ...${returnType.name}Fragment\n${space}}\n`,

@@ -473,7 +473,7 @@ $background-sidebar: $background-subtle;
     .operation-description > h5,
     .definition-description > h5,
     .definition-properties > h5 {
-      display: none;
+      @include visually-hidden();
     }
   }
 
