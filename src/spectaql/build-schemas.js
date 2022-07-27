@@ -6,7 +6,10 @@ import {
   graphQLSchemaFromIntrospectionResponse,
 } from './graphql-loaders'
 
-import { addMetadataFromFile } from './metadata-loaders'
+import {
+  addMetadataFromFile,
+  addMetadataFromDirectables,
+} from './metadata-loaders'
 
 import {
   augmentData,
@@ -24,6 +27,7 @@ export function buildSchemas(opts) {
   const {
     introspection: introspectionOptions,
     introspection: {
+      spectaqlDirective: spectaqlDirectiveOptions = {},
       url: introspectionUrl,
       schemaFile,
       introspectionFile,
@@ -35,10 +39,21 @@ export function buildSchemas(opts) {
 
   let done = false
   let introspectionResponse
-
   if (schemaFile) {
-    const schema = loadSchemaFromSDLFile({ pathToFile: schemaFile })
+    const { schema, directables } = loadSchemaFromSDLFile({
+      pathToFile: schemaFile,
+      spectaqlDirectiveOptions,
+    })
     introspectionResponse = introspectionResponseFromSchema({ schema })
+
+    if (spectaqlDirectiveOptions.enable) {
+      introspectionResponse = addMetadataFromDirectables({
+        ...introspectionOptions,
+        directables,
+        introspectionQueryResponse: introspectionResponse,
+      })
+    }
+
     done = 'loaded GraphQL SDL from file'
   }
 

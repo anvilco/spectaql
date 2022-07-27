@@ -3,8 +3,8 @@ import get from 'lodash/get'
 import set from 'lodash/set'
 
 import {
-  buildClientSchema,
   buildSchema,
+  buildClientSchema,
   getIntrospectionQuery,
   graphqlSync,
   print,
@@ -12,7 +12,10 @@ import {
 import { loadFilesSync } from '@graphql-tools/load-files'
 import { mergeTypeDefs } from '@graphql-tools/merge'
 
+import { makeExecutableSchema } from '@graphql-tools/schema'
+
 import request from 'sync-request'
+import { generateSpectaqlDirectiveSupport } from './directive'
 import { fileExtensionIs, readTextFile, fileToObject } from './utils'
 
 const GRAPHQL_LOAD_FILES_SUPPORTED_EXTENSIONS = [
@@ -40,7 +43,10 @@ export const introspectionResponseFromSchema = ({ schema }) => {
   )
 }
 
-export const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
+export const loadSchemaFromSDLFile = ({
+  pathToFile,
+  spectaqlDirectiveOptions = {},
+} = {}) => {
   const paths = Array.isArray(pathToFile) ? pathToFile : [pathToFile]
   const typesArray = []
   for (const path of paths) {
@@ -71,7 +77,27 @@ export const loadSchemaFromSDLFile = ({ pathToFile } = {}) => {
 
   const mergedTypeDefs = mergeTypeDefs(typesArray)
   const printedTypeDefs = print(mergedTypeDefs)
-  return buildSchema(printedTypeDefs)
+
+  let directiveSdl = null
+  let optionsSdl = null
+  let transformer = (schema) => schema
+  let directables = []
+
+  if (spectaqlDirectiveOptions.enable) {
+    ({ directiveSdl, optionsSdl, transformer, directables } =
+      generateSpectaqlDirectiveSupport(spectaqlDirectiveOptions))
+  }
+
+  let schema = makeExecutableSchema({
+    typeDefs: [directiveSdl, optionsSdl, printedTypeDefs],
+  })
+
+  schema = transformer(schema)
+
+  return {
+    schema,
+    directables,
+  }
 }
 
 export const loadIntrospectionResponseFromFile = ({ pathToFile } = {}) => {
