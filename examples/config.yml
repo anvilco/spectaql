@@ -13,8 +13,6 @@ introspection:
 
   spectaqlDirective:
     enable: true
-    # directiveName: 'spectaqlll'
-    # optionsTypeName: 'SpectaQLOption'
 
 extensions:
   graphqlScalarExamples: true

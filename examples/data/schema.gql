@@ -64,6 +64,9 @@ type MyType implements MyInterface {
   requiredArrayField: [String]!
 
   doubleRequiredArrayField: [String!]!
+
+  "This field will not show up thanks to the @spectaql directive options"
+  fieldThatWillNotShowUp: String! @spectaql(options: [{key: "undocumented", value: "true" }])
 }
 
 "This is a type that should probably be undocumented. Metadata will indicate this should be hidden"

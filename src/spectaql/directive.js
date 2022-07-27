@@ -25,7 +25,6 @@ const OPTION_TO_CONVERTER_FN = {
   documented: (val) => val === true || val === 'true',
   example: (val) => JSON.parse(val),
   examples: (vals) => JSON.parse(vals),
-  info: (val) => val,
 }
 
 export function generateSpectaqlSdl({

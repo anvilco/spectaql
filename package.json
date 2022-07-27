@@ -48,7 +48,7 @@
     "pub:dry-run": "yarn prepare && npm publish --dry-run",
     "test": "mocha --config ./test/mocha-config.js",
     "test:watch": "nodemon -x 'yarn clean-build && yarn test'",
-    "develop": "nodemon -x 'yarn clean-build && node --inspect=0.0.0.0:9223 bin/spectaql' -D",
+    "develop": "nodemon -x 'yarn clean-build && node bin/spectaql' -D",
     "build:site": "node bin/spectaql",
     "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
     "prettify": "prettier 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",

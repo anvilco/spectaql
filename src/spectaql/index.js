@@ -53,8 +53,6 @@ function run(opts) {
 
   const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
-  // console.log(JSON.stringify(introspectionResponse))
-
   // Figure out what data arranger to use...the default one, or the one from the theme
   const customDataArrangerExists = ['data/index.js', 'data.js'].some(
     (pathSuffix) => {
