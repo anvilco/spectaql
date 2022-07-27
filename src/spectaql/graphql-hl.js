@@ -57,6 +57,15 @@ export function ourFunction(hljs) {
 
   FIELD.contains = [ARGS, QUERY]
 
+  const INLINE_FRAGMENT = {
+    className: 'type',
+    begin: / \.\.\. on /,
+    end: /\}/,
+    contains: [QUERY],
+  }
+
+  QUERY.contains.push(INLINE_FRAGMENT)
+
   return {
     aliases: ['gql'],
     keywords: LITERALS,

@@ -37,6 +37,9 @@ describe('index', function () {
     fieldDocumentedDefault: true,
     argDocumentedDefault: true,
     hideFieldsOfUndocumentedType: true,
+
+    unionsDocumentedDefault: true,
+    unionDocumentedDefault: true,
   }))
 
   def('schemaFile', () => pathToSimpleSchema)

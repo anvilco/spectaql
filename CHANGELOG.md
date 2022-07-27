@@ -1,3 +1,21 @@
+### 1.4.2
+
+- Dependency updates
+- Accessibility improvements. https://github.com/anvilco/spectaql/pull/397
+
+### 1.4.1
+
+- Support interpolation of references in `loadTextFromFile` and add it to intro items area. https://github.com/anvilco/spectaql/pull/new/newhouse/416/interpolation-in-file-reads
+
+### 1.4.0
+
+- Add support for inline fragments for Union queries. https://github.com/anvilco/spectaql/pull/407
+
+### 1.3.0
+
+- Add (back) support for Interfaces.
+- Dependency updates to remove warnings.
+
 ### 1.2.4
 
 - Handles defaults with enumerated types better. https://github.com/anvilco/spectaql/pull/400

@@ -39,6 +39,18 @@ $text-color: black !default;
   }
 }
 
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 #spectaql {
   padding: 0;
   margin: 0;
@@ -166,10 +178,16 @@ $text-color: black !default;
         box-shadow: 0 5px 0 $text-color, 0 10px 0 $text-color;
       }
     }
+    .sr-only {
+      @include visually-hidden();
+    }
   }
 
   .close-button {
     display: block;
+    .sr-only {
+      @include visually-hidden();
+    }
 
     @media (min-width: $size-sidebar-break) {
       display: none;

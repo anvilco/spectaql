@@ -151,7 +151,7 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 ## Customizing CSS, JS, HTML, and Data Arrangement via Themes
 
-SpectaQL supports a "theme" system that can be used to make minor tweaks to the default look, or to completely overhaul the output.
+SpectaQL supports a "theme" system that can be used to make minor tweaks to the default look, or to completely overhaul the output. [This article][themes-blog] should be really helpful to understanding how themes work and what they can do.
 
 SpectaQL ships with 3 included themes that can be specified via the `themeDir` option:
 
@@ -245,3 +245,4 @@ Good luck and enjoy SpectaQL!
 [themes-readme]: /examples/themes/README.md
 [cli]: /src/cli.js
 [microfiber]: https://www.npmjs.com/package/microfiber
+[themes-blog]: https://www.useanvil.com/blog/engineering/building-a-spectaql-theme-for-your-graphql-documentation

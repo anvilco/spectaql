@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "1.2.4",
+  "version": "1.4.2",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -90,7 +90,7 @@
     "json5": "^2.2.0",
     "lodash": "^4.17.12",
     "marked": "^4.0.12",
-    "microfiber": "^1.0.1",
+    "microfiber": "^1.1.0",
     "sass": "^1.32.13",
     "sync-request": "^6.1.0",
     "tmp": "0.2.1"
