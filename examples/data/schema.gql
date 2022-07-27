@@ -41,7 +41,8 @@ interface MyInterface {
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) and [`myQuery`]({{Queries.myQuery}}) and [`myMutation`]({{Mutations.myMutation}}) are supported"
 type MyType implements MyInterface {
-  id: String!,
+  "I am an ID that will have my example value specified by the `@spectaql` directive"
+  id: String! @spectaql(options: [{key: "example", value: "\"idFromDirective\"" }]),
   url: URL,
   json: JSON,
   jso: JSONObject,

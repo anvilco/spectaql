@@ -40,7 +40,7 @@ export function buildSchemas(opts) {
   let done = false
   let introspectionResponse
   if (schemaFile) {
-    const { schema, directables } = loadSchemaFromSDLFile({
+    const { schema, directables, directiveName } = loadSchemaFromSDLFile({
       pathToFile: schemaFile,
       spectaqlDirectiveOptions,
     })
@@ -50,6 +50,7 @@ export function buildSchemas(opts) {
       introspectionResponse = addMetadataFromDirectables({
         ...introspectionOptions,
         directables,
+        directiveName,
         introspectionQueryResponse: introspectionResponse,
       })
     }

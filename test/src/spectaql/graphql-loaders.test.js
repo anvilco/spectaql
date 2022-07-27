@@ -1,5 +1,6 @@
 const {
   pathToSimpleSchema,
+  pathToSimpleSchemaWithDirectives,
   pathToSimpleSchemaSupplement,
   pathToNonStandardQueryMutationSchema,
 } = require('test/helpers')
@@ -49,6 +50,22 @@ describe('graphql-loaders', function () {
         'mySupplementalField'
       )
       expect(directables).to.be.an('array').of.length(0)
+    })
+
+    it('works with @spectaql directive', function () {
+      const result = loadSchemaFromSDLFile({
+        pathToFile: pathToSimpleSchemaWithDirectives,
+        spectaqlDirectiveOptions: {
+          enable: true,
+        },
+      })
+      expect(result).to.be.ok
+      const { schema, directables } = result
+      expect(schema._typeMap.MyType.getFields()).to.have.property('myField')
+      expect(schema._typeMap.MyType.getFields()).to.not.have.property(
+        'mySupplementalField'
+      )
+      expect(directables).to.be.an('array').of.length(23)
     })
   })
 

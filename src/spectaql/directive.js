@@ -8,7 +8,7 @@ import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils'
 import { Microfiber as IntrospectionManipulator, KINDS } from 'microfiber'
 
 export const DEFAULT_DIRECTIVE_NAME = 'spectaql'
-export const DEFAULT_DIRECTIVE_OPTION_NAME = 'SpectaQLOptionl'
+export const DEFAULT_DIRECTIVE_OPTION_NAME = 'SpectaQLOption'
 
 const MICROFIBER_OPTIONS = Object.freeze({
   fixQueryAndMutationAndSubscriptionTypes: false,
@@ -147,11 +147,13 @@ export function generateSpectaqlDirectiveSupport(
   }
 
   const {
+    directiveName = DEFAULT_DIRECTIVE_NAME,
     directiveSdl = generateSpectaqlSdl(spectaqlDirectiveOptions),
     optionsSdl = generateOptionsSdl(spectaqlDirectiveOptions),
   } = spectaqlDirectiveOptions
 
   return {
+    directiveName,
     directables,
     directiveSdl,
     optionsSdl,
@@ -182,6 +184,7 @@ const MAPPER_KIND_TO_STUFF_MAP = Object.freeze({
 
 export const addMetadataFromDirectables = ({
   directables,
+  directiveName,
   introspectionQueryResponse,
   metadatasWritePath,
 }) => {
@@ -193,6 +196,7 @@ export const addMetadataFromDirectables = ({
     introspectionQueryResponse,
     MICROFIBER_OPTIONS
   )
+
   const typeFnMap = {
     ObjectTypeDefinition: ({ type }) =>
       microfiber.getType({ kind: KINDS.OBJECT, name: type.name }),
@@ -295,6 +299,9 @@ export const addMetadataFromDirectables = ({
       })
     }
   }
+
+  // Bye-bye directive, and any types you may have only been the one who cared about...
+  microfiber.removeDirective({ name: directiveName })
 
   return microfiber.getResponse()
 }

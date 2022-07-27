@@ -78,13 +78,14 @@ export const loadSchemaFromSDLFile = ({
   const mergedTypeDefs = mergeTypeDefs(typesArray)
   const printedTypeDefs = print(mergedTypeDefs)
 
+  let directiveName
   let directiveSdl = null
   let optionsSdl = null
   let transformer = (schema) => schema
   let directables = []
 
   if (spectaqlDirectiveOptions.enable) {
-    ({ directiveSdl, optionsSdl, transformer, directables } =
+    ({ directiveName, directiveSdl, optionsSdl, transformer, directables } =
       generateSpectaqlDirectiveSupport(spectaqlDirectiveOptions))
   }
 
@@ -97,6 +98,7 @@ export const loadSchemaFromSDLFile = ({
   return {
     schema,
     directables,
+    directiveName,
   }
 }
 
