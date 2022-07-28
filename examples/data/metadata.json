@@ -41,5 +41,26 @@
         }
       }
     }
+  },
+  "ENUM": {
+    "EpisodeEnum": {
+      "enumValues": {
+        "EMPIRE": {
+          "documentation": { "undocumented": true }
+        }
+      }
+    }
+  },
+  "INTERFACE": {
+    "MyInterface": {
+      "fields": {
+        "id": {
+          "documentation": { "example": "exampleFromMetadataJson" }
+        },
+        "name": {
+          "documentation": { "undocumented": true }
+        }
+      }
+    }
   }
 }
