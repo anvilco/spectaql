@@ -1055,7 +1055,7 @@
     tslib "^2.4.0"
     unixify "1.0.0"
 
-"@graphql-tools/merge@^8.1.2":
+"@graphql-tools/merge@8.3.0", "@graphql-tools/merge@^8.1.2":
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.3.0.tgz#d3a8ba10942f8598788c3e03f97cc1d0c0b055f8"
   integrity sha512-xRa7RAQok/0DD2YnjuqikMrr7dUAxTpdGtZ7BkvUUGhYs3B3p7reCAfvOVr1DJAqVToP7hdlMk+S5+Ylk+AaqA==
@@ -1063,7 +1063,17 @@
     "@graphql-tools/utils" "8.8.0"
     tslib "^2.4.0"
 
-"@graphql-tools/utils@8.8.0":
+"@graphql-tools/schema@^8.5.0":
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-8.5.0.tgz#0332b3a2e674d16e9bf8a58dfd47432449ce2368"
+  integrity sha512-VeFtKjM3SA9/hCJJfr95aEdC3G0xIKM9z0Qdz4i+eC1g2fdZYnfWFt2ucW4IME+2TDd0enHlKzaV0qk2SLVUww==
+  dependencies:
+    "@graphql-tools/merge" "8.3.0"
+    "@graphql-tools/utils" "8.8.0"
+    tslib "^2.4.0"
+    value-or-promise "1.0.11"
+
+"@graphql-tools/utils@8.8.0", "@graphql-tools/utils@^8.8.0":
   version "8.8.0"
   resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.8.0.tgz#8332ff80a1da9204ccf514750dd6f5c5cccf17dc"
   integrity sha512-KJrtx05uSM/cPYFdTnGAS1doL5bftJLAiFCDMZ8Vkifztz3BFn3gpFiy/o4wDtM8s39G46mxmt2Km/RmeltfGw==
@@ -3618,10 +3628,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-microfiber@^1.1.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-1.1.1.tgz#588e7c45dddbbffebacd6f018579c5fc87354861"
-  integrity sha512-2ASA3WVKlrJh5Z/MLo43Nf2k03T4NnYrCsi6AUQ+fon2LfHBwo74ZwJ1h8qmi/T+gwnLEJoMBQqVaQpXgwU5dA==
+microfiber@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-1.3.0.tgz#e10c260852e0dfda23852a8521e59a61d1b32a25"
+  integrity sha512-zhF/ye1mnZYnQ/HIKxRHw0ylDfbm2RK8GKr0WyWWyHhvQgxGy6UDvb9kiXi1AedLPC5QvW57mbVZhGsmAoRl0g==
   dependencies:
     lodash.defaults "^4.2.0"
     lodash.get "^4.4.2"
@@ -5086,6 +5096,11 @@ v8flags@~3.2.0:
   integrity sha512-mH8etigqMfiGWdeXpaaqGfs6BndypxusHHcv2qSHyZkGEznCd/qAXCWWRzeowtL54147cktFOC4P5y+kl8d8Jg==
   dependencies:
     homedir-polyfill "^1.0.1"
+
+value-or-promise@1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/value-or-promise/-/value-or-promise-1.0.11.tgz#3e90299af31dd014fe843fe309cefa7c1d94b140"
+  integrity sha512-41BrgH+dIbCFXClcSapVs5M6GkENd3gQOJpEfPDNa71LsUGMXDL0jMWpI/Rh7WhX+Aalfz2TTS3Zt5pUsbnhLg==
 
 websocket-driver@>=0.5.1:
   version "0.7.4"

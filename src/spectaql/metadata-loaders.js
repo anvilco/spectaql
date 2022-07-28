@@ -2,6 +2,8 @@ import { addMetadata as addMetadataFn } from '@anvilco/apollo-server-plugin-intr
 
 import { fileToObject } from './utils'
 
+export { addMetadataFromDirectables } from './directive'
+
 export const loadMetadataFromFile = ({ pathToFile } = {}) => {
   return fileToObject(pathToFile)
 }

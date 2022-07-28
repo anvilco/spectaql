@@ -12,6 +12,12 @@ import {
   pathToRoot,
 } from './spectaql/utils'
 
+export {
+  generateSpectaqlSdl,
+  generateDirectiveSdl,
+  generateOptionsSdl,
+} from './spectaql/directive'
+
 export { default as parseCliOptions } from './cli'
 
 const defaultAppDir = normalizePathFromRoot('dist')
@@ -64,8 +70,16 @@ const spectaqlOptionDefaults = Object.freeze({
   displayAllServers: false,
 })
 
+const spectaqlDirectiveDefault = Object.freeze({
+  enable: true,
+  directiveName: 'spectaql',
+  optionsTypeName: 'SpectaQLOption',
+})
+
 const introspectionOptionDefaults = Object.freeze({
   dynamicExamplesProcessingModule: false,
+
+  spectaqlDirective: Object.assign({}, spectaqlDirectiveDefault),
 
   removeTrailingPeriodFromDescriptions: false,
 
@@ -211,6 +225,11 @@ export function resolveOptions(cliOptions) {
     introspectionCliOptions,
     opts.specData.introspection,
     introspectionOptionDefaults
+  )
+
+  opts.specData.introspection.spectaqlDirective = _.defaults(
+    opts.specData.introspection.spectaqlDirective,
+    spectaqlDirectiveDefault
   )
 
   opts.specData.extensions = _.defaults(
