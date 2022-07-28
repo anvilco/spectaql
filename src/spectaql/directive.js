@@ -215,13 +215,14 @@ export const addMetadataFromDirectables = ({
     FieldDefinition: ({ type, config, typeName, fieldName, mapperKind }) => {
       const typeKind = MAPPER_KIND_TO_KIND_MAP[mapperKind]
       if (!typeKind) {
-        throw new Error('Unsupported mapperKind', {
+        console.error(new Error('Unsupported mapperKind'), {
           type,
           config,
           mapperKind,
           typeName,
           fieldName,
         })
+        return
       }
       return microfiber.getField({ typeKind, typeName, fieldName })
     },
@@ -235,13 +236,14 @@ export const addMetadataFromDirectables = ({
     }) => {
       const { fnName, typeKind } = MAPPER_KIND_TO_STUFF_MAP[mapperKind] || {}
       if (!typeKind) {
-        throw new Error('Unsupported mapperKind', {
+        console.error(new Error('Unsupported mapperKind'), {
           type,
           config,
           mapperKind,
           typeName,
           fieldName,
         })
+        return
       }
 
       return microfiber[fnName]({
@@ -280,7 +282,7 @@ export const addMetadataFromDirectables = ({
       if (typeDef) {
         set(typeDef, metadatasWritePath, directive)
       } else {
-        throw new Error('NO TYPEDEF?', {
+        console.error(new Error('Unsupported typeDef'), {
           type,
           config,
           typeName,
@@ -289,7 +291,7 @@ export const addMetadataFromDirectables = ({
         })
       }
     } else {
-      throw new Error('UNHANDLED THING?', {
+      console.error(new Error('Unsupported astNode.kind'), {
         type,
         config,
         typeName,
