@@ -1,5 +1,6 @@
-### 1.X.X
+### 1.5.1
 - Dependency updates
+- Added examples and better support for various things in the `metadata.json` file, as well as examples.
 
 ### 1.5.0
 
