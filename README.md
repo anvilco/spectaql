@@ -119,7 +119,7 @@ That config will direct a build that flexes the most interesting parts of Specta
 
 ## YAML Options
 
-To generate your documentation, SpectaQL requires a configuration YAML. This file is where you can specify most of the options to make your output the way you'd like it. All the supported options and their descriptions can be found in the [config-example.yml](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file.
+To generate your documentation, SpectaQL requires a configuration YAML. This file is where you can specify most of the options to make your output the way you'd like it. All the supported options and their descriptions can be found in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file.
 
 You can also see a minimal-ish working example YAML in the [examples/config.yml](https://github.com/anvilco/spectaql/blob/master/examples/config.yml) file.
 
@@ -136,12 +136,34 @@ In our experience, nearly all of the stuff we need for the content of the docume
 - `undocumented`: A Boolean value that can be provided on a Type, Field, Argument, Query or Mutation indicating that this item is _**not**_ to be included in the resulting output. Useful for 1-off hiding of things where the default was to show them.
 - `documented`: Just like `undocumented`, except it _**will**_ include it in the resulting output. Useful for 1-off showing of things where the default was to hide them.
 
-SpectaQL supports 2 ways to include metadata to be used during processing:
+SpectaQL supports 3 ways to include metadata to be used during processing:
 
 1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to "weave" our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/master/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
 2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/master/examples/data/metadata.json) file to understand its format.
+3. If you are providing your schema information via an SDL file or files, leverage the [SpectaQL Directive](#the-spectaql-directive) feature to provide your metadata in your SDL through directives. See the [SpectaQL Directive](#the-spectaql-directive) for more information.
 
 **NOTE**: Another way to ensure that things are not documented is to pass your GraphQL Instrospection Results through [Microfiber][microfiber] and perform the removal of any Types, Fields, Queries etc before they even reach SpectaQL. Just a thought.
+
+## The SpectaQL Directive
+If you are providing your schema information via an SDL file or files, you can leverage the `@spectaql` directive and pass any of the supported `metadata` options to the `options` argument of that directive. This is a useful approach for those who are taking an "SDL-first" development approach. See the `spectaqlDirective` option in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file for more information on how to enable and implement this approach.
+
+Here's what you need to know:
+- See the `spectaqlDirective` option in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file for information on how to enable and tweak this approach.
+- The directive's `options` argument is a List/Array of Input Objects that have the following shape:
+```
+{ key: String!, value: String! }
+```
+- All the `value` fields should be provided as strings, and they will be appropriately parsed based on the supported value of the `key` field.
+- You do not need to add the definition of the `spectaql` directive, nor its `SpectaQLOption` input type. They will be added (and removed) by SpectaQL automatically if you enable the feature.
+- The directive can be added to your SDL anywhere that directives are supported by GraphQL SDL syntax, but they may only have an impact on the areas that SpectaQL supports.
+
+Once enabled, the directive can be used like so:
+```sdl
+type MyType {
+   "This field will be hidden, thanks to the options that were passed to the @spectaql directive"
+   myField: String @spectaql(options: [{ key: "undocumented", value: "true" }])
+}
+```
 
 ## Dynamic Example Generators
 

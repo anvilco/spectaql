@@ -88,13 +88,17 @@ introspection:
     # Default: true
     enable: true
 
-    # String indicating the name to use for the SpectaQL directive
+    # String indicating the name to use for the SpectaQL directive, e.g. "@spectaql"
+    # This should be inconsequential in the end since it should be removed
+    # from your resulting Schema by SpectaQL
     #
     # Default: 'spectaql'
     directiveName: 'spectaql'
 
     # String indicating the name to use for the Type used in the "options" array that can be passed
-    # to the SpectaQL directive
+    # to the SpectaQL directive.
+    # This should be inconsequential in the end since it should be removed
+    # from your resulting Schema by SpectaQL
     #
     # Default: 'SpectaQLOption'
     optionsTypeName: 'SpectaQLOption'
