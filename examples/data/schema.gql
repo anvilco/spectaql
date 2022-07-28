@@ -37,12 +37,14 @@ union SimpleTypes =
 "A simple Interface"
 interface MyInterface {
   id: String!
+  name: String!
 }
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) and [`myQuery`]({{Queries.myQuery}}) and [`myMutation`]({{Mutations.myMutation}}) are supported"
 type MyType implements MyInterface {
   "I am an ID that will have my example value specified by the `@spectaql` directive"
   id: String! @spectaql(options: [{key: "example", value: "\"idFromDirective\"" }]),
+  name: String!
   url: URL,
   json: JSON,
   jso: JSONObject,
