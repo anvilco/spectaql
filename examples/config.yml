@@ -11,8 +11,8 @@ introspection:
   queryNameStrategy: capitalizeFirst
   fieldExpansionDepth: 2
 
-  spectaqlDirective:
-    enable: true
+  # spectaqlDirective:
+  #   enable: true
 
 extensions:
   graphqlScalarExamples: true

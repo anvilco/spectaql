@@ -80,13 +80,20 @@ export const loadSchemaFromSDLFile = ({
 
   let directiveName
   let directiveSdl = null
+  let optionsTypeName
   let optionsSdl = null
   let transformer = (schema) => schema
   let directables = []
 
   if (spectaqlDirectiveOptions.enable) {
-    ({ directiveName, directiveSdl, optionsSdl, transformer, directables } =
-      generateSpectaqlDirectiveSupport(spectaqlDirectiveOptions))
+    ({
+      directiveName,
+      directiveSdl,
+      optionsSdl,
+      optionsTypeName,
+      transformer,
+      directables,
+    } = generateSpectaqlDirectiveSupport(spectaqlDirectiveOptions))
   }
 
   let schema = makeExecutableSchema({
@@ -99,6 +106,7 @@ export const loadSchemaFromSDLFile = ({
     schema,
     directables,
     directiveName,
+    optionsTypeName,
   }
 }
 
