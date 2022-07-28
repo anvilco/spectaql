@@ -109,8 +109,6 @@ export function buildSchemas(opts) {
     })
   }
 
-  // console.log(JSON.stringify(introspectionResponse))
-
   const augmentedIntrospectionResponse = augmentData({
     introspectionResponse,
     introspectionOptions,
@@ -123,8 +121,6 @@ export function buildSchemas(opts) {
   const graphQLSchema = graphQLSchemaFromIntrospectionResponse(
     augmentedIntrospectionResponse
   )
-
-  // console.log(JSON.stringify(augmentedIntrospectionResponse))
 
   return {
     introspectionResponse: augmentedIntrospectionResponse,
