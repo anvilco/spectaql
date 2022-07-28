@@ -1,3 +1,7 @@
+### 1.5.0
+
+- Support for metadata via the `@spectaql` directive. https://github.com/anvilco/spectaql/pull/439
+
 ### 1.4.2
 
 - Dependency updates
