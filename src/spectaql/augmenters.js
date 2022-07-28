@@ -34,10 +34,6 @@ export function augmentData(args) {
 export function createIntrospectionManipulator(args) {
   const { introspectionResponse, introspectionOptions } = args
 
-  console.log({
-    introspectionOptions,
-  })
-
   // Map our options to Microfiber options
   const {
     hideFieldsOfUndocumentedType: removeFieldsWithMissingTypes,

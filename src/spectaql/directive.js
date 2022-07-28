@@ -301,11 +301,6 @@ export const addMetadataFromDirectables = ({
 
   // Bye-bye directive, and any types you may have only been the one who cared about...
   microfiber.removeDirective({ name: directiveName })
-  console.log({
-    removetType: true,
-    kind: KINDS.INPUT_OBJECT,
-    name: optionsTypeName,
-  })
   microfiber.removeType({ kind: KINDS.INPUT_OBJECT, name: optionsTypeName })
 
   return microfiber.getResponse()

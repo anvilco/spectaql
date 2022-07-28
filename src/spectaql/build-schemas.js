@@ -47,8 +47,7 @@ export function buildSchemas(opts) {
       })
 
     introspectionResponse = introspectionResponseFromSchema({ schema })
-
-    if (spectaqlDirectiveOptions.enable) {
+    if (spectaqlDirectiveOptions.enable && !introspectionResponse.errors) {
       introspectionResponse = addMetadataFromDirectables({
         ...introspectionOptions,
         directables,
@@ -98,6 +97,10 @@ export function buildSchemas(opts) {
     throw new Error('No Introspection Query response')
   }
 
+  if (introspectionResponse.errors) {
+    throw new Error('Problem with Introspection Query Response')
+  }
+
   if (metadataFile) {
     addMetadataFromFile({
       ...introspectionOptions,
@@ -106,12 +109,7 @@ export function buildSchemas(opts) {
     })
   }
 
-  if (introspectionResponse.errors) {
-    console.error(introspectionResponse.errors)
-    throw new Error('Problem with Introspection Query Response')
-  }
-
-  console.log(JSON.stringify(introspectionResponse))
+  // console.log(JSON.stringify(introspectionResponse))
 
   const augmentedIntrospectionResponse = augmentData({
     introspectionResponse,
