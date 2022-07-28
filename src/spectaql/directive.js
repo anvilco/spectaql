@@ -149,13 +149,15 @@ export function generateSpectaqlDirectiveSupport(
   const {
     directiveName = DEFAULT_DIRECTIVE_NAME,
     directiveSdl = generateSpectaqlSdl(spectaqlDirectiveOptions),
+    optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
     optionsSdl = generateOptionsSdl(spectaqlDirectiveOptions),
   } = spectaqlDirectiveOptions
 
   return {
-    directiveName,
     directables,
+    directiveName,
     directiveSdl,
+    optionsTypeName,
     optionsSdl,
     transformer: (schema) => {
       return mapSchema(schema, HANDLER_MAP)
@@ -185,13 +187,10 @@ const MAPPER_KIND_TO_STUFF_MAP = Object.freeze({
 export const addMetadataFromDirectables = ({
   directables,
   directiveName,
+  optionsTypeName,
   introspectionQueryResponse,
   metadatasWritePath,
 }) => {
-  if (!directables?.length) {
-    return introspectionQueryResponse
-  }
-
   const microfiber = new IntrospectionManipulator(
     introspectionQueryResponse,
     MICROFIBER_OPTIONS
@@ -302,6 +301,7 @@ export const addMetadataFromDirectables = ({
 
   // Bye-bye directive, and any types you may have only been the one who cared about...
   microfiber.removeDirective({ name: directiveName })
+  microfiber.removeType({ kind: KINDS.INPUT_OBJECT, name: optionsTypeName })
 
   return microfiber.getResponse()
 }

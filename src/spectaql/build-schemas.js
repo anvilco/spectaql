@@ -40,17 +40,19 @@ export function buildSchemas(opts) {
   let done = false
   let introspectionResponse
   if (schemaFile) {
-    const { schema, directables, directiveName } = loadSchemaFromSDLFile({
-      pathToFile: schemaFile,
-      spectaqlDirectiveOptions,
-    })
-    introspectionResponse = introspectionResponseFromSchema({ schema })
+    const { schema, directables, directiveName, optionsTypeName } =
+      loadSchemaFromSDLFile({
+        pathToFile: schemaFile,
+        spectaqlDirectiveOptions,
+      })
 
-    if (spectaqlDirectiveOptions.enable) {
+    introspectionResponse = introspectionResponseFromSchema({ schema })
+    if (spectaqlDirectiveOptions.enable && !introspectionResponse.errors) {
       introspectionResponse = addMetadataFromDirectables({
         ...introspectionOptions,
         directables,
         directiveName,
+        optionsTypeName,
         introspectionQueryResponse: introspectionResponse,
       })
     }
@@ -95,17 +97,16 @@ export function buildSchemas(opts) {
     throw new Error('No Introspection Query response')
   }
 
+  if (introspectionResponse.errors) {
+    throw new Error('Problem with Introspection Query Response')
+  }
+
   if (metadataFile) {
     addMetadataFromFile({
       ...introspectionOptions,
       pathToFile: metadataFile,
       introspectionQueryResponse: introspectionResponse,
     })
-  }
-
-  if (introspectionResponse.errors) {
-    console.error(introspectionResponse.errors)
-    throw new Error('Problem with Introspection Query Response')
   }
 
   const augmentedIntrospectionResponse = augmentData({
@@ -120,6 +121,7 @@ export function buildSchemas(opts) {
   const graphQLSchema = graphQLSchemaFromIntrospectionResponse(
     augmentedIntrospectionResponse
   )
+
   return {
     introspectionResponse: augmentedIntrospectionResponse,
     graphQLSchema,
