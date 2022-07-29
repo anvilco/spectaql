@@ -20,11 +20,18 @@ module.exports = ({
   // The Introspection Query Response after all the augmentation and metadata directives
   // have been applied to it
   introspectionResponse,
+  // All the options that are specifically for the introspection related behaviors, such a this area.
+  introspectionOptions,
   // A GraphQLSchema instance that was constructed from the provided introspectionResponse
   graphQLSchema: _graphQLSchema,
+  // All of the SpectaQL options in case you need them for something.
+  allOptions: _allOptions,
 }) => {
   const introspectionManipulator = new IntrospectionManipulator(
-    introspectionResponse
+    introspectionResponse,
+    // microfiberOptions come from converting some of the introspection options to a corresponding
+    // option for microfiber via the `src/index.js:introspectionOptionsToMicrofiberOptions()` function
+    introspectionOptions?.microfiberOptions,
   )
 
   const queryType = introspectionManipulator.getQueryType()
