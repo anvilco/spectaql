@@ -196,3 +196,7 @@ input AddressInput {
   lon: String
   planet: String
 }
+
+type MyUnusedType {
+  id: String
+}

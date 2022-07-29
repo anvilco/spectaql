@@ -256,6 +256,7 @@ introspection:
   hideSubscriptionsWithUndocumentedReturnType: true
 
   # Hide any Types that are not used anywhere in your schema after other things have been hidden.
+  # Default: true
   hideUnusedTypes: true
 
   # Whether to document any Types at all

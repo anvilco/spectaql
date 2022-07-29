@@ -39,6 +39,10 @@ describe('augmenters', function () {
       nonRequiredArrayOfNullables: [String]
     }
 
+    type UnusedType {
+      id: String
+    }
+
     "Some combined types"
     union CombinedTypes =
       | MyType
@@ -86,6 +90,8 @@ describe('augmenters', function () {
   def('doMetadata', true)
   def('metadatasPath', 'metadata')
 
+  def('hideUnusedTypes', false)
+
   def('objectsDocumentedDefault', true)
   def('objectDocumentedDefault', true)
 
@@ -120,6 +126,8 @@ describe('augmenters', function () {
     const base = {
       metadata: $.doMetadata,
       metadatasPath: $.metadatasPath,
+
+      hideUnusedTypes: $.hideUnusedTypes,
 
       objectsDocumentedDefault: $.objectsDocumentedDefault,
       objectDocumentedDefault: $.objectDocumentedDefault,
@@ -216,7 +224,42 @@ describe('augmenters', function () {
             argName: 'myArg',
           })
         ).to.be.ok
+
+        expect($.introspectionManipulator.getType({ name: 'OtherType' })).to.be
+          .ok
+        // This thing is not used, but we told it not to remove things that are not used
+        expect($.introspectionManipulator.getType({ name: 'UnusedType' })).to.be
+          .ok
       })
+
+      context('hideUnusedTypes is true', function () {
+        def('hideUnusedTypes', () => true)
+
+        it('shows some things but hides some unused things', function () {
+          expect(
+            $.introspectionManipulator.getType({ name: 'MyType' })
+          ).to.be.ok
+          expect(
+            $.introspectionManipulator.getField({
+              typeName: 'MyType',
+              fieldName: 'myField',
+            })
+          ).to.be.ok
+          expect(
+            $.introspectionManipulator.getArg({
+              typeName: 'MyType',
+              fieldName: 'myField',
+              argName: 'myArg',
+            })
+          ).to.be.ok
+
+          // This thing is not used, but we told it not to remove things that are not used
+          expect(
+            $.introspectionManipulator.getType({ name: 'UnusedType' })
+          ).to.not.be.ok
+        })
+      })
+
       context(
         'objectsDocumentedDefault and unionsDocumentedDefault and inputsDocumentedDefault is false',
         function () {
