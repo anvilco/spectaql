@@ -109,6 +109,8 @@ const introspectionOptionDefaults = Object.freeze({
   // TODO: support this granularly in microfiber
   hideSubscriptionsWithUndocumentedReturnType: true,
 
+  hideUnusedTypes: false,
+
   objectsDocumentedDefault: true,
   objectDocumentedDefault: true,
 
@@ -172,6 +174,37 @@ function resolvePaths(
   })
 }
 
+export function introspectionOptionsToMicrofiberOptions(introspectionOptions) {
+  const {
+    hideUnusedTypes: removeUnusedTypes,
+    hideFieldsOfUndocumentedType: removeFieldsWithMissingTypes,
+    hideArgsOfUndocumentedType: removeArgsWithMissingTypes,
+    hideInputFieldsOfUndocumentedType: removeInputFieldsWithMissingTypes,
+    hideUnionTypesOfUndocumentedType: removePossibleTypesOfMissingTypes,
+    // TODO: support this granularly in microfiber
+    hideQueriesWithUndocumentedReturnType: removeQueriesWithMissingTypes,
+    // TODO: support this granularly in microfiber
+    hideMutationsWithUndocumentedReturnType: removeMutationsWithMissingTypes,
+    // TODO: support this granularly in microfiber
+    hideSubscriptionsWithUndocumentedReturnType:
+      removeSubscriptionsWithMissingTypes,
+  } = Object.assign({}, introspectionOptionDefaults, introspectionOptions)
+
+  return {
+    removeUnusedTypes,
+    removeFieldsWithMissingTypes,
+    removeArgsWithMissingTypes,
+    removeInputFieldsWithMissingTypes,
+    removePossibleTypesOfMissingTypes,
+    // TODO: support this granularly in microfiber
+    removeQueriesWithMissingTypes,
+    // TODO: support this granularly in microfiber
+    removeMutationsWithMissingTypes,
+    // TODO: support this granularly in microfiber
+    removeSubscriptionsWithMissingTypes,
+  }
+}
+
 export function resolveOptions(cliOptions) {
   // Start with options from the CLI
   let opts = _.extend({}, cliOptions)
@@ -226,6 +259,10 @@ export function resolveOptions(cliOptions) {
     opts.specData.introspection,
     introspectionOptionDefaults
   )
+
+  // Generate the microfiber options
+  opts.specData.introspection.microfiberOptions =
+    introspectionOptionsToMicrofiberOptions(opts.specData.introspection)
 
   opts.specData.introspection.spectaqlDirective = _.defaults(
     opts.specData.introspection.spectaqlDirective,

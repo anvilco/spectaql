@@ -5,6 +5,7 @@ const {
   graphQLSchemaFromIntrospectionResponse,
 } = require('dist/spectaql/graphql-loaders')
 
+const { introspectionOptionsToMicrofiberOptions } = require('dist')
 const { addMetadata } = require('dist/spectaql/metadata-loaders')
 
 const {
@@ -115,42 +116,47 @@ describe('augmenters', function () {
   def('mutationArgDocumentedDefault', true)
   def('hideMutationsWithUndocumentedReturnType', true)
 
-  def('introspectionOptionsBase', () => ({
-    metadata: $.doMetadata,
-    metadatasPath: $.metadatasPath,
+  def('introspectionOptionsBase', () => {
+    const base = {
+      metadata: $.doMetadata,
+      metadatasPath: $.metadatasPath,
 
-    objectsDocumentedDefault: $.objectsDocumentedDefault,
-    objectDocumentedDefault: $.objectDocumentedDefault,
+      objectsDocumentedDefault: $.objectsDocumentedDefault,
+      objectDocumentedDefault: $.objectDocumentedDefault,
 
-    inputsDocumentedDefault: $.inputsDocumentedDefault,
-    inputDocumentedDefault: $.inputDocumentedDefault,
+      inputsDocumentedDefault: $.inputsDocumentedDefault,
+      inputDocumentedDefault: $.inputDocumentedDefault,
 
-    unionsDocumentedDefault: $.unionsDocumentedDefault,
-    unionDocumentedDefault: $.unionDocumentedDefault,
+      unionsDocumentedDefault: $.unionsDocumentedDefault,
+      unionDocumentedDefault: $.unionDocumentedDefault,
 
-    enumsDocumentedDefault: $.enumsDocumentedDefault,
-    enumDocumentedDefault: $.enumDocumentedDefault,
+      enumsDocumentedDefault: $.enumsDocumentedDefault,
+      enumDocumentedDefault: $.enumDocumentedDefault,
 
-    fieldDocumentedDefault: $.fieldDocumentedDefault,
-    hideFieldsOfUndocumentedType: $.hideFieldsOfUndocumentedType,
+      fieldDocumentedDefault: $.fieldDocumentedDefault,
+      hideFieldsOfUndocumentedType: $.hideFieldsOfUndocumentedType,
 
-    inputFieldDocumentedDefault: $.inputFieldDocumentedDefault,
-    hideInputFieldsOfUndocumentedType: $.hideInputFieldsOfUndocumentedType,
+      inputFieldDocumentedDefault: $.inputFieldDocumentedDefault,
+      hideInputFieldsOfUndocumentedType: $.hideInputFieldsOfUndocumentedType,
 
-    argDocumentedDefault: $.argDocumentedDefault,
+      argDocumentedDefault: $.argDocumentedDefault,
 
-    queriesDocumentedDefault: $.queriesDocumentedDefault,
-    queryDocumentedDefault: $.queryDocumentedDefault,
-    queryArgDocumentedDefault: $.queryArgDocumentedDefault,
-    hideQueriesWithUndocumentedReturnType:
-      $.hideQueriesWithUndocumentedReturnType,
+      queriesDocumentedDefault: $.queriesDocumentedDefault,
+      queryDocumentedDefault: $.queryDocumentedDefault,
+      queryArgDocumentedDefault: $.queryArgDocumentedDefault,
+      hideQueriesWithUndocumentedReturnType:
+        $.hideQueriesWithUndocumentedReturnType,
 
-    mutationsDocumentedDefault: $.mutationsDocumentedDefault,
-    mutationDocumentedDefault: $.mutationDocumentedDefault,
-    mutationArgDocumentedDefault: $.mutationArgDocumentedDefault,
-    hideMutationsWithUndocumentedReturnType:
-      $.hideMutationsWithUndocumentedReturnType,
-  }))
+      mutationsDocumentedDefault: $.mutationsDocumentedDefault,
+      mutationDocumentedDefault: $.mutationDocumentedDefault,
+      mutationArgDocumentedDefault: $.mutationArgDocumentedDefault,
+      hideMutationsWithUndocumentedReturnType:
+        $.hideMutationsWithUndocumentedReturnType,
+    }
+
+    base.microfiberOptions = introspectionOptionsToMicrofiberOptions(base)
+    return base
+  })
   def('introspectionOptions', () => $.introspectionOptionsBase)
 
   def('rawIntrospectionResponse', () =>
@@ -166,14 +172,6 @@ describe('augmenters', function () {
       metadatasWritePath: $.metadatasPath,
     })
   )
-
-  def('introspectionManipulatorOptions', () => ({
-    removeUnusedTypes: false,
-    // removeFieldsWithMissingTypes: false,
-    // removeArgsWithMissingTypes: false,
-    // removeInputFieldsWithMissingTypes: false,
-    // removePossibleTypesOfMissingTypes: false,
-  }))
 
   def('graphQLSchema', () =>
     graphQLSchemaFromIntrospectionResponse($.introspectionResponse)
