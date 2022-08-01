@@ -47,7 +47,9 @@
     "prepare": "husky install && yarn clean && yarn build",
     "pub:dry-run": "yarn prepare && npm publish --dry-run",
     "test": "mocha --config ./test/mocha-config.js",
+    "test:debug": "yarn test --node-option inspect=0.0.0.0:9223",
     "test:watch": "nodemon -x 'yarn clean-build && yarn test'",
+    "test:debug:watch": "nodemon -x 'yarn clean-build && yarn test:debug'",
     "develop": "nodemon -x 'yarn clean-build && node bin/spectaql' -D",
     "build:site": "node bin/spectaql",
     "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
@@ -92,7 +94,7 @@
     "json5": "^2.2.0",
     "lodash": "^4.17.12",
     "marked": "^4.0.12",
-    "microfiber": "^1.3.0",
+    "microfiber": "^1.3.1",
     "sass": "^1.32.13",
     "sync-request": "^6.1.0",
     "tmp": "0.2.1"

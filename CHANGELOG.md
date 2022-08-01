@@ -1,3 +1,7 @@
+### 1.5.2
+- Add option to remove unused types.
+- Updated `microfiber` to add support for usage of `INTERFACES` to count as usage of the types that implement them.
+
 ### 1.5.1
 - Dependency updates
 - Added examples and better support for various things in the `metadata.json` file, as well as examples.
