@@ -1,3 +1,7 @@
+### 1.5.3
+- Dependency updates
+- Better support for parsing `@spectaql` directive options. https://github.com/anvilco/spectaql/pull/462 Thanks @kylebjordahl
+
 ### 1.5.2
 - Add option to remove unused types.
 - Updated `microfiber` to add support for usage of `INTERFACES` to count as usage of the types that implement them.
