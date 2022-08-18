@@ -20,11 +20,30 @@ const MICROFIBER_OPTIONS = Object.freeze({
   cleanupSchemaImmediately: false,
 })
 
+/** attempt to parse one example value */
+function parseExample(val){
+  try {
+    return JSON.parse(val)
+  } catch {
+    return String(val)
+  }
+}
+
+/** attempt to parse a string of an array of example values */
+function parseExamples(vals){
+  try {
+    arr = JSON.parse(vals)
+    return arr.map(parseExample)
+  } catch {
+    return String(vals)
+  }
+}
+
 const OPTION_TO_CONVERTER_FN = {
   undocumented: (val) => val === true || val === 'true',
   documented: (val) => val === true || val === 'true',
-  example: (val) => JSON.parse(val),
-  examples: (vals) => JSON.parse(vals),
+  example: (val) => parseExample(val),
+  examples: (vals) => parseExamples(vals),
 }
 
 export function generateSpectaqlSdl({
