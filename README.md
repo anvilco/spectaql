@@ -162,6 +162,8 @@ Once enabled, the directive can be used like so:
 type MyType {
    "This field will be hidden, thanks to the options that were passed to the @spectaql directive"
    myField: String @spectaql(options: [{ key: "undocumented", value: "true" }])
+   myFieldOtherField: String @spectaql(options: [{ key: "example", value: "An Example from the Directive" }])
+   myFieldOtherOtherField: String @spectaql(options: [{ key: "examples", value: "[\"Example 1 from the Directive\", \"Example 2 from the Directive\"]" }])
 }
 ```
 

@@ -24,7 +24,8 @@ type SimpleTypeOne implements Node {
 }
 
 type SimpleTypeTwo {
-  simpleTypeTwoField: String
+  simpleTypeTwoFieldOne: String @spectaql(options: [{ key: "examples", value: "[\"42\", \"24\"]" }])
+  simpleTypeTwoFieldTwo: String @spectaql(options: [{ key: "example", value: "SomeIdValue" }])
 }
 
 "A Union of `SimpleTypeOne` and `SimpleTypeTwo`. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
