@@ -1,0 +1,48 @@
+type Query @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "Query"}]) {
+  myQuery(
+    myQueryArgumentField: String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "myQueryArgumentField"}]),
+    myInput: MyInput @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "myInput"}])
+  ): String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "myQuery"}])
+}
+
+type Mutation @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "Mutation"}]) {
+  myMutation(
+    myArgumentField: String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "myMutationMyArgumentField"}])
+  ): String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "myMutation"}])
+}
+
+type Subscription @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "Subscription"}]) {
+  mySubscription(
+    mySubscriptionArgumentField: String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "mySubscriptionMyArgumentField"}])
+  ): String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "mySubscription"}])
+}
+
+interface MyInterface @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyInterface"}]) {
+  id: String! @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyInterface.id"}])
+}
+
+type MyInterfaceType implements MyInterface @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyInterfaceType"}]) {
+  id: String! @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyInterfaceType.id"}])
+}
+
+
+type MyType @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyType"}]) {
+  myField(
+    myArg: String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyType.myField.myArg"}])
+  ): String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyType.myField"}])
+  myScalar: MyScalar @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyType.myScalar"}])
+}
+
+scalar MyScalar @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyScalar"}])
+
+union MyUnion @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyUnion"}]) = MyType | MyInterfaceType
+
+enum MyEnum @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyEnum"}]) {
+  ONE @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyEnum.ONE"}])
+  TWO
+  THREE
+}
+
+input MyInput @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyInput"}]) {
+  email: String @spectaql(options: [{key: "documented", value: "true"}, {key: "info", value: "MyInput.email"}])
+}

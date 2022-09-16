@@ -6,7 +6,10 @@ import {
   graphQLSchemaFromIntrospectionResponse,
 } from './graphql-loaders'
 
-import { addMetadataFromFile } from './metadata-loaders'
+import {
+  addMetadataFromFile,
+  addMetadataFromDirectables,
+} from './metadata-loaders'
 
 import {
   augmentData,
@@ -24,6 +27,7 @@ export function buildSchemas(opts) {
   const {
     introspection: introspectionOptions,
     introspection: {
+      spectaqlDirective: spectaqlDirectiveOptions = {},
       url: introspectionUrl,
       schemaFile,
       introspectionFile,
@@ -35,10 +39,24 @@ export function buildSchemas(opts) {
 
   let done = false
   let introspectionResponse
-
   if (schemaFile) {
-    const schema = loadSchemaFromSDLFile({ pathToFile: schemaFile })
+    const { schema, directables, directiveName, optionsTypeName } =
+      loadSchemaFromSDLFile({
+        pathToFile: schemaFile,
+        spectaqlDirectiveOptions,
+      })
+
     introspectionResponse = introspectionResponseFromSchema({ schema })
+    if (spectaqlDirectiveOptions.enable && !introspectionResponse.errors) {
+      introspectionResponse = addMetadataFromDirectables({
+        ...introspectionOptions,
+        directables,
+        directiveName,
+        optionsTypeName,
+        introspectionQueryResponse: introspectionResponse,
+      })
+    }
+
     done = 'loaded GraphQL SDL from file'
   }
 
@@ -79,17 +97,16 @@ export function buildSchemas(opts) {
     throw new Error('No Introspection Query response')
   }
 
+  if (introspectionResponse.errors) {
+    throw new Error('Problem with Introspection Query Response')
+  }
+
   if (metadataFile) {
     addMetadataFromFile({
       ...introspectionOptions,
       pathToFile: metadataFile,
       introspectionQueryResponse: introspectionResponse,
     })
-  }
-
-  if (introspectionResponse.errors) {
-    console.error(introspectionResponse.errors)
-    throw new Error('Problem with Introspection Query Response')
   }
 
   const augmentedIntrospectionResponse = augmentData({
@@ -104,6 +121,7 @@ export function buildSchemas(opts) {
   const graphQLSchema = graphQLSchemaFromIntrospectionResponse(
     augmentedIntrospectionResponse
   )
+
   return {
     introspectionResponse: augmentedIntrospectionResponse,
     graphQLSchema,
