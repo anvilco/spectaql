@@ -3,6 +3,8 @@ public
 node_modules
 scratch
 
+config-local.yml
+
 **/.DS_STORE
 **/.DS_Store
 ~*

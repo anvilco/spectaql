@@ -32,37 +32,12 @@ export function augmentData(args) {
 }
 
 export function createIntrospectionManipulator(args) {
-  const { introspectionResponse, introspectionOptions } = args
-
-  // Map our options to Microfiber options
   const {
-    hideFieldsOfUndocumentedType: removeFieldsWithMissingTypes,
-    hideArgsOfUndocumentedType: removeArgsWithMissingTypes,
-    hideInputFieldsOfUndocumentedType: removeInputFieldsWithMissingTypes,
-    hideUnionTypesOfUndocumentedType: removePossibleTypesOfMissingTypes,
-    // TODO: support this granularly in microfiber
-    hideQueriesWithUndocumentedReturnType: removeQueriesWithMissingTypes,
-    // TODO: support this granularly in microfiber
-    hideMutationsWithUndocumentedReturnType: removeMutationsWithMissingTypes,
-    // TODO: support this granularly in microfiber
-    hideSubscriptionsWithUndocumentedReturnType:
-      removeSubscriptionsWithMissingTypes,
-  } = introspectionOptions
+    introspectionResponse,
+    introspectionOptions: { microfiberOptions },
+  } = args
 
-  return new IntrospectionManipulator(introspectionResponse, {
-    // Get this from options?
-    removeUnusedTypes: false,
-    removeFieldsWithMissingTypes,
-    removeArgsWithMissingTypes,
-    removeInputFieldsWithMissingTypes,
-    removePossibleTypesOfMissingTypes,
-    // TODO: support this granularly in microfiber
-    removeQueriesWithMissingTypes,
-    // TODO: support this granularly in microfiber
-    removeMutationsWithMissingTypes,
-    // TODO: support this granularly in microfiber
-    removeSubscriptionsWithMissingTypes,
-  })
+  return new IntrospectionManipulator(introspectionResponse, microfiberOptions)
 }
 
 // TODO: Separate out the metadata copying into JSON Schema results into its own thing?

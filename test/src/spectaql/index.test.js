@@ -17,6 +17,7 @@ describe('index', function () {
     schemaFile: $.schemaFile,
     introspectionFile: $.introspectionFile,
     metadataFile: $.metadataFile,
+    spectaqlDirective: $.spectaqlDirective,
     removeTrailingPeriodFromDescriptions:
       $.removeTrailingPeriodFromDescriptions,
     queriesDocumentedDefault: true,
@@ -43,6 +44,9 @@ describe('index', function () {
   }))
 
   def('schemaFile', () => pathToSimpleSchema)
+  def('spectaqlDirective', () => ({
+    enable: true,
+  }))
 
   def('info', () => ({
     ['x-url']: $.url,

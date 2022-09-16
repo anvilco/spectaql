@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: CI Tests
+name: CI Lint And Test
 
 on:
   push:
@@ -10,10 +10,22 @@ on:
     # Leave out to test branches off of branches
     # branches: [ main ]
 
-
-
 jobs:
-  build:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: 'yarn'
+    - run: yarn install
+    - run: yarn lint:quiet
+
+  test:
+    name: Test
     runs-on: ubuntu-latest
     strategy:
       matrix:

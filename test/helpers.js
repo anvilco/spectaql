@@ -8,6 +8,12 @@ const pathToSimpleSchema = path.resolve(
   __dirname,
   './fixtures/simple-schema.gql'
 )
+
+const pathToSimpleSchemaWithDirectives = path.resolve(
+  __dirname,
+  './fixtures/schema-with-spectaql-directives.gql'
+)
+
 // For now, let's use the example schema as the complex one...I'm always adding things in there
 // anyways to make sure they work
 const pathToComplexSchema = path.resolve(
@@ -46,6 +52,7 @@ const generateIntrospectionQueryResult = ({ schemaType = 'simple' }) => {
 module.exports = {
   generateIntrospectionQueryResult,
   pathToSimpleSchema,
+  pathToSimpleSchemaWithDirectives,
   pathToSimpleSchemaSupplement,
   pathToComplexSchema,
   pathToNonStandardQueryMutationSchema,

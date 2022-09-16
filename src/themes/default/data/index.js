@@ -2,9 +2,15 @@ import get from 'lodash/get'
 import sortBy from 'lodash/sortBy'
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
 
-export default ({ introspectionResponse, graphQLSchema: _graphQLSchema }) => {
+export default ({
+  introspectionResponse,
+  graphQLSchema: _graphQLSchema,
+  allOptions: _allOptions,
+  introspectionOptions,
+}) => {
   const introspectionManipulator = new IntrospectionManipulator(
-    introspectionResponse
+    introspectionResponse,
+    introspectionOptions?.microfiberOptions
   )
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()

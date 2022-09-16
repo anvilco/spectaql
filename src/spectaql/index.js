@@ -10,6 +10,7 @@ function run(opts) {
   const { logo, favicon, specData: spec, themeDir } = opts
 
   const {
+    introspection: introspectionOptions,
     introspection: {
       url: introspectionUrl,
       queryNameStrategy,
@@ -69,6 +70,8 @@ function run(opts) {
   const items = arrangeData({
     introspectionResponse,
     graphQLSchema,
+    allOptions: spec,
+    introspectionOptions,
   })
 
   // Side-effects

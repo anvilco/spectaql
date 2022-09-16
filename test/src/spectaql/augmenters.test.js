@@ -5,6 +5,7 @@ const {
   graphQLSchemaFromIntrospectionResponse,
 } = require('dist/spectaql/graphql-loaders')
 
+const { introspectionOptionsToMicrofiberOptions } = require('dist')
 const { addMetadata } = require('dist/spectaql/metadata-loaders')
 
 const {
@@ -36,6 +37,10 @@ describe('augmenters', function () {
       requiredArrayOfNullables: [String]!
       nonRequiredArrayOfNonNullables: [String!]
       nonRequiredArrayOfNullables: [String]
+    }
+
+    type UnusedType {
+      id: String
     }
 
     "Some combined types"
@@ -85,6 +90,8 @@ describe('augmenters', function () {
   def('doMetadata', true)
   def('metadatasPath', 'metadata')
 
+  def('hideUnusedTypes', false)
+
   def('objectsDocumentedDefault', true)
   def('objectDocumentedDefault', true)
 
@@ -115,42 +122,49 @@ describe('augmenters', function () {
   def('mutationArgDocumentedDefault', true)
   def('hideMutationsWithUndocumentedReturnType', true)
 
-  def('introspectionOptionsBase', () => ({
-    metadata: $.doMetadata,
-    metadatasPath: $.metadatasPath,
+  def('introspectionOptionsBase', () => {
+    const base = {
+      metadata: $.doMetadata,
+      metadatasPath: $.metadatasPath,
 
-    objectsDocumentedDefault: $.objectsDocumentedDefault,
-    objectDocumentedDefault: $.objectDocumentedDefault,
+      hideUnusedTypes: $.hideUnusedTypes,
 
-    inputsDocumentedDefault: $.inputsDocumentedDefault,
-    inputDocumentedDefault: $.inputDocumentedDefault,
+      objectsDocumentedDefault: $.objectsDocumentedDefault,
+      objectDocumentedDefault: $.objectDocumentedDefault,
 
-    unionsDocumentedDefault: $.unionsDocumentedDefault,
-    unionDocumentedDefault: $.unionDocumentedDefault,
+      inputsDocumentedDefault: $.inputsDocumentedDefault,
+      inputDocumentedDefault: $.inputDocumentedDefault,
 
-    enumsDocumentedDefault: $.enumsDocumentedDefault,
-    enumDocumentedDefault: $.enumDocumentedDefault,
+      unionsDocumentedDefault: $.unionsDocumentedDefault,
+      unionDocumentedDefault: $.unionDocumentedDefault,
 
-    fieldDocumentedDefault: $.fieldDocumentedDefault,
-    hideFieldsOfUndocumentedType: $.hideFieldsOfUndocumentedType,
+      enumsDocumentedDefault: $.enumsDocumentedDefault,
+      enumDocumentedDefault: $.enumDocumentedDefault,
 
-    inputFieldDocumentedDefault: $.inputFieldDocumentedDefault,
-    hideInputFieldsOfUndocumentedType: $.hideInputFieldsOfUndocumentedType,
+      fieldDocumentedDefault: $.fieldDocumentedDefault,
+      hideFieldsOfUndocumentedType: $.hideFieldsOfUndocumentedType,
 
-    argDocumentedDefault: $.argDocumentedDefault,
+      inputFieldDocumentedDefault: $.inputFieldDocumentedDefault,
+      hideInputFieldsOfUndocumentedType: $.hideInputFieldsOfUndocumentedType,
 
-    queriesDocumentedDefault: $.queriesDocumentedDefault,
-    queryDocumentedDefault: $.queryDocumentedDefault,
-    queryArgDocumentedDefault: $.queryArgDocumentedDefault,
-    hideQueriesWithUndocumentedReturnType:
-      $.hideQueriesWithUndocumentedReturnType,
+      argDocumentedDefault: $.argDocumentedDefault,
 
-    mutationsDocumentedDefault: $.mutationsDocumentedDefault,
-    mutationDocumentedDefault: $.mutationDocumentedDefault,
-    mutationArgDocumentedDefault: $.mutationArgDocumentedDefault,
-    hideMutationsWithUndocumentedReturnType:
-      $.hideMutationsWithUndocumentedReturnType,
-  }))
+      queriesDocumentedDefault: $.queriesDocumentedDefault,
+      queryDocumentedDefault: $.queryDocumentedDefault,
+      queryArgDocumentedDefault: $.queryArgDocumentedDefault,
+      hideQueriesWithUndocumentedReturnType:
+        $.hideQueriesWithUndocumentedReturnType,
+
+      mutationsDocumentedDefault: $.mutationsDocumentedDefault,
+      mutationDocumentedDefault: $.mutationDocumentedDefault,
+      mutationArgDocumentedDefault: $.mutationArgDocumentedDefault,
+      hideMutationsWithUndocumentedReturnType:
+        $.hideMutationsWithUndocumentedReturnType,
+    }
+
+    base.microfiberOptions = introspectionOptionsToMicrofiberOptions(base)
+    return base
+  })
   def('introspectionOptions', () => $.introspectionOptionsBase)
 
   def('rawIntrospectionResponse', () =>
@@ -166,14 +180,6 @@ describe('augmenters', function () {
       metadatasWritePath: $.metadatasPath,
     })
   )
-
-  def('introspectionManipulatorOptions', () => ({
-    removeUnusedTypes: false,
-    // removeFieldsWithMissingTypes: false,
-    // removeArgsWithMissingTypes: false,
-    // removeInputFieldsWithMissingTypes: false,
-    // removePossibleTypesOfMissingTypes: false,
-  }))
 
   def('graphQLSchema', () =>
     graphQLSchemaFromIntrospectionResponse($.introspectionResponse)
@@ -218,7 +224,42 @@ describe('augmenters', function () {
             argName: 'myArg',
           })
         ).to.be.ok
+
+        expect($.introspectionManipulator.getType({ name: 'OtherType' })).to.be
+          .ok
+        // This thing is not used, but we told it not to remove things that are not used
+        expect($.introspectionManipulator.getType({ name: 'UnusedType' })).to.be
+          .ok
       })
+
+      context('hideUnusedTypes is true', function () {
+        def('hideUnusedTypes', () => true)
+
+        it('shows some things but hides some unused things', function () {
+          expect(
+            $.introspectionManipulator.getType({ name: 'MyType' })
+          ).to.be.ok
+          expect(
+            $.introspectionManipulator.getField({
+              typeName: 'MyType',
+              fieldName: 'myField',
+            })
+          ).to.be.ok
+          expect(
+            $.introspectionManipulator.getArg({
+              typeName: 'MyType',
+              fieldName: 'myField',
+              argName: 'myArg',
+            })
+          ).to.be.ok
+
+          // This thing is not used, but we told it not to remove things that are not used
+          expect(
+            $.introspectionManipulator.getType({ name: 'UnusedType' })
+          ).to.not.be.ok
+        })
+      })
+
       context(
         'objectsDocumentedDefault and unionsDocumentedDefault and inputsDocumentedDefault is false',
         function () {

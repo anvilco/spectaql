@@ -6,6 +6,9 @@ const {
   loadData,
   buildSchemas,
   augmentData,
+  generateSpectaqlSdl,
+  generateDirectiveSdl,
+  generateOptionsSdl,
 } = require('./dist')
 
 module.exports = run
@@ -15,3 +18,6 @@ module.exports.resolveOptions = resolveOptions
 module.exports.loadData = loadData
 module.exports.buildSchemas = buildSchemas
 module.exports.augmentData = augmentData
+module.exports.generateSpectaqlSdl = generateSpectaqlSdl
+module.exports.generateDirectiveSdl = generateDirectiveSdl
+module.exports.generateOptionsSdl = generateOptionsSdl

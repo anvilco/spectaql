@@ -24,7 +24,8 @@ type SimpleTypeOne implements Node {
 }
 
 type SimpleTypeTwo {
-  simpleTypeTwoField: String
+  simpleTypeTwoFieldOne: String @spectaql(options: [{ key: "examples", value: "[\"42\", \"24\"]" }])
+  simpleTypeTwoFieldTwo: String @spectaql(options: [{ key: "example", value: "SomeIdValue" }])
 }
 
 "A Union of `SimpleTypeOne` and `SimpleTypeTwo`. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
@@ -37,11 +38,14 @@ union SimpleTypes =
 "A simple Interface"
 interface MyInterface {
   id: String!
+  name: String!
 }
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) and [`myQuery`]({{Queries.myQuery}}) and [`myMutation`]({{Mutations.myMutation}}) are supported"
 type MyType implements MyInterface {
-  id: String!,
+  "I am an ID that will have my example value specified by the `@spectaql` directive"
+  id: String! @spectaql(options: [{key: "example", value: "\"idFromDirective\"" }]),
+  name: String!
   url: URL,
   json: JSON,
   jso: JSONObject,
@@ -64,6 +68,9 @@ type MyType implements MyInterface {
   requiredArrayField: [String]!
 
   doubleRequiredArrayField: [String!]!
+
+  "This field will not show up thanks to the @spectaql directive options"
+  fieldThatWillNotShowUp: String! @spectaql(options: [{key: "undocumented", value: "true" }])
 }
 
 "This is a type that should probably be undocumented. Metadata will indicate this should be hidden"
@@ -189,4 +196,8 @@ input AddressInput {
   lat: String
   lon: String
   planet: String
+}
+
+type MyUnusedType {
+  id: String
 }
