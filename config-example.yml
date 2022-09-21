@@ -50,6 +50,7 @@ spectaql:
   # Default: false
   displayAllServers: false
 
+  resolveWithOutput: true
 
 introspection:
   ##############################################

@@ -46,6 +46,10 @@ export function readTextFile(pth, options = {}) {
   return fs.readFileSync(pth, optionsForReadFileSync)
 }
 
+export function writeTextFile(pth, text, _options = {}) {
+  return fs.writeFileSync(pth, text)
+}
+
 export function fileToObject(pathToFile, options = {}) {
   let { normalizePath = true, ...otherOptions } = options
   if (normalizePath) {

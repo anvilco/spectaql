@@ -1,4 +1,3 @@
-import fs from 'fs'
 import path from 'path'
 import _ from 'lodash'
 import tmp from 'tmp'
@@ -10,6 +9,8 @@ import {
   normalizePathFromRoot,
   normalizePathFromCwd,
   pathToRoot,
+  readTextFile,
+  writeTextFile,
 } from './spectaql/utils'
 
 export {
@@ -68,6 +69,7 @@ const defaults = Object.freeze({
 const spectaqlOptionDefaults = Object.freeze({
   errorOnInterpolationReferenceNotFound: true,
   displayAllServers: false,
+  resolveWithOutput: true,
 })
 
 const spectaqlDirectiveDefault = Object.freeze({
@@ -329,8 +331,8 @@ export const run = function (cliOptions = {}) {
     grunt.log.ok = function () {}
   }
 
-  var cwd = process.cwd() // change CWD for loadNpmTasks global install
-  var exists = grunt.file.exists(
+  const cwd = process.cwd() // change CWD for loadNpmTasks global install
+  const exists = grunt.file.exists(
     path.join(
       path.resolve('node_modules'),
       'grunt-contrib-concat',
@@ -353,16 +355,18 @@ export const run = function (cliOptions = {}) {
 
   process.chdir(cwd)
 
+  const pathToHtmlFile = opts.cacheDir + '/' + opts.targetFile
+
   grunt.registerTask(
     'predentation',
     'Remove indentation from generated <pre> tags.',
     function () {
-      var html = fs.readFileSync(opts.cacheDir + '/' + opts.targetFile, 'utf8')
+      let html = readTextFile(pathToHtmlFile)
       html = html.replace(
         /<pre.*?><code.*?>([\s\S]*?)<\/code><\/pre>/gim,
         function (x, _y) {
-          var lines = x.split('\n'),
-            level = null
+          const lines = x.split('\n')
+          let level = null
           if (lines) {
             // Determine the level of indentation
             lines.forEach(function (line) {
@@ -375,7 +379,7 @@ export const run = function (cliOptions = {}) {
             })
 
             // Remove indentation
-            var regex = new RegExp('^\\s{' + level + '}')
+            const regex = new RegExp('^\\s{' + level + '}')
             lines.forEach(function (line, index, lines) {
               lines[index] = line.replace(regex, '')
             })
@@ -383,7 +387,7 @@ export const run = function (cliOptions = {}) {
           return lines.join('\n')
         }
       )
-      fs.writeFileSync(opts.cacheDir + '/' + opts.targetFile, html)
+      writeTextFile(pathToHtmlFile, html)
     }
   )
 
@@ -442,7 +446,7 @@ export const run = function (cliOptions = {}) {
   })
 
   // Report, etc when all tasks have completed.
-  var donePromise = new Promise(function (resolve, reject) {
+  const donePromise = new Promise(function (resolve, reject) {
     grunt.task.options({
       error: function (e) {
         if (!opts.quiet) {
@@ -455,7 +459,17 @@ export const run = function (cliOptions = {}) {
         if (!opts.quiet) {
           console.log('All tasks complete')
         }
-        resolve()
+
+        let result
+        if (opts.resolveWithOutput) {
+          result = {
+            html: readTextFile(pathToHtmlFile),
+            // eventually?
+            // css: '',
+            // js: '',
+          }
+        }
+        resolve(result)
       },
     })
   })
