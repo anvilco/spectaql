@@ -135,9 +135,10 @@ In addition to using SpectaQL as a global (or local) binary executable, it can a
 import { run } from 'spectaql'
 ...
 const spectaqlOtions = {
-   specFile: 'path/to/your/config.yml'
+   specFile: 'path/to/your/config.yml',
+   resolveWithOutput: true,
 }
-const result = await run(spectaqlOptions)
+const { html } = await run(spectaqlOptions)
 ...
 ```
 
