@@ -50,6 +50,10 @@ spectaql:
   # Default: false
   displayAllServers: false
 
+  # Would you like the "run" function to resolve with an object containing the output as a string?
+  # Useful if you are using SpectaQL as a dependency (as opposed to running the binary executable)
+  #
+  # Default: true
   resolveWithOutput: true
 
 introspection:
