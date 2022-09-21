@@ -67,15 +67,6 @@ introspection:
   # 1 and only 1 of the following options must be provided:
   #
 
-  # URL of the GraphQL endpoint to hit if you want to generate the documentation based on live Introspection Query results
-  # NOTE: If not using introspection.url OR servers[], you need to provide x-url below
-  url: https://yoursite.com/graphql
-
-  # If using the "url" option above, any headers (such as Authorization) can be added here. This
-  # can also be added via the CLI options
-  headers:
-    Authorization: Bearer s3cretT0k2n
-
   # File containing a GraphQL Schema Definition written in SDL.
   # Can also pass an array of paths (or glob supported by @graphql-tools/load-files)
   # like so:
@@ -84,6 +75,21 @@ introspection:
   #   - path/to/schema/part2.gql
   schemaFile: path/to/schema.gql
 
+  # File containing Introspection Query response in JS module export, or JSON format
+  introspectionFile: path/to/introspection.js[on]
+
+  # URL of the GraphQL endpoint to hit if you want to generate the documentation based on live Introspection Query results
+  # NOTE: If not using introspection.url OR servers[], you need to provide x-url below
+  url: https://yoursite.com/graphql
+
+  #
+  #
+  ##############################################
+
+  # If using the "url" option above, any headers (such as Authorization) can be added here. This
+  # can also be added via the CLI options
+  headers:
+    Authorization: Bearer s3cretT0k2n
 
   # Some helpful options for those who are an "SDL-first" shop and/or want to get your metadata into
   # SpectaQL during the SDL ingestion.
@@ -107,9 +113,6 @@ introspection:
     #
     # Default: 'SpectaQLOption'
     optionsTypeName: 'SpectaQLOption'
-
-  # File containing Introspection Query response in JS module export, or JSON format
-  introspectionFile: path/to/introspection.js[on]
 
   #
   #
