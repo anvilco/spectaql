@@ -127,6 +127,21 @@ You can also see a minimal-ish working example YAML in the [examples/config.yml]
 
 Several options are supported via the CLI. Some are exclusive to the CLI, while others are also possible to specify in the YAML config. Options specified in the CLI take precedence over those that exist in the YAML config. All the supported options and their descriptions can be found in [/src/cli.js][cli].
 
+## Using SpectaQL as a Dependency
+
+In addition to using SpectaQL as a global (or local) binary executable, it can also be used by your Node application as a dependency. More documentation will be coming soon but here is a quick example to get you started:
+
+```node
+import { run } from 'spectaql'
+...
+const spectaqlOtions = {
+   specFile: 'path/to/your/config.yml',
+   resolveWithOutput: true,
+}
+const { html } = await run(spectaqlOptions)
+...
+```
+
 ## Metadata
 
 In our experience, nearly all of the stuff we need for the content of the documentation comes from things supported in GraphQL and introspection queries...but not everything. To supplement some things that are missing, SpectaQL provides support for including "metadata" about your schema that can be used when generating the output. The following options are currently supported:
