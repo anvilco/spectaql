@@ -1,3 +1,7 @@
+### 1.5.4
+- Dependency updates
+- Option to have `run` resolve with an object containing the outputs. https://github.com/anvilco/spectaql/pull/497
+
 ### 1.5.3
 - Dependency updates
 - Better support for parsing `@spectaql` directive options. https://github.com/anvilco/spectaql/pull/462 Thanks @kylebjordahl

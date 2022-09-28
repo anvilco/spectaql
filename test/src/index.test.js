@@ -16,6 +16,12 @@ describe('index', function () {
 
       expect(options.oneFile).to.be.false
 
+      expect(options).to.include({
+        targetFile: 'index.html',
+        oneFile: false,
+        resolveWithOutput: true,
+      })
+
       expect(options.specData.introspection).to.include({
         removeTrailingPeriodFromDescriptions: false,
 
@@ -65,6 +71,7 @@ describe('index', function () {
         spectaql: {
           oneFile: true,
           themeDir: './my-custom-theme',
+          resolveWithOutput: false,
         },
         introspection: {
           url: 'http://mysite.com/graphql',
@@ -83,6 +90,7 @@ describe('index', function () {
 
         expect(options.oneFile).to.be.true
         expect(options.themeDir.endsWith('my-custom-theme')).to.be.true
+        expect(options.resolveWithOutput).to.be.false
         // Not a path
         expect(options.specData.introspection.url).to.eql(
           'http://mysite.com/graphql'
