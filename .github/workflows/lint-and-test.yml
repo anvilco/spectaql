@@ -11,9 +11,23 @@ on:
     # branches: [ main ]
 
 jobs:
+
+  prepare-node:
+    name: Prepare Node
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: 'yarn'
+    - run: yarn install
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    needs: prepare-node
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 16.x
@@ -24,9 +38,46 @@ jobs:
     - run: yarn install
     - run: yarn lint:quiet
 
-  test:
-    name: Test
+  unit-test:
+    name: Unit Test
     runs-on: ubuntu-latest
+    needs: prepare-node
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: 'yarn'
+    - run: yarn install
+    - run: yarn test
+
+  build-package:
+    name: Build Package
+    runs-on: ubuntu-latest
+    needs: prepare-node
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache Package Build
+      id: cache-package-build
+      uses: actions/cache@v3
+      with:
+        # We'll cache this file
+        path: test/build/spectaql.tgz
+        #key: ${{ runner.os }}-primes
+        key: ${{ runner.os }}-node-v${{ steps.define-variables.outputs.node_version }}-${{ hashFiles('**/package.json') }}
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+        cache: 'yarn'
+    - run: yarn install
+    - run: yarn pack --filename test/build/spectaql.tgz
+
+  test-package:
+    name: Test Package
+    runs-on: ubuntu-latest
+    needs: build-package
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -38,5 +89,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+    - run: cd test/build
     - run: yarn install
     - run: yarn test
