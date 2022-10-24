@@ -11,7 +11,7 @@ on:
     # branches: [ main ]
 
 env:
-  NODE_VERSION: 16
+  NODE_VERSION_MAJOR: 16
 
 jobs:
 
@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}.x
+    - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ env.NODE_VERSION }}.x
+        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
         cache: 'yarn'
     - run: yarn install
 
@@ -33,10 +33,10 @@ jobs:
     needs: prepare-node
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}.x
+    - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ env.NODE_VERSION }}.x
+        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
         cache: 'yarn'
     - run: yarn install
     - run: yarn lint:quiet
@@ -47,10 +47,10 @@ jobs:
     needs: prepare-node
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}.x
+    - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ env.NODE_VERSION }}.x
+        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
         cache: 'yarn'
     - run: yarn install
     - run: yarn test
@@ -68,11 +68,11 @@ jobs:
         # We'll cache this file
         path: test/build/spectaql.tgz
         #key: ${{ runner.os }}-primes
-        key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-${{ hashFiles('**/package.json') }}
-    - name: Use Node.js ${{ env.NODE_VERSION }}.x
+        key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ hashFiles('**/package.json') }}
+    - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ env.NODE_VERSION }}.x
+        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
         cache: 'yarn'
     - run: yarn install
     - run: yarn pack --filename test/build/spectaql.tgz
@@ -94,7 +94,7 @@ jobs:
         # We'll cache this file
         path: test/build/spectaql.tgz
         #key: ${{ runner.os }}-primes
-        key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-${{ hashFiles('**/package.json') }}
+        key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ hashFiles('**/package.json') }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
