@@ -10,6 +10,9 @@ on:
     # Leave out to test branches off of branches
     # branches: [ main ]
 
+env:
+  NODE_VERSION: 16
+
 jobs:
 
   prepare-node:
@@ -17,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js 16.x
+    - name: Use Node.js ${{ NODE_VERSION }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: 16.x
+        node-version: ${{ NODE_VERSION }}.x
         cache: 'yarn'
     - run: yarn install
 
@@ -30,10 +33,10 @@ jobs:
     needs: prepare-node
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js 16.x
+    - name: Use Node.js ${{ NODE_VERSION }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: 16.x
+        node-version: ${{ NODE_VERSION }}.x
         cache: 'yarn'
     - run: yarn install
     - run: yarn lint:quiet
@@ -44,10 +47,10 @@ jobs:
     needs: prepare-node
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js 16.x
+    - name: Use Node.js ${{ NODE_VERSION }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: 16.x
+        node-version: ${{ NODE_VERSION }}.x
         cache: 'yarn'
     - run: yarn install
     - run: yarn test
@@ -65,11 +68,11 @@ jobs:
         # We'll cache this file
         path: test/build/spectaql.tgz
         #key: ${{ runner.os }}-primes
-        key: ${{ runner.os }}-node-v${{ steps.define-variables.outputs.node_version }}-${{ hashFiles('**/package.json') }}
-    - name: Use Node.js 16.x
+        key: ${{ runner.os }}-node-v${{ NODE_VERSION }}-${{ hashFiles('**/package.json') }}
+    - name: Use Node.js ${{ NODE_VERSION }}.x
       uses: actions/setup-node@v2
       with:
-        node-version: 16.x
+        node-version: ${{ NODE_VERSION }}.x
         cache: 'yarn'
     - run: yarn install
     - run: yarn pack --filename test/build/spectaql.tgz
@@ -89,6 +92,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
-    - run: cd test/build
-    - run: yarn install
-    - run: yarn test
+    - run: yarn --cwd test/build install
+    - run: yarn --cwd test/build test
