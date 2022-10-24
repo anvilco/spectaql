@@ -87,6 +87,14 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
     - uses: actions/checkout@v2
+    - name: Cache Package Build
+      id: cache-package-build
+      uses: actions/cache@v3
+      with:
+        # We'll cache this file
+        path: test/build/spectaql.tgz
+        #key: ${{ runner.os }}-primes
+        key: ${{ runner.os }}-node-v${{ env.NODE_VERSION }}-${{ hashFiles('**/package.json') }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
