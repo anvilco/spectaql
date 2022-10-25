@@ -35,16 +35,30 @@ export default ({
           items: [
             hasQueries
               ? {
-                  name: 'Queries',
+                  name: 'Queries Outside',
                   makeNavSection: true,
                   makeContentSection: true,
-                  items: sortBy(
-                    queryType.fields.map((query) => ({
-                      ...query,
-                      isQuery: true,
-                    })),
-                    'name'
-                  ),
+                  items: [
+                    {
+                      name: 'Queries Middle',
+                      makeNavSection: true,
+                      makeContentSection: true,
+                      items: [
+                        {
+                          name: 'Queries Inside',
+                          makeNavSection: true,
+                          makeContentSection: true,
+                          items: sortBy(
+                            queryType.fields.map((query) => ({
+                              ...query,
+                              isQuery: true,
+                            })),
+                            'name'
+                          ),
+                        },
+                      ],
+                    },
+                  ],
                 }
               : null,
             hasMutations
