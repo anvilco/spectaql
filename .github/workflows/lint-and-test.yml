@@ -39,7 +39,7 @@ jobs:
         node-version: ${{ env.NODE_VERSION_MAJOR }}
         cache: 'yarn'
 
-    # - run: yarn install
+    - run: yarn install
     - run: yarn lint:quiet
 
   build-package:
@@ -64,7 +64,7 @@ jobs:
         node-version: ${{ env.NODE_VERSION_MAJOR }}
         cache: 'yarn'
 
-    # - run: yarn install
+    - run: yarn install
     - run: yarn pack --filename test/build/spectaql.tgz
 
   unit-test-and-package-test:
