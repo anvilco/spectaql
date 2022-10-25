@@ -47,7 +47,6 @@ export function generateQuery({
   graphQLSchema,
   extensions,
   queryNameStrategy,
-  queryNameStategy,
   allOptions,
 }) {
   let fieldExpansionDepth =
@@ -76,7 +75,7 @@ export function generateQuery({
 
   const cleanedQuery = queryResult.query.replace(/ : [\w![\]]+/g, '')
 
-  let consolidatedQueryNameStrategy = queryNameStrategy || queryNameStategy
+  let consolidatedQueryNameStrategy = queryNameStrategy
   let queryName = field.name
   if (
     !consolidatedQueryNameStrategy ||
