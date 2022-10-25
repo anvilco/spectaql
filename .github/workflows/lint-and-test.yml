@@ -1,14 +1,9 @@
-# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: CI Lint And Test
 
 on:
   push:
     branches: [ main ]
   pull_request:
-    # Leave out to test branches off of branches
-    # branches: [ main ]
 
 env:
   NODE_VERSION_MAJOR: 16
@@ -19,12 +14,14 @@ jobs:
   prepare-node:
     name: Prepare Node
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
     - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
+        node-version: ${{ env.NODE_VERSION_MAJOR }}
         cache: 'yarn'
     - run: yarn install
 
@@ -32,36 +29,27 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     needs: prepare-node
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
     - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
+        node-version: ${{ env.NODE_VERSION_MAJOR }}
         cache: 'yarn'
+
     - run: yarn install
     - run: yarn lint:quiet
-
-  unit-test:
-    name: Unit Test
-    runs-on: ubuntu-latest
-    needs: prepare-node
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
-        cache: 'yarn'
-    - run: yarn install
-    - run: yarn test
 
   build-package:
     name: Build Package
     runs-on: ubuntu-latest
     needs: prepare-node
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
     - name: Cache Package Build
       id: cache-package-build
       uses: actions/cache@v3
@@ -69,36 +57,42 @@ jobs:
         # We'll cache this file
         path: test/build/spectaql.tgz
         key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ env.GITHUB_SHA }}
+
     - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: ${{ env.NODE_VERSION_MAJOR }}.x
+        node-version: ${{ env.NODE_VERSION_MAJOR }}
         cache: 'yarn'
+
     - run: yarn install
     - run: yarn pack --filename test/build/spectaql.tgz
 
-  test-package:
-    name: Test Package
+  unit-test-and-package-test:
+    name: Unit Test & Package Test
     runs-on: ubuntu-latest
     needs: build-package
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x, 18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [14, 16, 18]
+
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
     - name: Cache Package Build
       id: cache-package-build
       uses: actions/cache@v3
       with:
-        # We'll cache this file
+        # This is the file to cache / restore
         path: test/build/spectaql.tgz
-        #key: ${{ runner.os }}-primes
         key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ env.GITHUB_SHA }}
+
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
+
     - run: yarn --cwd test/build install
     - run: yarn --cwd test/build test
+    - run: yarn install
+    - run: yarn test
