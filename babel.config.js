@@ -15,7 +15,7 @@ module.exports = {
         // modules: 'commonjs',
         targets: {
           // Keep this roughly in-line with our "engines.node" value in package.json
-          node: '12',
+          node: '14',
         },
       },
     ],
