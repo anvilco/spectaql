@@ -1,0 +1,14 @@
+{
+  "name": "build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn node alive.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "spectaql": "file:spectaql.tgz"
+  }
+}
