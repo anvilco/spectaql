@@ -2835,9 +2835,9 @@ grapheme-splitter@^1.0.4:
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
 graphql-scalars@^1.15.0:
-  version "1.18.0"
-  resolved "https://registry.yarnpkg.com/graphql-scalars/-/graphql-scalars-1.18.0.tgz#096fd953f24087c4cf617ee08539daab32e7b062"
-  integrity sha512-XrMwSim4xJ5n1UdT3YMJh9uT3oB/th5jR5bIMJvYxmgq/rGDkfXNtCRSL/+dLMHxGM0thYPfIZDua1+aQlKBMA==
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/graphql-scalars/-/graphql-scalars-1.20.0.tgz#c5481de8277d5f4ca01252a8adcba52778aba6f5"
+  integrity sha512-1KV9Uyr64bbBlmtNzn/vp5mp1+Cob8jG7AKF7RLsKq50ocV6yNhW3+pVvh5jJs1np5Wh+Wg9bDapwQ7q2saS6A==
   dependencies:
     tslib "~2.4.0"
 
