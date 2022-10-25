@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
       uses: actions/setup-node@v3
@@ -31,7 +31,7 @@ jobs:
     needs: prepare-node
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
       uses: actions/setup-node@v3
@@ -48,7 +48,7 @@ jobs:
     needs: prepare-node
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Cache Package Build
       id: cache-package-build
@@ -76,7 +76,7 @@ jobs:
         node-version: [14, 16, 18]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Cache Package Build
       id: cache-package-build
@@ -94,4 +94,5 @@ jobs:
 
     - run: yarn --cwd test/build install
     - run: yarn --cwd test/build test
+    - run: yarn install
     - run: yarn test
