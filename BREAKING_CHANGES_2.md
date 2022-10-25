@@ -1,0 +1,4 @@
+- Drops support for Node 12
+- `headers` CLI option is now `-H` instead of `-A`
+- Dropped support for accidental `queryNameStategy` option. 🤦
+- 

@@ -155,13 +155,8 @@ export default function () {
       'specify a custom Grunt configuration file (default: dist/lib/gruntConfig.js)',
       String
     )
-    // TODO: remove this option in favor of --headers as part of a breaking change
     .option(
-      '-H, --header <header>',
-      'specify a custom auth token for the header (default: none)'
-    )
-    .option(
-      '-A, --headers <headers>',
+      '-H, --headers <headers>',
       'specify arbitrary headers for the Introspection Query as a JSON string (default: none)',
       String
     )

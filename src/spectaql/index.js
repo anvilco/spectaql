@@ -11,13 +11,7 @@ function run(opts) {
 
   const {
     introspection: introspectionOptions,
-    introspection: {
-      url: introspectionUrl,
-      queryNameStrategy,
-      // Ugh. Typo but gotta leave it now.
-      // TODO: remove in next Major / breaking release
-      queryNameStategy,
-    },
+    introspection: { url: introspectionUrl, queryNameStrategy },
     extensions = {},
     servers = [],
     info = {},
@@ -81,7 +75,6 @@ function run(opts) {
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions: opts,
   })
 
