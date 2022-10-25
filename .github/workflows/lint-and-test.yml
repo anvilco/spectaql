@@ -94,7 +94,7 @@ jobs:
         # We'll cache this file
         path: test/build/spectaql.tgz
         #key: ${{ runner.os }}-primes
-        key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ hashFiles('**/package.json') }}
+        key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ env.GITHUB_SHA }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
