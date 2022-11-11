@@ -1,5 +1,6 @@
 ### 1.5.7
 - Default a few deconstructed object params to be an empty object. https://github.com/anvilco/spectaql/pull/553
+- Fix bug where config and SDL files were not being properly watched in some cases. https://github.com/anvilco/spectaql/pull/554
 
 ### 1.5.6
 - Re-publish after some reverts
