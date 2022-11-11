@@ -18,10 +18,6 @@ module.exports = function (grunt, options, spec) {
   // And the spec file
   schemaFiles.push(options.specFile)
 
-  console.log({
-    loadExternalFont: options.loadExternalFont,
-  })
-
   return {
     // Compile SCSS source files into the cache directory
     sass: {
