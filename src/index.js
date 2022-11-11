@@ -423,14 +423,6 @@ export const run = function (cliOptions = {}) {
 
   const defaultTasks = []
 
-  // grunt.registerTask('default', [
-  //   'clean-things',
-  //   'copy-theme-stuff',
-  //   'stylesheets',
-  //   'javascripts',
-  //   'templates',
-  // ])
-
   grunt.registerTask('server', ['connect'])
 
   grunt.registerTask('develop', ['server', 'watch'])

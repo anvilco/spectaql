@@ -4,8 +4,14 @@ import sass from 'sass'
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
   // Watch them schema file(s)
-  let schemaFiles = options.specData.introspection.schemaFile || []
-  if (!Array.isArray(schemaFiles)) {
+  let schemaFiles = options.specData.introspection.schemaFile
+  if (!schemaFiles) {
+    schemaFiles = []
+  } else if (Array.isArray(schemaFiles)) {
+    // Copy the Array so that the addition of the specFile does not get passed to
+    // the graphql schema merger
+    schemaFiles = [...schemaFiles]
+  } else {
     schemaFiles = [schemaFiles]
   }
 
