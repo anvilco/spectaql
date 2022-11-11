@@ -47,6 +47,12 @@ module.exports = function (grunt, options, spec) {
               ? sass.SassNumber(options.scrollPaddingTopPx, 'px')
               : sass.sassFalse
           },
+          // BREAKING CHANGE: maybe make this false by default? Or remove that font alltogether?
+          'shouldLoadExternalFont()': () => {
+            return options.loadExternalFont === false
+              ? sass.sassFalse
+              : sass.sassTrue
+          },
         },
       },
       main: {

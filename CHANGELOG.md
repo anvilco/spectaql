@@ -1,3 +1,6 @@
+### 1.5.8
+- Add option to disable 3rd party font request in some built-in themes via the `loadExternalFont` option. https://github.com/anvilco/spectaql/pull/556
+
 ### 1.5.7
 - Default a few deconstructed object params to be an empty object. https://github.com/anvilco/spectaql/pull/553
 - Fix bug where config and SDL files were not being properly watched in some cases. https://github.com/anvilco/spectaql/pull/554
