@@ -1,3 +1,6 @@
+### 1.5.7
+- Default a few deconstructed object params to be an empty object. https://github.com/anvilco/spectaql/pull/553
+
 ### 1.5.6
 - Re-publish after some reverts
 
