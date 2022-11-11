@@ -3,6 +3,15 @@ import sass from 'sass'
 
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spec) {
+  // Watch them schema file(s)
+  let schemaFiles = options.specData.introspection.schemaFile || []
+  if (!Array.isArray(schemaFiles)) {
+    schemaFiles = [schemaFiles]
+  }
+
+  // And the spec file
+  schemaFiles.push(options.specFile)
+
   return {
     // Compile SCSS source files into the cache directory
     sass: {
@@ -218,12 +227,15 @@ module.exports = function (grunt, options, spec) {
       },
       templates: {
         files: [
-          options.specFile,
           options.themeDir + '/views/**/*.hbs',
           options.themeDir + '/helpers/**/*.js',
           options.themeDir + '/lib/**/*.js',
         ],
         tasks: ['templates'],
+      },
+      inputs: {
+        files: schemaFiles,
+        tasks: ['default'],
       },
     },
   }
