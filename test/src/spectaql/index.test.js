@@ -121,11 +121,6 @@ describe('index', function () {
       expect(result.items[0].items[0]).to.include({
         name: 'Queries',
       })
-      console.log({
-        yo: result.items[0].items[0].items.find(
-          (item) => item.name === 'myQuery'
-        ),
-      })
       expect(
         result.items[0].items[0].items.find((item) => item.name === 'myQuery')
       ).to.be.ok
