@@ -18,6 +18,10 @@ module.exports = function (grunt, options, spec) {
   // And the spec file
   schemaFiles.push(options.specFile)
 
+  console.log({
+    loadExternalFont: options.loadExternalFont,
+  })
+
   return {
     // Compile SCSS source files into the cache directory
     sass: {
@@ -46,6 +50,12 @@ module.exports = function (grunt, options, spec) {
             return options.scrollPaddingTopPx
               ? sass.SassNumber(options.scrollPaddingTopPx, 'px')
               : sass.sassFalse
+          },
+          // BREAKING CHANGE: maybe make this false by default? Or remove that font alltogether?
+          'shouldLoadExternalFont()': () => {
+            return options.loadExternalFont === false
+              ? sass.sassFalse
+              : sass.sassTrue
           },
         },
       },
