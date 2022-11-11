@@ -6,7 +6,7 @@ import arrangeDataDefaultFn from '../themes/default/data'
 import { fileExists } from './utils'
 import preProcessData from './pre-process'
 
-function run(opts) {
+async function run(opts) {
   const { logo, favicon, specData: spec, themeDir } = opts
 
   const {
@@ -49,13 +49,15 @@ function run(opts) {
   const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
   // Figure out what data arranger to use...the default one, or the one from the theme
-  const customDataArrangerExists = ['data/index.js', 'data.js'].some(
+  const customDataArrangerSuffixThatExists = ['data/index.js', 'data.js'].find(
     (pathSuffix) => {
       return fileExists(path.normalize(`${themeDir}/${pathSuffix}`))
     }
   )
-  const arrangeDataModule = customDataArrangerExists
-    ? require(path.normalize(`${themeDir}/data`))
+  const arrangeDataModule = customDataArrangerSuffixThatExists
+    ? await import(
+        path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
+      )
     : arrangeDataDefaultFn
   const arrangeData = arrangeDataModule.default
     ? arrangeDataModule.default

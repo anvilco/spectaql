@@ -17,6 +17,9 @@ module.exports = {
           // Keep this roughly in-line with our "engines.node" value in package.json
           node: '14',
         },
+        exclude: [
+          'proposal-dynamic-import',
+        ],
       },
     ],
   ],
