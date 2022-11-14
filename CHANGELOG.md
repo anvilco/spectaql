@@ -1,3 +1,6 @@
+### 1.5.9
+- Updated dependencies.
+
 ### 1.5.8
 - Add option to disable 3rd party font request in some built-in themes via the `loadExternalFont` option. https://github.com/anvilco/spectaql/pull/556
 
