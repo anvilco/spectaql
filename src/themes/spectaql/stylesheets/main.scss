@@ -81,11 +81,6 @@ $background-sidebar: $background-subtle;
 @import 'syntax-highlighting';
 
 // Custom font
-// BREAKING CHANGE: maybe remove this and just use the system font?
-@if shouldLoadExternalFont() != false {
-  @import url('https://fonts.googleapis.com/css?family=Barlow:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-}
-
 
 // Custom styles
 //////////////////////

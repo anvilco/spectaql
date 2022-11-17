@@ -38,12 +38,6 @@ spectaql:
   # Default: None; No "scroll-padding-top" style will be applied.
   scrollPaddingTopPx: 0
 
-  # Some of SpectaQL's built-in themes will request a 3rd party font in the CSS. You can disable that
-  # behavior here by setting this value to false.
-  #
-  # Default: true
-  loadExternalFont: true
-
   # If an interpolated reference is not found, should SpectaQL throw an error? Otherwise a warning
   # will be logged.
   #
