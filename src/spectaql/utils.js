@@ -167,3 +167,14 @@ export function upperCase(string) {
 export function lowerCase(string) {
   return string.toLowerCase()
 }
+
+export function isUndef(thing) {
+  return typeof thing === 'undefined'
+}
+
+export function firstNonUndef(array) {
+  if (!Array.isArray(array)) {
+    return
+  }
+  return array.find((item) => !isUndef(item))
+}

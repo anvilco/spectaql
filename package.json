@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "1.5.6",
+  "version": "1.5.9",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -75,7 +75,7 @@
     "foundation-sites": "^6.7.2",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.15.0",
-    "grunt": "^1.4.1",
+    "grunt": "^1.5.3",
     "grunt-compile-handlebars": "^2.0.2",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^2.1.0",

@@ -51,7 +51,7 @@ export function generateSpectaqlSdl({
 export function generateDirectiveSdl({
   directiveName = DEFAULT_DIRECTIVE_NAME,
   optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-}) {
+} = {}) {
   // https://www.apollographql.com/docs/apollo-server/schema/creating-directives/#supported-locations
   // QUERY | MUTATION | SUBSCRIPTION | FIELD | FRAGMENT_DEFINITION | FRAGMENT_SPREAD | INLINE_FRAGMENT |
   // VARIABLE_DEFINITION | SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE |
@@ -63,7 +63,7 @@ export function generateDirectiveSdl({
 
 export function generateOptionsSdl({
   optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-}) {
+} = {}) {
   return `input ${optionsTypeName} { key: String!, value: String! }`
 }
 

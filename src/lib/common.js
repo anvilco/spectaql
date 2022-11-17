@@ -9,6 +9,7 @@ import {
   // hljsFunction as hljsGraphqlLang,
 } from '../spectaql/graphql-hl'
 import { analyzeTypeIntrospection } from '../spectaql/type-helpers'
+import { isUndef, firstNonUndef } from '../spectaql/utils'
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
 import { getExampleForGraphQLScalar } from '../themes/default/helpers/graphql-scalars'
 
@@ -262,7 +263,7 @@ function introspectionArgToVariable({
   }
 
   // If there is an example, use it.
-  if (arg.example) {
+  if (!isUndef(arg.example)) {
     return arg.example
   }
 
@@ -367,19 +368,23 @@ function generateIntrospectionReturnTypeExample(
   { thing, underlyingTypeDefinition, originalType, quoteEnum = false },
   otherOptions
 ) {
-  let example =
-    thing.example ||
-    originalType.example ||
-    underlyingTypeDefinition.example ||
-    (underlyingTypeDefinition.kind === 'ENUM' &&
-      underlyingTypeDefinition.enumValues.length &&
-      (quoteEnum
-        ? addQuoteTags(underlyingTypeDefinition.enumValues[0].name)
-        : underlyingTypeDefinition.enumValues[0].name)) ||
-    (underlyingTypeDefinition.kind === 'UNION' &&
-      underlyingTypeDefinition.possibleTypes.length &&
-      addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
-    getExampleForScalarDefinition(underlyingTypeDefinition, otherOptions)
+  let example = firstNonUndef([
+    thing.example,
+    originalType.example,
+    underlyingTypeDefinition.example,
+  ])
+  if (isUndef(example)) {
+    example =
+      (underlyingTypeDefinition.kind === 'ENUM' &&
+        underlyingTypeDefinition.enumValues.length &&
+        (quoteEnum
+          ? addQuoteTags(underlyingTypeDefinition.enumValues[0].name)
+          : underlyingTypeDefinition.enumValues[0].name)) ||
+      (underlyingTypeDefinition.kind === 'UNION' &&
+        underlyingTypeDefinition.possibleTypes.length &&
+        addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
+      getExampleForScalarDefinition(underlyingTypeDefinition, otherOptions)
+  }
 
   if (typeof example !== 'undefined') {
     // example = unwindTags(example)
