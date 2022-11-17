@@ -6,6 +6,7 @@ import {
   typesAreSame,
 } from 'microfiber'
 
+import { isUndef } from './utils'
 import { analyzeTypeIntrospection } from './type-helpers'
 import { addSpecialTags, addQuoteTags } from '../lib/common'
 import stripTrailing from '../themes/default/helpers/stripTrailing'
@@ -346,7 +347,6 @@ export function addExamples(args = {}) {
 
   function getExistingExample(thing) {
     let { example, examples } = _.get(thing, metadatasPath, {})
-
     if (examples && examples.length) {
       example = examples[Math.floor(Math.random() * examples.length)]
     }
@@ -360,12 +360,14 @@ export function addExamples(args = {}) {
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
 
     let example = getExistingExample(thing)
+
     // Allow Scalars to have examples from the metadata...not 100% sure why not everything
     if (!isUndef(example) && (!isType || type.kind === KINDS.SCALAR)) {
       thing.example = example
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
+
     if (!isUndef(example)) {
       thing.example = example
     }
@@ -437,8 +439,4 @@ export function removeTrailingPeriodsFromDescriptions(obj) {
   })
 
   return obj
-}
-
-function isUndef(item) {
-  return typeof item === 'undefined'
 }
