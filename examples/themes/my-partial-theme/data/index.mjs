@@ -3,7 +3,11 @@
 //
 // USE AT YOUR OWN RISK.
 
-const { Microfiber: IntrospectionManipulator } = require('microfiber')
+import {
+  Microfiber as IntrospectionManipulator,
+} from 'microfiber'
+
+console.log({IntrospectionManipulator}, '\n\n\n\n\nIntrospectionManipulatorIntrospectionManipulator')
 
 function sortByName(a, b) {
   if (a.name > b.name) {
@@ -16,7 +20,7 @@ function sortByName(a, b) {
   return 0
 }
 
-module.exports = ({
+export default ({
   // The Introspection Query Response after all the augmentation and metadata directives
   // have been applied to it
   introspectionResponse,

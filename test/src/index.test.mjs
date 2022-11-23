@@ -1,4 +1,4 @@
-import * as loadYaml from 'dist/lib/loadYaml'
+import loadYaml from '../../dist/lib/loadYaml.js'
 const rewire = require('rewire')
 const index = rewire('dist/index')
 

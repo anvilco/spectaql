@@ -3,7 +3,7 @@ import path from 'path'
 import buildSchemas from './build-schemas'
 import { augmentData } from './augmenters'
 import arrangeDataDefaultFn from '../themes/default/data'
-import { fileExists } from './utils'
+import { dynamicImport, fileExists } from './utils'
 import preProcessData from './pre-process'
 
 async function run(opts) {
@@ -49,16 +49,62 @@ async function run(opts) {
   const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
   // Figure out what data arranger to use...the default one, or the one from the theme
-  const customDataArrangerSuffixThatExists = ['data/index.js', 'data.js'].find(
-    (pathSuffix) => {
-      return fileExists(path.normalize(`${themeDir}/${pathSuffix}`))
-    }
-  )
-  const arrangeDataModule = customDataArrangerSuffixThatExists
-    ? await import(
+  const customDataArrangerSuffixThatExists = [
+    'data/index.js',
+    'data/index.mjs',
+    'data.js',
+    'data.mjs',
+  ].find((pathSuffix) => {
+    return fileExists(path.normalize(`${themeDir}/${pathSuffix}`))
+  })
+
+  let arrangeDataModule = arrangeDataDefaultFn
+  if (customDataArrangerSuffixThatExists) {
+    try {
+      console.log(
+        'about to dynamic import',
         path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
       )
-    : arrangeDataDefaultFn
+      arrangeDataModule = await dynamicImport(
+        path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
+      )
+      console.log('did the  dynamic import')
+      console.log({
+        // arrangeDataModule,
+        themeDir,
+        customDataArrangerSuffixThatExists,
+      })
+    } catch (err) {
+      console.log(err)
+      if (
+        err instanceof SyntaxError &&
+        err.message.includes('Cannot use import statement outside a module')
+      ) {
+        const messages = [
+          '***',
+          'It appears your theme code is written in ESM but not indicated as such.',
+        ]
+        if (!customDataArrangerSuffixThatExists.endsWith('.mjs')) {
+          messages.push(
+            'You can try renaming your file with an "mjs" extension, or seting "type"="module" in your package.json'
+          )
+        } else {
+          messages.push('Try setting "type"="module" in your package.json')
+        }
+
+        messages.push('***')
+        messages.forEach((msg) => console.error(msg))
+      }
+      throw err
+    }
+  }
+
+  console.log({
+    arrangeDataModule,
+    themeDir,
+    customDataArrangerSuffixThatExists,
+  })
+
   const arrangeData = arrangeDataModule.default
     ? arrangeDataModule.default
     : arrangeDataModule

@@ -1,12 +1,18 @@
 const spectaql = require('dist/spectaql')
-const { pathToSimpleSchema, pathToComplexSchema } = require('test/helpers')
+const {
+  pathToSimpleSchema,
+  pathToComplexSchema,
+  pathToExampleTheme,
+} = require('test/helpers')
 
 describe('index', function () {
   def('opts', () => ({
     specData: $.specData,
+    themeDir: $.themeDir,
   }))
 
   def('specData', () => ({
+    spectaql: $.spectaql,
     introspection: $.introspection,
     info: $.info,
     servers: $.servers,
@@ -63,7 +69,7 @@ describe('index', function () {
     context('no x-url', function () {
       def('url', () => undefined)
       it('errors', function () {
-        return expect(() => spectaql($.opts)).to.throw(
+        return expect(spectaql($.opts)).to.eventually.be.rejectedWith(
           'Please provide either: introspection.url OR servers.url OR info.x-url'
         )
       })
@@ -83,8 +89,8 @@ describe('index', function () {
           },
         ])
 
-        it("doesn't error and processes headers", function () {
-          const result = spectaql($.opts)
+        it("doesn't error and processes headers", async function () {
+          const result = await spectaql($.opts)
           expect(result).to.be.ok
           expect(result.headers).to.eql(
             `# Get your Foo from Bar\nFoo: Bar <yo>`
@@ -97,8 +103,8 @@ describe('index', function () {
         def('schemaFile', () => undefined)
         def('introspectionUrl', () => 'http://foo.com')
 
-        it("doesn't error", function () {
-          const result = spectaql($.opts)
+        it("doesn't error", async function () {
+          const result = await spectaql($.opts)
           return expect(result).to.be.ok
         })
       })
@@ -107,8 +113,11 @@ describe('index', function () {
 
   describe('e2e sanity check', function () {
     def('schemaFile', () => pathToComplexSchema)
+    def('themeDir', () => pathToExampleTheme)
+
     it('does not blow up', async function () {
-      const result = spectaql($.opts)
+      console.log($.opts)
+      const result = await spectaql($.opts)
       expect(result).be.an('object').that.includes.keys('items')
 
       expect(result.items).to.have.length.gt(0)
@@ -149,7 +158,7 @@ describe('index', function () {
   describe('trailing period removal', function () {
     def('schemaFile', () => pathToSimpleSchema)
     it('does not strip trailing periods by default', async function () {
-      const result = spectaql($.opts)
+      const result = await spectaql($.opts)
       expect(result).be.an('object').that.includes.keys('items')
 
       expect(result.items).to.have.length.gt(0)
@@ -180,7 +189,7 @@ describe('index', function () {
       def('removeTrailingPeriodFromDescriptions', () => true)
 
       it('does strip trailing periods when asked', async function () {
-        const result = spectaql($.opts)
+        const result = await spectaql($.opts)
         expect(result).be.an('object').that.includes.keys('items')
 
         expect(result.items).to.have.length.gt(0)
@@ -213,7 +222,7 @@ describe('index', function () {
     def('schemaFile', () => './test/fixtures/bad-schema.gql')
 
     it('raises error', function () {
-      return expect(() => spectaql($.opts)).to.throw(
+      return expect(spectaql($.opts)).to.eventually.be.rejectedWith(
         'Problem with Introspection Query Response'
       )
     })

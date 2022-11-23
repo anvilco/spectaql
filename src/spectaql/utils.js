@@ -9,6 +9,25 @@ const numDirsToRoot = 2
 
 export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
 
+export async function dynamicImport(path) {
+  console.log({
+    dynamicImport: true,
+    path,
+  })
+  const mojule = await import(path)
+  console.log({ mojule })
+  // Some babelizing oddities result in a nested export structure sometimes, so let's
+  // normalize that
+  if (
+    mojule.__esModule === true &&
+    mojule.default?.default &&
+    Object.keys(mojule).length === 2
+  ) {
+    return mojule.default
+  }
+  return mojule
+}
+
 function normalizePathFn(pth, { start = cwd } = {}) {
   if (!path.isAbsolute(pth)) {
     pth = path.join(start, pth)
