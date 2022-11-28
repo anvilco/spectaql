@@ -435,6 +435,8 @@ export const run = async function (cliOptions = {}) {
         await loadData(opts)
       )
     } catch (e) {
+      console.error('\n\n\n\n\ngrunt\n\n\n')
+      console.error(e)
       grunt.fatal(e)
     }
   })

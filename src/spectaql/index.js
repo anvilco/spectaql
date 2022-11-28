@@ -61,21 +61,11 @@ async function run(opts) {
   let arrangeDataModule = arrangeDataDefaultFn
   if (customDataArrangerSuffixThatExists) {
     try {
-      console.log(
-        'about to dynamic import',
-        path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
-      )
       arrangeDataModule = await dynamicImport(
         path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
       )
-      console.log('did the  dynamic import')
-      console.log({
-        // arrangeDataModule,
-        themeDir,
-        customDataArrangerSuffixThatExists,
-      })
     } catch (err) {
-      console.log(err)
+      console.error(err)
       if (
         err instanceof SyntaxError &&
         err.message.includes('Cannot use import statement outside a module')
@@ -98,12 +88,6 @@ async function run(opts) {
       throw err
     }
   }
-
-  console.log({
-    arrangeDataModule,
-    themeDir,
-    customDataArrangerSuffixThatExists,
-  })
 
   const arrangeData = arrangeDataModule.default
     ? arrangeDataModule.default

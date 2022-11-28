@@ -3,7 +3,6 @@ import sass from 'sass'
 
 // Gotta keep this a commonjs export because of dynamic requiring
 module.exports = function (grunt, options, spectaqlData) {
-  console.log({ spectaqlData })
   // Watch them schema file(s)
   let schemaFiles = options.specData.introspection.schemaFile
   if (!schemaFiles) {

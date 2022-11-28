@@ -1,20 +1,20 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
-const {
+import {
   introspectionResponseFromSchemaSDL,
   graphQLSchemaFromIntrospectionResponse,
-} = require('dist/spectaql/graphql-loaders')
+} from 'dist/spectaql/graphql-loaders'
 
-const { introspectionOptionsToMicrofiberOptions } = require('dist')
-const { addMetadata } = require('dist/spectaql/metadata-loaders')
+import { introspectionOptionsToMicrofiberOptions } from 'dist'
+import { addMetadata } from 'dist/spectaql/metadata-loaders'
 
-const {
+import {
   createIntrospectionManipulator,
   hideThingsBasedOnMetadata,
   addExamples,
   // addExamplesFromMetadata,
   // addExamplesDynamically,
-} = require('dist/spectaql/augmenters')
+} from 'dist/spectaql/augmenters'
 
 import { KINDS } from 'microfiber'
 

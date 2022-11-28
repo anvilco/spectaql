@@ -1,9 +1,9 @@
-const spectaql = require('dist/spectaql')
-const {
+import spectaql from 'dist/spectaql'
+import {
   pathToSimpleSchema,
   pathToComplexSchema,
   pathToExampleTheme,
-} = require('test/helpers')
+} from 'test/helpers'
 
 describe('index', function () {
   def('opts', () => ({
