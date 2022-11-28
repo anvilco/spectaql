@@ -113,20 +113,19 @@ describe('index', function () {
 
   describe('e2e sanity check', function () {
     def('schemaFile', () => pathToComplexSchema)
-    def('themeDir', () => pathToExampleTheme)
 
     it('does not blow up', async function () {
-      console.log($.opts)
       const result = await spectaql($.opts)
       expect(result).be.an('object').that.includes.keys('items')
 
-      expect(result.items).to.have.length.gt(0)
+      expect(result.items).to.have.length(3)
 
       expect(result.items[0]).to.include({
         name: 'Operations',
       })
 
-      expect(result.items[0].items).to.have.length.gt(0)
+      expect(result.items[0].items).to.have.length(2)
+
       expect(result.items[0].items[0]).to.include({
         name: 'Queries',
       })
@@ -134,7 +133,6 @@ describe('index', function () {
         result.items[0].items[0].items.find((item) => item.name === 'myQuery')
       ).to.be.ok
 
-      expect(result.items[0].items).to.have.length.gt(0)
       expect(result.items[0].items[1]).to.include({
         name: 'Mutations',
       })
@@ -147,11 +145,52 @@ describe('index', function () {
       expect(result.items[1]).to.include({
         name: 'Types',
       })
-
       expect(result.items[1].items).to.have.length.gt(0)
       expect(
         result.items[1].items.find((item) => item.name === 'SimpleTypeOne')
       ).to.be.ok
+
+      expect(result.items[2]).to.include({
+        name: 'Subscriptions',
+      })
+      expect(result.items[2].items).to.have.length.gt(0)
+      expect(
+        result.items[2].items.find(
+          (item) => item.name === 'myTypeUpdatedSubscription'
+        )
+      ).to.be.ok
+    })
+
+    context('it uses custom theme that is MJS', function () {
+      def('themeDir', () => pathToExampleTheme)
+
+      it('does not blow up', async function () {
+        const result = await spectaql($.opts)
+        expect(result).be.an('object').that.includes.keys('items')
+
+        expect(result.items).to.have.length(2)
+
+        expect(result.items[0]).to.include({
+          name: 'Operations',
+        })
+
+        expect(result.items[0].items).to.have.length(1)
+
+        expect(result.items[0].items[0]).to.include({
+          name: 'Queries',
+        })
+        expect(
+          result.items[0].items[0].items.find((item) => item.name === 'myQuery')
+        ).to.be.ok
+
+        expect(result.items[1]).to.include({
+          name: 'Types',
+        })
+        expect(result.items[1].items).to.have.length.gt(0)
+        expect(
+          result.items[1].items.find((item) => item.name === 'SimpleTypeOne')
+        ).to.be.ok
+      })
     })
   })
 

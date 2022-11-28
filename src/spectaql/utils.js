@@ -13,6 +13,7 @@ export async function dynamicImport(path) {
   console.log({
     dynamicImport: true,
     path,
+    env: process.env.NODE_ENV,
   })
   const mojule = await import(path)
   console.log({ mojule })

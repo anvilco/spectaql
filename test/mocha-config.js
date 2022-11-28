@@ -9,7 +9,7 @@ module.exports = {
   spec: './test/src/**/*.test.*js',
   require: [
     // https://mochajs.org/#-require-module-r-module
-    // '@babel/register',
+    '@babel/register',
     './test/mocha-environment.js',
   ],
   file: './test/mocha-setup.js',

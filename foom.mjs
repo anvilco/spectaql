@@ -1,4 +1,4 @@
-import * as ya from 'dirr/foo.js'
+import * as ya from './dirr/ya.js'
 
 export default function () {
   console.log('fooing!')

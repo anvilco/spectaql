@@ -7,8 +7,6 @@ import {
   Microfiber as IntrospectionManipulator,
 } from 'microfiber'
 
-console.log({IntrospectionManipulator}, '\n\n\n\n\nIntrospectionManipulatorIntrospectionManipulator')
-
 function sortByName(a, b) {
   if (a.name > b.name) {
     return 1
