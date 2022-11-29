@@ -2,7 +2,7 @@ import path from 'path'
 import sass from 'sass'
 
 // Gotta keep this a commonjs export because of dynamic requiring
-module.exports = function (grunt, options, spec) {
+module.exports = function (grunt, options, spectaqlData) {
   // Watch them schema file(s)
   let schemaFiles = options.specData.introspection.schemaFile
   if (!schemaFiles) {
@@ -106,7 +106,7 @@ module.exports = function (grunt, options, spec) {
             dest: options.cacheDir + '/' + options.targetFile,
           },
         ],
-        templateData: spec,
+        templateData: spectaqlData,
         partials: options.cacheDir + '/views/partials/**/*.hbs',
         helpers: [
           // You get all the built-in helpers for free

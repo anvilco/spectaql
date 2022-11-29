@@ -18,6 +18,8 @@ module.exports = {
           node: '14',
         },
         exclude: [
+          // Node 14+ supports this natively AND we need it to operate natively
+          // so do NOT transpile it
           'proposal-dynamic-import',
         ],
       },

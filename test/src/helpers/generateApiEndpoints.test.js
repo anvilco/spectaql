@@ -1,4 +1,4 @@
-const generateApiEndpoints = require('../../../dist/themes/default/helpers/generateApiEndpoints')
+import generateApiEndpoints from 'dist/themes/default/helpers/generateApiEndpoints'
 
 describe('generateApiEndpoints', function () {
   def('displayAllServers', false)
