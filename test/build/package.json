@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "microfiber": "latest",
     "spectaql": "file:spectaql.tgz"
   }
 }
