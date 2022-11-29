@@ -1,14 +1,13 @@
 {
-  "name": "build",
+  "name": "e2e",
   "version": "1.0.0",
-  "description": "",
-  "type": "module",
+  "description": "e2e tester",
   "main": "index.js",
   "scripts": {
     "prep": "yarn clean-cache && yarn remove-files",
     "remove-files": "rm -rf yarn.lock node_modules/spectaql",
     "clean-cache": "rm -rf $(yarn cache dir)/.tmp",
-    "test": "yarn node alive.js"
+    "test": "yarn node alive.mjs"
   },
   "author": "",
   "license": "ISC",

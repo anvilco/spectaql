@@ -53,7 +53,7 @@ export default ({
     // The idea is to return an Array of Objects with the following structure:
     {
       // The name for this group of items wherever it will be displayed
-      name: 'Operations',
+      name: 'Operationzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
       // Should this item be hidden in the Navigation area?
       hideInNav: false,
       // Should this item be its own Navigation section and create a collapse?
