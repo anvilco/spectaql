@@ -65,7 +65,7 @@ jobs:
         cache: 'yarn'
 
     - run: yarn install
-    - run: yarn pack --filename test/build/spectaql.tgz
+    - run: yarn test-build:build
 
   unit-test-and-package-test:
     name: Unit Test & Package Test
@@ -92,7 +92,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
-    - run: yarn --cwd test/build install
-    - run: yarn --cwd test/build test
+    - run: yarn test-build
     - run: yarn install
     - run: yarn test

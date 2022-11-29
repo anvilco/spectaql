@@ -2,7 +2,6 @@
 // MANNER BEFORE A MAJOR RELEASE.
 //
 // USE AT YOUR OWN RISK.
-console.log('\n\n\nimport me!\n\n\n')
 import {
   Microfiber as IntrospectionManipulator,
 } from 'microfiber'
@@ -54,7 +53,7 @@ export default ({
     // The idea is to return an Array of Objects with the following structure:
     {
       // The name for this group of items wherever it will be displayed
-      name: 'Operations',
+      name: 'Operationz',
       // Should this item be hidden in the Navigation area?
       hideInNav: false,
       // Should this item be its own Navigation section and create a collapse?

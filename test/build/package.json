@@ -2,8 +2,12 @@
   "name": "build",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
+    "prep": "yarn clean-cache && yarn remove-files",
+    "remove-files": "rm -rf yarn.lock node_modules/spectaql",
+    "clean-cache": "rm -rf $(yarn cache dir)/.tmp",
     "test": "yarn node alive.js"
   },
   "author": "",

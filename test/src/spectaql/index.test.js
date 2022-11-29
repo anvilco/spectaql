@@ -164,7 +164,8 @@ describe('index', function () {
     context('it uses custom theme that is MJS', function () {
       def('themeDir', () => pathToExampleTheme)
 
-      it('does not blow up', async function () {
+      // Skipping this in favor of an e2e test using the ./test/build
+      it.skip('does not blow up', async function () {
         const result = await spectaql($.opts)
         expect(result).be.an('object').that.includes.keys('items')
 
