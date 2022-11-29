@@ -2,7 +2,7 @@
 // MANNER BEFORE A MAJOR RELEASE.
 //
 // USE AT YOUR OWN RISK.
-
+console.log('\n\n\nimport me!\n\n\n')
 import {
   Microfiber as IntrospectionManipulator,
 } from 'microfiber'

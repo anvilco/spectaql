@@ -46,7 +46,7 @@
     "clean-build": "yarn clean && yarn build",
     "prepare": "husky install && yarn clean && yarn build",
     "pub:dry-run": "yarn prepare && npm publish --dry-run",
-    "test": "NODE_ENV=test yarn clean-build && NODE_ENV=test yarn mocha --config ./test/mocha-config.js",
+    "test": "NODE_ENV=test yarn clean-build && NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules yarn mocha --config ./test/mocha-config.js",
     "test:debug": "yarn test --node-option inspect=0.0.0.0:9223",
     "test:watch": "nodemon -x 'yarn test'",
     "test:debug:watch": "nodemon -x 'yarn test:debug'",
