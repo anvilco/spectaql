@@ -3,7 +3,7 @@ import path from 'path'
 import buildSchemas from './build-schemas'
 import { augmentData } from './augmenters'
 import arrangeDataDefaultFn from '../themes/default/data'
-import { dynamicImport, fileExists } from './utils'
+import { dynamicImport, fileExists, takeDefaultExport } from './utils'
 import preProcessData from './pre-process'
 
 async function run(opts) {
@@ -89,9 +89,7 @@ async function run(opts) {
     }
   }
 
-  const arrangeData = arrangeDataModule.default
-    ? arrangeDataModule.default
-    : arrangeDataModule
+  const arrangeData = takeDefaultExport(arrangeDataModule)
 
   const items = arrangeData({
     introspectionResponse,

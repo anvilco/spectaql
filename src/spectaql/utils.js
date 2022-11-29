@@ -9,6 +9,10 @@ const numDirsToRoot = 2
 
 export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
 
+export function takeDefaultExport(mojule) {
+  return mojule?.default ? mojule.default : mojule
+}
+
 export async function dynamicImport(path) {
   const mojule = await import(path)
   // Some babelizing oddities result in a nested export structure sometimes, so let's
