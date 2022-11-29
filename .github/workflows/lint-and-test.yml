@@ -92,6 +92,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
-    - run: yarn test-build
+    - run: yarn test-build:install-and-test
     - run: yarn install
     - run: yarn test

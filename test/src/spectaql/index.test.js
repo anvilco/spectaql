@@ -165,6 +165,8 @@ describe('index', function () {
       def('themeDir', () => pathToExampleTheme)
 
       // Skipping this in favor of an e2e test using the ./test/build
+      // Maybe when this is resolved?
+      // https://github.com/nodejs/node/issues/35889
       it.skip('does not blow up', async function () {
         const result = await spectaql($.opts)
         expect(result).be.an('object').that.includes.keys('items')
