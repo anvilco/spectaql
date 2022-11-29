@@ -8,6 +8,7 @@ on:
 env:
   NODE_VERSION_MAJOR: 16
   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+  TARBALL_PATH: test/e2e/spectaql.tgz
 
 jobs:
 
@@ -55,7 +56,7 @@ jobs:
       uses: actions/cache@v3
       with:
         # We'll cache this file
-        path: test/build/spectaql.tgz
+        path: ${{ env.TARBALL_PATH }}
         key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ env.GITHUB_SHA }}
 
     - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
@@ -83,7 +84,7 @@ jobs:
       uses: actions/cache@v3
       with:
         # This is the file to cache / restore
-        path: test/build/spectaql.tgz
+        path: ${{ env.TARBALL_PATH }}
         key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ env.GITHUB_SHA }}
 
     - name: Use Node.js ${{ matrix.node-version }}
