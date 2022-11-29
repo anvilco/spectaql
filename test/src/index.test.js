@@ -55,11 +55,7 @@ describe('index', function () {
 
     context('config yaml specifies some options', function () {
       beforeEach(function () {
-        console.log({ loadYaml })
         sinon.stub(loadYaml, 'default').callsFake(() => $.config)
-        // revert = index.__set__({
-        //   loadYaml: () => $.config,
-        // })
       })
 
       def('_options', () => ({
