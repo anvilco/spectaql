@@ -2,30 +2,38 @@
   "name": "@anvilco/reorient-css",
   "version": "0.0.1",
   "description": "Updates relative asset URLs within a string of CSS to reflect a relocation of the CSS file.",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "engines": {
-    "node": ">=14"
-  },
-  "scripts": {
-    "test": "mocha"
-  },
+  "author": "Callum Locke",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/anvilco/reorient-css"
+  },
+  "homepage": "https://github.com/anvilco/reorient-css",
+  "bugs": {
+    "url": "https://github.com/anvilco/reorient-css/issues"
   },
   "keywords": [
     "css",
     "build"
   ],
-  "author": "Callum Locke",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/anvilco/reorient-css/issues"
+  "engines": {
+    "node": ">=14"
   },
-  "homepage": "https://github.com/anvilco/reorient-css",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "index.js",
+    "src/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
+  ],
   "dependencies": {
     "mocha": "^10.1.0",
     "postcss": "^7.0.36"

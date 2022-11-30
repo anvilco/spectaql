@@ -8,13 +8,6 @@
     "name": "Callum Locke",
     "url": "https://github.com/callumlocke"
   },
-  "keywords": [
-    "gruntplugin"
-  ],
-  "engines": {
-    "node": ">=14"
-  },
-  "main": "Gruntfile.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/anvilco/grunt-embed.git"
@@ -24,9 +17,24 @@
       "type": "MIT"
     }
   ],
+  "keywords": [
+    "gruntplugin"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "main": "Gruntfile.js",
   "scripts": {
     "test": "grunt test"
   },
+  "files": [
+    "package.json",
+    "README.md",
+    "Gruntfile.coffee",
+    "tasks/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
+  ],
   "dependencies": {
     "resource-embedder": "file:../resource-embedder"
   },

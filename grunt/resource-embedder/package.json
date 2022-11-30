@@ -24,6 +24,14 @@
   "scripts": {
     "test": "grunt nodeunit:all --stack"
   },
+  "files": [
+    "package.json",
+    "README.md",
+    "index.js",
+    "Gruntfile.coffee",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
+  ],
   "dependencies": {
     "coffee-script": "~1.7.1",
     "graceful-fs": "~2.0.2",

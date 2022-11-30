@@ -20,13 +20,6 @@
       "url": "https://github.com/jonschlinkert/grunt-prettify/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "Gruntfile.js",
-  "engines": {
-    "node": ">=14"
-  },
-  "scripts": {
-    "test": "grunt test"
-  },
   "keywords": [
     "beautifier",
     "beautify",
@@ -42,6 +35,22 @@
     "plugin",
     "prettifier",
     "prettify"
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "Gruntfile.js",
+    ".jsbeautifyrc",
+    "tasks/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
   ],
   "dependencies": {
     "async": "~0.9.0",

@@ -21,6 +21,10 @@
       "url": "https://github.com/patrickkettner/grunt-compile-handlebars/blob/master/LICENSE-MIT"
     }
   ],
+  "keywords": [
+    "gruntplugin",
+    "handlebars"
+  ],
   "main": "grunt.js",
   "bin": "bin/grunt-compile-handlebars",
   "engines": {
@@ -29,9 +33,14 @@
   "scripts": {
     "test": "grunt test"
   },
-  "keywords": [
-    "gruntplugin",
-    "handlebars"
+  "files": [
+    "package.json",
+    "README.md",
+    "Gruntfile.js",
+    "bin/",
+    "tasks/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
   ],
   "dependencies": {
     "alce": "^1.0.0",
