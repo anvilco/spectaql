@@ -41,10 +41,18 @@ for (const sourceDirectory of sourceDirectories) {
 
   let args = options.join(' ')
   let command = `npm pack ${args}`
+  const cwd = path.join(vendorSrcDir, sourceDirectory)
+
+  console.log({
+    packageName,
+    options,
+    args,
+    cwd,
+  })
   let tarballName = await execSync(
     command,
     {
-      cwd: path.join(vendorSrcDir, sourceDirectory)
+      cwd,
     }
   )
   tarballName = getTarballNameFromOutput(tarballName.toString())

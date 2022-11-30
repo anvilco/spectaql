@@ -43,8 +43,8 @@ jobs:
     - run: yarn install
     - run: yarn lint:quiet
 
-  build-package:
-    name: Build Package
+  build-e2e-package:
+    name: Build E2E Package
     runs-on: ubuntu-latest
     needs: prepare-node
 
