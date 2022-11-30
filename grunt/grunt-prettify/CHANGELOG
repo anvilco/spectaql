@@ -1,0 +1,18 @@
+v0.3.0:
+  date: "2013-11-25"
+  changes:
+    - Adds option to preserve byte-order marks in output.
+    - General task improvements
+v0.2.7:
+  date: "2013-08-18"
+  changes:
+    - Options updated to use new config option from js-beautify.
+v0.1.1:
+  date: "2013-04-21"
+  changes:
+    - Create plugin, run tests.
+    - Add assemble task to generate test HTML from templates.
+v0.1.0:
+  date: "2013-04-21"
+  changes:
+    - First commit.

@@ -351,7 +351,7 @@ export const run = async function (cliOptions = {}) {
   grunt.loadNpmTasks('grunt-compile-handlebars')
   grunt.loadNpmTasks('grunt-prettify')
   grunt.loadNpmTasks('grunt-sass')
-  grunt.loadNpmTasks('@anvilco/grunt-embed')
+  grunt.loadNpmTasks('grunt-embed')
 
   process.chdir(cwd)
 
