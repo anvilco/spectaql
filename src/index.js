@@ -312,13 +312,13 @@ export function resolveOptions(cliOptions) {
 /**
  * Run SpectaQL and configured tasks
  **/
-export const run = function (cliOptions = {}) {
+export const run = async function (cliOptions = {}) {
   const opts = resolveOptions(cliOptions)
 
   //
   //= Load the specification and init configuration
 
-  const gruntConfig = gruntConfigFn(grunt, opts, loadData(opts))
+  const gruntConfig = gruntConfigFn(grunt, opts, await loadData(opts))
 
   //
   //= Setup Grunt to do the heavy lifting
@@ -428,13 +428,14 @@ export const run = function (cliOptions = {}) {
   grunt.registerTask('develop', ['server', 'watch'])
 
   // Reload template data when watch files change
-  grunt.event.on('watch', function () {
+  grunt.event.on('watch', async function () {
     try {
       grunt.config.set(
         'compile-handlebars.compile.templateData',
-        loadData(opts)
+        await loadData(opts)
       )
     } catch (e) {
+      console.error(e)
       grunt.fatal(e)
     }
   })

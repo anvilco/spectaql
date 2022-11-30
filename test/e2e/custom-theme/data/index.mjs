@@ -2,7 +2,9 @@
 // MANNER BEFORE A MAJOR RELEASE.
 //
 // USE AT YOUR OWN RISK.
-const { Microfiber: IntrospectionManipulator } = require('microfiber')
+import {
+  Microfiber as IntrospectionManipulator,
+} from 'microfiber'
 
 function sortByName(a, b) {
   if (a.name > b.name) {
@@ -15,7 +17,7 @@ function sortByName(a, b) {
   return 0
 }
 
-module.exports = ({
+export default ({
   // The Introspection Query Response after all the augmentation and metadata directives
   // have been applied to it
   introspectionResponse,
@@ -51,7 +53,7 @@ module.exports = ({
     // The idea is to return an Array of Objects with the following structure:
     {
       // The name for this group of items wherever it will be displayed
-      name: 'Operations',
+      name: 'Operationzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
       // Should this item be hidden in the Navigation area?
       hideInNav: false,
       // Should this item be its own Navigation section and create a collapse?

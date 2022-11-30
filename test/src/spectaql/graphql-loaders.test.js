@@ -1,15 +1,15 @@
-const {
+import {
   pathToSimpleSchema,
   pathToSimpleSchemaWithDirectives,
   pathToSimpleSchemaSupplement,
   pathToNonStandardQueryMutationSchema,
-} = require('test/helpers')
+} from 'test/helpers'
 
-const {
+import {
   loadSchemaFromSDLFile,
   introspectionResponseFromSchema,
   graphQLSchemaFromIntrospectionResponse,
-} = require('dist/spectaql/graphql-loaders')
+} from 'dist/spectaql/graphql-loaders'
 
 describe('graphql-loaders', function () {
   describe('loadSchemaFromSDLFile', function () {

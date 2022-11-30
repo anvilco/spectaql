@@ -29,6 +29,11 @@ const pathToNonStandardQueryMutationSchema = path.resolve(
   './fixtures/non-standard-query-mutation-schema.gql'
 )
 
+const pathToExampleTheme = path.resolve(
+  __dirname,
+  '../examples/themes/my-partial-theme'
+)
+
 const generateIntrospectionQueryResult = ({ schemaType = 'simple' }) => {
   switch (schemaType) {
     case 'non-standard-query-mutation-schema': {
@@ -55,5 +60,6 @@ module.exports = {
   pathToSimpleSchemaWithDirectives,
   pathToSimpleSchemaSupplement,
   pathToComplexSchema,
+  pathToExampleTheme,
   pathToNonStandardQueryMutationSchema,
 }
