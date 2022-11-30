@@ -71,6 +71,7 @@
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.2.0",
     "grunt-embed": "file:grunt/grunt-embed",
+    "grunt-compile-handlebars": "file:grunt/grunt-compile-handlebars",
     "grunt-prettify": "file:grunt/grunt-prettify",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
@@ -83,7 +84,6 @@
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.15.0",
     "grunt": "^1.5.3",
-    "grunt-compile-handlebars": "^2.0.2",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^2.1.0",
     "grunt-contrib-connect": "^3.0.0",
