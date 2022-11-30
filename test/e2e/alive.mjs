@@ -1,38 +1,79 @@
-import { run, resolveOptions } from 'spectaql'
+import { strict as assert } from 'node:assert';
+import {
+  run,
+  parseCliOptions,
+  resolveOptions,
+  loadData,
+  buildSchemas,
+  augmentData,
+  generateSpectaqlSdl,
+  generateDirectiveSdl,
+  generateOptionsSdl,
+} from 'spectaql'
+
+console.warn('Trying on Node ' + process.version)
+
+assert(typeof run === 'function')
+
+const cliOptions = parseCliOptions()
+assert.deepEqual(cliOptions, {
+  specFile: './config.yml',
+})
 
 const options = {
-  specFile: './config.yml',
+  ...cliOptions,
   themeDir: './custom-theme',
 }
 
 const resolvedOptions = resolveOptions(options)
-console.warn('Trying on Node ' + process.version)
+(async function () {
+  let result = run(resolvedOptions)
+  assert(result instanceof Promise)
 
-if (typeof run !== 'function') {
-  console.error("I didn't work.")
-  process.exit(1)
-}
+  const { html } = await result
 
-run(resolvedOptions)
-  .then((result) => {
-    const { html } = result
+  assert(typeof html === 'string')
 
-    if (typeof html !== 'string') {
-      console.error(`html is not a string: ${html}`)
-      process.exit(1)
-    } else {
-      console.log('html is a string')
+
+  assert(html.includes('Operationzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'))
+
+  result = loadData(resolvedOptions)
+  assert(result instanceof Promise)
+
+  let data = await result
+  assert(Array.isArray(data.items))
+  assert(data.items.length === 2)
+  assert.equal(data.items[0].name, 'Operationzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
+
+
+  result = generateSpectaqlSdl()
+  assert(result.includes('directive @spectaql(options: [SpectaQLOption]) on QUERY'))
+  assert(result.includes('input SpectaQLOption { key: String!, value: String! }'))
+
+  result = generateDirectiveSdl()
+  assert(result.includes('directive @spectaql(options: [SpectaQLOption]) on QUERY'))
+
+  result = generateOptionsSdl()
+  assert(result.includes('input SpectaQLOption { key: String!, value: String! }'))
+
+  result = buildSchemas(resolvedOptions)
+  const { graphQLSchema, introspectionResponse } = result
+
+  assert.equal(graphQLSchema.constructor.name, 'GraphQLSchema')
+
+  assert(Array.isArray(introspectionResponse.__schema.types))
+
+  result = augmentData({
+    introspectionResponse,
+    introspectionOptions: {
+      ...resolvedOptions.specData.introspection,
     }
-
-    if (!html.includes('Operationzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')) {
-      console.error(`html did not appear to use theme`)
-      process.exit(1)
-    } else {
-      console.log('html appears to have used the theme')
-    }
-
-    console.log('I worked!')
   })
+
+  assert(Array.isArray(result.__schema.types))
+
+  console.log('I worked!')
+})()
   .catch((err) => {
     console.error(err)
     process.exit(1)

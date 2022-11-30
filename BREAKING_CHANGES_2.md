@@ -2,4 +2,4 @@
 - `headers` CLI option is now `-H` instead of `-A`
 - Dropped support for accidental `queryNameStategy` option. 🤦
 - No external fonts are loaded in the include themes, so the `loadExternalFont` option goes away.
-- `run` and `arrangeData` commands are now asynchronous and return a promise.
+- `run` and `loadData` commands are now asynchronous and return a promise.

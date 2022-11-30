@@ -54,7 +54,7 @@
     "build:site": "node bin/spectaql",
     "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
     "test-build:build": "yarn clean-build && rm -rf test/e2e/spectaql.tgz &&yarn pack --filename test/e2e/spectaql.tgz",
-    "test-build:install": "yarn --cwd test/e2dprep && yarn --cwd test/e2e install",
+    "test-build:install": "yarn --cwd test/e2e prep && yarn --cwd test/e2e install",
     "test-build:test": "yarn --cwd test/e2e test",
     "test-build:install-and-test": "yarn test-build:install && yarn test-build:test",
     "test-build:all": "yarn test-build:build && yarn test-build:install && yarn test-build:test",

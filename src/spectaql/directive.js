@@ -39,7 +39,7 @@ const OPTION_TO_CONVERTER_FN = {
 export function generateSpectaqlSdl({
   directiveName = DEFAULT_DIRECTIVE_NAME,
   optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-}) {
+} = {}) {
   return (
     generateDirectiveSdl({ directiveName, optionsTypeName }) +
     '\n' +
