@@ -26,7 +26,8 @@ const options = {
 }
 
 const resolvedOptions = resolveOptions(options)
-(async function () {
+
+;(async function () {
   let result = run(resolvedOptions)
   assert(result instanceof Promise)
 
