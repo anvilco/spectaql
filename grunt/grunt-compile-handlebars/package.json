@@ -24,7 +24,7 @@
   "main": "grunt.js",
   "bin": "bin/grunt-compile-handlebars",
   "engines": {
-    "node": "*>= 0.8.0"
+    "node": ">=14"
   },
   "scripts": {
     "test": "grunt test"
