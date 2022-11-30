@@ -1,6 +1,7 @@
 {
-  "name": "@anvilco/reorient-css",
-  "version": "0.0.1",
+  "private": true,
+  "name": "reorient-css",
+  "version": "1.0.0",
   "description": "Updates relative asset URLs within a string of CSS to reflect a relocation of the CSS file.",
   "author": "Callum Locke",
   "license": "MIT",

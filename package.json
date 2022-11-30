@@ -34,46 +34,67 @@
     "README.md",
     "LICENSE.md",
     "CHANGELOG.md",
+    "bin/",
+    "vendor/",
     "dist/",
     "examples/",
-    "grunt/",
     "!**/.DS_STORE",
     "!**/.DS_Store"
   ],
   "scripts": {
-    "clean": "yarn rimraf ./dist",
-    "build": "babel src --out-dir ./dist --copy-files",
-    "build:with-maps": "yarn build --source-maps",
+
+    "clean:dist": "yarn rimraf ./dist",
+    "clean:vendor": "yarn rimraf ./vendor",
+    "clean": "yarn clean:dist && yarn clean:vendor",
+
+    "build:with-maps": "yarn build:src --source-maps",
+    "build:site": "node bin/spectaql",
+    "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
+
+    "build:src": "babel src --out-dir ./dist --copy-files",
+    "build:vendor": "node bin/build-vendor.mjs",
+    "build": "yarn build:vendor && yarn build:src",
+
+    "clean-build:src": "yarn clean:dist && yarn build:src",
+    "clean-build:vendor": "yarn clean:vendor && yarn build:vendor",
     "clean-build": "yarn clean && yarn build",
-    "prepare": "husky install && yarn clean && yarn build",
-    "pub:dry-run": "yarn prepare && npm publish --dry-run",
+
+    "preinstall": "yarn build:vendor",
+    "prepack": "husky install && yarn clean-build",
+
+    "pack:dry-run": "npm pack --dry-run",
+
     "test": "NODE_ENV=test yarn clean-build && NODE_ENV=test yarn mocha --config ./test/mocha-config.js",
     "test:debug": "yarn test --node-option inspect=0.0.0.0:9223",
     "test:watch": "nodemon -x 'yarn test'",
     "test:debug:watch": "nodemon -x 'yarn test:debug'",
-    "develop": "nodemon -x 'yarn clean-build && node bin/spectaql' -D",
-    "build:site": "node bin/spectaql",
-    "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
-    "test-build:build": "yarn clean-build && rm -rf test/e2e/spectaql.tgz && yarn pack --filename test/e2e/spectaql.tgz",
+
+    "develop": "nodemon -x 'yarn clean-build:src && node bin/spectaql' -D",
+
+    "test-build:build": "yarn clean-build && rm -rf test/e2e/spectaql.tgz && yarn node dev/build-e2e.mjs",
     "test-build:install": "yarn --cwd test/e2e prep && yarn --cwd test/e2e install",
     "test-build:test": "yarn --cwd test/e2e test",
     "test-build:build-and-install": "yarn test-build:build && yarn test-build:install",
     "test-build:install-and-test": "yarn test-build:install && yarn test-build:test",
     "test-build:all": "yarn test-build:build && yarn test-build:install && yarn test-build:test",
+
     "prettify": "prettier 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
+
     "lint": "eslint 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:quiet:fix": "yarn lint:quiet --fix",
+
     "prettify:check": "yarn prettify --check",
     "prettify:write": "yarn prettify --write",
+
     "generateExampleData": "node bin/generateExampleData.js"
   },
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.2.0",
-    "grunt-embed": "file:grunt/grunt-embed",
-    "grunt-compile-handlebars": "file:grunt/grunt-compile-handlebars",
-    "grunt-prettify": "file:grunt/grunt-prettify",
+    "grunt-embed": "file:vendor/grunt-embed",
+    "grunt-compile-handlebars": "file:vendor/grunt-compile-handlebars",
+    "grunt-prettify": "file:vendor/grunt-prettify",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
     "@graphql-tools/schema": "^9.0.1",

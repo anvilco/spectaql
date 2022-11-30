@@ -22,7 +22,7 @@ module.exports = {
     ],
   },
   ignorePatterns: [
-    'grunt/**/*.js',
+    'vendor-src/**/*.*js',
     'src/**/javascripts/**/*.js',
     'examples/output/javascripts/**/*.js',
   ],

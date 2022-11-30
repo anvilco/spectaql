@@ -2762,8 +2762,8 @@ grunt-cli@~1.4.3:
     nopt "~4.0.1"
     v8flags "~3.2.0"
 
-"grunt-compile-handlebars@file:grunt/grunt-compile-handlebars":
-  version "2.0.2"
+"grunt-compile-handlebars@file:vendor/grunt-compile-handlebars":
+  version "1.0.0"
   dependencies:
     alce "^1.0.0"
     handlebars ">= 1"
@@ -2847,10 +2847,10 @@ grunt-contrib-watch@^1.1.0:
     lodash "^4.17.10"
     tiny-lr "^1.1.1"
 
-"grunt-embed@file:grunt/grunt-embed":
-  version "0.0.1"
+"grunt-embed@file:vendor/grunt-embed":
+  version "1.0.0"
   dependencies:
-    resource-embedder "file:../../../Library/Caches/Yarn/v6/npm-grunt-embed-0.0.1-1b3eb7f1-f9d4-4fbf-afe4-4a85e86e2a0d-1669780238008/node_modules/resource-embedder"
+    resource-embedder "file:../../../Library/Caches/Yarn/v6/npm-grunt-embed-1.0.0-56e1a5a0-55d3-4318-8fca-d81d8019e4d4-1669846575439/node_modules/resource-embedder"
 
 grunt-known-options@~2.0.0:
   version "2.0.0"
@@ -2888,8 +2888,8 @@ grunt-legacy-util@~2.0.1:
     underscore.string "~3.3.5"
     which "~2.0.2"
 
-"grunt-prettify@file:grunt/grunt-prettify":
-  version "0.4.0"
+"grunt-prettify@file:vendor/grunt-prettify":
+  version "1.0.0"
   dependencies:
     async "~0.9.0"
     fast-glob "^3.2.12"
@@ -4358,8 +4358,8 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha512-/hS+Y0u3aOfIETiaiirUFwDBDzmXPvO+jAfKTitUngIPzdKc6Z0LoFjM/CK5PL4C+eKwHohlHAb6H0VFfmmUsw==
 
-"reorient-css@file:grunt/reorient-css":
-  version "0.0.1"
+"reorient-css@file:vendor/reorient-css":
+  version "1.0.0"
   dependencies:
     mocha "^10.1.0"
     postcss "^7.0.36"
@@ -4396,14 +4396,14 @@ resolve@^1.10.1, resolve@^1.14.2, resolve@^1.19.0, resolve@^1.9.0:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
-"resource-embedder@file:grunt/resource-embedder":
-  version "0.0.1"
+"resource-embedder@file:vendor/resource-embedder":
+  version "1.0.0"
   dependencies:
     coffee-script "~1.7.1"
     graceful-fs "~2.0.2"
     htmlparser2 "~3.5.0"
     lodash "^4.17.21"
-    reorient-css "file:../../../Library/Caches/Yarn/v6/npm-resource-embedder-0.0.1-4c94589d-9154-4329-92d9-fceb2f744872-1669780238010/node_modules/reorient-css"
+    reorient-css "file:../../../Library/Caches/Yarn/v6/npm-resource-embedder-1.0.0-c0fca841-83e3-4820-a258-e288d7ef0e78-1669846575441/node_modules/reorient-css"
 
 restore-cursor@^3.1.0:
   version "3.1.0"

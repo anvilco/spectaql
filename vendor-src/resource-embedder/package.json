@@ -1,6 +1,7 @@
 {
+  "private": true,
   "name": "resource-embedder",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Embeds the contents of external scripts and stylesheets into HTML.",
   "homepage": "https://github.com/anvilco/resource-embedder",
   "bugs": "https://github.com/anvilco/resource-embedder/issues",
@@ -29,6 +30,7 @@
     "README.md",
     "index.js",
     "Gruntfile.coffee",
+    "src/",
     "!**/.DS_STORE",
     "!**/.DS_Store"
   ],
