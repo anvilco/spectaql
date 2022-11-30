@@ -1,3 +1,7 @@
+node_modules
+tmp
+yarn.lock
+
 # Numerous always-ignore extensions
 *.csv
 *.dat

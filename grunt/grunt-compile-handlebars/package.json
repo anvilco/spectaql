@@ -29,6 +29,16 @@
   "scripts": {
     "test": "grunt test"
   },
+  "keywords": [
+    "gruntplugin",
+    "handlebars"
+  ],
+  "dependencies": {
+    "alce": "^1.0.0",
+    "handlebars": ">= 1",
+    "lodash.merge": "^4.6.2",
+    "lodash.toarray": "^3.0.0"
+  },
   "devDependencies": {
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "~0.4.0",
@@ -37,15 +47,5 @@
   },
   "peerDependencies": {
     "grunt": ">=0.4.0"
-  },
-  "dependencies": {
-    "alce": "^1.0.0",
-    "handlebars": ">= 1",
-    "lodash.merge": "^4.6.2",
-    "lodash.toarray": "^3.0.0"
-  },
-  "keywords": [
-    "gruntplugin",
-    "handlebars"
-  ]
+  }
 }

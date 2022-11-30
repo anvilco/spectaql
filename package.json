@@ -36,6 +36,7 @@
     "CHANGELOG.md",
     "dist/",
     "examples/",
+    "grunt/",
     "!**/.DS_STORE",
     "!**/.DS_Store"
   ],

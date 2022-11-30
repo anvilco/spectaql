@@ -9,13 +9,6 @@
   "engines": {
     "node": ">=14"
   },
-  "dependencies": {
-    "mocha": "^10.1.0",
-    "postcss": "^7.0.36"
-  },
-  "devDependencies": {
-    "chai": "~1.9.0"
-  },
   "scripts": {
     "test": "mocha"
   },
@@ -32,5 +25,12 @@
   "bugs": {
     "url": "https://github.com/anvilco/reorient-css/issues"
   },
-  "homepage": "https://github.com/anvilco/reorient-css"
+  "homepage": "https://github.com/anvilco/reorient-css",
+  "dependencies": {
+    "mocha": "^10.1.0",
+    "postcss": "^7.0.36"
+  },
+  "devDependencies": {
+    "chai": "~1.9.0"
+  }
 }
