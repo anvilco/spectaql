@@ -1,0 +1,60 @@
+{
+  "name": "grunt-compile-handlebars",
+  "description": "Compile handlebar templates, outputting static HTML",
+  "version": "1.0.0",
+  "homepage": "https://github.com/patrickkettner/grunt-compile-handlebars",
+  "author": {
+    "name": "Patrick Kettner",
+    "email": "patrick@patrickkettner.com",
+    "url": "https://github.com/patrickkettner"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/patrickkettner/grunt-compile-handlebars.git"
+  },
+  "bugs": {
+    "url": "https://github.com/patrickkettner/grunt-compile-handlebars/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/patrickkettner/grunt-compile-handlebars/blob/master/LICENSE-MIT"
+    }
+  ],
+  "keywords": [
+    "gruntplugin",
+    "handlebars"
+  ],
+  "main": "grunt.js",
+  "bin": "bin/grunt-compile-handlebars",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "Gruntfile.js",
+    "bin/",
+    "tasks/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
+  ],
+  "dependencies": {
+    "alce": "^1.0.0",
+    "handlebars": ">= 1",
+    "lodash.merge": "^4.6.2",
+    "lodash.toarray": "^3.0.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.5.3",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-jshint": "~0.2.0",
+    "grunt-contrib-nodeunit": "~0.2.0"
+  },
+  "peerDependencies": {
+    "grunt": ">=0.4.0"
+  }
+}

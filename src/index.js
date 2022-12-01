@@ -312,13 +312,13 @@ export function resolveOptions(cliOptions) {
 /**
  * Run SpectaQL and configured tasks
  **/
-export const run = function (cliOptions = {}) {
+export const run = async function (cliOptions = {}) {
   const opts = resolveOptions(cliOptions)
 
   //
   //= Load the specification and init configuration
 
-  const gruntConfig = gruntConfigFn(grunt, opts, loadData(opts))
+  const gruntConfig = gruntConfigFn(grunt, opts, await loadData(opts))
 
   //
   //= Setup Grunt to do the heavy lifting
@@ -351,7 +351,7 @@ export const run = function (cliOptions = {}) {
   grunt.loadNpmTasks('grunt-compile-handlebars')
   grunt.loadNpmTasks('grunt-prettify')
   grunt.loadNpmTasks('grunt-sass')
-  grunt.loadNpmTasks('@anvilco/grunt-embed')
+  grunt.loadNpmTasks('grunt-embed')
 
   process.chdir(cwd)
 
@@ -421,26 +421,21 @@ export const run = function (cliOptions = {}) {
     'prettify',
   ])
 
-  grunt.registerTask('default', [
-    'clean-things',
-    'copy-theme-stuff',
-    'stylesheets',
-    'javascripts',
-    'templates',
-  ])
+  const defaultTasks = []
 
   grunt.registerTask('server', ['connect'])
 
   grunt.registerTask('develop', ['server', 'watch'])
 
   // Reload template data when watch files change
-  grunt.event.on('watch', function () {
+  grunt.event.on('watch', async function () {
     try {
       grunt.config.set(
         'compile-handlebars.compile.templateData',
-        loadData(opts)
+        await loadData(opts)
       )
     } catch (e) {
+      console.error(e)
       grunt.fatal(e)
     }
   })
@@ -478,13 +473,14 @@ export const run = function (cliOptions = {}) {
 
   const copiesToTarget = ['html-to-target']
 
+  let doDevelop = false
   if (opts.startServer) {
-    grunt.task.run('server')
+    defaultTasks.push('server')
   } else {
-    grunt.task.run('clean-things')
-    grunt.task.run('copy-theme-stuff')
+    defaultTasks.push('clean-things')
+    defaultTasks.push('copy-theme-stuff')
 
-    grunt.task.run('stylesheets')
+    defaultTasks.push('stylesheets')
 
     // If not oneFile/embedding JS/CSS, then we'll need to copy the files
     if (!opts.oneFile) {
@@ -492,7 +488,7 @@ export const run = function (cliOptions = {}) {
     }
 
     if (!opts.disableJs) {
-      grunt.task.run('javascripts')
+      defaultTasks.push('javascripts')
 
       // If not oneFile/embedding JS/CSS, then we'll need to copy the files
       if (!opts.oneFile) {
@@ -506,16 +502,16 @@ export const run = function (cliOptions = {}) {
       copiesToTarget.unshift('favicon-to-target')
     }
 
-    grunt.task.run('templates')
+    defaultTasks.push('templates')
 
     // Resolve all the (local) JS and CSS requests and put them into the HTML
     // file itself
     if (opts.oneFile) {
-      grunt.task.run('embed')
+      defaultTasks.push('embed')
     }
 
     copiesToTarget.forEach((flavor) => {
-      grunt.task.run(`copy:${flavor}`)
+      defaultTasks.push(`copy:${flavor}`)
     })
 
     // Delete the entire cache/temp directory
@@ -525,8 +521,16 @@ export const run = function (cliOptions = {}) {
     // I don't know why, but if you drop into this block and run 'develop'
     // then the 'embed' task will not run...and vice versa`
     if (opts.developmentMode || opts.developmentModeLive) {
-      grunt.task.run('develop')
+      doDevelop = true
     }
+  }
+
+  grunt.registerTask('default', defaultTasks)
+  grunt.task.run('default')
+
+  if (doDevelop) {
+    // This one seems to freeze everything else up, so it should be done last
+    grunt.task.run('develop')
   }
 
   grunt.task.start()

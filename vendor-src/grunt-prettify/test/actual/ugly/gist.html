@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Multiple Posts</title>
+    <link rel="stylesheet" href="../assets/bootstrap.css">
+  </head>
+  <body>
+
+    
+    <div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">ASSEMBLE</a>
+      <ul class="nav">
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <li>
+          <a href="partials.html">Partials</a>
+        </li>
+        <li>
+          <a href="markdown.html">Markdown</a>
+        </li>
+        <li>
+          <a href="basic.html">Basic</a>
+        </li>
+      </ul>
+      <ul class="nav pull-right">
+        <li>
+          <a href="https://github.com/assemble/assemble-examples">More Examples</a>
+        </li>
+        <li>
+          <a href="https://github.com/assemble/assemble/">Visit Assemble</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+    
+    <div class="container">
+      
+<blockquote>
+<p>Example of using an associative array in YAML front matter to embed multiple gists on one page.</p>
+</blockquote>
+<p>Gists were embedded using the <code>{{gist}}</code> helper from the <a href="https://github.com/assemble/handlebars-helpers">handlebars-helpers</a> library.</p>
+<pre><code class="language-js"><span class="keyword">var</span> stripBOM = <span class="function"><span class="keyword">function</span><span class="params">(content)</span> {</span>
+  <span class="keyword">if</span> (content.charCodeAt(<span class="number">0</span>) === <span class="number">0xFEFF</span>) {
+    content = content.slice(<span class="number">1</span>);
+  }
+  <span class="keyword">return</span> content;
+};
+
+<span class="keyword">var</span> condense = <span class="function"><span class="keyword">function</span><span class="params">(str)</span> {</span>
+  <span class="keyword">return</span> str.replace(<span class="regexp">/(\n|\r){2,}/g</span>, <span class="string">'\n'</span>);
+};
+
+<span class="keyword">var</span> padcomments = <span class="function"><span class="keyword">function</span><span class="params">(str, num)</span> {</span>
+  <span class="keyword">var</span> nl = _str.repeat(<span class="string">'\n'</span>, (num || <span class="number">1</span>));
+  <span class="keyword">return</span> str.replace(<span class="regexp">/(\s*&lt;!--\s)/g</span>, nl + <span class="string">'$1'</span>);
+};
+
+<span class="keyword">var</span> prettifyHTML = <span class="function"><span class="keyword">function</span><span class="params">(source, options)</span> {</span>
+  <span class="keyword">try</span> {
+    <span class="keyword">return</span> format(source, options);
+  } <span class="keyword">catch</span> (e) {
+    grunt.log.error(e);
+    grunt.fail.warn(<span class="string">'HTML prettification failed.'</span>);
+  }
+};</code></pre>
+<p><br></p>
+  <script src="https://gist.github.com/5898072.js"></script>
+
+  <script src="https://gist.github.com/5898077.js"></script>
+
+
+
+    </div>
+
+    
+    <script src="../assets/highlight.js"></script>
+  </body>
+</html>

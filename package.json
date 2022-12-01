@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "1.5.6",
+  "version": "1.5.9",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -23,7 +23,8 @@
     "generator"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=14",
+    "npm": ">=7"
   },
   "main": "index.js",
   "bin": {
@@ -34,37 +35,67 @@
     "README.md",
     "LICENSE.md",
     "CHANGELOG.md",
+    "bin/",
+    "vendor/",
     "dist/",
     "examples/",
     "!**/.DS_STORE",
     "!**/.DS_Store"
   ],
   "scripts": {
-    "clean": "yarn rimraf ./dist",
-    "build": "babel src --out-dir ./dist --copy-files",
-    "build:with-maps": "yarn build --source-maps",
-    "clean-build": "yarn clean && yarn build",
-    "prepare": "husky install && yarn clean && yarn build",
-    "pub:dry-run": "yarn prepare && npm publish --dry-run",
-    "test": "mocha --config ./test/mocha-config.js",
-    "test:debug": "yarn test --node-option inspect=0.0.0.0:9223",
-    "test:watch": "nodemon -x 'yarn clean-build && yarn test'",
-    "test:debug:watch": "nodemon -x 'yarn clean-build && yarn test:debug'",
-    "develop": "nodemon -x 'yarn clean-build && node bin/spectaql' -D",
+
+    "clean:dist": "yarn rimraf ./dist",
+    "clean:vendor": "yarn rimraf ./vendor",
+    "clean": "yarn clean:dist && yarn clean:vendor",
+
+    "build:with-maps": "yarn build:src --source-maps",
     "build:site": "node bin/spectaql",
     "build:example": "yarn build:site --target-dir ./examples/output ./examples/config.yml",
+
+    "build:src": "babel src --out-dir ./dist --copy-files",
+    "build:vendor": "node bin/build-vendor.mjs",
+    "build": "yarn build:vendor && yarn build:src",
+
+    "clean-build:src": "yarn clean:dist && yarn build:src",
+    "clean-build:vendor": "yarn clean:vendor && yarn build:vendor",
+    "clean-build": "yarn clean && yarn build",
+
+    "preinstall": "yarn build:vendor --only-if-necessary",
+    "prepack": "husky install && yarn clean-build",
+
+    "pack:dry-run": "npm pack --dry-run",
+
+    "test": "NODE_ENV=test yarn clean-build && NODE_ENV=test yarn mocha --config ./test/mocha-config.js",
+    "test:debug": "yarn test --node-option inspect=0.0.0.0:9223",
+    "test:watch": "nodemon -x 'yarn test'",
+    "test:debug:watch": "nodemon -x 'yarn test:debug'",
+
+    "develop": "nodemon -x 'yarn clean-build:src && node bin/spectaql' -D",
+
+    "test-build:build": "yarn clean-build && rm -rf test/e2e/spectaql.tgz && yarn node dev/build-e2e.mjs",
+    "test-build:install": "yarn --cwd test/e2e prep && yarn --cwd test/e2e install",
+    "test-build:test": "yarn --cwd test/e2e test",
+    "test-build:build-and-install": "yarn test-build:build && yarn test-build:install",
+    "test-build:install-and-test": "yarn test-build:install && yarn test-build:test",
+    "test-build:all": "yarn test-build:build && yarn test-build:install && yarn test-build:test",
+
     "prettify": "prettier 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
-    "lint": "eslint 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
+
+    "lint": "eslint 'src/**/*.*js' 'bin/**/*.*js' 'test/**/*.*js'",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:quiet:fix": "yarn lint:quiet --fix",
+
     "prettify:check": "yarn prettify --check",
     "prettify:write": "yarn prettify --write",
+
     "generateExampleData": "node bin/generateExampleData.js"
   },
   "dependencies": {
     "@anvilco/apollo-server-plugin-introspection-metadata": "^1.2.0",
-    "@anvilco/grunt-embed": "^0.0.1",
+    "grunt-embed": "file:vendor/grunt-embed",
+    "grunt-compile-handlebars": "file:vendor/grunt-compile-handlebars",
+    "grunt-prettify": "file:vendor/grunt-prettify",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
     "@graphql-tools/schema": "^9.0.1",
@@ -75,8 +106,7 @@
     "foundation-sites": "^6.7.2",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.15.0",
-    "grunt": "^1.4.1",
-    "grunt-compile-handlebars": "^2.0.2",
+    "grunt": "^1.5.3",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^2.1.0",
     "grunt-contrib-connect": "^3.0.0",
@@ -85,7 +115,6 @@
     "grunt-contrib-handlebars": "^3.0.0",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",
-    "grunt-prettify": "^0.4.0",
     "grunt-sass": "^3.0.2",
     "handlebars": "^4.3.0",
     "highlight.js": "^11.4.0",
@@ -107,6 +136,7 @@
     "app-module-path": "^2.2.0",
     "bdd-lazy-var": "^2.6.0",
     "chai": "^4.3.0",
+    "chai-as-promised": "^7.1.1",
     "chai-exclude": "^2.0.2",
     "eslint": "^8.10.0",
     "eslint-config-standard": "^16.0.3",

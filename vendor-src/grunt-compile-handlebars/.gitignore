@@ -1,3 +1,4 @@
-*.tgz
 node_modules
+tmp
 yarn.lock
+npm-debug.log

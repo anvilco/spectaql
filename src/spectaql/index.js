@@ -3,10 +3,10 @@ import path from 'path'
 import buildSchemas from './build-schemas'
 import { augmentData } from './augmenters'
 import arrangeDataDefaultFn from '../themes/default/data'
-import { fileExists } from './utils'
+import { dynamicImport, fileExists, takeDefaultExport } from './utils'
 import preProcessData from './pre-process'
 
-function run(opts) {
+async function run(opts) {
   const { logo, favicon, specData: spec, themeDir } = opts
 
   const {
@@ -49,17 +49,47 @@ function run(opts) {
   const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
 
   // Figure out what data arranger to use...the default one, or the one from the theme
-  const customDataArrangerExists = ['data/index.js', 'data.js'].some(
-    (pathSuffix) => {
-      return fileExists(path.normalize(`${themeDir}/${pathSuffix}`))
+  const customDataArrangerSuffixThatExists = [
+    'data/index.js',
+    'data/index.mjs',
+    'data.js',
+    'data.mjs',
+  ].find((pathSuffix) => {
+    return fileExists(path.normalize(`${themeDir}/${pathSuffix}`))
+  })
+
+  let arrangeDataModule = arrangeDataDefaultFn
+  if (customDataArrangerSuffixThatExists) {
+    try {
+      arrangeDataModule = await dynamicImport(
+        path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
+      )
+    } catch (err) {
+      console.error(err)
+      if (
+        err instanceof SyntaxError &&
+        err.message.includes('Cannot use import statement outside a module')
+      ) {
+        const messages = [
+          '***',
+          'It appears your theme code is written in ESM but not indicated as such.',
+        ]
+        if (!customDataArrangerSuffixThatExists.endsWith('.mjs')) {
+          messages.push(
+            'You can try renaming your file with an "mjs" extension, or seting "type"="module" in your package.json'
+          )
+        } else {
+          messages.push('Try setting "type"="module" in your package.json')
+        }
+
+        messages.push('***')
+        messages.forEach((msg) => console.error(msg))
+      }
+      throw err
     }
-  )
-  const arrangeDataModule = customDataArrangerExists
-    ? require(path.normalize(`${themeDir}/data`))
-    : arrangeDataDefaultFn
-  const arrangeData = arrangeDataModule.default
-    ? arrangeDataModule.default
-    : arrangeDataModule
+  }
+
+  const arrangeData = takeDefaultExport(arrangeDataModule)
 
   const items = arrangeData({
     introspectionResponse,

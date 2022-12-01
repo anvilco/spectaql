@@ -1,0 +1,14 @@
+---
+title: Home
+docs: http://assemble.io/docs/YAML-front-matter.html
+---
+<div class="page-header">
+  <h1>{{ title }}</h1>
+</div>
+
+<p>In this example, at the top of each page you can use
+  <a href="{{ docs }}">YAML Front-Matter</a> for providing metadata and configuration data for the page
+</p>
+
+{{! content from the path specified }}
+{{{md 'test/fixtures/content/code.md'}}}

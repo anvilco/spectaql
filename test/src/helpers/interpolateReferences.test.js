@@ -1,4 +1,4 @@
-const interpolateReferences = require('../../../dist/themes/default/helpers/interpolateReferences')
+import interpolateReferences from 'dist/themes/default/helpers/interpolateReferences'
 
 describe('interpolateReferences', function () {
   beforeEach(function () {

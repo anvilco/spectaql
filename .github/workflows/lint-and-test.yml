@@ -8,6 +8,7 @@ on:
 env:
   NODE_VERSION_MAJOR: 16
   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+  TARBALL_PATH: test/e2e/spectaql.tgz
 
 jobs:
 
@@ -42,8 +43,8 @@ jobs:
     - run: yarn install
     - run: yarn lint:quiet
 
-  build-package:
-    name: Build Package
+  build-e2e-package:
+    name: Build E2E Package
     runs-on: ubuntu-latest
     needs: prepare-node
 
@@ -55,7 +56,7 @@ jobs:
       uses: actions/cache@v3
       with:
         # We'll cache this file
-        path: test/build/spectaql.tgz
+        path: ${{ env.TARBALL_PATH }}
         key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ env.GITHUB_SHA }}
 
     - name: Use Node.js ${{ env.NODE_VERSION_MAJOR }}.x
@@ -65,12 +66,12 @@ jobs:
         cache: 'yarn'
 
     - run: yarn install
-    - run: yarn pack --filename test/build/spectaql.tgz
+    - run: yarn test-build:build
 
   unit-test-and-package-test:
     name: Unit Test & Package Test
     runs-on: ubuntu-latest
-    needs: build-package
+    needs: build-e2e-package
     strategy:
       matrix:
         node-version: [14, 16, 18]
@@ -83,7 +84,7 @@ jobs:
       uses: actions/cache@v3
       with:
         # This is the file to cache / restore
-        path: test/build/spectaql.tgz
+        path: ${{ env.TARBALL_PATH }}
         key: ${{ runner.os }}-node-v${{ env.NODE_VERSION_MAJOR }}-${{ env.GITHUB_SHA }}
 
     - name: Use Node.js ${{ matrix.node-version }}
@@ -92,7 +93,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
-    - run: yarn --cwd test/build install
-    - run: yarn --cwd test/build test
+    # Node 14 ships with a version of NPM that does not work for us
+    - name: Optionally update NPM if needed
+      if: ${{ matrix.node-version == '14' }}
+      run: npm i -g npm@7
+    - run: yarn test-build:install-and-test
     - run: yarn install
     - run: yarn test
