@@ -1,7 +1,7 @@
 const LARGEST_HEADING = 6
 
 module.exports = function (headingNumber, _options) {
-  if (headingNumber <= LARGEST_HEADING) {
+  if (!headingNumber || headingNumber <= LARGEST_HEADING) {
     return ''
   }
 
