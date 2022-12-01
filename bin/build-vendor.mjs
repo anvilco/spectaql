@@ -57,6 +57,8 @@ ensureDirectory(vendorTargetDir)
       }
     }
 
+    console.log(`Building managed vendor dependency: ${packageName}`)
+
     // See if we can skip doing this again
     if (pathExists(packageDirectory)) {
       const entry = await getOldestFileInDirectoryTs(sourceDirectory)
@@ -82,11 +84,12 @@ ensureDirectory(vendorTargetDir)
 
     let args = options.join(' ')
     let command = `npm pack ${args}`
-    const cwd = path.join(vendorSrcDir, sourceDirectoryName)
 
     let tarballName = await exec(command, {
-      cwd,
+      cwd: path.join(vendorSrcDir, sourceDirectoryName),
+      stdio: [undefined, undefined, 'ignore'],
     })
+
     tarballName = getTarballNameFromOutput(tarballName.toString())
 
     // Unpack the thing...
@@ -103,19 +106,17 @@ ensureDirectory(vendorTargetDir)
       continue
     }
 
-    await exec(command)
+    await exec(command, { stdio: [undefined, undefined, 'ignore'] })
 
     // Remove the tarball
     await exec(`rm ${tarballPath}`)
 
     // Only should be set when we should write it to the file system
     if (newCacheValue) {
-      console.log({
-        settingNewCacheValue: newCacheValue,
-        sourceDirectory,
-      })
       setCacheValue(sourceDirectory, newCacheValue)
     }
+
+    console.log('Done.')
   }
 })()
 
