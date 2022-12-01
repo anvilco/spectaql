@@ -60,13 +60,14 @@ const defaults = Object.freeze({
     unsafeCleanup: true,
     prefix: 'spectaql-',
   }).name,
-  oneFile: false,
   specData: {},
 })
 
 // Things that may get set from either the CLI or the YAML.spectaql area, but if nothing
 // is set, then use these:
 const spectaqlOptionDefaults = Object.freeze({
+  oneFile: false,
+  embeddable: false,
   errorOnInterpolationReferenceNotFound: true,
   displayAllServers: false,
   resolveWithOutput: true,
