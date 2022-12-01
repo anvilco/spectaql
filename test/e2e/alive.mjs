@@ -87,6 +87,7 @@ assert(resolvedOptions.targetDir.endsWith('/public'))
 
   resolvedOptions = resolveOptionsFunction(options)
   // A tmp directory
+  console.log(resolvedOptions.targetDir)
   assert(resolvedOptions.targetDir.startsWith('/var/'))
 
   result = run(resolvedOptions)
