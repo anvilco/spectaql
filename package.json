@@ -23,7 +23,8 @@
     "generator"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=14",
+    "npm": ">=7"
   },
   "main": "index.js",
   "bin": {

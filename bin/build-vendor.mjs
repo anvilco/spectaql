@@ -1,11 +1,11 @@
 import path from 'path'
 import fs from 'fs'
 import { readdir } from 'fs/promises'
-import {fileURLToPath} from 'url'
-import { execSync } from 'child_process'
+import { fileURLToPath } from 'url'
+import { execSync as exec } from 'child_process'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export const root = path.join(__dirname, '..')
 
@@ -21,93 +21,85 @@ let isDryRun = isDryRunFn()
 // isDryRun = true
 
 ensureDirectory(vendorTargetDir)
-
-const sourceDirectories = (await readdir(vendorSrcDir, { withFileTypes: true }))
-  .filter((entry) => entry.isDirectory())
-  .map((entry) => entry.name)
-
-for (const sourceDirectory of sourceDirectories) {
-  // Pack the thing....
-  const packageName = sourceDirectory
-  let options = [
-    `--pack-destination ${vendorTargetDir}`
-  ]
-
-  if (isDryRun) {
-    options.push(
-      '--dry-run'
-    )
-  }
-
-  let args = options.join(' ')
-  let command = `npm pack ${args}`
-  const cwd = path.join(vendorSrcDir, sourceDirectory)
-
-  console.log({
-    vendorSrcDir,
-    sourceDirectory,
-    vendorTargetDir,
-    root,
-    packageName,
-    options,
-    args,
-    cwd,
-  })
-  let tarballName = await execSync(
-    command,
-    {
-      cwd,
-    }
+;(async function () {
+  const sourceDirectories = (
+    await readdir(vendorSrcDir, { withFileTypes: true })
   )
-  tarballName = getTarballNameFromOutput(tarballName.toString())
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
 
-  // Unpack the thing...
-  const tarballPath = path.join(vendorTargetDir, tarballName)
-  const packageDirectory = path.join(vendorTargetDir, packageName)
+  for (const sourceDirectory of sourceDirectories) {
+    // Pack the thing....
+    const packageName = sourceDirectory
+    let options = [`--pack-destination ${vendorTargetDir}`]
 
-  ensureDirectory(packageDirectory)
+    if (isDryRun) {
+      options.push('--dry-run')
+    }
 
-  options = [
-    '--strip-components 1',
-    `-C ${packageDirectory}`,
-    '-xvf',
-  ]
+    let args = options.join(' ')
+    let command = `npm pack ${args}`
+    const cwd = path.join(vendorSrcDir, sourceDirectory)
 
-  args = options.join(' ')
-  command = `tar ${args} ${tarballPath}`
+    console.log({
+      vendorSrcDir,
+      sourceDirectory,
+      vendorTargetDir,
+      root,
+      packageName,
+      options,
+      args,
+      cwd,
+    })
+    let tarballName = await exec(command, {
+      cwd,
+    })
+    tarballName = getTarballNameFromOutput(tarballName.toString())
 
-  if (isDryRun) {
-    continue
+    // Unpack the thing...
+    const tarballPath = path.join(vendorTargetDir, tarballName)
+    const packageDirectory = path.join(vendorTargetDir, packageName)
+
+    ensureDirectory(packageDirectory)
+
+    options = ['--strip-components 1', `-C ${packageDirectory}`, '-xvf']
+
+    args = options.join(' ')
+    command = `tar ${args} ${tarballPath}`
+
+    if (isDryRun) {
+      continue
+    }
+
+    await exec(command)
+
+    // Remove the tarball
+    await exec(`rm ${tarballPath}`)
   }
+})()
 
-  await execSync(command)
-
-  // Remove the tarball
-  await execSync(`rm ${tarballPath}`)
-}
-
-function isDryRunFn () {
+function isDryRunFn() {
   return process.env.npm_config_dry_run === true
 }
 
-function stripSpecial (str) {
+function stripSpecial(str) {
   while (['\n', '\t'].includes(str[str.length - 1])) {
     str = str.slice(0, -1)
   }
   return str
 }
 
-function pathExists (path) {
+function pathExists(path) {
   return fs.existsSync(path)
 }
 
-function ensureDirectory (path) {
-  if (!pathExists(path)){
-    fs.mkdirSync(path);
+function ensureDirectory(path) {
+  if (!pathExists(path)) {
+    fs.mkdirSync(path)
   }
 }
 
-function getTarballNameFromOutput (str) {
+function getTarballNameFromOutput(str) {
   str = stripSpecial(str)
   return str.split('\n').pop()
 }

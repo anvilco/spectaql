@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "grunt-compile-handlebars",
   "description": "Compile handlebar templates, outputting static HTML",
   "version": "1.0.0",
