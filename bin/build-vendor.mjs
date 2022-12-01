@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename)
 
 export const root = path.join(__dirname, '..')
 
+const CACHE_FILE_NAME = '.spectaql-cache'
 const vendorSrcDir = path.join(root, 'vendor-src')
 
 if (!pathExists(vendorSrcDir)) {
@@ -22,20 +23,57 @@ let isDryRun = isDryRunFn()
 
 ensureDirectory(vendorTargetDir)
 ;(async function () {
-  const sourceDirectories = (
+  const sourceDirectoryNames = (
     await readdir(vendorSrcDir, { withFileTypes: true })
   )
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
 
-  for (const sourceDirectory of sourceDirectories) {
+  for (const sourceDirectoryName of sourceDirectoryNames) {
     // Pack the thing....
-    const packageName = sourceDirectory
+    const packageName = sourceDirectoryName
     const packageDirectory = path.join(vendorTargetDir, packageName)
+    const sourceDirectory = path.join(vendorSrcDir, sourceDirectoryName)
 
-    // Thing already exists?
-    if (onlyIfNecessary && pathExists(packageDirectory)) {
-      continue
+    // Only set this value if we want/need to write to the FS
+    let newCacheValue
+
+    const entry = await getOldestFileInDirectoryTs(sourceDirectory)
+    const calculatedValue = Math.max(
+      entry.stats.ctime.getTime(),
+      entry.stats.mtime.getTime()
+    ).toString()
+    const existingValue = getCacheValue(sourceDirectory)
+    if (!pathExists(packageDirectory)) {
+      // Always write it and always do it if the thing did not exist
+      newCacheValue = calculatedValue
+    } else {
+      if (existingValue === calculatedValue) {
+        if (!shouldForce()) {
+          continue
+        }
+      } else {
+        newCacheValue = calculatedValue
+      }
+    }
+
+    console.log(`Building managed vendor dependency: ${packageName}`)
+
+    // See if we can skip doing this again
+    if (pathExists(packageDirectory)) {
+      const entry = await getOldestFileInDirectoryTs(sourceDirectory)
+      const calculatedValue = Math.max(
+        entry.stats.ctime.getTime(),
+        entry.stats.mtime.getTime()
+      ).toString()
+      const existingValue = getCacheValue(sourceDirectory)
+      if (existingValue === calculatedValue) {
+        if (!shouldForce()) {
+          continue
+        }
+      } else {
+        newCacheValue = calculatedValue
+      }
     }
 
     let options = [`--pack-destination ${vendorTargetDir}`]
@@ -46,11 +84,12 @@ ensureDirectory(vendorTargetDir)
 
     let args = options.join(' ')
     let command = `npm pack ${args}`
-    const cwd = path.join(vendorSrcDir, sourceDirectory)
 
     let tarballName = await exec(command, {
-      cwd,
+      cwd: path.join(vendorSrcDir, sourceDirectoryName),
+      stdio: [undefined, undefined, 'ignore'],
     })
+
     tarballName = getTarballNameFromOutput(tarballName.toString())
 
     // Unpack the thing...
@@ -67,10 +106,17 @@ ensureDirectory(vendorTargetDir)
       continue
     }
 
-    await exec(command)
+    await exec(command, { stdio: [undefined, undefined, 'ignore'] })
 
     // Remove the tarball
     await exec(`rm ${tarballPath}`)
+
+    // Only should be set when we should write it to the file system
+    if (newCacheValue) {
+      setCacheValue(sourceDirectory, newCacheValue)
+    }
+
+    console.log('Done.')
   }
 })()
 
@@ -85,13 +131,13 @@ function stripSpecial(str) {
   return str
 }
 
-function pathExists(path) {
-  return fs.existsSync(path)
+function pathExists(pth) {
+  return fs.existsSync(pth)
 }
 
-function ensureDirectory(path) {
-  if (!pathExists(path)) {
-    fs.mkdirSync(path)
+function ensureDirectory(pth) {
+  if (!pathExists(pth)) {
+    fs.mkdirSync(pth)
   }
 }
 
@@ -100,6 +146,53 @@ function getTarballNameFromOutput(str) {
   return str.split('\n').pop()
 }
 
-function onlyIfNecessary() {
-  return process.argv.includes('--only-if-necessary')
+function shouldForce() {
+  return process.argv.includes('--force')
+}
+
+async function getOldestFileInDirectoryTs(pth) {
+  const fileStats = await gatherFileStats(pth)
+  const orderedFileStats = orderFileStats(fileStats)
+  return orderedFileStats?.[0]
+}
+
+function orderFileStats(fileStats) {
+  return fileStats.sort((a, b) => b.stats.mtimeMs - a.stats.mtimeMs)
+}
+
+async function gatherFileStats(pth, files = []) {
+  for (const entry of await readdir(pth, { withFileTypes: true })) {
+    const entryPath = path.join(pth, entry.name)
+    if (entry.isDirectory()) {
+      // Don't go into node_modules
+      if (entry.name === 'node_modules') {
+        continue
+      }
+      await gatherFileStats(entryPath, files)
+    } else {
+      // Don't count our cache file
+      if (entry.name === CACHE_FILE_NAME) {
+        continue
+      }
+      files.push({
+        name: entry.name,
+        stats: fs.lstatSync(entryPath),
+      })
+    }
+  }
+
+  return files
+}
+
+function getCacheValue(dir) {
+  const pth = path.join(dir, CACHE_FILE_NAME)
+  if (!pathExists(pth)) {
+    return
+  }
+  return fs.readFileSync(pth, 'utf8')
+}
+
+function setCacheValue(dir, value) {
+  const pth = path.join(dir, CACHE_FILE_NAME)
+  return fs.writeFileSync(pth, value.toString())
 }

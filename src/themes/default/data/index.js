@@ -61,6 +61,20 @@ export default ({
                   ),
                 }
               : null,
+            hasSubscriptions
+              ? {
+                  name: 'Subscriptions',
+                  makeNavSection: true,
+                  makeContentSection: true,
+                  items: sortBy(
+                    subscriptionType.fields.map((type) => ({
+                      ...type,
+                      isSubscription: true,
+                    })),
+                    'name'
+                  ),
+                }
+              : null,
           ],
         }
       : null,
@@ -72,19 +86,6 @@ export default ({
             otherTypes.map((type) => ({
               ...type,
               isType: true,
-            })),
-            'name'
-          ),
-        }
-      : null,
-    hasSubscriptions
-      ? {
-          name: 'Subscriptions',
-          makeContentSection: true,
-          items: sortBy(
-            subscriptionType.fields.map((type) => ({
-              ...type,
-              isSubscription: true,
             })),
             'name'
           ),
