@@ -1,6 +1,8 @@
-import get from 'lodash/get'
-import sortBy from 'lodash/sortBy'
+import _ from 'lodash'
+
 import { Microfiber as IntrospectionManipulator } from 'microfiber'
+
+const  { get, sortBy } = _
 
 export default ({
   introspectionResponse,
@@ -35,16 +37,37 @@ export default ({
           items: [
             hasQueries
               ? {
-                  name: 'Queries',
+                  name: 'Queries Outside',
                   makeNavSection: true,
                   makeContentSection: true,
-                  items: sortBy(
-                    queryType.fields.map((query) => ({
-                      ...query,
-                      isQuery: true,
-                    })),
-                    'name'
-                  ),
+                  items: [
+                    {
+                      name: 'Queries Middle Out',
+                      makeNavSection: true,
+                      makeContentSection: true,
+                      items: [
+                        {
+                          name: 'Queries Middle In',
+                          makeNavSection: true,
+                          makeContentSection: true,
+                          items: [
+                            {
+                              name: 'Queries Inside',
+                              makeNavSection: true,
+                              makeContentSection: true,
+                              items: sortBy(
+                                queryType.fields.map((query) => ({
+                                  ...query,
+                                  isQuery: true,
+                                })),
+                                'name'
+                              ),
+                            },
+                          ]
+                        }
+                      ],
+                    },
+                  ],
                 }
               : null,
             hasMutations
