@@ -284,9 +284,7 @@ export function resolveOptions(cliOptions) {
   // OK, layer in any defaults that may be set by the CLI and the YAML, but may not have been:
   opts = _.defaults({}, opts, spectaqlOptionDefaults)
 
-  console.log(opts)
   if (!opts.targetDir || opts.targetDir.endsWith('/null')) {
-    console.log('output is gonna go to nowhere')
     opts.targetDir = tmp.dirSync({
       unsafeCleanup: true,
       prefix: 'spectaql-',
@@ -323,7 +321,6 @@ export function resolveOptions(cliOptions) {
  * Run SpectaQL and configured tasks
  **/
 export const run = async function (cliOptions = {}) {
-  console.log({ cliOptions })
   const opts = resolveOptions(cliOptions)
 
   //

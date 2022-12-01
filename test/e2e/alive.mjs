@@ -2,7 +2,7 @@ import { strict as assert } from 'node:assert'
 import {
   run,
   parseCliOptions,
-  resolveOptions,
+  resolveOptions as resolveOptionsFunction,
   loadData,
   buildSchemas,
   augmentData,
@@ -17,7 +17,6 @@ assert(typeof run === 'function')
 
 const cliOptions = parseCliOptions()
 assert.deepEqual(cliOptions, {
-  writeOutput: true,
   specFile: './config.yml',
 })
 
@@ -26,8 +25,8 @@ let options = {
   themeDir: './custom-theme',
 }
 
-let resolvedOptions = resolveOptions(options)
-
+let resolvedOptions = resolveOptionsFunction(options)
+assert(resolvedOptions.targetDir.endsWith('/public'))
 ;(async function () {
   let result = run(resolvedOptions)
   assert(result instanceof Promise)
@@ -84,9 +83,12 @@ let resolvedOptions = resolveOptions(options)
   options = {
     ...resolvedOptions,
   }
-  options.writeOutput = false
+  options.targetDir = null
 
-  resolvedOptions = resolveOptions(options)
+  resolvedOptions = resolveOptionsFunction(options)
+  // A tmp directory
+  assert(resolvedOptions.targetDir.startsWith('/var/'))
+
   result = run(resolvedOptions)
   assert(result instanceof Promise)
   ;({ html } = await result)
