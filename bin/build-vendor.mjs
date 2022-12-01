@@ -44,6 +44,10 @@ for (const sourceDirectory of sourceDirectories) {
   const cwd = path.join(vendorSrcDir, sourceDirectory)
 
   console.log({
+    vendorSrcDir,
+    sourceDirectory,
+    targetDir,
+    root,
     packageName,
     options,
     args,
