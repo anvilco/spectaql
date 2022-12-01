@@ -93,8 +93,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
-    - run: echo ${{ matrix.node-version }}
-    - if: ${{ matrix.node-version == '14' }}
+    # Node 14 ships with a version of NPM that does not work for us
+    - name: Optionally update NPM if needed
+      if: ${{ matrix.node-version == '14' }}
       run: npm i -g npm@7
     - run: yarn test-build:install-and-test
     - run: yarn install
