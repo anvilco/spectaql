@@ -187,7 +187,7 @@ module.exports = function(grunt) {
     var done = this.async();
 
     handlebarsPath = config.handlebars ? path.resolve(config.handlebars) : 'handlebars';
-    handlebars = require(handlebarsPath);
+    handlebars = require(handlebarsPath).create();
 
     helpers.forEach(function(helper) {
       var fullPath = helper.replace(/\.[^/.]+$/, '');
@@ -198,7 +198,7 @@ module.exports = function(grunt) {
         getBasename(helper, config.helpers);
 
       if (handlebars.helpers[name] && usedHelpers.indexOf(fullPath) === -1) {
-        grunt.log.error(name + ' is already registered, clobbering with the new value. Consider setting `registerFullPath` to true');
+        grunt.log.error(name + ' is already registered, clobbering with the new value. Consider setting `registerFullPath` to trueeee');
       } else {
         usedHelpers.push(fullPath);
       }
@@ -215,7 +215,7 @@ module.exports = function(grunt) {
         getBasename(partial, config.partials);
 
       if (handlebars.partials[name] && usedPartials.indexOf(fullPath) === -1) {
-        grunt.log.error(name + ' is already registered, clobbering with the new value. Consider setting `registerFullPath` to true');
+        grunt.log.error(name + ' is already registered, clobbering with the new value. Consider setting `registerFullPath` to true2222');
       } else {
         usedPartials.push(fullPath);
       }

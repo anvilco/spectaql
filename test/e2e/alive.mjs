@@ -1,4 +1,4 @@
-import { strict as assert } from 'node:assert';
+import { strict as assert } from 'node:assert'
 import {
   run,
   parseCliOptions,
@@ -17,24 +17,24 @@ assert(typeof run === 'function')
 
 const cliOptions = parseCliOptions()
 assert.deepEqual(cliOptions, {
+  writeOutput: true,
   specFile: './config.yml',
 })
 
-const options = {
+let options = {
   ...cliOptions,
   themeDir: './custom-theme',
 }
 
-const resolvedOptions = resolveOptions(options)
+let resolvedOptions = resolveOptions(options)
 
 ;(async function () {
   let result = run(resolvedOptions)
   assert(result instanceof Promise)
 
-  const { html } = await result
+  let { html } = await result
 
   assert(typeof html === 'string')
-
 
   assert(html.includes('Operationzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'))
 
@@ -46,16 +46,23 @@ const resolvedOptions = resolveOptions(options)
   assert(data.items.length === 2)
   assert.equal(data.items[0].name, 'Operationzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz')
 
-
   result = generateSpectaqlSdl()
-  assert(result.includes('directive @spectaql(options: [SpectaQLOption]) on QUERY'))
-  assert(result.includes('input SpectaQLOption { key: String!, value: String! }'))
+  assert(
+    result.includes('directive @spectaql(options: [SpectaQLOption]) on QUERY')
+  )
+  assert(
+    result.includes('input SpectaQLOption { key: String!, value: String! }')
+  )
 
   result = generateDirectiveSdl()
-  assert(result.includes('directive @spectaql(options: [SpectaQLOption]) on QUERY'))
+  assert(
+    result.includes('directive @spectaql(options: [SpectaQLOption]) on QUERY')
+  )
 
   result = generateOptionsSdl()
-  assert(result.includes('input SpectaQLOption { key: String!, value: String! }'))
+  assert(
+    result.includes('input SpectaQLOption { key: String!, value: String! }')
+  )
 
   result = buildSchemas(resolvedOptions)
   const { graphQLSchema, introspectionResponse } = result
@@ -68,14 +75,26 @@ const resolvedOptions = resolveOptions(options)
     introspectionResponse,
     introspectionOptions: {
       ...resolvedOptions.specData.introspection,
-    }
+    },
   })
 
   assert(Array.isArray(result.__schema.types))
 
+  // Try it with some different options
+  options = {
+    ...resolvedOptions,
+  }
+  options.writeOutput = false
+
+  resolvedOptions = resolveOptions(options)
+  result = run(resolvedOptions)
+  assert(result instanceof Promise)
+  ;({ html } = await result)
+
+  assert(typeof html === 'string')
+
   console.log('I worked!')
-})()
-  .catch((err) => {
-    console.error(err)
-    process.exit(1)
-  })
+})().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})

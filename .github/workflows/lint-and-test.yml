@@ -66,7 +66,7 @@ jobs:
         cache: 'yarn'
 
     - run: yarn install
-    - run: yarn test-build:build
+    - run: yarn test-e2e:build
 
   unit-test-and-package-test:
     name: Unit Test & Package Test
@@ -97,6 +97,6 @@ jobs:
     - name: Optionally update NPM if needed
       if: ${{ matrix.node-version == '14' }}
       run: npm i -g npm@7
-    - run: yarn test-build:install-and-test
+    - run: yarn test-e2e:install-and-test
     - run: yarn install
     - run: yarn test

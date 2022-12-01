@@ -10,6 +10,10 @@ spectaql:
   # Default: false
   oneFile: false
 
+  # Optional Boolean. Set to false to not write the output to the filesystem, making output only available via the API.
+  # Default: true
+  writeOutput: true
+
   # Optional path to an image to use as the logo in the top-left of the output
   logoFile: path/to/logo.png
   # Optional boolean indicating whether to preserve the filname of the logo provided.

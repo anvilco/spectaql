@@ -89,6 +89,11 @@ export default function () {
       String
     )
 
+    .option(
+      '-n, --no-write-output',
+      'Do not write the output to the filesystem, making it only available via the API.'
+    )
+
     // This option specifies where the generated documentation HTML files will be output.
     .option(
       '-f, --target-file <file>',
