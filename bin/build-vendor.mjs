@@ -31,6 +31,13 @@ ensureDirectory(vendorTargetDir)
   for (const sourceDirectory of sourceDirectories) {
     // Pack the thing....
     const packageName = sourceDirectory
+    const packageDirectory = path.join(vendorTargetDir, packageName)
+
+    // Thing already exists?
+    if (onlyIfNecessary && pathExists(packageDirectory)) {
+      continue
+    }
+
     let options = [`--pack-destination ${vendorTargetDir}`]
 
     if (isDryRun) {
@@ -41,16 +48,6 @@ ensureDirectory(vendorTargetDir)
     let command = `npm pack ${args}`
     const cwd = path.join(vendorSrcDir, sourceDirectory)
 
-    console.log({
-      vendorSrcDir,
-      sourceDirectory,
-      vendorTargetDir,
-      root,
-      packageName,
-      options,
-      args,
-      cwd,
-    })
     let tarballName = await exec(command, {
       cwd,
     })
@@ -58,7 +55,6 @@ ensureDirectory(vendorTargetDir)
 
     // Unpack the thing...
     const tarballPath = path.join(vendorTargetDir, tarballName)
-    const packageDirectory = path.join(vendorTargetDir, packageName)
 
     ensureDirectory(packageDirectory)
 
@@ -102,4 +98,8 @@ function ensureDirectory(path) {
 function getTarballNameFromOutput(str) {
   str = stripSpecial(str)
   return str.split('\n').pop()
+}
+
+function onlyIfNecessary() {
+  return process.argv.includes('--only-if-necessary')
 }

@@ -60,7 +60,7 @@
     "clean-build:vendor": "yarn clean:vendor && yarn build:vendor",
     "clean-build": "yarn clean && yarn build",
 
-    "preinstall": "pwd && npm -v && yarn build:vendor",
+    "preinstall": "pwd && npm -v && yarn build:vendor --only-if-necessary",
     "prepack": "husky install && yarn clean-build",
 
     "pack:dry-run": "npm pack --dry-run",
