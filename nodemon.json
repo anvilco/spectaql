@@ -6,6 +6,7 @@
     ".git",
     "docs",
     "public",
+    "vendor",
     "dist"
   ]
 }
