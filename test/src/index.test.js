@@ -18,6 +18,7 @@ describe('index', function () {
 
       expect(options).to.include({
         targetFile: 'index.html',
+        embeddable: false,
         oneFile: false,
         resolveWithOutput: true,
       })
@@ -66,6 +67,7 @@ describe('index', function () {
 
       def('config', () => ({
         spectaql: {
+          embeddable: true,
           oneFile: true,
           themeDir: './my-custom-theme',
           resolveWithOutput: false,
@@ -85,6 +87,7 @@ describe('index', function () {
         const resolveOptions = index.__get__('resolveOptions')
         const options = resolveOptions($.options)
 
+        expect(options.embeddable).to.be.true
         expect(options.oneFile).to.be.true
         expect(options.themeDir.endsWith('my-custom-theme')).to.be.true
         expect(options.resolveWithOutput).to.be.false
@@ -103,6 +106,7 @@ describe('index', function () {
       context('CLI specifies some options', function () {
         def('options', () => ({
           ...$._options,
+          embeddable: false,
           oneFile: false,
           themeDir: './my-custom-theme-yo-yo',
         }))
@@ -111,6 +115,7 @@ describe('index', function () {
           const resolveOptions = index.__get__('resolveOptions')
           const options = resolveOptions($.options)
 
+          expect(options.embeddable).to.be.false
           expect(options.oneFile).to.be.false
           expect(options.themeDir.endsWith('my-custom-theme-yo-yo')).to.be.true
         })
