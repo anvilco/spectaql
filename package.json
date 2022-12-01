@@ -59,7 +59,7 @@
     "clean-build:vendor": "yarn clean:vendor && yarn build:vendor",
     "clean-build": "yarn clean && yarn build",
 
-    "preinstall": "yarn build:vendor",
+    "preinstall": "pwd && yarn build:vendor",
     "prepack": "husky install && yarn clean-build",
 
     "pack:dry-run": "npm pack --dry-run",
@@ -80,7 +80,7 @@
 
     "prettify": "prettier 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
 
-    "lint": "eslint 'src/**/*.js' 'bin/**/*.js' 'test/**/*.js'",
+    "lint": "eslint 'src/**/*.*js' 'bin/**/*.*js' 'test/**/*.*js'",
     "lint:fix": "yarn lint --fix",
     "lint:quiet": "yarn lint --quiet",
     "lint:quiet:fix": "yarn lint:quiet --fix",
