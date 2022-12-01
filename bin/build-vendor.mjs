@@ -46,7 +46,7 @@ for (const sourceDirectory of sourceDirectories) {
   console.log({
     vendorSrcDir,
     sourceDirectory,
-    targetDir,
+    vendorTargetDir,
     root,
     packageName,
     options,
