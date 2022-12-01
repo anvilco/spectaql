@@ -1,0 +1,16 @@
+---
+title: Basic
+alert:
+  strong: Data for the alert partial.
+  message: >
+    You can specify data in the YAML front-matter as we're doing here, or in external JSON or YAML files, or inside the Assemble task in the Gruntfile.
+content: test/fixtures/content/links.md
+---
+<div class="page-header">
+  <h1>{{ title }}</h1>
+</div>
+
+{{> alert }}
+
+{{! the path for this content is specified in the YAML front-matter }}
+{{{md content}}}

@@ -43,8 +43,8 @@ jobs:
     - run: yarn install
     - run: yarn lint:quiet
 
-  build-package:
-    name: Build Package
+  build-e2e-package:
+    name: Build E2E Package
     runs-on: ubuntu-latest
     needs: prepare-node
 
@@ -71,7 +71,7 @@ jobs:
   unit-test-and-package-test:
     name: Unit Test & Package Test
     runs-on: ubuntu-latest
-    needs: build-package
+    needs: build-e2e-package
     strategy:
       matrix:
         node-version: [14, 16, 18]
@@ -93,6 +93,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
+    # Node 14 ships with a version of NPM that does not work for us
+    - name: Optionally update NPM if needed
+      if: ${{ matrix.node-version == '14' }}
+      run: npm i -g npm@7
     - run: yarn test-build:install-and-test
     - run: yarn install
     - run: yarn test

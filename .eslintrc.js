@@ -22,6 +22,7 @@ module.exports = {
     ],
   },
   ignorePatterns: [
+    'vendor-src/**/*.*js',
     'src/**/javascripts/**/*.js',
     'examples/output/javascripts/**/*.js',
   ],

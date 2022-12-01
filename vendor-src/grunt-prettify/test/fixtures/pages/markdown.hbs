@@ -1,0 +1,46 @@
+---
+title: Markdown
+description: "You're looking at inline markdown content, wrapped with handlebarstags!"
+---
+<div class="page-header">
+  <h1>{{ title }}</h1>
+</div>
+
+
+{{! Inline markdown requires the "markdown" helper. NOTE: When using inline markdown, you must follow the indentation rules of markdown!!! }}
+
+{{#markdown}}
+{{description}}
+
+Behold... some examples:
+
+# Heading 1
+
+## Heading 2
+
+### Heading 3
+
+#### Heading 4
+
+##### Heading 5
+
+###### Heading 6
+
+_italic words_
+
+**bold words**
+
+> this is a quote
+
+1. First ordered list item
+2. Second item
+3. Third Item
+
+Finally, end a line with two or more spaces to do a manual line break.
+
+{{/markdown}}
+
+
+<div class="page-header">
+  <h1>{{ title }}</h1>
+</div>
