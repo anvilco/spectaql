@@ -14,14 +14,14 @@ describe('index', function () {
       const resolveOptions = index.__get__('resolveOptions')
       const options = resolveOptions($.options)
 
-      expect(options.oneFile).to.be.false
-
       expect(options).to.include({
         targetFile: 'index.html',
         embeddable: false,
         oneFile: false,
         resolveWithOutput: true,
       })
+
+      expect(options.targetDir.endsWith('/public')).to.be.true
 
       expect(options.specData.introspection).to.include({
         removeTrailingPeriodFromDescriptions: false,
@@ -69,6 +69,7 @@ describe('index', function () {
         spectaql: {
           embeddable: true,
           oneFile: true,
+          targetDir: null,
           themeDir: './my-custom-theme',
           resolveWithOutput: false,
         },
@@ -87,10 +88,16 @@ describe('index', function () {
         const resolveOptions = index.__get__('resolveOptions')
         const options = resolveOptions($.options)
 
-        expect(options.embeddable).to.be.true
-        expect(options.oneFile).to.be.true
+        expect(options).to.include({
+          embeddable: true,
+          oneFile: true,
+          resolveWithOutput: false,
+        })
+
+        // A temp dir
+        expect(options.targetDir.startsWith('/var/')).to.be.true
         expect(options.themeDir.endsWith('my-custom-theme')).to.be.true
-        expect(options.resolveWithOutput).to.be.false
+
         // Not a path
         expect(options.specData.introspection.url).to.eql(
           'http://mysite.com/graphql'
@@ -108,6 +115,7 @@ describe('index', function () {
           ...$._options,
           embeddable: false,
           oneFile: false,
+          targetDir: 'null',
           themeDir: './my-custom-theme-yo-yo',
         }))
 
@@ -115,8 +123,13 @@ describe('index', function () {
           const resolveOptions = index.__get__('resolveOptions')
           const options = resolveOptions($.options)
 
-          expect(options.embeddable).to.be.false
-          expect(options.oneFile).to.be.false
+          expect(options).to.include({
+            embeddable: false,
+            oneFile: false,
+          })
+
+          // A temp dir
+          expect(options.targetDir.startsWith('/var/')).to.be.true
           expect(options.themeDir.endsWith('my-custom-theme-yo-yo')).to.be.true
         })
       })

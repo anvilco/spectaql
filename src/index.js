@@ -66,7 +66,6 @@ const defaults = Object.freeze({
 // Things that may get set from either the CLI or the YAML.spectaql area, but if nothing
 // is set, then use these:
 const spectaqlOptionDefaults = Object.freeze({
-  noOutput: false,
   oneFile: false,
   embeddable: false,
   errorOnInterpolationReferenceNotFound: true,
@@ -285,7 +284,8 @@ export function resolveOptions(cliOptions) {
   // OK, layer in any defaults that may be set by the CLI and the YAML, but may not have been:
   opts = _.defaults({}, opts, spectaqlOptionDefaults)
 
-  if (!opts.writeOutput) {
+  console.log(opts)
+  if (!opts.targetDir || opts.targetDir.endsWith('/null')) {
     console.log('output is gonna go to nowhere')
     opts.targetDir = tmp.dirSync({
       unsafeCleanup: true,
@@ -323,6 +323,7 @@ export function resolveOptions(cliOptions) {
  * Run SpectaQL and configured tasks
  **/
 export const run = async function (cliOptions = {}) {
+  console.log({ cliOptions })
   const opts = resolveOptions(cliOptions)
 
   //

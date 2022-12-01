@@ -85,15 +85,9 @@ export default function () {
     )
     .option(
       '-t, --target-dir <dir>',
-      'the target build directory (default: public)',
+      'the target build directory. Set to "null" to not write the output to the filesystem, making it only available via the API (default: public)',
       String
     )
-
-    .option(
-      '-n, --no-write-output',
-      'Do not write the output to the filesystem, making it only available via the API.'
-    )
-
     // This option specifies where the generated documentation HTML files will be output.
     .option(
       '-f, --target-file <file>',
@@ -169,7 +163,6 @@ export default function () {
       '-q, --quiet',
       'Silence the output from the generator (default: false)'
     )
-    // .option('-f, --spec-file <file>', 'the input OpenAPI/Swagger spec file (default: test/fixtures/petstore.json)', String, 'test/fixtures/petstore.json')
     .parse(process.argv)
 
   // Show help if no specfile or options are specified

@@ -62,7 +62,7 @@
     "test:watch": "nodemon -x 'yarn test'",
     "test:debug": "yarn test --node-option inspect=0.0.0.0:9223",
     "test:debug:watch": "nodemon -x 'yarn test:debug'",
-    "develop": "nodemon -x 'yarn clean-build:src && node bin/spectaql' -D",
+    "develop": "nodemon -x 'yarn clean-build:src && node bin/spectaql' -- -D",
     "test-e2e:build": "yarn clean-build && rm -rf test/e2e/spectaql.tgz && yarn node dev/build-e2e.mjs",
     "test-e2e:install": "yarn --cwd test/e2e prep && yarn --cwd test/e2e install",
     "test-e2e:test": "yarn --cwd test/e2e test",
