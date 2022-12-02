@@ -16,7 +16,7 @@ updates:
   reviewers:
   - newhouse
 - package-ecosystem: npm
-  target-branch: 2-0-rc-1
+  target-branch: rc-2-0-0
   directory: "/"
   schedule:
     interval: weekly

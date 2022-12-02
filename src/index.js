@@ -1,6 +1,5 @@
 import path from 'path'
 import _ from 'lodash'
-import tmp from 'tmp'
 import grunt from 'grunt'
 
 import pkg from '../package.json'
@@ -10,6 +9,7 @@ import {
   normalizePathFromCwd,
   pathToRoot,
   readTextFile,
+  tmpFolder,
   writeTextFile,
 } from './spectaql/utils'
 
@@ -24,9 +24,6 @@ export { default as parseCliOptions } from './cli'
 const defaultAppDir = normalizePathFromRoot('dist')
 let spectaql = require(path.resolve(defaultAppDir, 'spectaql/index'))
 let gruntConfigFn
-
-// Ensures temporary files are cleaned up on program close, even if errors are encountered.
-tmp.setGracefulCleanup()
 
 //*********************************************************************
 //
@@ -56,17 +53,15 @@ const defaults = Object.freeze({
   gruntConfigFile: normalizePathFromRoot('dist/lib/gruntConfig.js'),
   themeDir: defaultThemeDir,
   defaultThemeDir,
-  cacheDir: tmp.dirSync({
-    unsafeCleanup: true,
-    prefix: 'spectaql-',
-  }).name,
-  oneFile: false,
+  cacheDir: tmpFolder(),
   specData: {},
 })
 
 // Things that may get set from either the CLI or the YAML.spectaql area, but if nothing
 // is set, then use these:
 const spectaqlOptionDefaults = Object.freeze({
+  oneFile: false,
+  embeddable: false,
   errorOnInterpolationReferenceNotFound: true,
   displayAllServers: false,
   resolveWithOutput: true,
@@ -282,6 +277,10 @@ export function resolveOptions(cliOptions) {
 
   // OK, layer in any defaults that may be set by the CLI and the YAML, but may not have been:
   opts = _.defaults({}, opts, spectaqlOptionDefaults)
+
+  if (!opts.targetDir || opts.targetDir.endsWith('/null')) {
+    opts.targetDir = tmpFolder()
+  }
 
   if (opts.logoFile) {
     // Keep or don't keep the original logoFile name when copying to the target

@@ -4,8 +4,9 @@
   "ext": "js,mjs,json,yaml,yml,css,scss,hbs,txt,gql,graphql,graphqls",
   "ignore": [
     ".git",
-    "docs",
-    "public",
-    "dist"
+    "docs/",
+    "public/",
+    "vendor/",
+    "dist/"
   ]
 }

@@ -188,6 +188,7 @@ module.exports = function(grunt) {
 
     handlebarsPath = config.handlebars ? path.resolve(config.handlebars) : 'handlebars';
     handlebars = require(handlebarsPath);
+    handlebars = require(handlebarsPath).create();
 
     helpers.forEach(function(helper) {
       var fullPath = helper.replace(/\.[^/.]+$/, '');
