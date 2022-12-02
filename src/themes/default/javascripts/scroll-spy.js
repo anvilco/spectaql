@@ -71,11 +71,6 @@ function scrollSpy() {
     currentIndex = index
     var section = sections[index]
 
-    var getParentSection = function (el) {
-      if (!el || !el.closest) return null
-      return el.closest(EXPANDABLE_SELECTOR)
-    }
-
     var activeEl = document.querySelector(`.${ACTIVE_CLASS}`)
     var nextEl = section
       ? document.querySelector('#nav a[href*=' + section.id + ']')
@@ -86,10 +81,10 @@ function scrollSpy() {
     var isDifferentParent = parentActiveEl !== parentNextEl
 
     if (parentActiveEl && isDifferentParent) {
-      parentActiveEl.classList.remove(EXPAND_CLASS)
+      toggleSectionExpansion(parentActiveEl, false)
     }
     if (parentNextEl && isDifferentParent) {
-      parentNextEl.classList.add(EXPAND_CLASS)
+      toggleSectionExpansion(parentNextEl, true)
     }
 
     if (nextEl) {
@@ -105,6 +100,19 @@ function scrollSpy() {
       activeEl.classList.remove(ACTIVE_CLASS)
     }
   }, SCROLL_DEBOUNCE_MS)
+
+  function toggleSectionExpansion(element, shouldExpand) {
+    const classListFunc = shouldExpand ? 'add' : 'remove'
+    while (element) {
+      element.classList[classListFunc](EXPAND_CLASS)
+      element = getParentSection(element.parentNode)
+    }
+  }
+
+  function getParentSection(el) {
+    if (!el || !el.closest) return null
+    return el.closest(EXPANDABLE_SELECTOR)
+  }
 
   function getVisibleSectionIndex(scrollPosition) {
     var positionToCheck = scrollPosition + PADDING
