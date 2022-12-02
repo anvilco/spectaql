@@ -1,7 +1,10 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
 
-export default function (path) {
+import { substituteEnvOnObject } from './interpolation'
+
+export default function loadYaml(path) {
   const fileContent = fs.readFileSync(path, 'utf8')
-  return yaml.load(fileContent)
+  const loadedYaml = yaml.load(fileContent)
+  return substituteEnvOnObject(loadedYaml)
 }
