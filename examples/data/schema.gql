@@ -7,7 +7,7 @@ scalar DateTime
 "This is a Phone"
 scalar PhoneNumber
 
-scalar URL
+scalar URL @spectaql(options: [{key: "example", value: "https://work.com" }, {key: "undocumented", value: "false" }])
 scalar JSON
 scalar JSONObject
 scalar Void
@@ -20,7 +20,7 @@ interface Node {
 }
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-type SimpleTypeOne implements Node {
+type SimpleTypeOne implements Node @spectaql(options: [{key: "example", value: "{\"id\": \"yoyyoyo\"}" }, {key: "undocumented", value: "false" }]) {
   id: String!
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myType: [MyType!]!

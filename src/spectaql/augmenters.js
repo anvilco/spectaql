@@ -313,11 +313,11 @@ export function addExamples(args = {}) {
       continue
     }
 
+    handleExamples({ type, isType: true })
+
     const isQueryOrMutation =
       !!(queryType && typesAreSame(type, queryType)) ||
       !!(mutationType && typesAreSame(type, mutationType))
-
-    handleExamples({ type, isType: true })
 
     for (const field of type.fields || []) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
@@ -354,15 +354,13 @@ export function addExamples(args = {}) {
     return example
   }
 
-  function handleExamples({ type, field, inputField, arg, isType }) {
+  function handleExamples({ type, field, inputField, arg }) {
     const thing = arg || inputField || field || type
     const typeForAnalysis = thing === type ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
 
     let example = getExistingExample(thing)
-
-    // Allow Scalars to have examples from the metadata...not 100% sure why not everything
-    if (!isUndef(example) && (!isType || type.kind === KINDS.SCALAR)) {
+    if (!isUndef(example)) {
       thing.example = example
     }
 
