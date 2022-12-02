@@ -66,6 +66,10 @@ describe('augmenters', function () {
       myOtherMutation: MyType
     }
 
+    type Subscription {
+      mySubscription(input: ID): MyType
+    }
+
     input MyInput {
       inputOne: String
       inputTwo: Int
@@ -122,6 +126,11 @@ describe('augmenters', function () {
   def('mutationArgDocumentedDefault', true)
   def('hideMutationsWithUndocumentedReturnType', true)
 
+  def('subscriptionsDocumentedDefault', true)
+  def('subscriptionDocumentedDefault', true)
+  def('subscriptionArgDocumentedDefault', true)
+  def('hideSubscriptionsWithUndocumentedReturnType', true)
+
   def('introspectionOptionsBase', () => {
     const base = {
       metadata: $.doMetadata,
@@ -160,6 +169,12 @@ describe('augmenters', function () {
       mutationArgDocumentedDefault: $.mutationArgDocumentedDefault,
       hideMutationsWithUndocumentedReturnType:
         $.hideMutationsWithUndocumentedReturnType,
+
+      subscriptionsDocumentedDefault: $.subscriptionsDocumentedDefault,
+      subscriptionDocumentedDefault: $.subscriptionDocumentedDefault,
+      subscriptionArgDocumentedDefault: $.subscriptionArgDocumentedDefault,
+      hideSubscriptionsWithUndocumentedReturnType:
+        $.hideSubscriptionsWithUndocumentedReturnType,
     }
 
     base.microfiberOptions = introspectionOptionsToMicrofiberOptions(base)
@@ -806,7 +821,7 @@ describe('augmenters', function () {
     def('metadataBase', () => ({
       OBJECT: {
         MyType: {
-          // Should have no impact, example-wise
+          // Should have an impact, example-wise
           metadata: $.theMetadata,
           fields: {
             myField: {
@@ -838,6 +853,20 @@ describe('augmenters', function () {
           metadata: $.theMetadata,
           fields: {
             myMutation: {
+              metadata: $.theMetadata,
+              args: {
+                myArg: {
+                  metadata: $.theMetadata,
+                },
+              },
+            },
+          },
+        },
+        Subscription: {
+          // Should have no impact, example-wise
+          metadata: $.theMetadata,
+          fields: {
+            myQuery: {
               metadata: $.theMetadata,
               args: {
                 myArg: {
@@ -879,10 +908,9 @@ describe('augmenters', function () {
       const response = $.response
       expect(response).to.not.eql(responseBefore)
 
-      // No top-level examples, even if ther was something in the metadata for them
       expect($.introspectionManipulator.getType({ name: 'MyType' }))
         .to.be.an('object')
-        .that.does.not.have.any.keys('example')
+        .that.does.have.any.keys('example')
       expect(
         $.introspectionManipulator.getType({
           name: 'MyInput',
@@ -890,11 +918,17 @@ describe('augmenters', function () {
         })
       )
         .to.be.an('object')
-        .that.does.not.have.any.keys('example')
+        .that.does.have.any.keys('example')
+
+      // No top-level examples, even if ther was something in the metadata for them
       expect($.introspectionManipulator.getType({ name: 'Query' }))
         .to.be.an('object')
         .that.does.not.have.any.keys('example')
       expect($.introspectionManipulator.getType({ name: 'Mutation' }))
+        .to.be.an('object')
+        .that.does.not.have.any.keys('example')
+
+      expect($.introspectionManipulator.getType({ name: 'Subscription' }))
         .to.be.an('object')
         .that.does.not.have.any.keys('example')
 

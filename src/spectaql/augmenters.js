@@ -306,6 +306,7 @@ export function addExamples(args = {}) {
 
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
+  const subscriptionType = introspectionManipulator.getSubscriptionType()
 
   for (const type of types) {
     // Don't mess with reserved GraphQL types at all
@@ -313,16 +314,19 @@ export function addExamples(args = {}) {
       continue
     }
 
-    handleExamples({ type, isType: true })
-
-    const isQueryOrMutation =
+    const isQueryOrMutationOrSubscription =
       !!(queryType && typesAreSame(type, queryType)) ||
-      !!(mutationType && typesAreSame(type, mutationType))
+      !!(mutationType && typesAreSame(type, mutationType)) ||
+      !!(subscriptionType && typesAreSame(type, subscriptionType))
+
+    if (!isQueryOrMutationOrSubscription) {
+      handleExamples({ type })
+    }
 
     for (const field of type.fields || []) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
       // queries or mutations, and we don't support that.
-      if (!isQueryOrMutation) {
+      if (!isQueryOrMutationOrSubscription) {
         handleExamples({ type, field })
       }
 
