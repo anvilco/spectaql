@@ -10,6 +10,12 @@ spectaql:
   # Default: false
   oneFile: false
 
+  # Optional path to the target build directory.
+  # Set to null to not write the output to the filesystem, making it only available via the API (default: public)
+  #
+  # Default: public
+  targetDir: path/to/output
+
   # Optional path to an image to use as the logo in the top-left of the output
   logoFile: path/to/logo.png
   # Optional boolean indicating whether to preserve the filname of the logo provided.

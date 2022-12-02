@@ -2850,7 +2850,7 @@ grunt-contrib-watch@^1.1.0:
 "grunt-embed@file:vendor/grunt-embed":
   version "1.0.0"
   dependencies:
-    resource-embedder "file:../../../Library/Caches/Yarn/v6/npm-grunt-embed-1.0.0-56e1a5a0-55d3-4318-8fca-d81d8019e4d4-1669846575439/node_modules/resource-embedder"
+    resource-embedder "file:../../../Library/Caches/Yarn/v6/npm-grunt-embed-1.0.0-4666abca-312d-4891-9847-ebbd85f26f68-1669930110227/node_modules/resource-embedder"
 
 grunt-known-options@~2.0.0:
   version "2.0.0"
@@ -3790,7 +3790,7 @@ node-releases@^2.0.6:
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.6.tgz#8a7088c63a55e493845683ebf3c828d8c51c5503"
   integrity sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==
 
-nodemon@^2.0.15:
+nodemon@^2.0.20:
   version "2.0.20"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.20.tgz#e3537de768a492e8d74da5c5813cb0c7486fc701"
   integrity sha512-Km2mWHKKY5GzRg6i1j5OxOHQtuvVsgskLfigG25yTtbyfRGn/GNvIbRyOf1PSCKJ2aT/58TiuUsuOU5UToVViw==
@@ -4403,7 +4403,7 @@ resolve@^1.10.1, resolve@^1.14.2, resolve@^1.19.0, resolve@^1.9.0:
     graceful-fs "~2.0.2"
     htmlparser2 "~3.5.0"
     lodash "^4.17.21"
-    reorient-css "file:../../../Library/Caches/Yarn/v6/npm-resource-embedder-1.0.0-c0fca841-83e3-4820-a258-e288d7ef0e78-1669846575441/node_modules/reorient-css"
+    reorient-css "file:../../../Library/Caches/Yarn/v6/npm-resource-embedder-1.0.0-e74f7a06-6b03-44c1-b434-7779a66f7117-1669930110233/node_modules/reorient-css"
 
 restore-cursor@^3.1.0:
   version "3.1.0"
