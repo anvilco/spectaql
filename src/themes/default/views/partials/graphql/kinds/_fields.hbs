@@ -19,7 +19,7 @@
         <td>
           {{! The Description column }}
           {{#if description}}
-            {{md (interpolateReferences description) stripParagraph=true}}
+            {{>graphql/_description-with-defaults}}
           {{/if}}
           {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
             <span class="deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>

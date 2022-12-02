@@ -18,16 +18,7 @@
             </td>
             <td>
               {{! The Description column }}
-              {{ md (
-                  concat
-                    (interpolateReferences description)
-                    (ternary defaultValue
-                      (concat "Default = "  (codify defaultValue))
-                      ""
-                    )
-                  joiner=". " filterFalsy=true
-                ) stripParagraph=true
-              }}
+              {{>graphql/_description-with-defaults}}
             </td>
           </tr>
         {{/each}}
