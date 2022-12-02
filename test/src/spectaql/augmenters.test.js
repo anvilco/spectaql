@@ -68,6 +68,7 @@ describe('augmenters', function () {
 
     type Subscription {
       mySubscription(input: ID): MyType
+      myOtherSubscription: MyType
     }
 
     input MyInput {
@@ -569,7 +570,7 @@ describe('augmenters', function () {
       })
     })
 
-    describe('Queries and Mutations', function () {
+    describe('Queries, Mutations and Subscriptions', function () {
       afterEach(() => {
         // Make sure it does not mess up Types
         expect($.introspectionManipulator.getAllTypes({}))
@@ -588,13 +589,21 @@ describe('augmenters', function () {
         expect(
           $.introspectionManipulator.getMutation({ name: 'myOtherMutation' })
         ).to.be.ok
+        expect(
+          $.introspectionManipulator.getSubscription({ name: 'mySubscription' })
+        ).to.be.ok
       })
 
       // Tests for top-level "should we document this at all" options
       ;[
-        ['queriesDocumentedDefault', 'Query', 'Mutation'],
-        ['mutationsDocumentedDefault', 'Mutation', 'Query'],
-      ].forEach(([option, thing, otherThing]) => {
+        ['queriesDocumentedDefault', 'Query', ['Mutation', 'Subscription']],
+        ['mutationsDocumentedDefault', 'Mutation', ['Query', 'Subscription']],
+        [
+          'subscriptionsDocumentedDefault',
+          'Subscription',
+          ['Query', 'Mutation'],
+        ],
+      ].forEach(([option, thing, otherThings]) => {
         context(`${option} is false`, function () {
           def(option, false)
 
@@ -604,9 +613,10 @@ describe('augmenters', function () {
             expect(response).to.not.eql(responseBefore)
 
             expect($.introspectionManipulator[`get${thing}Type`]()).to.not.be.ok
-            expect(
-              $.introspectionManipulator[`get${otherThing}Type`]()
-            ).to.be.ok
+            for (const otherThing of otherThings) {
+              expect($.introspectionManipulator[`get${otherThing}Type`]()).to.be
+                .ok
+            }
           })
         })
       })
@@ -616,29 +626,40 @@ describe('augmenters', function () {
         [
           'queryDocumentedDefault',
           'Query',
-          'Mutation',
+          ['Mutation', 'Subscription'],
           'myOtherQuery',
-          'myMutation',
+          ['myMutation', 'mySubscription'],
         ],
         [
           'mutationDocumentedDefault',
           'Mutation',
-          'Query',
+          ['Query', 'Subscription'],
           'myOtherMutation',
-          'myQuery',
+          ['myQuery', 'mySubscription'],
+        ],
+        [
+          'subscriptionDocumentedDefault',
+          'Subscription',
+          ['Query', 'Mutation'],
+          'myOtherSubscription',
+          ['myQuery', 'myMutation'],
         ],
       ].forEach(
-        ([option, thing, otherThing, exceptionName, otherThingTest]) => {
+        ([option, thing, otherThings, exceptionName, otherThingsTest]) => {
           context(`${option} is false`, function () {
             def(option, false)
 
             afterEach(() => {
-              // Make sure that at least 1 thing from the other thing is OK
-              expect(
-                $.introspectionManipulator[`get${otherThing}`]({
-                  name: otherThingTest,
-                })
-              ).to.be.ok
+              for (let i = 0; i < otherThings.length; i++) {
+                const otherThing = otherThings[i]
+                const otherThingTest = otherThingsTest[i]
+                // Make sure that at least 1 thing from the other thing is OK
+                expect(
+                  $.introspectionManipulator[`get${otherThing}`]({
+                    name: otherThingTest,
+                  })
+                ).to.be.ok
+              }
             })
 
             it(`does not show any ${thing}s`, function () {
@@ -648,7 +669,7 @@ describe('augmenters', function () {
 
               const thingType = $.introspectionManipulator[`get${thing}Type`]()
               const otherThingType =
-                $.introspectionManipulator[`get${otherThing}Type`]()
+                $.introspectionManipulator[`get${otherThings[0]}Type`]()
 
               // Both things should be there
               expect(thingType).to.be.ok
@@ -678,7 +699,7 @@ describe('augmenters', function () {
                   const thingType =
                     $.introspectionManipulator[`get${thing}Type`]()
                   const otherThingType =
-                    $.introspectionManipulator[`get${otherThing}Type`]()
+                    $.introspectionManipulator[`get${otherThings[0]}Type`]()
 
                   // Both things should be there
                   expect(thingType).to.be.ok
@@ -911,6 +932,7 @@ describe('augmenters', function () {
       expect($.introspectionManipulator.getType({ name: 'MyType' }))
         .to.be.an('object')
         .that.does.have.any.keys('example')
+
       expect(
         $.introspectionManipulator.getType({
           name: 'MyInput',
