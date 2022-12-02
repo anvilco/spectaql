@@ -125,7 +125,7 @@ function handleItem(
   } else {
     // It's a definition
     anchorPrefix = 'definition'
-    addDefinitionToItem({
+    addThingsToDefinitionItem({
       item,
       introspectionResponse,
       graphQLSchema,
@@ -229,17 +229,20 @@ function _addQueryToItem({
   }
 }
 
-function addDefinitionToItem({
+function addThingsToDefinitionItem({
   item,
   introspectionResponse,
   graphQLSchema,
   extensions,
   // allOptions,
 }) {
-  item.example = generateIntrospectionTypeExample({
-    type: item,
-    introspectionResponse,
-    graphQLSchema,
-    extensions,
-  })
+  // Only if not already present
+  if (typeof item.example === 'undefined') {
+    item.example = generateIntrospectionTypeExample({
+      type: item,
+      introspectionResponse,
+      graphQLSchema,
+      extensions,
+    })
+  }
 }
