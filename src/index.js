@@ -71,6 +71,7 @@ const spectaqlDirectiveDefault = Object.freeze({
   enable: true,
   directiveName: 'spectaql',
   optionsTypeName: 'SpectaQLOption',
+  onlyAddIfMissing: true,
 })
 
 const introspectionOptionDefaults = Object.freeze({

@@ -76,10 +76,33 @@ function processDirective(directive) {
   }, {})
 }
 
-export function generateSpectaqlDirectiveSupport(
-  spectaqlDirectiveOptions = {}
-) {
+export function generateSpectaqlDirectiveSupport({
+  options: spectaqlDirectiveOptions = {},
+  userSdl = '',
+} = {}) {
   const directables = []
+
+  const {
+    onlyAddIfMissing,
+    directiveName = DEFAULT_DIRECTIVE_NAME,
+    optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
+  } = spectaqlDirectiveOptions
+
+  let { directiveSdl, optionsSdl } = spectaqlDirectiveOptions
+
+  if (
+    !directiveSdl &&
+    (!userSdl.includes(`directive @${directiveName}`) || !onlyAddIfMissing)
+  ) {
+    directiveSdl = generateSpectaqlSdl(spectaqlDirectiveOptions)
+  }
+
+  if (
+    !optionsSdl &&
+    (!userSdl.includes(`input ${optionsTypeName}`) || !onlyAddIfMissing)
+  ) {
+    optionsSdl = generateOptionsSdl(spectaqlDirectiveOptions)
+  }
 
   function typeHandler(type, schema, mapperKind) {
     const directive = getDirective(schema, type, 'spectaql')?.[0]
@@ -154,13 +177,6 @@ export function generateSpectaqlDirectiveSupport(
       configHandler(...args, MapperKind.ARGUMENT),
     // [MapperKind.DIRECTIVE]: (...args) => configHandler(...args, MapperKind.DIRECTIVE),
   }
-
-  const {
-    directiveName = DEFAULT_DIRECTIVE_NAME,
-    directiveSdl = generateSpectaqlSdl(spectaqlDirectiveOptions),
-    optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-    optionsSdl = generateOptionsSdl(spectaqlDirectiveOptions),
-  } = spectaqlDirectiveOptions
 
   return {
     directables,
