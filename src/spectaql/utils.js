@@ -1,6 +1,10 @@
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
+import tmp from 'tmp'
+
+// Ensures temporary files are cleaned up on program close, even if errors are encountered.
+tmp.setGracefulCleanup()
 
 const cwd = process.cwd()
 
@@ -8,6 +12,17 @@ const cwd = process.cwd()
 const numDirsToRoot = 2
 
 export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
+
+export const TMP_PREFIX = 'spectaqltmp-'
+
+export function tmpFolder(options = {}) {
+  const { unsafeCleanup = true, prefix = TMP_PREFIX } = options
+
+  return tmp.dirSync({
+    unsafeCleanup,
+    prefix,
+  }).name
+}
 
 export function takeDefaultExport(mojule) {
   return mojule?.default ? mojule.default : mojule

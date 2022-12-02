@@ -1,4 +1,5 @@
 import * as loadYaml from 'dist/lib/loadYaml'
+import { TMP_PREFIX } from 'dist/spectaql/utils'
 const rewire = require('rewire')
 const index = rewire('dist/index')
 
@@ -95,7 +96,9 @@ describe('index', function () {
         })
 
         // A temp dir
-        expect(options.targetDir.startsWith('/var/')).to.be.true
+        expect(
+          options.targetDir.split('/').pop().startsWith(TMP_PREFIX)
+        ).to.be.true
         expect(options.themeDir.endsWith('my-custom-theme')).to.be.true
 
         // Not a path
@@ -129,7 +132,9 @@ describe('index', function () {
           })
 
           // A temp dir
-          expect(options.targetDir.startsWith('/var/')).to.be.true
+          expect(
+            options.targetDir.split('/').pop().startsWith(TMP_PREFIX)
+          ).to.be.true
           expect(options.themeDir.endsWith('my-custom-theme-yo-yo')).to.be.true
         })
       })

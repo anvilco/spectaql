@@ -11,6 +11,8 @@ import {
   generateOptionsSdl,
 } from 'spectaql'
 
+import { TMP_PREFIX } from 'spectaql/dist/spectaql/utils.js'
+
 console.warn('Trying on Node ' + process.version)
 
 assert(typeof run === 'function')
@@ -87,8 +89,7 @@ assert(resolvedOptions.targetDir.endsWith('/public'))
 
   resolvedOptions = resolveOptionsFunction(options)
   // A tmp directory
-  console.log(resolvedOptions.targetDir)
-  assert(resolvedOptions.targetDir.startsWith('/var/'))
+  assert(resolvedOptions.targetDir.split('/').pop().startsWith(TMP_PREFIX))
 
   result = run(resolvedOptions)
   assert(result instanceof Promise)
