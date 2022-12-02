@@ -1,5 +1,7 @@
 # This config will not run "as-is" and will need to be modified. You can see a minimal working
 # config in /examples/config.yml
+#
+# Environment variable substitution will be performed by SpectaQL on all strings encountered
 
 spectaql:
   # Optional Boolean indicating whether to omit the HTML <body/> and generate the documentation content only

@@ -121,6 +121,8 @@ That config will direct a build that flexes the most interesting parts of Specta
 
 To generate your documentation, SpectaQL requires a configuration YAML. This file is where you can specify most of the options to make your output the way you'd like it. All the supported options and their descriptions can be found in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file.
 
+Environment variable substitution will be performed, so feel free to use environment variables in your config.
+
 You can also see a minimal-ish working example YAML in the [examples/config.yml](https://github.com/anvilco/spectaql/blob/master/examples/config.yml) file.
 
 ## Command Line Options

@@ -1,8 +1,0 @@
-- Drops support for Node 12
-- Requires `npm >= 7`
-- `headers` CLI option is now `-H` instead of `-A`
-- Dropped support for accidental `queryNameStategy` option. 🤦
-- No external fonts are loaded in the include themes, so the `loadExternalFont` option goes away.
-- `run` and `loadData` commands are now asynchronous and return a promise.
-- `Subscriptions` are now listed under `Operations` alongside `Queries` and `Mutations` in the default theme.
-- 
