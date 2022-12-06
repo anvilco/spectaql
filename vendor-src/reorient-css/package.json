@@ -36,10 +36,10 @@
     "!**/.DS_Store"
   ],
   "dependencies": {
-    "mocha": "^10.1.0",
     "postcss": "^7.0.36"
   },
   "devDependencies": {
+    "mocha": "^10.1.0",
     "chai": "~1.9.0"
   }
 }
