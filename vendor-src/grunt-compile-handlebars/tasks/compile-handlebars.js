@@ -9,9 +9,9 @@
 'use strict';
 
 module.exports = function(grunt) {
-  var _merge = require('lodash.merge');
-  var _toArray = require('lodash.toarray');
-  var alce = require('alce');
+  var _merge = require('lodash/merge');
+  var _toArray = require('lodash/toArray');
+  var JSON5 = require('json5');
   var path = require('path');
   var handlebarsPath;
   var handlebars;
@@ -42,10 +42,10 @@ module.exports = function(grunt) {
 
     // `data` isn't an object, so its probably a file
     try {
-      // alce allows us to parse single-quote JSON (which is tehcnically invalid, and thereby chokes JSON.parse)
+      // JSON5 allows us to parse single-quote JSON (which is tehcnically invalid, and thereby chokes JSON.parse)
       data = grunt.file.read(data);
       if (!dontParse) {
-        data = alce.parse(data);
+        data = JSON5.parse(data);
       }
     }
     catch (e) {}
@@ -187,7 +187,8 @@ module.exports = function(grunt) {
     var done = this.async();
 
     handlebarsPath = config.handlebars ? path.resolve(config.handlebars) : 'handlebars';
-    handlebars = require(handlebarsPath);
+    // Create a new instance so that we don't clobber our old defs when tasks are re-run
+    // in the same process lifetime
     handlebars = require(handlebarsPath).create();
 
     helpers.forEach(function(helper) {
