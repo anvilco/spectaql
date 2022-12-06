@@ -42,19 +42,19 @@
     "!**/.DS_STORE",
     "!**/.DS_Store"
   ],
-  "dependencies": {
-    "alce": "^1.0.0",
-    "handlebars": ">= 1",
-    "lodash.merge": "^4.6.2",
-    "lodash.toarray": "^3.0.0"
-  },
   "devDependencies": {
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-jshint": "~0.2.0",
-    "grunt-contrib-nodeunit": "~0.2.0"
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "handlebars": ">= 4",
+    "json5": "^2.2.0",
+    "lodash": "^4.17.12"
   },
   "peerDependencies": {
-    "grunt": ">=0.4.0"
+    "grunt": "^1.5.3",
+    "handlebars": ">= 4",
+    "json5": "^2.2.0",
+    "lodash": "^4.17.12"
   }
 }

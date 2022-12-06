@@ -6,7 +6,7 @@
   Licensed under the MIT license.
 ###
 
-ResourceEmbedder = require 'resource-embedder'
+ResourceEmbedder = require '../../resource-embedder'
 path = require 'path'
 
 module.exports = (grunt) ->

@@ -348,10 +348,14 @@ export const run = async function (cliOptions = {}) {
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-connect')
-  grunt.loadNpmTasks('grunt-compile-handlebars')
-  grunt.loadNpmTasks('grunt-prettify')
   grunt.loadNpmTasks('grunt-sass')
-  grunt.loadNpmTasks('grunt-embed')
+
+  // These are the "local" grunt tasks that we maintain
+  grunt.loadTasks(
+    normalizePathFromRoot('vendor/grunt-compile-handlebars/tasks')
+  )
+  grunt.loadTasks(normalizePathFromRoot('vendor/grunt-prettify/tasks'))
+  grunt.loadTasks(normalizePathFromRoot('vendor/grunt-embed/tasks'))
 
   process.chdir(cwd)
 
