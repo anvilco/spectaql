@@ -350,6 +350,7 @@ export const run = async function (cliOptions = {}) {
   grunt.loadNpmTasks('grunt-contrib-connect')
   grunt.loadNpmTasks('grunt-sass')
 
+  // These are the "local" grunt tasks that we maintain
   grunt.loadTasks(
     normalizePathFromRoot('vendor/grunt-compile-handlebars/tasks')
   )
