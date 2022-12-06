@@ -1,1 +1,1 @@
-console.log('A tiny one-line script')
+console.log('A tiny one-line script');

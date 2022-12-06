@@ -12,7 +12,7 @@ expectedFilePath = path.resolve(path.join(__dirname, '../temp/expected/messy.htm
 
 exports['resource-embedder'] = (test) ->
   test.expect 3
-
+  
   wrench.copyDirSyncRecursive(
     path.join(__dirname, 'fixtures'),
     path.join(__dirname, '../temp'),
