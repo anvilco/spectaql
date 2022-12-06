@@ -9,7 +9,7 @@
 parseFileSize = require './parse-file-size'
 fs = require 'fs'
 path = require 'path'
-reorientCSS = require 'reorient-css'
+reorientCSS = require '../../reorient-css'
 
 module.exports = class Resource
   constructor: (@tagName, @attributes, @options) ->
