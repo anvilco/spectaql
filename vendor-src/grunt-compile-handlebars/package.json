@@ -43,10 +43,7 @@
     "!**/.DS_Store"
   ],
   "dependencies": {
-    "alce": "^1.0.0",
-    "handlebars": ">= 1",
-    "lodash.merge": "^4.6.2",
-    "lodash.toarray": "^3.0.0"
+    "handlebars": ">= 4"
   },
   "devDependencies": {
     "grunt": "^1.5.3",
@@ -55,6 +52,8 @@
     "grunt-contrib-nodeunit": "~0.2.0"
   },
   "peerDependencies": {
-    "grunt": ">=0.4.0"
+    "grunt": "^1.5.3",
+    "json5": "^2.2.0",
+    "lodash": "^4.17.12"
   }
 }

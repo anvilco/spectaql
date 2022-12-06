@@ -96,7 +96,7 @@ module.exports = function(grunt) {
         }],
         templateData: ['test/fixtures/deep/romanian.json', 'test/fixtures/deep/german.json'],
         helpers: ['test/helpers/super_helper.js'],
-        partials: ['test/fixtures/deep/shared/foo.handlebars']
+        partials: ['test/fixtures/partials/foo.handlebars']
       },
       globbedTemplateAndOutput: {
         files: [{
@@ -108,7 +108,7 @@ module.exports = function(grunt) {
         }],
         templateData: 'test/fixtures/deep/**/*.json',
         helpers: 'test/helpers/**/*.js',
-        partials: 'test/fixtures/deep/shared/**/*.handlebars'
+        partials: 'test/fixtures/partials/**/*.handlebars'
       },
       globalJsonGlobbedTemplate: {
         files: [{
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
         }],
         templateData: 'test/fixtures/deep/**/*.json',
         helpers: 'test/helpers/**/*.js',
-        partials: 'test/fixtures/deep/shared/**/*.handlebars',
+        partials: 'test/fixtures/partials/**/*.handlebars',
         globals: [
           'test/globals/info.json',
           'test/globals/textspec.json',
@@ -133,7 +133,7 @@ module.exports = function(grunt) {
       },
       registerFullPath: {
         files: [{
-            src: '<h1>{{salutation}}{{punctuation}} {{location}}</h1>{{> test/fixtures/deep/shared/pathTest}}',
+            src: '<h1>{{salutation}}{{punctuation}} {{location}}</h1>{{> test/fixtures/partials/pathTest}}',
             dest: 'tmp/fullPath.html'
         }],
         templateData: {
@@ -141,7 +141,7 @@ module.exports = function(grunt) {
           "punctuation": ",",
           "location": "Welt"
         },
-        partials: 'test/fixtures/deep/shared/**/*.handlebars',
+        partials: 'test/fixtures/partials/**/*.handlebars',
         registerFullPath: true
       },
       concatGlobbed: {
@@ -149,7 +149,9 @@ module.exports = function(grunt) {
           src: 'test/fixtures/deep/**/*.handlebars',
           dest: 'tmp/concatGlobbed.html'
         }],
-        templateData: 'test/fixtures/deep/**/*.json'
+        templateData: 'test/fixtures/deep/**/*.json',
+        helpers: 'test/helpers/**/*.js',
+        partials: 'test/fixtures/partials/**/*.handlebars'
       },
       oneTemplateToManyOutputs: {
         files: [{
