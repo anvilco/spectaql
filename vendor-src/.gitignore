@@ -1,2 +1,6 @@
 # Used during development to deterine if these vendor packages need to be rebuilt
 .spectaql-cache
+
+node_modules
+yarn.lock
+package-lock.json
