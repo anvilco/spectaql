@@ -93,7 +93,7 @@
     "commander": "^9.1.0",
     "fast-glob": "^3.2.12",
     "foundation-sites": "^6.7.2",
-    "graceful-fs": "~2.0.2",
+    "graceful-fs": "~4.2.10",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.15.0",
     "grunt": "^1.5.3",
