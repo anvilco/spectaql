@@ -1,6 +1,6 @@
 dist/
 vendor/
-public
+public/
 node_modules
 scratch
 

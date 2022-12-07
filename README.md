@@ -171,7 +171,7 @@ Here's what you need to know:
 { key: String!, value: String! }
 ```
 - All the `value` fields should be provided as strings, and they will be appropriately parsed based on the supported value of the `key` field.
-- SpectaQL does not need you to add the definition of the `spectaql` directive, nor its `SpectaQLOption` input type to your SDL. They will be added (and removed) by SpectaQL automatically if you enable the feature. However, if you are using that same SDL to create an executable schema, you will need to add the directive and options definitions.
+- SpectaQL does not need you to add the definition of the `spectaql` directive, nor its `SpectaQLOption` input type to your SDL. They will be added (and removed) by SpectaQL automatically if you enable the feature. However, if you are using that same SDL to create an executable schema, you will need to add the directive and options definitions for your server to not complain.
 - The directive can be added to your SDL anywhere that directives are supported by GraphQL SDL syntax, but they may only have an impact on the areas that SpectaQL supports.
 
 The directive-related SDL is:

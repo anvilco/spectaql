@@ -1,1 +1,2 @@
+# Used during development to deterine if these vendor packages need to be rebuilt
 .spectaql-cache

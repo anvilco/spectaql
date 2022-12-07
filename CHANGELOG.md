@@ -1,12 +1,13 @@
 ### 2.0.0
-  - BREAKING CHANGE: Drops support for Node 12. Requires Node `>=14`
-  - BREAKING CHANGE: Requires `npm >= 7`
+  - BREAKING CHANGE: Drops support for Node 12. Requires Node `>=14`.
+  - BREAKING CHANGE: Requires `npm >= 7`.
   - BREAKING CHANGE: The `run` and `loadData` commands are now asynchronous and return a promise.
-  - Fixes bugs and adds better support for various `example` generation scenarios.
-  - BREAKING CHANGE: `Subscriptions` are now listed under `Operations` alongside `Queries` and `Mutations` in the default theme.
-  - BREAKING CHANGE: No external fonts are loaded in the included themes, so the `loadExternalFont` option was removed.
+  - Fixes myriad bugs.
+  - Adds better support for various `example` generation scenarios.
+  - BREAKING CHANGE: `Subscriptions` are now listed under `Operations`, immediately after `Queries` and `Mutations`, in the default theme.
+  - BREAKING CHANGE: No external fonts can be loaded in the included themes, so the `loadExternalFont` option was removed.
   - `config` yaml will have environment variable substitution performed.
-  - `config` yaml can now be specified as a CLI option, instead of only as the first argument.
+  - `config` yaml can now be specified as a CLI option (`-c` or `--config`), instead of only as the first argument.
   - Themes written as ESM/`.mjs` modules are now supported.
   - BREAKING CHANGE: Accessibility improvements for `<h>` tags deeper than `<h6>` using the `aria-level` attribute.  
   - `embeddable`, `oneFile` and `targetDir` are now options that can be specified in the config yaml (previously was only CLI).
@@ -14,6 +15,7 @@
   - BREAKING CHANGE: `headers` CLI option is now `-H` instead of `-A`
   - Moves a number of unmaintained Grunt dependencies "in-house" so that they can be updated for vulnerabilities and bugs.
   - BREAKING CHANGE: Dropped support for accidental `queryNameStategy` option. 🤦
+  - BREAKING CHANGE: Expects `node 16` when cloning and developing on this repo.
 
 ### 1.5.9
 - Updated dependencies.
