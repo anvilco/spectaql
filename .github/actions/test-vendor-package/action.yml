@@ -1,0 +1,19 @@
+## https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+name: 'Test Vendor Package'
+description: 'Run tests on one of our vendor packages'
+
+inputs:
+  package_name:
+    description: The name of the vendor package
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Install things
+      shell: bash
+      run: yarn --cwd vendor-src/${{ inputs.package_name }} install
+
+    - name: Test things
+      shell: bash
+      run: yarn --cwd vendor-src/${{ inputs.package_name }} test
