@@ -63,7 +63,7 @@ jobs:
       with:
         # We'll cache this file
         path: ${{ env.TARBALL_PATH }}
-        key: ${{ runner.os }}-node-v${{ steps.setup-node.outputs.node-version }}-${{ env.GITHUB_SHA }}
+        key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-${{ env.GITHUB_SHA }}
 
 
     - run: yarn install
@@ -119,7 +119,7 @@ jobs:
       with:
         # This is the file to cache / restore
         path: ${{ env.TARBALL_PATH }}
-        key: ${{ runner.os }}-node-v${{ steps.setup-node.outputs.node-version }}-${{ env.GITHUB_SHA }}
+        key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-${{ env.GITHUB_SHA }}
 
     # Node 14 ships with a version of NPM that does not work for us
     - name: Optionally update NPM if needed
