@@ -4,10 +4,10 @@
   "description": "e2e tester",
   "main": "index.js",
   "scripts": {
-    "prep": "yarn clean-cache && yarn remove-files",
+    "prep": "npm run clean-cache && yarn remove-files",
     "remove-files": "rm -rf yarn.lock node_modules/spectaql",
     "clean-cache": "rm -rf $(yarn cache dir)/.tmp",
-    "test": "yarn node alive.mjs ./config.yml"
+    "test": "node alive.mjs ./config.yml"
   },
   "author": "",
   "license": "ISC",
