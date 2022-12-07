@@ -1,3 +1,6 @@
+### 2.0.1
+  - All lifecycle scripts only use `npm` (never `yarn`).
+
 ### 2.0.0
   - BREAKING CHANGE: Drops support for Node 12. Requires Node `>=14`.
   - BREAKING CHANGE: Requires `npm >= 7`.
