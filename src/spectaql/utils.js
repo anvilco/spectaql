@@ -1,6 +1,10 @@
 import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
+import tmp from 'tmp'
+
+// Ensures temporary files are cleaned up on program close, even if errors are encountered.
+tmp.setGracefulCleanup()
 
 const cwd = process.cwd()
 
@@ -8,6 +12,35 @@ const cwd = process.cwd()
 const numDirsToRoot = 2
 
 export const pathToRoot = path.resolve(__dirname, '../'.repeat(numDirsToRoot))
+
+export const TMP_PREFIX = 'spectaqltmp-'
+
+export function tmpFolder(options = {}) {
+  const { unsafeCleanup = true, prefix = TMP_PREFIX } = options
+
+  return tmp.dirSync({
+    unsafeCleanup,
+    prefix,
+  }).name
+}
+
+export function takeDefaultExport(mojule) {
+  return mojule?.default ? mojule.default : mojule
+}
+
+export async function dynamicImport(path) {
+  const mojule = await import(path)
+  // Some babelizing oddities result in a nested export structure sometimes, so let's
+  // normalize that
+  if (
+    mojule.__esModule === true &&
+    mojule.default?.default &&
+    Object.keys(mojule).length === 2
+  ) {
+    return mojule.default
+  }
+  return mojule
+}
 
 function normalizePathFn(pth, { start = cwd } = {}) {
   if (!path.isAbsolute(pth)) {
@@ -166,4 +199,15 @@ export function upperCase(string) {
 
 export function lowerCase(string) {
   return string.toLowerCase()
+}
+
+export function isUndef(thing) {
+  return typeof thing === 'undefined'
+}
+
+export function firstNonUndef(array) {
+  if (!Array.isArray(array)) {
+    return
+  }
+  return array.find((item) => !isUndef(item))
 }

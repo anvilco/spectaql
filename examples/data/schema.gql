@@ -1,10 +1,13 @@
+directive @spectaql(options: [SpectaQLOption]) on QUERY | MUTATION | SUBSCRIPTION | FIELD | FRAGMENT_DEFINITION | FRAGMENT_SPREAD | INLINE_FRAGMENT | VARIABLE_DEFINITION | SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE | UNION | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+input SpectaQLOption { key: String!, value: String! }
+
 "This is a `DateTime` scalar"
 scalar DateTime
 
 "This is a Phone"
 scalar PhoneNumber
 
-scalar URL
+scalar URL @spectaql(options: [{key: "example", value: "https://work.com" }])
 scalar JSON
 scalar JSONObject
 scalar Void
@@ -17,7 +20,7 @@ interface Node {
 }
 
 "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-type SimpleTypeOne implements Node {
+type SimpleTypeOne implements Node @spectaql(options: [{key: "example", value: "{\"id\": \"123\", \"myType\":[{\"id\": \"myTypeId\", \"name\": \"myTypeName\"}]}" }, {key: "undocumented", value: "false" }]) {
   id: String!
   "`Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
   myType: [MyType!]!

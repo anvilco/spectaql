@@ -1,6 +1,5 @@
 import path from 'path'
 import _ from 'lodash'
-import tmp from 'tmp'
 import grunt from 'grunt'
 
 import pkg from '../package.json'
@@ -10,6 +9,7 @@ import {
   normalizePathFromCwd,
   pathToRoot,
   readTextFile,
+  tmpFolder,
   writeTextFile,
 } from './spectaql/utils'
 
@@ -24,9 +24,6 @@ export { default as parseCliOptions } from './cli'
 const defaultAppDir = normalizePathFromRoot('dist')
 let spectaql = require(path.resolve(defaultAppDir, 'spectaql/index'))
 let gruntConfigFn
-
-// Ensures temporary files are cleaned up on program close, even if errors are encountered.
-tmp.setGracefulCleanup()
 
 //*********************************************************************
 //
@@ -56,17 +53,15 @@ const defaults = Object.freeze({
   gruntConfigFile: normalizePathFromRoot('dist/lib/gruntConfig.js'),
   themeDir: defaultThemeDir,
   defaultThemeDir,
-  cacheDir: tmp.dirSync({
-    unsafeCleanup: true,
-    prefix: 'spectaql-',
-  }).name,
-  oneFile: false,
+  cacheDir: tmpFolder(),
   specData: {},
 })
 
 // Things that may get set from either the CLI or the YAML.spectaql area, but if nothing
 // is set, then use these:
 const spectaqlOptionDefaults = Object.freeze({
+  oneFile: false,
+  embeddable: false,
   errorOnInterpolationReferenceNotFound: true,
   displayAllServers: false,
   resolveWithOutput: true,
@@ -76,6 +71,7 @@ const spectaqlDirectiveDefault = Object.freeze({
   enable: true,
   directiveName: 'spectaql',
   optionsTypeName: 'SpectaQLOption',
+  onlyAddIfMissing: true,
 })
 
 const introspectionOptionDefaults = Object.freeze({
@@ -283,6 +279,10 @@ export function resolveOptions(cliOptions) {
   // OK, layer in any defaults that may be set by the CLI and the YAML, but may not have been:
   opts = _.defaults({}, opts, spectaqlOptionDefaults)
 
+  if (!opts.targetDir || opts.targetDir.endsWith('/null')) {
+    opts.targetDir = tmpFolder()
+  }
+
   if (opts.logoFile) {
     // Keep or don't keep the original logoFile name when copying to the target
     opts.logoFileTargetName = opts.preserveLogoName
@@ -312,13 +312,13 @@ export function resolveOptions(cliOptions) {
 /**
  * Run SpectaQL and configured tasks
  **/
-export const run = function (cliOptions = {}) {
+export const run = async function (cliOptions = {}) {
   const opts = resolveOptions(cliOptions)
 
   //
   //= Load the specification and init configuration
 
-  const gruntConfig = gruntConfigFn(grunt, opts, loadData(opts))
+  const gruntConfig = gruntConfigFn(grunt, opts, await loadData(opts))
 
   //
   //= Setup Grunt to do the heavy lifting
@@ -348,10 +348,14 @@ export const run = function (cliOptions = {}) {
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-contrib-copy')
   grunt.loadNpmTasks('grunt-contrib-connect')
-  grunt.loadNpmTasks('grunt-compile-handlebars')
-  grunt.loadNpmTasks('grunt-prettify')
   grunt.loadNpmTasks('grunt-sass')
-  grunt.loadNpmTasks('@anvilco/grunt-embed')
+
+  // These are the "local" grunt tasks that we maintain
+  grunt.loadTasks(
+    normalizePathFromRoot('vendor/grunt-compile-handlebars/tasks')
+  )
+  grunt.loadTasks(normalizePathFromRoot('vendor/grunt-prettify/tasks'))
+  grunt.loadTasks(normalizePathFromRoot('vendor/grunt-embed/tasks'))
 
   process.chdir(cwd)
 
@@ -421,26 +425,21 @@ export const run = function (cliOptions = {}) {
     'prettify',
   ])
 
-  grunt.registerTask('default', [
-    'clean-things',
-    'copy-theme-stuff',
-    'stylesheets',
-    'javascripts',
-    'templates',
-  ])
+  const defaultTasks = []
 
   grunt.registerTask('server', ['connect'])
 
   grunt.registerTask('develop', ['server', 'watch'])
 
   // Reload template data when watch files change
-  grunt.event.on('watch', function () {
+  grunt.event.on('watch', async function () {
     try {
       grunt.config.set(
         'compile-handlebars.compile.templateData',
-        loadData(opts)
+        await loadData(opts)
       )
     } catch (e) {
+      console.error(e)
       grunt.fatal(e)
     }
   })
@@ -478,13 +477,14 @@ export const run = function (cliOptions = {}) {
 
   const copiesToTarget = ['html-to-target']
 
+  let doDevelop = false
   if (opts.startServer) {
-    grunt.task.run('server')
+    defaultTasks.push('server')
   } else {
-    grunt.task.run('clean-things')
-    grunt.task.run('copy-theme-stuff')
+    defaultTasks.push('clean-things')
+    defaultTasks.push('copy-theme-stuff')
 
-    grunt.task.run('stylesheets')
+    defaultTasks.push('stylesheets')
 
     // If not oneFile/embedding JS/CSS, then we'll need to copy the files
     if (!opts.oneFile) {
@@ -492,7 +492,7 @@ export const run = function (cliOptions = {}) {
     }
 
     if (!opts.disableJs) {
-      grunt.task.run('javascripts')
+      defaultTasks.push('javascripts')
 
       // If not oneFile/embedding JS/CSS, then we'll need to copy the files
       if (!opts.oneFile) {
@@ -506,16 +506,16 @@ export const run = function (cliOptions = {}) {
       copiesToTarget.unshift('favicon-to-target')
     }
 
-    grunt.task.run('templates')
+    defaultTasks.push('templates')
 
     // Resolve all the (local) JS and CSS requests and put them into the HTML
     // file itself
     if (opts.oneFile) {
-      grunt.task.run('embed')
+      defaultTasks.push('embed')
     }
 
     copiesToTarget.forEach((flavor) => {
-      grunt.task.run(`copy:${flavor}`)
+      defaultTasks.push(`copy:${flavor}`)
     })
 
     // Delete the entire cache/temp directory
@@ -525,8 +525,16 @@ export const run = function (cliOptions = {}) {
     // I don't know why, but if you drop into this block and run 'develop'
     // then the 'embed' task will not run...and vice versa`
     if (opts.developmentMode || opts.developmentModeLive) {
-      grunt.task.run('develop')
+      doDevelop = true
     }
+  }
+
+  grunt.registerTask('default', defaultTasks)
+  grunt.task.run('default')
+
+  if (doDevelop) {
+    // This one seems to freeze everything else up, so it should be done last
+    grunt.task.run('develop')
   }
 
   grunt.task.start()

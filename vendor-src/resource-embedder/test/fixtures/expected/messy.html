@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+  @font-face {
+    font-family: 'coool';
+    font-style: normal;
+    font-weight: 400;
+    src: url(styles/fonts/coool.woff) format('woff');
+    src:url("styles/fonts/coool.eot?#iefix") format("embedded-opentype"),url("styles/fonts/coool.woff") format("woff"),url("styles/fonts/coool.ttf") format("truetype"),url("styles/fonts/coool.svg#coool") format("svg")
+  }
+  
+  .something {
+    /* filter src should NOT be converted, as it's supposed to be relative to the document already */
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+      src='images/test.jpg',
+      sizingMethod='scale'
+    );
+  
+    background-image: url('images/foo.png');
+    background-image: url('images/bar.png?12345');
+    background-image: url(images/foo.png);
+    background-image: url( images/bar.png  );
+    background-image: url(  
+      images/bar.png
+         )
+  }
+  
+  .another-thing {
+    background-image: url(styles/more-images/bar.jpg?12345);
+    background-image: url( styles/more-images/bar.jpg?12345 );
+    background-image: url( 'styles/more-images/bar.jpg' );
+    background-image: url(
+      styles/more-images/bar.jpg   
+    );
+    background-image  : url(styles/images/thing.jpg);
+  }
+  
+  .other-things {
+    background-image: url(data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+    background-image: url( data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== );
+  }
+  
+  .moar-things {
+    background-image: url(/styles/more-images/thing.jpg);
+    background-image: url(http://i.imgur.com/C5XQm.gif);
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+      src='http://example.com/images/test.jpg',
+      sizingMethod='scale'
+    );
+  }
+  
+  *, *:before, *:after {
+    box-sizing: border-box;
+    /* urls in IE's 'behavior' property should NOT be converted as it's already relative to the document... */
+    
+    /* without hack */
+    behavior: url(scripts/boxsizing.htc);
+    behavior  : url(  scripts/boxsizing.htc  );
+    
+    /* with IE<8 hack */
+    *behavior: url(scripts/boxsizing.htc);
+  }
+  </style>
+
+    <script>
+    window.matchMedia=window.matchMedia||function(a){"use strict";var c,d=a.documentElement,e=d.firstElementChild||d.firstChild,f=a.createElement("body"),g=a.createElement("div");return g.id="mq-test-1",g.style.cssText="position:absolute;top:-100em",f.style.background="none",f.appendChild(g),function(a){return g.innerHTML='&shy;<style media="'+a+'"> #mq-test-1 { width: 42px; }</style>',d.insertBefore(f,e),c=42===g.offsetWidth,d.removeChild(f),{matches:c,media:a}}}(document);
+    alert('hi');
+    </script>
+
+  <script src="scripts/mm.js" data-embed="false"></script>
+
+<title>My stupid test page</title>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+
+<style>body { background: red; }</style>
+<link rel="stylesheet" href="styles/non-existent.css">
+  <link rel="stylesheet" href="styles/tiny.css" data-embed="0">
+<link rel="stylesheet" href="styles/big.css">
+
+<!-- comment -->
+
+</head>
+<body>
+
+<script src="scripts/non-existent.js" data-embed="1"></script>
+  
+  <script src="scripts/log.js" defer></script>
+  <script>console.log('A tiny one-line script');</script>
+  <script src="scripts/log.js" async></script>
+
+<p>Some content here.</p>
+
+      <script>
+      window.matchMedia=window.matchMedia||function(a){"use strict";var c,d=a.documentElement,e=d.firstElementChild||d.firstChild,f=a.createElement("body"),g=a.createElement("div");return g.id="mq-test-1",g.style.cssText="position:absolute;top:-100em",f.style.background="none",f.appendChild(g),function(a){return g.innerHTML='&shy;<style media="'+a+'"> #mq-test-1 { width: 42px; }</style>',d.insertBefore(f,e),c=42===g.offsetWidth,d.removeChild(f),{matches:c,media:a}}}(document);
+      alert('hi');
+      </script>
+
+    <script src="scripts/mm.js" data-embed="50"></script>
+
+<p>Some content here.</p>
+
+      <script src="scripts/big.js"></script>
+
+</body>
+</html>

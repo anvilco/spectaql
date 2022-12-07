@@ -1,0 +1,30 @@
+p {
+  /* should edit */
+  background: url(styles/foo/foo/bar/wow.png);
+  background: url(styles/phone/football.png);
+
+  /* shouldn't edit */
+  background: url(/foo/bar/wow.png);
+  background: url(http://example.com/foo/bar/wow.png);
+}
+
+/* fonts (should edit several url()s in one value) */
+@font-face {
+  font-family: 'coool';
+  font-style: normal;
+  font-weight: 400;
+  src: url(styles/foo/fonts/coool.woff) format('woff');
+  src:url("styles/foo/fonts/coool.eot?#iefix") format("embedded-opentype"),url("styles/foo/fonts/coool.woff") format("woff"),
+      url("styles/foo/fonts/coool.ttf") format("truetype"),url(styles/foo/fonts/coool.svg#coool) format("svg")
+}
+
+/* MSIE "behavior" script URLs - eg, for box-sizing polyfill */
+/* (should not edit; these are always relative to the HTML doc, not the CSS file) */
+*, *:before, *:after {
+  box-sizing: border-box;
+  behavior: url(scripts/boxsizing.htc);
+  behavior: url(/scripts/boxsizing.htc);
+  behavior  : url(  scripts/boxsizing.htc  );
+  *behavior: url(scripts/boxsizing.htc); /* star hack used for IE6-7 */
+  _behavior: url(scripts/boxsizing.htc); /* underscore hack used for IE6 */
+}

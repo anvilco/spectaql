@@ -121,6 +121,8 @@ That config will direct a build that flexes the most interesting parts of Specta
 
 To generate your documentation, SpectaQL requires a configuration YAML. This file is where you can specify most of the options to make your output the way you'd like it. All the supported options and their descriptions can be found in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file.
 
+Environment variable substitution will be performed, so feel free to use environment variables in your config.
+
 You can also see a minimal-ish working example YAML in the [examples/config.yml](https://github.com/anvilco/spectaql/blob/master/examples/config.yml) file.
 
 ## Command Line Options
@@ -169,8 +171,22 @@ Here's what you need to know:
 { key: String!, value: String! }
 ```
 - All the `value` fields should be provided as strings, and they will be appropriately parsed based on the supported value of the `key` field.
-- You do not need to add the definition of the `spectaql` directive, nor its `SpectaQLOption` input type. They will be added (and removed) by SpectaQL automatically if you enable the feature.
+- SpectaQL does not need you to add the definition of the `spectaql` directive, nor its `SpectaQLOption` input type to your SDL. They will be added (and removed) by SpectaQL automatically if you enable the feature. However, if you are using that same SDL to create an executable schema, you will need to add the directive and options definitions.
 - The directive can be added to your SDL anywhere that directives are supported by GraphQL SDL syntax, but they may only have an impact on the areas that SpectaQL supports.
+
+The directive-related SDL is:
+```sdl
+directive @spectaql(options: [SpectaQLOption]) on QUERY | MUTATION | SUBSCRIPTION | FIELD | FRAGMENT_DEFINITION | FRAGMENT_SPREAD | INLINE_FRAGMENT | VARIABLE_DEFINITION | SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE | UNION | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+input SpectaQLOption { key: String!, value: String! }
+````
+
+Or you can generate the required directive SDL programmatically like so:
+```node
+import { generateSpectaqlSdl } from 'spectaql'
+
+const spectaqlSdl = generateSpectaqlSdl()
+// Do something with this SDL
+```
 
 Once enabled, the directive can be used like so:
 ```sdl

@@ -7,3 +7,20 @@ updates:
   open-pull-requests-limit: 10
   reviewers:
   - newhouse
+- package-ecosystem: npm
+  target-branch: 1.x
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  reviewers:
+  - newhouse
+- package-ecosystem: npm
+  target-branch: rc-2-0-0
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  reviewers:
+  - newhouse
+

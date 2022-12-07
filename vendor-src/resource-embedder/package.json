@@ -1,0 +1,55 @@
+{
+  "private": true,
+  "name": "resource-embedder",
+  "version": "1.0.0",
+  "description": "Embeds the contents of external scripts and stylesheets into HTML.",
+  "homepage": "https://github.com/anvilco/resource-embedder",
+  "bugs": "https://github.com/anvilco/resource-embedder/issues",
+  "author": {
+    "name": "Callum Locke",
+    "url": "https://github.com/callumlocke"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anvilco/resource-embedder.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt nodeunit:all --stack"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "index.js",
+    "Gruntfile.coffee",
+    "src/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
+  ],
+  "devDependencies": {
+    "coffeescript": "^2.6.1",
+    "graceful-fs": "~2.0.2",
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.9",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "htmlparser2": "~3.5.0",
+    "lodash": "^4.17.21",
+    "sugar": "~1.4.1",
+    "wrench": "~1.5.4"
+  },
+  "peerDependencies": {
+    "coffeescript": "^2.6.1",
+    "graceful-fs": "~2.0.2",
+    "htmlparser2": "~3.5.0",
+    "lodash": "^4.17.21"
+  }
+}

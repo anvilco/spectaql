@@ -9,7 +9,6 @@ export default function preProcess({
   graphQLSchema,
   extensions = {},
   queryNameStrategy,
-  queryNameStategy,
   allOptions,
 }) {
   handleItems(items, {
@@ -17,7 +16,6 @@ export default function preProcess({
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions,
   })
 }
@@ -31,7 +29,6 @@ function handleItems(
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions,
   } = {}
 ) {
@@ -47,7 +44,6 @@ function handleItems(
       graphQLSchema,
       extensions,
       queryNameStrategy,
-      queryNameStategy,
       allOptions,
     })
   }
@@ -62,7 +58,6 @@ function handleItem(
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions,
   }
 ) {
@@ -90,7 +85,6 @@ function handleItem(
       graphQLSchema,
       extensions,
       queryNameStrategy,
-      queryNameStategy,
       allOptions,
     })
   }
@@ -106,7 +100,6 @@ function handleItem(
       graphQLSchema,
       extensions,
       queryNameStrategy,
-      queryNameStategy,
       allOptions,
     })
   } else if (item.isMutation) {
@@ -117,7 +110,6 @@ function handleItem(
       graphQLSchema,
       extensions,
       queryNameStrategy,
-      queryNameStategy,
       allOptions,
     })
   } else if (item.isSubscription) {
@@ -128,13 +120,12 @@ function handleItem(
       graphQLSchema,
       extensions,
       queryNameStrategy,
-      queryNameStategy,
       allOptions,
     })
   } else {
     // It's a definition
     anchorPrefix = 'definition'
-    addDefinitionToItem({
+    addThingsToDefinitionItem({
       item,
       introspectionResponse,
       graphQLSchema,
@@ -152,7 +143,6 @@ function addQueryToItem({
   graphQLSchema,
   extensions,
   queryNameStrategy,
-  queryNameStategy,
   allOptions,
 }) {
   return _addQueryToItem({
@@ -162,7 +152,6 @@ function addQueryToItem({
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions,
   })
 }
@@ -173,7 +162,6 @@ function addMutationToItem({
   graphQLSchema,
   extensions,
   queryNameStrategy,
-  queryNameStategy,
   allOptions,
 }) {
   return _addQueryToItem({
@@ -183,7 +171,6 @@ function addMutationToItem({
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions,
   })
 }
@@ -194,7 +181,6 @@ function addSubscriptionToItem({
   graphQLSchema,
   extensions,
   queryNameStrategy,
-  queryNameStategy,
   allOptions,
 }) {
   return _addQueryToItem({
@@ -204,7 +190,6 @@ function addSubscriptionToItem({
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions,
   })
 }
@@ -216,7 +201,6 @@ function _addQueryToItem({
   graphQLSchema,
   extensions,
   queryNameStrategy,
-  queryNameStategy,
   allOptions,
 }) {
   const stuff = generateQueryExample({
@@ -226,7 +210,6 @@ function _addQueryToItem({
     graphQLSchema,
     extensions,
     queryNameStrategy,
-    queryNameStategy,
     allOptions,
   })
   const { query, variables, response } = stuff
@@ -246,17 +229,20 @@ function _addQueryToItem({
   }
 }
 
-function addDefinitionToItem({
+function addThingsToDefinitionItem({
   item,
   introspectionResponse,
   graphQLSchema,
   extensions,
   // allOptions,
 }) {
-  item.example = generateIntrospectionTypeExample({
-    type: item,
-    introspectionResponse,
-    graphQLSchema,
-    extensions,
-  })
+  // Only if not already present
+  if (typeof item.example === 'undefined') {
+    item.example = generateIntrospectionTypeExample({
+      type: item,
+      introspectionResponse,
+      graphQLSchema,
+      extensions,
+    })
+  }
 }

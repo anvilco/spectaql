@@ -39,7 +39,7 @@ const OPTION_TO_CONVERTER_FN = {
 export function generateSpectaqlSdl({
   directiveName = DEFAULT_DIRECTIVE_NAME,
   optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-}) {
+} = {}) {
   return (
     generateDirectiveSdl({ directiveName, optionsTypeName }) +
     '\n' +
@@ -51,7 +51,7 @@ export function generateSpectaqlSdl({
 export function generateDirectiveSdl({
   directiveName = DEFAULT_DIRECTIVE_NAME,
   optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-}) {
+} = {}) {
   // https://www.apollographql.com/docs/apollo-server/schema/creating-directives/#supported-locations
   // QUERY | MUTATION | SUBSCRIPTION | FIELD | FRAGMENT_DEFINITION | FRAGMENT_SPREAD | INLINE_FRAGMENT |
   // VARIABLE_DEFINITION | SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE |
@@ -63,7 +63,7 @@ export function generateDirectiveSdl({
 
 export function generateOptionsSdl({
   optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-}) {
+} = {}) {
   return `input ${optionsTypeName} { key: String!, value: String! }`
 }
 
@@ -76,10 +76,33 @@ function processDirective(directive) {
   }, {})
 }
 
-export function generateSpectaqlDirectiveSupport(
-  spectaqlDirectiveOptions = {}
-) {
+export function generateSpectaqlDirectiveSupport({
+  options: spectaqlDirectiveOptions = {},
+  userSdl = '',
+} = {}) {
   const directables = []
+
+  const {
+    onlyAddIfMissing,
+    directiveName = DEFAULT_DIRECTIVE_NAME,
+    optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
+  } = spectaqlDirectiveOptions
+
+  let { directiveSdl, optionsSdl } = spectaqlDirectiveOptions
+
+  if (
+    !directiveSdl &&
+    (!userSdl.includes(`directive @${directiveName}`) || !onlyAddIfMissing)
+  ) {
+    directiveSdl = generateSpectaqlSdl(spectaqlDirectiveOptions)
+  }
+
+  if (
+    !optionsSdl &&
+    (!userSdl.includes(`input ${optionsTypeName}`) || !onlyAddIfMissing)
+  ) {
+    optionsSdl = generateOptionsSdl(spectaqlDirectiveOptions)
+  }
 
   function typeHandler(type, schema, mapperKind) {
     const directive = getDirective(schema, type, 'spectaql')?.[0]
@@ -154,13 +177,6 @@ export function generateSpectaqlDirectiveSupport(
       configHandler(...args, MapperKind.ARGUMENT),
     // [MapperKind.DIRECTIVE]: (...args) => configHandler(...args, MapperKind.DIRECTIVE),
   }
-
-  const {
-    directiveName = DEFAULT_DIRECTIVE_NAME,
-    directiveSdl = generateSpectaqlSdl(spectaqlDirectiveOptions),
-    optionsTypeName = DEFAULT_DIRECTIVE_OPTION_NAME,
-    optionsSdl = generateOptionsSdl(spectaqlDirectiveOptions),
-  } = spectaqlDirectiveOptions
 
   return {
     directables,

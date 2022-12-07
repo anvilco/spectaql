@@ -25,7 +25,7 @@
               <td>
                 {{! The Description column }}
                 {{#if description}}
-                  {{md (interpolateReferences description)}}
+                  {{>graphql/_description-with-defaults}}
                 {{/if}}
               </td>
             </tr>

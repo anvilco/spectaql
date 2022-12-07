@@ -1,6 +1,6 @@
 const rewire = require('rewire')
 
-const common = rewire('../../../dist/lib/common')
+const common = rewire('dist/lib/common')
 
 describe('common', function () {
   let SPECIAL_TAG
