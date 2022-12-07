@@ -9,12 +9,9 @@ inputs:
 
 runs:
   using: composite
-  env:
-    VENDOR_PATH: vendor-src/${{ inputs.package-name }}
-
   steps:
     - name: Install things
-      run: yarn --cwd ${{ env.VENDOR_PATH }} install
+      run: yarn --cwd vendor-src/${{ inputs.package-name }} install
 
     - name: Test things
-      run: yarn --cwd ${{ env.VENDOR_PATH }} test
+      run: yarn --cwd vendor-src/${{ inputs.package-name }} test
