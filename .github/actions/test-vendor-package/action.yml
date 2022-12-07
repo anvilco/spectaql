@@ -11,7 +11,9 @@ runs:
   using: composite
   steps:
     - name: Install things
+      shell: bash
       run: yarn --cwd vendor-src/${{ inputs.package-name }} install
 
     - name: Test things
+      shell: bash
       run: yarn --cwd vendor-src/${{ inputs.package-name }} test
