@@ -84,11 +84,6 @@ jobs:
       with:
         package_name: grunt-compile-handlebars
 
-    - name: Test vendor package grunt-embed
-      uses: ./.github/actions/test-vendor-package
-      with:
-        package_name: grunt-embed
-
     - name: Test vendor package grunt-prettify
       uses: ./.github/actions/test-vendor-package
       with:
@@ -99,10 +94,17 @@ jobs:
       with:
         package_name: reorient-css
 
+    # MUST GO AFTER reorient-css
     - name: Test vendor package resource-embedder
       uses: ./.github/actions/test-vendor-package
       with:
         package_name: resource-embedder
+
+    # MUST GO AFTER resource-embedder
+    - name: Test vendor package grunt-embed
+      uses: ./.github/actions/test-vendor-package
+      with:
+        package_name: grunt-embed
 
     - name: Restore Cached Package Build
       id: cache-package-build
