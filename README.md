@@ -253,7 +253,7 @@ npx spectaql -d path/to/config.yml
 ### Testing
 
 ```sh
-npm run test
+npm test
 # OR
 yarn test
 ```
