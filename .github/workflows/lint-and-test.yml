@@ -79,7 +79,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name:
+    - name: Test vendor package
       uses: ./.github/actions/test-vendor-package
       with:
         package_name: grunt-compile-handlebars
