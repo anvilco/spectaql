@@ -82,7 +82,7 @@ jobs:
     - name:
       uses: ./.github/actions/test-vendor-package
       with:
-        package-name: grunt-compile-handlebars
+        package_name: grunt-compile-handlebars
 
     - name: Restore Cached Package Build
       id: cache-package-build
