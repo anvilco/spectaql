@@ -79,14 +79,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Test vendor packages
-      strategy:
-        matrix:
-          package-name: [grunt-compile-handlebars]
-      uses: ./.github/actions/test-vendor-package
-      with:
-        package_name: ${{ matrix.package-name }}
-
     - name: Test vendor package
       uses: ./.github/actions/test-vendor-package
       with:
