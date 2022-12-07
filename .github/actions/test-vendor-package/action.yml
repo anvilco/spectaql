@@ -9,9 +9,6 @@ inputs:
 
 runs:
   using: composite
-  strategy:
-    matrix:
-      packagez: [grunt-compile-handlebars]
   steps:
     - name: Install things
       shell: bash
