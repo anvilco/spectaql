@@ -37,6 +37,7 @@
     "!**/.DS_Store"
   ],
   "devDependencies": {
+    "coffeescript": "^2.6.1",
     "grunt": "^1.5.3",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-clean": "~0.5.0",
@@ -44,6 +45,7 @@
     "grunt-contrib-nodeunit": "~0.2.0"
   },
   "peerDependencies": {
+    "coffeescript": "^2.6.1",
     "grunt": "^1.5.3"
   }
 }
