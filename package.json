@@ -108,7 +108,7 @@
     "handlebars": "^4.7.7",
     "highlight.js": "^11.4.0",
     "htmlparser2": "~3.5.0",
-    "js-beautify": "~1.5.4",
+    "js-beautify": "~1.14.7",
     "js-yaml": "^4.1.0",
     "json-stringify-pretty-compact": "^3.0.0",
     "json5": "^2.2.0",
