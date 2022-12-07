@@ -75,19 +75,16 @@ jobs:
     strategy:
       matrix:
         node-version: [14, 16, 18]
-        vendor-packages: [
-          grunt-compile-handlebars,
-          grunt-embed,
-          grunt-prettify,
-          reorient-css,
-          resource-embedder,
-        ]
-
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Cache Package Build
+    - name:
+      uses: ./.github/actions/test-vendor-package
+      with:
+        package-name: grunt-compile-handlebars
+
+    - name: Restore Cached Package Build
       id: cache-package-build
       uses: actions/cache@v3
       with:

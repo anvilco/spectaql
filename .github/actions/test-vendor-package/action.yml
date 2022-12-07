@@ -1,0 +1,26 @@
+## https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+name: 'Test Vendor Package'
+description: 'Run tests on one of our vendor packages'
+
+inputs:
+  package-name:
+    description: The name of the vendor package
+    required: true
+
+outputs:
+  cache-hit:
+    value: ${{ steps.yarn-cache.outputs.cache-hit }}
+
+env:
+  NODE_VERSION_MAJOR: 16
+  GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+  VENDOR_PATH: vendor-src/${{ inputs.package-name }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install things
+      run: yarn --cwd ${{ env.VENDOR_PATH }} install
+
+    - name: Test things
+      run: yarn --cwd ${{ env.VENDOR_PATH }} test
