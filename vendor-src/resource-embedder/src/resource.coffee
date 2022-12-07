@@ -32,14 +32,17 @@ module.exports = class Resource
       else
         callback @embed = false
 
-  potentiallyEmbeddable: (tagName=@tagName, attributes=@attributes, options=@options) ->
+  potentiallyEmbeddable: (tagName=@tagName, attributes=@attributes, options=@options, self=@) ->
+    # This is purely a hack for testing
+    self = {} if self is undefined
+
     # Aims to return false as quickly as possible if we can be sure it's NOT embeddable
     # based solely on tagName, attributes, or options (NB: we're not checking the
     # threshold yet). Otherwise returns true, meaning it *might* be embeddable (as far as
     # we can tell without looking at the file contents).
     switch tagName
       when 'script'
-        @target = attributes.src
+        self.target = attributes.src
         return false if (
           !options.scripts ||
           !(
@@ -53,7 +56,7 @@ module.exports = class Resource
           !Resource::isLocalPath(attributes.src)
         )
       when 'link'
-        @target = attributes.href
+        self.target = attributes.href
         return false if (
           !options.stylesheets ||
           attributes.rel != 'stylesheet' ||
@@ -69,7 +72,13 @@ module.exports = class Resource
         return false
     return true
 
-  getThreshold: (embedAttr = @attributes?['data-embed'], options=@options) ->
+  getThreshold: (embedAttr, options) ->
+    # The signature was formerly this, so let's make it act like it:
+    #getThreshold: (embedAttr=@attributes?['data-embed'], options=@options) ->
+    self = @ || {}
+    embedAttr = self.attributes?['data-embed'] if embedAttr is undefined
+    options = self.options if options is undefined
+
     switch embedAttr
       when 'false', '0' then 0
       when null, undefined then parseFileSize options.threshold
