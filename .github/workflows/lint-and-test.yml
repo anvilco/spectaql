@@ -75,6 +75,14 @@ jobs:
     strategy:
       matrix:
         node-version: [14, 16, 18]
+        vendor-packages: [
+          grunt-compile-handlebars,
+          grunt-embed,
+          grunt-prettify,
+          reorient-css,
+          resource-embedder,
+        ]
+
 
     steps:
     - uses: actions/checkout@v3
