@@ -14,7 +14,9 @@ const vendorSrcDir = path.join(root, 'vendor-src')
 
 if (!pathExists(vendorSrcDir)) {
   console.warn(`No vendor-src directory. Not building vendor packages.`)
-  process.exit()
+  // Need to pass 0 here explicitly just to be safe:
+  // https://github.com/nodejs/node/issues/40808
+  process.exit(0)
 }
 const vendorTargetDir = path.join(root, 'vendor')
 

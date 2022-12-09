@@ -76,7 +76,9 @@ jobs:
     strategy:
       matrix:
         node-version: [14, 16, 18]
-
+        include:
+          - node-version: 14
+            npm-version: 7
     steps:
     - uses: actions/checkout@v3
 
@@ -121,10 +123,11 @@ jobs:
         path: ${{ env.TARBALL_PATH }}
         key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-${{ env.GITHUB_SHA }}
 
-    # Node 14 ships with a version of NPM that does not work for us
+    # Some versions of Node (like Node 14) ships with a version of NPM that does not work for us
+    # so we need to install a specific version
     - name: Optionally update NPM if needed
-      if: ${{ matrix.node-version == '14' }}
-      run: npm i -g npm@7
+      if: ${{ matrix.npm-version }}
+      run: npm i -g npm@${{ matrix.npm-version }}
     - run: yarn test-e2e:install-and-test
     - run: yarn install
     - run: yarn test
