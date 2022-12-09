@@ -1,3 +1,6 @@
+### 2.0.2
+  - Exit with an explicit `0` code when no need to build vendor packages. https://github.com/anvilco/spectaql/pull/606
+
 ### 2.0.1
   - All lifecycle scripts only use `npm` (never `yarn`).
 

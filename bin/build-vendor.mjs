@@ -1,3 +1,5 @@
+// TODO: Don't require building the vendor packages anymore. Somehow make them output properly by Babel
+// or something
 import path from 'path'
 import fs from 'fs'
 import { readdir } from 'fs/promises'
@@ -13,7 +15,7 @@ const CACHE_FILE_NAME = '.spectaql-cache'
 const vendorSrcDir = path.join(root, 'vendor-src')
 
 if (!pathExists(vendorSrcDir)) {
-  console.warn(`No vendor-src directory. Not building vendor packages.`)
+  console.log(`No vendor-src directory. Not building vendor packages.`)
   // Need to pass 0 here explicitly just to be safe:
   // https://github.com/nodejs/node/issues/40808
   process.exit(0)
@@ -89,6 +91,7 @@ ensureDirectory(vendorTargetDir)
 
     let tarballName = await exec(command, {
       cwd: path.join(vendorSrcDir, sourceDirectoryName),
+      // TODO: don't ignore STDERR but only log it if there's a problem
       stdio: [undefined, undefined, 'ignore'],
     })
 
@@ -108,6 +111,7 @@ ensureDirectory(vendorTargetDir)
       continue
     }
 
+    // TODO: don't ignore STDERR but only log it if there's a problem
     await exec(command, { stdio: [undefined, undefined, 'ignore'] })
 
     // Remove the tarball
