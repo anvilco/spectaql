@@ -1,0 +1,5 @@
+{
+   "hälsning": "{{salutation}}",
+   "skiljetecken": "{{punctuation}}",
+   "läge": "{{location}}"
+}

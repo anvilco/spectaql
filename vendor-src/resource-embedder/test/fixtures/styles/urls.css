@@ -1,0 +1,59 @@
+@font-face {
+  font-family: 'coool';
+  font-style: normal;
+  font-weight: 400;
+  src: url(fonts/coool.woff) format('woff');
+  src:url("fonts/coool.eot?#iefix") format("embedded-opentype"),url("fonts/coool.woff") format("woff"),url("fonts/coool.ttf") format("truetype"),url("fonts/coool.svg#coool") format("svg")
+}
+
+.something {
+  /* filter src should NOT be converted, as it's supposed to be relative to the document already */
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='images/test.jpg',
+    sizingMethod='scale'
+  );
+
+  background-image: url('../images/foo.png');
+  background-image: url('../images/bar.png?12345');
+  background-image: url(../images/foo.png);
+  background-image: url( ../images/bar.png  );
+  background-image: url(  
+    ../images/bar.png
+       )
+}
+
+.another-thing {
+  background-image: url(more-images/bar.jpg?12345);
+  background-image: url( more-images/bar.jpg?12345 );
+  background-image: url( 'more-images/bar.jpg' );
+  background-image: url(
+    more-images/bar.jpg   
+  );
+  background-image  : url(images/thing.jpg);
+}
+
+.other-things {
+  background-image: url(data:image/gif;base64,R0lGODlhAQABAPAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==);
+  background-image: url( data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== );
+}
+
+.moar-things {
+  background-image: url(/styles/more-images/thing.jpg);
+  background-image: url(http://i.imgur.com/C5XQm.gif);
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(
+    src='http://example.com/images/test.jpg',
+    sizingMethod='scale'
+  );
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  /* urls in IE's 'behavior' property should NOT be converted as it's already relative to the document... */
+  
+  /* without hack */
+  behavior: url(scripts/boxsizing.htc);
+  behavior  : url(  scripts/boxsizing.htc  );
+  
+  /* with IE<8 hack */
+  *behavior: url(scripts/boxsizing.htc);
+}

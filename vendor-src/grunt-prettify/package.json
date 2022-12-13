@@ -1,0 +1,73 @@
+{
+  "private": true,
+  "name": "grunt-prettify",
+  "description": "HTML prettifier with options to format HTML according to your own preferences.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/jonschlinkert/grunt-prettify",
+  "author": {
+    "name": "jonschlinkert",
+    "url": "http://github.com/jonschlinkert/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonschlinkert/grunt-prettify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/grunt-prettify/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jonschlinkert/grunt-prettify/blob/master/LICENSE-MIT"
+    }
+  ],
+  "keywords": [
+    "beautifier",
+    "beautify",
+    "code",
+    "format",
+    "formatter",
+    "formatting",
+    "grunt",
+    "gruntplugin",
+    "html",
+    "indent",
+    "indenter",
+    "plugin",
+    "prettifier",
+    "prettify"
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "files": [
+    "package.json",
+    "README.md",
+    "Gruntfile.js",
+    ".jsbeautifyrc",
+    "tasks/",
+    "!**/.DS_STORE",
+    "!**/.DS_Store"
+  ],
+  "devDependencies": {
+    "assemble": "~0.4.27",
+    "fast-glob": "^3.2.12",
+    "grunt": "^1.5.3",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-jshint": "~0.7.2",
+    "js-beautify": "~1.14.7",
+    "lodash": "^4.17.21",
+    "mocha": "*",
+    "verb": ">= 0.2.6"
+  },
+  "peerDependencies": {
+    "fast-glob": "^3.2.12",
+    "grunt": "^1.5.3",
+    "js-beautify": "~1.14.7",
+    "lodash": "^4.17.21"
+  }
+}

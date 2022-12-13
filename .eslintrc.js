@@ -22,6 +22,8 @@ module.exports = {
     ],
   },
   ignorePatterns: [
+    'public/',
+    'vendor-src/',
     'src/**/javascripts/**/*.js',
     'examples/output/javascripts/**/*.js',
   ],

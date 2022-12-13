@@ -2,7 +2,6 @@
 // MANNER BEFORE A MAJOR RELEASE.
 //
 // USE AT YOUR OWN RISK.
-
 const { Microfiber: IntrospectionManipulator } = require('microfiber')
 
 function sortByName(a, b) {

@@ -93,11 +93,21 @@ export const loadSchemaFromSDLFile = ({
       optionsTypeName,
       transformer,
       directables,
-    } = generateSpectaqlDirectiveSupport(spectaqlDirectiveOptions))
+    } = generateSpectaqlDirectiveSupport({
+      options: spectaqlDirectiveOptions,
+      userSdl: printedTypeDefs,
+    }))
   }
 
   let schema = makeExecutableSchema({
-    typeDefs: [directiveSdl, optionsSdl, printedTypeDefs],
+    typeDefs: [
+      directiveSdl,
+      optionsSdl,
+      // I assume that these are processed in-order, so it's important to do the user-provided
+      // SDL *after* the spectaql generated directive-related SDL so that if they've defined
+      // or overridden things that will take precedence.
+      printedTypeDefs,
+    ],
   })
 
   schema = transformer(schema)

@@ -1,11 +1,11 @@
 {{#unless hideInNav}}
   <li class="nav-group-section">
-    <h5 class="nav-group-section-title">
+    <{{ itemHeadingTag headingNumber }} class="nav-group-section-title" {{{ ariaLevel headingNumber }}}>
       <a href="#group-{{./htmlId}}">{{name}}</a>
-    </h5>
+    </{{ itemHeadingTag headingNumber }}>
     <ul class="nav-group-section-items">
       {{#each items}}
-        {{>layout/nav/item}}
+        {{>layout/nav/item headingNumber=(math ../headingNumber "+" 1 )}}
       {{/each}}
     </ul>
   </li>

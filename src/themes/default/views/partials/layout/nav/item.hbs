@@ -1,13 +1,13 @@
 {{#unless hideInNav}}
   {{#if items}}
     <div class="nav-group">
-      <h4 class="nav-group-title">{{name}}</h4>
+      <{{ itemHeadingTag headingNumber }} class="nav-group-title" {{{ ariaLevel headingNumber }}}>{{name}}</{{ itemHeadingTag headingNumber }}>
       <ul class="nav-group-items">
         {{#each items}}
           {{#if makeNavSection}}
-            {{>layout/nav/section-item}}
+            {{>layout/nav/section-item headingNumber=(math ../headingNumber "+" 1 )}}
           {{else}}
-            {{>layout/nav/item}}
+            {{>layout/nav/item headingNumber=(math ../headingNumber "+" 1 )}}
           {{/if}}
         {{/each}}
       </ul>

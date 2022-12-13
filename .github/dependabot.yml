@@ -7,3 +7,52 @@ updates:
   open-pull-requests-limit: 10
   reviewers:
   - newhouse
+
+- package-ecosystem: npm
+  directory: "/vendor-src/grunt-compile-handlebars"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  reviewers:
+  - newhouse
+
+- package-ecosystem: npm
+    directory: "/vendor-src/grunt-embed"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    reviewers:
+    - newhouse
+
+- package-ecosystem: npm
+    directory: "/vendor-src/grunt-prettify"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    reviewers:
+    - newhouse
+
+- package-ecosystem: npm
+    directory: "/vendor-src/reorient-css"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    reviewers:
+    - newhouse
+
+- package-ecosystem: npm
+    directory: "/vendor-src/resource-embedder"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    reviewers:
+    - newhouse
+
+- package-ecosystem: npm
+  target-branch: 1.x
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  reviewers:
+  - newhouse

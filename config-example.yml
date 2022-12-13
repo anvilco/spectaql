@@ -1,10 +1,26 @@
 # This config will not run "as-is" and will need to be modified. You can see a minimal working
 # config in /examples/config.yml
+#
+# Environment variable substitution will be performed by SpectaQL on all strings encountered
 
 spectaql:
+  # Optional Boolean indicating whether to omit the HTML <body/> and generate the documentation content only
+  # Default: false
+  embeddable: false
+
+  # Optional Boolean indicating whether to embed all resources (CSS and JS) into the same file
+  # Default: false
+  oneFile: false
+
+  # Optional path to the target build directory.
+  # Set to null to not write the output to the filesystem, making it only available via the API (default: public)
+  #
+  # Default: public
+  targetDir: path/to/output
+
   # Optional path to an image to use as the logo in the top-left of the output
   logoFile: path/to/logo.png
-  # Optional boolean indicating whether to preserve the filname of the logo provided.
+  # Optional boolean indicating whether to preserve the filename of the logo provided.
   # If false, the logo name will default to "logo"
   preserveLogoName: false
   # Control the height of your logo here. Can be useful if your logo is SVG or an
@@ -15,7 +31,7 @@ spectaql:
 
   # Optional path to an image to use as a favicon for the site when it's not embedded
   faviconFile: path/to/favicon.png
-  # Optional boolean indicating whether to preserve the filname of the faviconFile provided.
+  # Optional boolean indicating whether to preserve the filename of the faviconFile provided.
   # If false, the favicon name will default to "favicon"
   preserveFaviconName: false
 
@@ -58,7 +74,7 @@ spectaql:
 
 introspection:
   ##############################################
-  # These options specify where/how to get the information requried to generate your
+  # These options specify where/how to get the information required to generate your
   # documentation.
   #
   # Each of these have corresponding CLI options where they can be expressed instead of here.

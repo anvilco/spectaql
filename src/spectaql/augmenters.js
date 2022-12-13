@@ -6,6 +6,7 @@ import {
   typesAreSame,
 } from 'microfiber'
 
+import { isUndef } from './utils'
 import { analyzeTypeIntrospection } from './type-helpers'
 import { addSpecialTags, addQuoteTags } from '../lib/common'
 import stripTrailing from '../themes/default/helpers/stripTrailing'
@@ -305,6 +306,7 @@ export function addExamples(args = {}) {
 
   const queryType = introspectionManipulator.getQueryType()
   const mutationType = introspectionManipulator.getMutationType()
+  const subscriptionType = introspectionManipulator.getSubscriptionType()
 
   for (const type of types) {
     // Don't mess with reserved GraphQL types at all
@@ -312,16 +314,19 @@ export function addExamples(args = {}) {
       continue
     }
 
-    const isQueryOrMutation =
+    const isQueryOrMutationOrSubscription =
       !!(queryType && typesAreSame(type, queryType)) ||
-      !!(mutationType && typesAreSame(type, mutationType))
+      !!(mutationType && typesAreSame(type, mutationType)) ||
+      !!(subscriptionType && typesAreSame(type, subscriptionType))
 
-    handleExamples({ type, isType: true })
+    if (!isQueryOrMutationOrSubscription) {
+      handleExamples({ type })
+    }
 
     for (const field of type.fields || []) {
       // Don't add examples to fields on the Query or Mutation types...because they are actually
       // queries or mutations, and we don't support that.
-      if (!isQueryOrMutation) {
+      if (!isQueryOrMutationOrSubscription) {
         handleExamples({ type, field })
       }
 
@@ -346,7 +351,6 @@ export function addExamples(args = {}) {
 
   function getExistingExample(thing) {
     let { example, examples } = _.get(thing, metadatasPath, {})
-
     if (examples && examples.length) {
       example = examples[Math.floor(Math.random() * examples.length)]
     }
@@ -354,18 +358,18 @@ export function addExamples(args = {}) {
     return example
   }
 
-  function handleExamples({ type, field, inputField, arg, isType }) {
+  function handleExamples({ type, field, inputField, arg }) {
     const thing = arg || inputField || field || type
     const typeForAnalysis = thing === type ? type : thing.type
     const typeAnalysis = analyzeTypeIntrospection(typeForAnalysis)
 
     let example = getExistingExample(thing)
-    // Allow Scalars to have examples from the metadata...not 100% sure why not everything
-    if (!isUndef(example) && (!isType || type.kind === KINDS.SCALAR)) {
+    if (!isUndef(example)) {
       thing.example = example
     }
 
     example = processor({ ...typeAnalysis, type, field, arg, inputField })
+
     if (!isUndef(example)) {
       thing.example = example
     }
@@ -437,8 +441,4 @@ export function removeTrailingPeriodsFromDescriptions(obj) {
   })
 
   return obj
-}
-
-function isUndef(item) {
-  return typeof item === 'undefined'
 }
