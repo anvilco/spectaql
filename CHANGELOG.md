@@ -1,3 +1,10 @@
+### 1.5.6
+- Re-publish after some reverts
+
+### 1.5.5
+- Dependency updates
+- Last LTS for 1.x and Node 12
+
 ### 1.5.4
 - Dependency updates
 - Option to have `run` resolve with an object containing the outputs. https://github.com/anvilco/spectaql/pull/497
