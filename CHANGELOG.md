@@ -1,3 +1,6 @@
+### 1.5.10
+- Updated dependencies.
+
 ### 1.5.9
 - Updated dependencies.
 
