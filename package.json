@@ -63,7 +63,7 @@
     "generateExampleData": "node bin/generateExampleData.js"
   },
   "dependencies": {
-    "@anvilco/apollo-server-plugin-introspection-metadata": "^1.2.0",
+    "@anvilco/apollo-server-plugin-introspection-metadata": "^2.0.0",
     "@anvilco/grunt-embed": "^0.0.1",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
