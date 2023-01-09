@@ -48,19 +48,19 @@ spectaql:
   # Default: "default"
   themeDir: path/to/theme
 
-  # If you're embedding SpectaQL's output and you've got something like a Nav Bar that
+  # If you're embedding SpectaQL's output, and you've got something like a Nav Bar that
   # gets in the way, you can use this value to adjust the scroll offset
   #
   # Default: None; No "scroll-padding-top" style will be applied.
   scrollPaddingTopPx: 0
 
-  # If an interpolated reference is not found, should SpectaQL throw an error? Otherwise a warning
+  # If an interpolated reference is not found, should SpectaQL throw an error? Otherwise, a warning
   # will be logged.
   #
   # Default: true
   errorOnInterpolationReferenceNotFound: true
 
-  # Would you like to display all the servers listed in the servers area of your config? Otherwise
+  # Would you like to display all the servers listed in the servers area of your config? Otherwise,
   # it will try to display just the one marked "production: true".
   #
   # Default: false
@@ -227,7 +227,7 @@ introspection:
   ##############################################
 
 
-  # This allows you to specify a custom path to a JS moddule to handle the generation of
+  # This allows you to specify a custom path to a JS module to handle the generation of
   # example values for your schema.
   # Default: none
   dynamicExamplesProcessingModule: path/to/examples.js
@@ -398,7 +398,7 @@ info:
   description: Your description here
   version: 1.0.0
   title: Your Welcome title here
-  # This is non-standard and optional. If omitted, will use "title". Also only relevant
+  # This is non-standard and optional. If omitted, will use "title". Also, only relevant
   # when building non-embedded.
   x-htmlTitle: Your HTML page title here
   termsOfService: 'https://yoursite.com/terms'
@@ -408,7 +408,7 @@ info:
     url: https://yoursite.com/support
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 
   # A non-standard array of items to display in your Introduction Area
   x-introItems:
