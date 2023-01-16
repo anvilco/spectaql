@@ -90,7 +90,7 @@
     "@graphql-tools/utils": "^9.1.1",
     "cheerio": "^1.0.0-rc.10",
     "coffeescript": "^2.6.1",
-    "commander": "^9.1.0",
+    "commander": "^10.0.0",
     "fast-glob": "^3.2.12",
     "foundation-sites": "^6.7.2",
     "graceful-fs": "~4.2.10",
