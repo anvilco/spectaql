@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@anvilco/apollo-server-plugin-introspection-metadata@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.0.0.tgz#03770be0c3b2383087c44da1eb61eb3a5f8a8cb0"
-  integrity sha512-8P6GWO/eZqFjJNNt5FRFTkg00qfJJjR1PZsiWBzjB27rEZ5V4CV3KUQlQyJkT+1YjF1eFfhCHIGo5F+yJRmx6A==
+"@anvilco/apollo-server-plugin-introspection-metadata@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.0.1.tgz#07b9fd1d36e1f7d0c23b0082445e371c0b624659"
+  integrity sha512-IL5ssMS3qBNwcVAs1/VERU6BHdGuTbi0id5Qb/pQ9N9/BNveWIXnWVyTzlpB0hAqh7ju2AhDrgqjsus+eAOy5w==
   dependencies:
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
@@ -3514,10 +3514,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-microfiber@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-2.0.0.tgz#2b754a7bc9e8d72285ef175a66bea39aa477c13e"
-  integrity sha512-DpCCQFUHhalmWkbpxohp8KkDCuQDyXVA/Om7c4sxXwZNEk/f379O+t03GGVsJwYnnjcF2aqGxLmairlPdqmUEg==
+microfiber@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-2.0.1.tgz#0abd2b3b3907a2112fbf91e8c9b5850adc1ce38e"
+  integrity sha512-AncT2Xrs01ejYrnmYz7Z6QnOT3Kfu9du/fC3VHxOCjFm+W9Bn1eOQKmmLrj2anxS6A8mbPBo3Ij5w9dHJSFOgg==
   dependencies:
     lodash.defaults "^4.2.0"
     lodash.get "^4.4.2"

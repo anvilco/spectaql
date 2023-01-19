@@ -1,3 +1,7 @@
+### 2.0.4
+  - Update dependencies.
+  - Fix typos in documentation.
+
 ### 2.0.3
   - Bugfix: dynamic import on Windows machines: https://github.com/anvilco/spectaql/pull/627
   - Update dependencies.
