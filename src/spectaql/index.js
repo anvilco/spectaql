@@ -62,7 +62,7 @@ async function run(opts) {
   if (customDataArrangerSuffixThatExists) {
     try {
       arrangeDataModule = await dynamicImport(
-        path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
+        url.pathToFileURL(path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`))
       )
     } catch (err) {
       console.error(err)

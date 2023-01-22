@@ -6,7 +6,6 @@ on:
   pull_request:
 
 env:
-  #NODE_VERSION_MAJOR: 16
   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
   TARBALL_PATH: test/e2e/spectaql.tgz
 
@@ -15,11 +14,14 @@ jobs:
   prepare-node:
     name: Prepare Node
     runs-on: ubuntu-latest
+    outputs:
+      build-node-version: ${{ steps.setup-node.outputs.node-version }}
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Setup Node.js
+      id: setup-node
       uses: actions/setup-node@v3
       with:
         node-version-file: '.nvmrc'
@@ -63,8 +65,7 @@ jobs:
       with:
         # We'll cache this file
         path: ${{ env.TARBALL_PATH }}
-        key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-${{ env.GITHUB_SHA }}
-
+        key: ${{ runner.os }}-node-${{ needs.prepare-node.outputs.build-node-version }}-${{ env.GITHUB_SHA }}
 
     - run: yarn install
     - run: yarn test-e2e:build
@@ -72,7 +73,9 @@ jobs:
   unit-test-and-package-test:
     name: Unit Test & Package Test
     runs-on: ubuntu-latest
-    needs: build-e2e-package
+    needs:
+      - prepare-node
+      - build-e2e-package
     strategy:
       matrix:
         node-version: [14, 16, 18]
@@ -86,7 +89,7 @@ jobs:
       id: setup-node
       uses: actions/setup-node@v3
       with:
-        node-version-file: '.nvmrc'
+        node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
     - name: Test vendor package grunt-compile-handlebars
@@ -121,7 +124,7 @@ jobs:
       with:
         # This is the file to cache / restore
         path: ${{ env.TARBALL_PATH }}
-        key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-${{ env.GITHUB_SHA }}
+        key: ${{ runner.os }}-node-${{ needs.prepare-node.outputs.build-node-version }}-${{ env.GITHUB_SHA }}
 
     # Some versions of Node (like Node 14) ships with a version of NPM that does not work for us
     # so we need to install a specific version
