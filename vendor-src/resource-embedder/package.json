@@ -37,7 +37,7 @@
   "devDependencies": {
     "coffeescript": "^2.6.1",
     "graceful-fs": "~4.2.10",
-    "grunt": "^1.5.3",
+    "grunt": "~1.5.3",
     "grunt-contrib-nodeunit": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "htmlparser2": "~8.0.1",
@@ -48,7 +48,7 @@
   "peerDependencies": {
     "coffeescript": "^2.6.1",
     "graceful-fs": "~4.2.10",
-    "grunt": "^1.5.3",
+    "grunt": "~1.5.3",
     "htmlparser2": "~8.0.1",
     "lodash": "^4.17.21"
   }

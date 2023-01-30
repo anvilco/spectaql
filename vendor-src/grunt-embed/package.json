@@ -38,7 +38,7 @@
   ],
   "devDependencies": {
     "coffeescript": "^2.6.1",
-    "grunt": "^1.5.3",
+    "grunt": "~1.5.3",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-watch": "~0.5.3",
@@ -46,6 +46,6 @@
   },
   "peerDependencies": {
     "coffeescript": "^2.6.1",
-    "grunt": "^1.5.3"
+    "grunt": "~1.5.3"
   }
 }
