@@ -96,7 +96,7 @@
     "graceful-fs": "~4.2.10",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.15.0",
-    "grunt": "^1.5.3",
+    "grunt": "~1.5.3",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^2.1.0",
     "grunt-contrib-connect": "^3.0.0",
