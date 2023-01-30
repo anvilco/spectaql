@@ -987,10 +987,18 @@
     tslib "^2.4.0"
     unixify "1.0.0"
 
-"@graphql-tools/merge@8.3.15", "@graphql-tools/merge@^8.1.2":
+"@graphql-tools/merge@8.3.15":
   version "8.3.15"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.3.15.tgz#9b24ee5e9c36074684515c7d1587cd3e200c8a8f"
   integrity sha512-hYYOlsqkUlL6oOo7zzuk6hIv7xQzy+x21sgK84d5FWaiWYkLYh9As8myuDd9SD5xovWWQ9m/iRhIOVDEMSyEKA==
+  dependencies:
+    "@graphql-tools/utils" "9.1.4"
+    tslib "^2.4.0"
+
+"@graphql-tools/merge@^8.1.2":
+  version "8.3.16"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.3.16.tgz#fede610687b148e34ff861e8b038dcd71e20039b"
+  integrity sha512-In0kcOZcPIpYOKaqdrJ3thdLPE7TutFnL9tbrHUy2zCinR2O/blpRC48jPckcs0HHrUQ0pGT4HqvzMkZUeEBAw==
   dependencies:
     "@graphql-tools/utils" "9.1.4"
     tslib "^2.4.0"
@@ -2852,7 +2860,7 @@ grunt-sass@^3.0.2:
   resolved "https://registry.yarnpkg.com/grunt-sass/-/grunt-sass-3.1.0.tgz#a5936cc2a80ec08092d9f31c101dc307d1e4f71c"
   integrity sha512-90s27H7FoCDcA8C8+R0GwC+ntYD3lG6S/jqcavWm3bn9RiJTmSfOvfbFa1PXx4NbBWuiGQMLfQTj/JvvqT5w6A==
 
-grunt@^1.5.3:
+grunt@~1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/grunt/-/grunt-1.5.3.tgz#3214101d11257b7e83cf2b38ea173b824deab76a"
   integrity sha512-mKwmo4X2d8/4c/BmcOETHek675uOqw0RuA/zy12jaspWqvTp4+ZeQF1W+OTpcbncnaBsfbQJ6l0l4j+Sn/GmaQ==
