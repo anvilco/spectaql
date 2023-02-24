@@ -131,7 +131,6 @@
     "chai-as-promised": "^7.1.1",
     "chai-exclude": "^2.0.2",
     "eslint": "^8.10.0",
-    "eslint-config-standard": "^16.0.3",
     "eslint-plugin-mocha": "10",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-standard": "^5.0.0",
