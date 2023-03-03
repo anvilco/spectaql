@@ -1,3 +1,6 @@
+### 2.0.5
+  - Remove `foundation-sites` dependency
+
 ### 2.0.4
   - Update dependencies.
   - Fix typos in documentation.
