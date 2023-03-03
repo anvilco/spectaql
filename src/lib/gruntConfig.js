@@ -23,13 +23,6 @@ module.exports = function (grunt, options, spectaqlData) {
     sass: {
       options: {
         implementation: sass,
-        // sourceMap: true,
-        // includePaths: [
-        //   // A little JANK to reach into the node_modules directory like this but
-        //   // other option is to include in "app/vendor" folder (which had been done prior)
-        //   path.resolve(node_modules_clone, 'foundation-sites/scss'),
-        //   path.resolve(node_modules_dependency, 'foundation-sites/scss'),
-        // ],
         functions: {
           // TODO: deprecated and undocumented. Remove in the next Major version.
           'getLogoMaxHeightPx()': () => {
