@@ -999,10 +999,18 @@
     tslib "^2.4.0"
     unixify "1.0.0"
 
-"@graphql-tools/merge@8.3.18", "@graphql-tools/merge@^8.1.2":
+"@graphql-tools/merge@8.3.18":
   version "8.3.18"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.3.18.tgz#bfbb517c68598a885809f16ce5c3bb1ebb8f04a2"
   integrity sha512-R8nBglvRWPAyLpZL/f3lxsY7wjnAeE0l056zHhcO/CgpvK76KYUt9oEkR05i8Hmt8DLRycBN0FiotJ0yDQWTVA==
+  dependencies:
+    "@graphql-tools/utils" "9.2.1"
+    tslib "^2.4.0"
+
+"@graphql-tools/merge@^8.1.2":
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.4.0.tgz#47fbe5c4b6764276dc35bd19c4e7d3c46d3dc0fc"
+  integrity sha512-3XYCWe0d3I4F1azNj1CdShlbHfTIfiDgj00R9uvFH8tHKh7i1IWN3F7QQYovcHKhayaR6zPok3YYMESYQcBoaA==
   dependencies:
     "@graphql-tools/utils" "9.2.1"
     tslib "^2.4.0"
