@@ -1,3 +1,6 @@
+### 2.0.6
+  - Dependency updates
+
 ### 2.0.5
   - Remove `foundation-sites` dependency
 
