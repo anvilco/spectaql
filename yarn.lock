@@ -11,9 +11,9 @@
     "@jridgewell/trace-mapping" "^0.3.9"
 
 "@anvilco/apollo-server-plugin-introspection-metadata@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.0.1.tgz#07b9fd1d36e1f7d0c23b0082445e371c0b624659"
-  integrity sha512-IL5ssMS3qBNwcVAs1/VERU6BHdGuTbi0id5Qb/pQ9N9/BNveWIXnWVyTzlpB0hAqh7ju2AhDrgqjsus+eAOy5w==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.0.2.tgz#c4afe1fde5fe178c63b3889cc8f9d2b9dfaaec58"
+  integrity sha512-YnQi3zyDVyVMl9KGpgffzSWXY52Hb2pirIq9mD32FmFnNW4v8yyfcUsiNqG+4myGL3OwP2vwFYdrt/1B/l4FMA==
   dependencies:
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
@@ -2962,9 +2962,9 @@ he@1.2.0:
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
 highlight.js@^11.4.0:
-  version "11.7.0"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.7.0.tgz#3ff0165bc843f8c9bce1fd89e2fda9143d24b11e"
-  integrity sha512-1rRqesRFhMO/PRF+G86evnyJkCgaZFOI+Z6kdj15TA18funfoqJXvgPCLSf0SWq3SRfg1j3HlDs8o4s3EGq1oQ==
+  version "11.8.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.8.0.tgz#966518ea83257bae2e7c9a48596231856555bb65"
+  integrity sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==
 
 homedir-polyfill@^1.0.1:
   version "1.0.3"
