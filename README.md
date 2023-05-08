@@ -108,7 +108,7 @@ Your generated documentation will be located in the `public` directory by defaul
 
 ## Examples
 
-The best way to figure out what SpectaQL can do is to clone this repository (or mimic the [`/examples`](https://github.com/anvilco/spectaql/blob/master/examples) directory) and play around with the example build and its data:
+The best way to figure out what SpectaQL can do is to clone this repository (or mimic the [`/examples`](https://github.com/anvilco/spectaql/blob/main/examples) directory) and play around with the example build and its data:
 
 ```sh
 npm install
@@ -119,11 +119,11 @@ That config will direct a build that flexes the most interesting parts of Specta
 
 ## YAML Options
 
-To generate your documentation, SpectaQL requires a configuration YAML. This file is where you can specify most of the options to make your output the way you'd like it. All the supported options and their descriptions can be found in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file.
+To generate your documentation, SpectaQL requires a configuration YAML. This file is where you can specify most of the options to make your output the way you'd like it. All the supported options and their descriptions can be found in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/main/config-example.yml) file.
 
 Environment variable substitution will be performed, so feel free to use environment variables in your config.
 
-You can also see a minimal-ish working example YAML in the [examples/config.yml](https://github.com/anvilco/spectaql/blob/master/examples/config.yml) file.
+You can also see a minimal-ish working example YAML in the [examples/config.yml](https://github.com/anvilco/spectaql/blob/main/examples/config.yml) file.
 
 ## Command Line Options
 
@@ -155,17 +155,17 @@ In our experience, nearly all of the stuff we need for the content of the docume
 
 SpectaQL supports 3 ways to include metadata to be used during processing:
 
-1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to "weave" our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/master/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
-2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/master/examples/data/metadata.json) file to understand its format.
+1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to "weave" our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/main/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
+2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/main/examples/data/metadata.json) file to understand its format.
 3. If you are providing your schema information via an SDL file or files, leverage the [SpectaQL Directive](#the-spectaql-directive) feature to provide your metadata in your SDL through directives. See the [SpectaQL Directive](#the-spectaql-directive) for more information.
 
 **NOTE**: Another way to ensure that things are not documented is to pass your GraphQL Instrospection Results through [Microfiber][microfiber] and perform the removal of any Types, Fields, Queries etc before they even reach SpectaQL. Just a thought.
 
 ## The SpectaQL Directive
-If you are providing your schema information via an SDL file or files, you can leverage the `@spectaql` directive and pass any of the supported `metadata` options to the `options` argument of that directive. This is a useful approach for those who are taking an "SDL-first" development approach. See the `spectaqlDirective` option in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file for more information on how to enable and implement this approach.
+If you are providing your schema information via an SDL file or files, you can leverage the `@spectaql` directive and pass any of the supported `metadata` options to the `options` argument of that directive. This is a useful approach for those who are taking an "SDL-first" development approach. See the `spectaqlDirective` option in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/main/config-example.yml) file for more information on how to enable and implement this approach.
 
 Here's what you need to know:
-- See the `spectaqlDirective` option in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/master/config-example.yml) file for information on how to enable and tweak this approach.
+- See the `spectaqlDirective` option in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/main/config-example.yml) file for information on how to enable and tweak this approach.
 - The directive's `options` argument is a List/Array of Input Objects that have the following shape:
 ```
 { key: String!, value: String! }
@@ -200,7 +200,7 @@ type MyType {
 
 ## Dynamic Example Generators
 
-In addition to being able to use any static examples you've provided, SpectaQL also supports dynamically generating examples for Scalars, Fields and Arguments. When it comes time to generate an example, SpectaQL can pass all the necessary information about the Scalar, Field or Argument to your generator in order for it to decide what the example should look like. See the included [example generator](https://github.com/anvilco/spectaql/blob/master/examples/customizations/examples/index.js) to see how it works.
+In addition to being able to use any static examples you've provided, SpectaQL also supports dynamically generating examples for Scalars, Fields and Arguments. When it comes time to generate an example, SpectaQL can pass all the necessary information about the Scalar, Field or Argument to your generator in order for it to decide what the example should look like. See the included [example generator](https://github.com/anvilco/spectaql/blob/main/examples/customizations/examples/index.js) to see how it works.
 
 **NOTE**: There is nothing wrong with this approach, and it may often times make the most sense. However, if you are thinking about going through the trouble of writing your own example generator methods, you might also consider taking that effort "upstream" and using it to add examples directly to your metadata _before_ SpectaQL even gets involved. Just a thought.
 
@@ -236,7 +236,7 @@ The best option for customizing your output is to see if what you want to do is 
 - Overriding CSS, JS and HTML is already supported via themes. Check [themes README][themes-readme] for more.
 - Overriding "examples" for things is already supported via [metadata](#metadata), or via a [dynamic example generator](#dynamic-example-generators).
 
-If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `master` branch.
+If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `main` branch.
 
 Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL. We try to be pretty active about fixing and enhancing the project. Please also consider subscribing to the repo to keep up to date with the goings on.
 
@@ -274,7 +274,7 @@ This library owes a very special thanks to the [DociQL][dociql] project, which s
 
 ## License
 
-SpectaQL is licensed under the MIT License – see the [LICENSE.md](https://github.com/anvilco/spectaql/blob/master/LICENSE) for specific details.
+SpectaQL is licensed under the MIT License – see the [LICENSE.md](https://github.com/anvilco/spectaql/blob/main/LICENSE) for specific details.
 
 ## More Information
 
