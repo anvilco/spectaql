@@ -1,3 +1,6 @@
+### 2.0.9
+  - Add `info.contact.url` to the templates
+
 ### 2.0.8
   - Dependency updates
 
