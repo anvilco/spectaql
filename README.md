@@ -136,7 +136,7 @@ In addition to using SpectaQL as a global (or local) binary executable, it can a
 ```node
 import { run } from 'spectaql'
 ...
-const spectaqlOtions = {
+const spectaqlOptions = {
    specFile: 'path/to/your/config.yml',
    resolveWithOutput: true,
 }
