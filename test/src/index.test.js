@@ -27,6 +27,8 @@ describe('index', function () {
       expect(options.specData.introspection).to.include({
         removeTrailingPeriodFromDescriptions: false,
 
+        inputValueDeprecation: false,
+
         metadatasReadPath: 'documentation',
         metadatasWritePath: 'documentation',
 

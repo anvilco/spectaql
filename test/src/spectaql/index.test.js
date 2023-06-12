@@ -26,6 +26,7 @@ describe('index', function () {
     spectaqlDirective: $.spectaqlDirective,
     removeTrailingPeriodFromDescriptions:
       $.removeTrailingPeriodFromDescriptions,
+    inputValueDeprecation: $.inputValueDeprecation,
     queriesDocumentedDefault: true,
     queryDocumentedDefault: true,
     queryArgDocumentedDefault: true,
@@ -38,6 +39,11 @@ describe('index', function () {
 
     subscriptionsDocumentedDefault: true,
     subscriptionDocumentedDefault: true,
+
+    inputsDocumentedDefault: true,
+    inputDocumentedDefault: true,
+    inputFieldDocumentedDefault: true,
+    hideInputFieldsOfUndocumentedType: true,
 
     objectsDocumentedDefault: true,
     objectDocumentedDefault: true,
@@ -255,6 +261,56 @@ describe('index', function () {
         const myArg = myField.args.find((arg) => arg.name === 'myArg')
         expect(myArg).to.be.ok
         expect(myArg.description).to.eql('An argument on a field on a type')
+      })
+    })
+  })
+
+  describe('inputValueDeprecation', function () {
+    def('schemaFile', () => pathToComplexSchema)
+    it('does not support inputValueDeprecation by default and removes the field', async function () {
+      const { allOptions, items } = await spectaql($.opts)
+      expect(allOptions.specData.introspection.inputValueDeprecation).to.not.be
+        .ok
+
+      expect(items).to.have.length.gt(0)
+      const filterInput = items[1].items.find(
+        (item) => item.name === 'FilterInput'
+      )
+
+      expect(filterInput.inputFields).to.be.an('array')
+      expect(
+        filterInput.inputFields.find((field) => field.name === 'someField')
+      ).to.not.be.ok
+      expect(
+        filterInput.inputFields.find((field) => field.name === 'anotherField')
+      ).to.be.ok
+    })
+
+    context('inputValueDeprecation is true', function () {
+      def('inputValueDeprecation', () => true)
+
+      it('does support inputValueDeprecation', async function () {
+        const { allOptions, items } = await spectaql($.opts)
+        expect(allOptions.specData.introspection.inputValueDeprecation).to.be.ok
+        expect(items).to.have.length.gt(0)
+
+        const filterInput = items[1].items.find(
+          (item) => item.name === 'FilterInput'
+        )
+
+        expect(filterInput.inputFields).to.be.an('array')
+        const someField = filterInput.inputFields.find(
+          (field) => field.name === 'someField'
+        )
+        expect(someField).to.be.ok
+        expect(someField).to.include({
+          isDeprecated: true,
+          deprecationReason: '`someField` is going away',
+        })
+
+        expect(
+          filterInput.inputFields.find((field) => field.name === 'anotherField')
+        ).to.be.ok
       })
     })
   })
