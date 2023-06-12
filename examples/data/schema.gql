@@ -179,7 +179,7 @@ type Subscription {
 "An Input Type for filtering things. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
 input FilterInput {
   "Comment for someField. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-  someField: Boolean = false
+  someField: Boolean = false @deprecated(reason: "`someField` is going away")
   "Comment for anotherField"
   anotherField: String
   "Comment for episodeEnums"

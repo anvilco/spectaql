@@ -81,6 +81,9 @@ const introspectionOptionDefaults = Object.freeze({
 
   removeTrailingPeriodFromDescriptions: false,
 
+  // TODO: make this true by default in next major breaking version?
+  inputValueDeprecation: false,
+
   fieldExpansionDepth: 1,
 
   metadatasReadPath: 'documentation',

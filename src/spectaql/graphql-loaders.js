@@ -31,15 +31,25 @@ function standardizeIntrospectionQueryResult(result) {
   return result.data ? result.data : result
 }
 
-export const introspectionResponseFromSchemaSDL = ({ schemaSDL }) => {
+export const introspectionResponseFromSchemaSDL = ({
+  schemaSDL,
+  getIntrospectionQueryOptions,
+}) => {
   return introspectionResponseFromSchema({
     schema: buildSchema(schemaSDL),
+    getIntrospectionQueryOptions,
   })
 }
 
-export const introspectionResponseFromSchema = ({ schema }) => {
+export const introspectionResponseFromSchema = ({
+  schema,
+  getIntrospectionQueryOptions,
+}) => {
   return standardizeIntrospectionQueryResult(
-    graphqlSync({ schema, source: getIntrospectionQuery() })
+    graphqlSync({
+      schema,
+      source: getIntrospectionQuery(getIntrospectionQueryOptions),
+    })
   )
 }
 
@@ -125,10 +135,14 @@ export const loadIntrospectionResponseFromFile = ({ pathToFile } = {}) => {
   return standardizeIntrospectionQueryResult(fileToObject(pathToFile))
 }
 
-export const loadIntrospectionResponseFromUrl = ({ headers, url }) => {
+export const loadIntrospectionResponseFromUrl = ({
+  headers,
+  url,
+  getIntrospectionQueryOptions,
+}) => {
   const requestBody = {
     operationName: 'IntrospectionQuery',
-    query: getIntrospectionQuery(),
+    query: getIntrospectionQuery(getIntrospectionQueryOptions),
   }
 
   const requestOpts = {

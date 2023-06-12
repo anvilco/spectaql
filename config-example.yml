@@ -163,6 +163,13 @@ introspection:
   # Default: 1
   fieldExpansionDepth: 1
 
+  # Include support for @deprecated field on InputType fields.
+  # NOTE: Be careful, it appears that if you mark an InputType field as deprecated but do NOT set
+  # this option to `true`, the field will be removed from the schema completely.
+  #
+  # Default: false
+  inputValueDeprecation: false
+
   #
   #
   ##############################################
