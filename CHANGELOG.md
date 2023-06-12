@@ -1,3 +1,7 @@
+### 2.1.0
+  - Add support for `inputValueDeprecation`
+  - Dependency updates
+
 ### 2.0.9
   - Add `info.contact.url` to the templates
 

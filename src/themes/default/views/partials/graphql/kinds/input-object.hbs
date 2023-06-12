@@ -19,13 +19,16 @@
           {{#each inputFields}}
             <tr>
               <td>
-                {{! The Value column }}
+                {{! The Input Field column }}
                 {{~> graphql/name-and-type }}
               </td>
               <td>
                 {{! The Description column }}
                 {{#if description}}
                   {{>graphql/_description-with-defaults}}
+                {{/if}}
+                {{#if (and deprecationReason (not @root.info.x-hideDeprecationReason))}}
+                  <span class="deprecation-reason">{{ md deprecationReason stripParagraph=true }}</span>
                 {{/if}}
               </td>
             </tr>

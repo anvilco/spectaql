@@ -34,11 +34,19 @@ export function buildSchemas(opts) {
       metadataFile,
       headers,
       removeTrailingPeriodFromDescriptions,
+      // TODO: make this true by default in next major breaking version?
+      inputValueDeprecation = false,
     },
   } = spec
 
   let done = false
   let introspectionResponse
+
+  // TODO: make this true by default in next major breaking version?
+  const getIntrospectionQueryOptions = {
+    inputValueDeprecation,
+  }
+
   if (schemaFile) {
     const { schema, directables, directiveName, optionsTypeName } =
       loadSchemaFromSDLFile({
@@ -46,7 +54,10 @@ export function buildSchemas(opts) {
         spectaqlDirectiveOptions,
       })
 
-    introspectionResponse = introspectionResponseFromSchema({ schema })
+    introspectionResponse = introspectionResponseFromSchema({
+      schema,
+      getIntrospectionQueryOptions,
+    })
     if (spectaqlDirectiveOptions.enable && !introspectionResponse.errors) {
       introspectionResponse = addMetadataFromDirectables({
         ...introspectionOptions,
@@ -85,6 +96,7 @@ export function buildSchemas(opts) {
     introspectionResponse = loadIntrospectionResponseFromUrl({
       headers: resolvedHeaders,
       url: introspectionUrl,
+      getIntrospectionQueryOptions,
     })
     done = 'loaded via Introspection URL'
   }
