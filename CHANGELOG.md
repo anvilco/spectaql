@@ -1,3 +1,7 @@
+### 2.1.1
+  - Fix cross-OS bug where `rm` was used. https://github.com/anvilco/spectaql/issues/837
+  - Dependency updates
+
 ### 2.1.0
   - Add support for `inputValueDeprecation`
   - Dependency updates
