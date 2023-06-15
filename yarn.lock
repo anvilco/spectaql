@@ -11,9 +11,9 @@
     "@jridgewell/trace-mapping" "^0.3.9"
 
 "@anvilco/apollo-server-plugin-introspection-metadata@^2.0.1":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.0.2.tgz#c4afe1fde5fe178c63b3889cc8f9d2b9dfaaec58"
-  integrity sha512-YnQi3zyDVyVMl9KGpgffzSWXY52Hb2pirIq9mD32FmFnNW4v8yyfcUsiNqG+4myGL3OwP2vwFYdrt/1B/l4FMA==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.2.1.tgz#1ebbc9901c0faf1f6d3b299dc0204d6721dc0095"
+  integrity sha512-4pih3rxqUV0mo2Hk/pgQ7AA9EnMI/HrcxCnRHo8kwSCbik0MdXPo7R9fal/L2fHoWKatc/6ACG8PEjxXvGMXog==
   dependencies:
     lodash.get "^4.4.2"
     lodash.set "^4.3.2"
