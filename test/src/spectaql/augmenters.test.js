@@ -39,6 +39,12 @@ describe('augmenters', function () {
       nonRequiredArrayOfNullables: [String]
     }
 
+    enum MyEnum {
+      ENUM1
+      ENUM2
+      ENUM3
+    }
+
     type UnusedType {
       id: String
     }
@@ -276,10 +282,12 @@ describe('augmenters', function () {
         })
       })
 
+      // These are the plural versions in case it's hard to tell/read
       context(
         'objectsDocumentedDefault and unionsDocumentedDefault and inputsDocumentedDefault is false',
         function () {
           def('objectsDocumentedDefault', false)
+          def('enumsDocumentedDefault', false)
           def('unionsDocumentedDefault', false)
           def('inputsDocumentedDefault', false)
 
@@ -295,7 +303,7 @@ describe('augmenters', function () {
 
           context('metadata says MyType should be documented', function () {
             def('metadata', () => {
-              return _.set($.metadataBase, 'OBJECT.MyType.documentation', {
+              return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, {
                 documented: true,
               })
             })
@@ -313,10 +321,12 @@ describe('augmenters', function () {
         }
       )
 
+      // These are the singular versions in case it's hard to tell/read
       context(
-        'objectDocumentedDefault and unionDocumentedDefault and inputDocumentedDefault is false',
+        'objectDocumentedDefault and enumDocumentedDefault and unionDocumentedDefault and inputDocumentedDefault is false',
         function () {
           def('objectDocumentedDefault', false)
+          def('enumDocumentedDefault', false)
           def('unionDocumentedDefault', false)
           def('inputDocumentedDefault', false)
 
