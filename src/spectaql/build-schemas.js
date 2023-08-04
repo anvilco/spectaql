@@ -54,6 +54,8 @@ export function buildSchemas(opts) {
         spectaqlDirectiveOptions,
       })
 
+    console.log('directables: ', directables)
+
     introspectionResponse = introspectionResponseFromSchema({
       schema,
       getIntrospectionQueryOptions,

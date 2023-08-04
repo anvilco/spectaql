@@ -174,6 +174,8 @@ function hideFields(options = {}) {
     includeSubscription: true,
   })
 
+  console.log(JSON.stringify(types))
+
   for (const type of types) {
     // Don't mess with reserved GraphQL types
     // if (isReservedType(type)) {
@@ -184,6 +186,7 @@ function hideFields(options = {}) {
       type.kind === KINDS.INPUT_OBJECT
         ? inputFieldDocumentedDefault
         : fieldDocumentedDefault
+
     if (queryType && typesAreSame(type, queryType)) {
       defaultShowHide = !!queryDocumentedDefault
     } else if (mutationType && typesAreSame(type, mutationType)) {
