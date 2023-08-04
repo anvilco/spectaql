@@ -109,8 +109,6 @@ export const loadSchemaFromSDLFile = ({
     }))
   }
 
-  console.log('directiveSdl: ', directiveSdl)
-
   let schema = makeExecutableSchema({
     typeDefs: [
       directiveSdl,

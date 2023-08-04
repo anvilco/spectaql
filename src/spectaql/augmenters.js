@@ -174,7 +174,7 @@ function hideFields(options = {}) {
     includeSubscription: true,
   })
 
-  console.log(JSON.stringify(types))
+  console.log('types: ', JSON.stringify(types))
 
   for (const type of types) {
     // Don't mess with reserved GraphQL types
@@ -196,7 +196,10 @@ function hideFields(options = {}) {
     }
 
     // Handle OBJECT.fields AND INPUT_OBJECT.inputFields
-    for (const field of type.fields || type.inputFields || []) {
+    for (const field of type.fields ||
+      type.inputFields ||
+      type.enumValues ||
+      []) {
       const metadata = _.get(field, metadatasPath, {})
       const shouldDocument = calculateShouldDocument({
         ...metadata,
