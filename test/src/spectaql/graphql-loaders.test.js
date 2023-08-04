@@ -65,7 +65,7 @@ describe('graphql-loaders', function () {
       expect(schema._typeMap.MyType.getFields()).to.not.have.property(
         'mySupplementalField'
       )
-      expect(directables).to.be.an('array').of.length(23)
+      expect(directables).to.be.an('array').of.length(24)
     })
   })
 

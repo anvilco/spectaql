@@ -174,8 +174,6 @@ function hideFields(options = {}) {
     includeSubscription: true,
   })
 
-  console.log('types: ', JSON.stringify(types))
-
   for (const type of types) {
     // Don't mess with reserved GraphQL types
     // if (isReservedType(type)) {

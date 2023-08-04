@@ -228,9 +228,6 @@ const MAPPER_KIND_TO_STUFF_MAP = Object.freeze({
     fnName: 'getField',
     typeKind: KINDS.INPUT_OBJECT,
   },
-  [MapperKind.ENUM_VALUE]: {
-    fnName: 'getEnum',
-  },
 })
 
 export const addMetadataFromDirectables = ({
