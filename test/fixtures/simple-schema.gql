@@ -6,9 +6,9 @@ type Query {
 
 
 "These are very important `enum`s. `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-enum EpisodeEnum @spectaql(options: [{ key: "undocumented", value: "true" }, { key: "example", value: "JEDI" }]) {
+enum EpisodeEnum {
   "Who is Luke? `Markdown` and reference interpolation like [`[String!]!`]({{Types.String}}) are supported"
-  NEWHOPE @deprecated(reason: "`NEWHOPE` is going away") @spectaql(options: [{ key: "undocumented", value: "true" }])
+  NEWHOPE @deprecated(reason: "`NEWHOPE` is going away")
   "Who is Darth?"
   EMPIRE
   "Who are the Ewoks?"

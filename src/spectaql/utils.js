@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import _ from 'lodash'
 import tmp from 'tmp'
+import JSON5 from 'json5'
 
 // Ensures temporary files are cleaned up on program close, even if errors are encountered.
 tmp.setGracefulCleanup()
@@ -98,7 +99,7 @@ export function readJSONFile(pth, options = {}) {
   if (normalizePath) {
     pth = normalizePathFromCwd(pth)
   }
-  return JSON.parse(readTextFile(pth, optionsForReadJSONParse))
+  return JSON5.parse(readTextFile(pth, optionsForReadJSONParse))
 }
 
 export function readJSFile(pth, { normalizePath = true } = {}) {
