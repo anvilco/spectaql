@@ -129,6 +129,26 @@ export function generateSpectaqlDirectiveSupport({
     }
   }
 
+  function enumValueHandler(
+    config,
+    typeName,
+    schema,
+    externalValue,
+    mapperKind
+  ) {
+    const directive = getDirective(schema, config, 'spectaql')?.[0]
+
+    if (!isEmpty(directive)) {
+      directables.push({
+        directive: processDirective(directive),
+        config,
+        typeName,
+        externalValue,
+        mapperKind,
+      })
+    }
+  }
+
   const HANDLER_MAP = {
     [MapperKind.TYPE]: (...args) => typeHandler(...args, MapperKind.TYPE),
     [MapperKind.SCALAR_TYPE]: (...args) =>
@@ -155,7 +175,7 @@ export function generateSpectaqlDirectiveSupport({
     [MapperKind.SUBSCRIPTION]: (...args) =>
       typeHandler(...args, MapperKind.SUBSCRIPTION),
     [MapperKind.ENUM_VALUE]: (...args) =>
-      typeHandler(...args, MapperKind.ENUM_VALUE),
+      enumValueHandler(...args, MapperKind.ENUM_VALUE),
     [MapperKind.FIELD]: (...args) => configHandler(...args, MapperKind.FIELD),
     [MapperKind.OBJECT_FIELD]: (...args) =>
       configHandler(...args, MapperKind.OBJECT_FIELD),
@@ -196,6 +216,7 @@ const MAPPER_KIND_TO_KIND_MAP = Object.freeze({
   [MapperKind.MUTATION_ROOT_FIELD]: KINDS.OBJECT,
   [MapperKind.SUBSCRIPTION_ROOT_FIELD]: KINDS.OBJECT,
   [MapperKind.INTERFACE_FIELD]: KINDS.INTERFACE,
+  [MapperKind.ENUM_VALUE]: KINDS.ENUM,
 })
 
 const MAPPER_KIND_TO_STUFF_MAP = Object.freeze({
@@ -278,6 +299,30 @@ export const addMetadataFromDirectables = ({
         argName: astNode.name.value,
       })
     },
+    EnumValueDefinition: ({
+      type,
+      config,
+      typeName,
+      externalValue,
+      mapperKind,
+    }) => {
+      const typeKind = MAPPER_KIND_TO_KIND_MAP[mapperKind]
+      if (!typeKind) {
+        console.error(new Error('Unsupported mapperKind'), {
+          type,
+          config,
+          mapperKind,
+          typeName,
+          externalValue,
+        })
+        return
+      }
+      return microfiber.getField({
+        typeKind,
+        typeName,
+        fieldName: externalValue,
+      })
+    },
   }
 
   for (const {
@@ -286,6 +331,7 @@ export const addMetadataFromDirectables = ({
     config,
     fieldName,
     typeName,
+    externalValue,
     mapperKind,
   } of directables) {
     if (!directive || !Object.keys(directive).length) {
@@ -294,6 +340,7 @@ export const addMetadataFromDirectables = ({
 
     const map = type ? typeFnMap : config ? configFnMap : {}
     const astNode = (type || config).astNode
+
     const fn = map[astNode.kind]
     if (fn) {
       const typeDef = fn({
@@ -301,6 +348,7 @@ export const addMetadataFromDirectables = ({
         config,
         typeName,
         fieldName,
+        externalValue,
         mapperKind,
         astNode,
       })
@@ -312,6 +360,8 @@ export const addMetadataFromDirectables = ({
           config,
           typeName,
           fieldName,
+          externalValue,
+          mapperKind,
           astNode,
         })
       }
@@ -321,6 +371,7 @@ export const addMetadataFromDirectables = ({
         config,
         typeName,
         fieldName,
+        externalValue,
         astNode,
       })
     }

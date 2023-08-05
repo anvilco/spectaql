@@ -39,6 +39,12 @@ describe('augmenters', function () {
       nonRequiredArrayOfNullables: [String]
     }
 
+    enum MyEnum {
+      ENUM1
+      ENUM2
+      ENUM3
+    }
+
     type UnusedType {
       id: String
     }
@@ -276,10 +282,12 @@ describe('augmenters', function () {
         })
       })
 
+      // These are the plural versions in case it's hard to tell/read
       context(
         'objectsDocumentedDefault and unionsDocumentedDefault and inputsDocumentedDefault is false',
         function () {
           def('objectsDocumentedDefault', false)
+          def('enumsDocumentedDefault', false)
           def('unionsDocumentedDefault', false)
           def('inputsDocumentedDefault', false)
 
@@ -295,7 +303,7 @@ describe('augmenters', function () {
 
           context('metadata says MyType should be documented', function () {
             def('metadata', () => {
-              return _.set($.metadataBase, 'OBJECT.MyType.documentation', {
+              return _.set($.metadataBase, `OBJECT.MyType.${$.metadatasPath}`, {
                 documented: true,
               })
             })
@@ -313,10 +321,12 @@ describe('augmenters', function () {
         }
       )
 
+      // These are the singular versions in case it's hard to tell/read
       context(
-        'objectDocumentedDefault and unionDocumentedDefault and inputDocumentedDefault is false',
+        'objectDocumentedDefault and enumDocumentedDefault and unionDocumentedDefault and inputDocumentedDefault is false',
         function () {
           def('objectDocumentedDefault', false)
+          def('enumDocumentedDefault', false)
           def('unionDocumentedDefault', false)
           def('inputDocumentedDefault', false)
 
@@ -449,7 +459,7 @@ describe('augmenters', function () {
       })
     })
 
-    describe('Fields', function () {
+    describe('Fields/EnumValues', function () {
       afterEach(() => {
         // Make sure it does not mess up Query or Mutation
         expect($.introspectionManipulator.getQueryType()).to.be.ok
@@ -515,6 +525,25 @@ describe('augmenters', function () {
             fieldName: 'requiredArrayOfNullables',
           })
         ).to.be.ok
+
+        expect(
+          $.introspectionManipulator.getEnumValue({
+            typeName: 'MyEnum',
+            fieldName: 'ENUM1',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getEnumValue({
+            typeName: 'MyEnum',
+            fieldName: 'ENUM2',
+          })
+        ).to.be.ok
+        expect(
+          $.introspectionManipulator.getEnumValue({
+            typeName: 'MyEnum',
+            fieldName: 'ENUM3',
+          })
+        ).to.be.ok
       })
 
       context('fieldDocumentedDefault is false', function () {
@@ -564,6 +593,55 @@ describe('augmenters', function () {
                 name: 'OtherType',
               }).fields
               expect(fields).to.eql([])
+            })
+          }
+        )
+      })
+
+      describe('enumValues', function () {
+        context(
+          'metadata directive says MyEnum.ENUM2 should NOT be documented',
+          function () {
+            def('metadata', () => {
+              return _.set(
+                $.metadataBase,
+                `ENUM.MyEnum.enumValues.ENUM2.${$.metadatasPath}`,
+                { undocumented: true }
+              )
+            })
+
+            it('only documents the other enumValues', function () {
+              const responseBefore = _.cloneDeep($.introspectionResponse)
+              const response = $.response
+              expect(response).to.not.eql(responseBefore)
+
+              const enumValues = $.introspectionManipulator.getType({
+                kind: KINDS.ENUM,
+                name: 'MyEnum',
+              }).enumValues
+              // Only ENUM1 and ENUM3 are there
+              expect(enumValues).to.be.an('array').of.length(2)
+              expect(enumValues.map((enumValue) => enumValue.name)).to.eql([
+                'ENUM1',
+                'ENUM3',
+              ])
+
+              for (const enumValue of ['ENUM1', 'ENUM3']) {
+                const enumValueDef = $.introspectionManipulator.getEnumValue({
+                  typeName: 'MyEnum',
+                  fieldName: enumValue,
+                })
+
+                expect(enumValueDef).to.be.ok
+                expect(enumValueDef.name).to.eql(enumValue)
+              }
+
+              expect(
+                $.introspectionManipulator.getEnumValue({
+                  typeName: 'MyEnum',
+                  fieldName: 'ENUM2',
+                })
+              ).to.not.be.ok
             })
           }
         )
