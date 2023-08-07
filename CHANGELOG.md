@@ -1,3 +1,9 @@
+### 2.2.0
+  - Fix/add support for `EnumValues`.
+  - Non-zero exit code when there's an error.
+  - Fix scrollspy issue. https://github.com/anvilco/spectaql/pull/852 Thanks @MarcEspiard
+  - Dependency updates.
+
 ### 2.1.1
   - Fix cross-OS bug where `rm` was used. https://github.com/anvilco/spectaql/issues/837
   - Dependency updates
