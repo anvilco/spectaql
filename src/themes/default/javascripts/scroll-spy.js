@@ -73,7 +73,7 @@ function scrollSpy() {
 
     var activeEl = document.querySelector(`.${ACTIVE_CLASS}`)
     var nextEl = section
-      ? document.querySelector('#nav a[href*=' + section.id + ']')
+      ? document.querySelector('#nav a[href="#' + section.id + '"]')
       : null
 
     var parentNextEl = getParentSection(nextEl)
