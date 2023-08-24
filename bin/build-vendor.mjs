@@ -25,6 +25,7 @@ const vendorTargetDir = path.join(root, 'vendor')
 let isDryRun = isDryRunFn()
 // isDryRun = true
 
+console.log({ isDryRun })
 ensureDirectory(vendorTargetDir)
 ;(async function () {
   const sourceDirectoryNames = (
@@ -127,7 +128,7 @@ ensureDirectory(vendorTargetDir)
 })()
 
 function isDryRunFn() {
-  return process.env.npm_config_dry_run === true
+  return [true, 'true'].includes(process.env.npm_config_dry_run)
 }
 
 function stripSpecial(str) {
