@@ -1,3 +1,6 @@
+### 2.2.1
+  - Fix publishing and installation process. https://github.com/anvilco/spectaql/issues/876
+
 ### 2.2.0
   - Fix/add support for `EnumValues`.
   - Non-zero exit code when there's an error.

@@ -25,7 +25,6 @@ const vendorTargetDir = path.join(root, 'vendor')
 let isDryRun = isDryRunFn()
 // isDryRun = true
 
-console.log({ isDryRun })
 ensureDirectory(vendorTargetDir)
 ;(async function () {
   const sourceDirectoryNames = (
