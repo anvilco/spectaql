@@ -1,6 +1,8 @@
 dist/
 vendor/
 public/
+# From local packing and unzipping
+package/
 node_modules
 scratch
 

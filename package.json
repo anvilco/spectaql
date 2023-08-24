@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -55,8 +55,8 @@
     "clean-build:src": "npm run clean:dist && npm run build:src",
     "clean-build:vendor": "npm run clean:vendor && npm run build:vendor",
     "clean-build": "npm run clean && npm run build",
-    "preinstall": "npm run build:vendor",
-    "prepack": "husky install && npm run clean-build",
+    "prepack": "husky install && npm run ensure-npm && npm run clean-build",
+    "ensure-npm": "read -p \"Are you running \\\"npm publish\\\" or did you pack using \\\"npm\\\"? That's \\\"npm\\\" instead of \\\"yarn\\\". Very important!!! [Yy]\" -n 1 -r; if [[ ! $REPLY =~ ^[Yy]$ ]]\nthen\n[[ \"$0\" = \"$BASH_SOURCE\" ]] && exit 1 || return 1\nfi",
     "publish:dry-run": "npm pack --dry-run",
     "publish:version": "npm version",
     "publish:beta": "npm publish --tag beta",

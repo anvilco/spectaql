@@ -127,7 +127,7 @@ ensureDirectory(vendorTargetDir)
 })()
 
 function isDryRunFn() {
-  return process.env.npm_config_dry_run === true
+  return [true, 'true'].includes(process.env.npm_config_dry_run)
 }
 
 function stripSpecial(str) {
