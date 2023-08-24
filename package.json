@@ -136,7 +136,7 @@
     "husky": ">=6",
     "lint-staged": ">=10",
     "mocha": "^10.1.0",
-    "nodemon": "^2.0.20",
+    "nodemon": "^3.0.1",
     "prettier": "^2.5.1",
     "rewire": "^6.0.0",
     "rimraf": "^5.0.0",
