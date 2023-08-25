@@ -9,6 +9,7 @@ import {
   normalizePathFromCwd,
   pathToRoot,
   readTextFile,
+  readFileAsBase64,
   tmpFolder,
   writeTextFile,
 } from './spectaql/utils'
@@ -65,6 +66,7 @@ const spectaqlOptionDefaults = Object.freeze({
   errorOnInterpolationReferenceNotFound: true,
   displayAllServers: false,
   resolveWithOutput: true,
+  embedLogo: false,
 })
 
 const spectaqlDirectiveDefault = Object.freeze({
@@ -287,19 +289,31 @@ export function resolveOptions(cliOptions) {
   }
 
   if (opts.logoFile) {
-    // Keep or don't keep the original logoFile name when copying to the target
-    opts.logoFileTargetName = opts.preserveLogoName
-      ? path.basename(opts.logoFile)
-      : `logo${path.extname(opts.logoFile)}`
-    opts.logo = path.basename(opts.logoFileTargetName)
+    if (opts.embedLogo) {
+      opts.logoData = readFileAsBase64(opts.logoFile)
+    } else {
+      // Keep or don't keep the original logoFile name when copying to the target
+      opts.logoFileTargetName = opts.preserveLogoName
+        ? path.basename(opts.logoFile)
+        : `logo${path.extname(opts.logoFile)}`
+      opts.logoImageName = path.basename(opts.logoFileTargetName)
+    }
+  } else if (opts.logoUrl) {
+    // Nothing special here for now
   }
 
   if (opts.faviconFile) {
-    // Keep or don't keep the original faviconFile name when copying to the target
-    opts.faviconFileTargetName = opts.preserveFaviconName
-      ? path.basename(opts.faviconFile)
-      : `favicon${path.extname(opts.faviconFile)}`
-    opts.favicon = path.basename(opts.faviconFileTargetName)
+    if (opts.embedFavicon) {
+      opts.faviconData = readFileAsBase64(opts.faviconFile)
+    } else {
+      // Keep or don't keep the original faviconFile name when copying to the target
+      opts.faviconFileTargetName = opts.preserveFaviconName
+        ? path.basename(opts.faviconFile)
+        : `favicon${path.extname(opts.faviconFile)}`
+      opts.faviconImageName = path.basename(opts.faviconFileTargetName)
+    }
+  } else if (opts.faviconUrl) {
+    // Nothing special here for now
   }
 
   // Set the spectaql object
@@ -502,10 +516,12 @@ export const run = async function (cliOptions = {}) {
         copiesToTarget.unshift('js-to-target')
       }
     }
-    if (opts.logoFile) {
+    // Only copy the file if we are NOT embedding it as Base64
+    if (opts.logoFile && !opts.embedLogo) {
       copiesToTarget.unshift('logo-to-target')
     }
-    if (opts.faviconFile) {
+    // Only copy the file if we are NOT embedding it as Base64
+    if (opts.faviconFile && !opts.embedFavicon) {
       copiesToTarget.unshift('favicon-to-target')
     }
 

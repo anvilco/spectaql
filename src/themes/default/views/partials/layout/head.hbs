@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-{{#if favicon }}<link rel="icon" type="image/png" href="images/{{favicon}}" sizes="32x32">{{/if}}
+{{#if faviconData }}<link rel="icon" type="image/png" href="data:image/png;base64,{{faviconData}}" sizes="32x32">{{else if faviconUrl }}<link rel="icon" type="image/png" href="{{faviconUrl}}" sizes="32x32">{{else if faviconImageName }}<link rel="icon" type="image/png" href="images/{{faviconImageName}}" sizes="32x32">{{/if}}
 <title>{{firstTruthy info.x-htmlTitle info.title "GraphQL API Reference"}}</title>
 {{>layout/links-scripts}}
