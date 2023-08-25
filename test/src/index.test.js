@@ -20,6 +20,8 @@ describe('index', function () {
         embeddable: false,
         oneFile: false,
         resolveWithOutput: true,
+        embedLogo: false,
+        embedFavicon: false,
       })
 
       expect(options.targetDir.endsWith('/public')).to.be.true
@@ -68,7 +70,7 @@ describe('index', function () {
 
       def('options', () => $._options)
 
-      def('config', () => ({
+      def('configBase', () => ({
         spectaql: {
           embeddable: true,
           oneFile: true,
@@ -86,6 +88,8 @@ describe('index', function () {
           graphqlScalarExamples: false,
         },
       }))
+
+      def('config', () => $.configBase)
 
       it('uses config overrides and does not resolve certain things as paths', function () {
         const resolveOptions = index.__get__('resolveOptions')
@@ -138,6 +142,62 @@ describe('index', function () {
             options.targetDir.split('/').pop().startsWith(TMP_PREFIX)
           ).to.be.true
           expect(options.themeDir.endsWith('my-custom-theme-yo-yo')).to.be.true
+        })
+      })
+
+      describe('logo and favicon stuff', function () {
+        def('config', () => {
+          const configBase = $.configBase
+          configBase.spectaql = {
+            ...configBase.spectaql,
+            ...$.spectaqlOptions,
+          }
+
+          return configBase
+        })
+
+        context('logoFile and faviconFile are provided', function () {
+          def('spectaqlOptions', () => ({
+            logoFile: './test/fixtures/logo.png',
+            faviconFile: './test/fixtures/favicon.png',
+          }))
+
+          it('only outputs the file paths', async function () {
+            const resolveOptions = index.__get__('resolveOptions')
+            const options = resolveOptions($.options)
+            expect(
+              options.logoFile.endsWith('test/fixtures/logo.png')
+            ).to.be.true
+            expect(
+              options.faviconFile.endsWith('test/fixtures/favicon.png')
+            ).to.be.true
+
+            expect(options.logoData).to.not.be.ok
+            expect(options.faviconData).to.not.be.ok
+          })
+
+          context('embedLogo and embedFavicon are true', function () {
+            def('spectaqlOptions', () => ({
+              logoFile: './test/fixtures/logo.png',
+              embedLogo: true,
+              faviconFile: './test/fixtures/favicon.png',
+              embedFavicon: true,
+            }))
+
+            it('only outputs the file base64 data', async function () {
+              const resolveOptions = index.__get__('resolveOptions')
+              const options = resolveOptions($.options)
+              expect(
+                options.logoFile.endsWith('test/fixtures/logo.png')
+              ).to.be.true
+              expect(
+                options.faviconFile.endsWith('test/fixtures/favicon.png')
+              ).to.be.true
+
+              expect(options.logoData).to.be.ok
+              expect(options.faviconData).to.be.ok
+            })
+          })
         })
       })
     })

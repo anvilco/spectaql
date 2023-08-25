@@ -67,6 +67,7 @@ const spectaqlOptionDefaults = Object.freeze({
   displayAllServers: false,
   resolveWithOutput: true,
   embedLogo: false,
+  embedFavicon: false,
 })
 
 const spectaqlDirectiveDefault = Object.freeze({
