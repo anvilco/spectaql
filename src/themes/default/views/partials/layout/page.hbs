@@ -3,8 +3,12 @@
   <div id="sidebar">
     <div class="sidebar-top-container">
       <div id="logo">
-        {{#if logo}}
-          <img src="images/{{logo}}" title="{{info.title}}" />
+        {{#if logoData }}
+          <img src="data:image/png;base64,{{logoData}}" title="{{info.title}}" />
+        {{else if logoUrl}}
+          <img src="{{logoUrl}}" title="{{info.title}}" />
+        {{else if logoImageName}}
+          <img src="images/{{logoImageName}}" title="{{info.title}}" />
         {{/if}}
       </div>
       <button class="close-button" type="button">

@@ -20,9 +20,18 @@ spectaql:
 
   # Optional path to an image to use as the logo in the top-left of the output
   logoFile: path/to/logo.png
+  # Optional boolean indicating whether to encode the local logoFile and embed the image as Base64
+  # into the resulting HTML. Only applicable if providing the logoFile.
+  #
+  # Default: false
+  embedLogo: false
   # Optional boolean indicating whether to preserve the filename of the logo provided.
   # If false, the logo name will default to "logo"
   preserveLogoName: false
+  # Optional URL to an image to use in your logo. This string will be provided as-is
+  # to the HTML output. Should not be used with logoFile and its related options as
+  # this will take precedence over the logoFile.
+  logoUrl: https://yoursite.com/images/logo.png
   # Control the height of your logo here. Can be useful if your logo is SVG or an
   # inappropriate size.
   #
@@ -31,9 +40,18 @@ spectaql:
 
   # Optional path to an image to use as a favicon for the site when it's not embedded
   faviconFile: path/to/favicon.png
+  # Optional boolean indicating whether to encode the local favicon and embed the image as Base64
+  # into the resulting HTML. Only applicable if providing the faviconFile.
+  #
+  # Default: false
+  embedFavicon: false
   # Optional boolean indicating whether to preserve the filename of the faviconFile provided.
   # If false, the favicon name will default to "favicon"
   preserveFaviconName: false
+  # Optional URL to an image to use in your favicon. This string will be provided as-is
+  # to the HTML output. Should not be used with faviconFile and its related options as
+  # this will take precedence over the faviconFile.
+  faviconUrl: https://yoursite.com/images/favicon.png
 
   # Optional string specifying a path to a theme directory to use for your build.
   #

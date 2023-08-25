@@ -7,7 +7,16 @@ import { dynamicImport, fileExists, takeDefaultExport } from './utils'
 import preProcessData from './pre-process'
 
 async function run(opts) {
-  const { logo, favicon, specData: spec, themeDir } = opts
+  const {
+    logoImageName,
+    logoData,
+    logoUrl,
+    faviconImageName,
+    faviconData,
+    faviconUrl,
+    specData: spec,
+    themeDir,
+  } = opts
 
   const {
     introspection: introspectionOptions,
@@ -62,7 +71,9 @@ async function run(opts) {
   if (customDataArrangerSuffixThatExists) {
     try {
       arrangeDataModule = await dynamicImport(
-        url.pathToFileURL(path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`))
+        url.pathToFileURL(
+          path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
+        )
       )
     } catch (err) {
       console.error(err)
@@ -110,8 +121,12 @@ async function run(opts) {
 
   const data = {
     allOptions: opts,
-    logo,
-    favicon,
+    logoImageName,
+    logoUrl,
+    logoData,
+    faviconImageName,
+    faviconData,
+    faviconUrl,
     info,
     server,
     headers,

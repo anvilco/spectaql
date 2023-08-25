@@ -109,6 +109,13 @@ export function readJSFile(pth, { normalizePath = true } = {}) {
   return require(pth)
 }
 
+export function readFileAsBase64(pth, { normalizePath } = {}) {
+  if (normalizePath) {
+    pth = normalizePathFromCwd(pth)
+  }
+  return Buffer.from(fs.readFileSync(pth)).toString('base64')
+}
+
 export function fileExtensionIs(fileNameOrPath, extensionOrExtensions) {
   if (typeof fileNameOrPath !== 'string') {
     return false
