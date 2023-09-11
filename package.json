@@ -112,7 +112,7 @@
     "json-stringify-pretty-compact": "^3.0.0",
     "json5": "^2.2.0",
     "lodash": "^4.17.21",
-    "marked": "^4.0.12",
+    "marked": "^9.0.0",
     "microfiber": "^2.0.1",
     "postcss": "^8.4.19",
     "sass": "^1.32.13",
