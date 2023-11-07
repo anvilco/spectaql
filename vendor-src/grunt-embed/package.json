@@ -42,7 +42,7 @@
     "grunt-cli": "~0.1.9",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-nodeunit": "~0.2.0"
+    "grunt-contrib-nodeunit": "^5.0.0"
   },
   "peerDependencies": {
     "coffeescript": "^2.6.1",
