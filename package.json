@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -83,7 +83,7 @@
     "generateExampleData": "node bin/generateExampleData.js"
   },
   "dependencies": {
-    "@anvilco/apollo-server-plugin-introspection-metadata": "^2.0.1",
+    "@anvilco/apollo-server-plugin-introspection-metadata": "^2.2.3",
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
     "@graphql-tools/schema": "^9.0.1",

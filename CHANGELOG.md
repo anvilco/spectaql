@@ -1,3 +1,6 @@
+### 2.3.1
+  - Dependency updates
+
 ### 2.3.0
   - Support Logo and Favicon Base64 embedding, as well as URL specification. https://github.com/anvilco/spectaql/issues/807
 
