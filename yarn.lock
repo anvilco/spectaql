@@ -15,13 +15,12 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@anvilco/apollo-server-plugin-introspection-metadata@^2.0.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.2.1.tgz#1ebbc9901c0faf1f6d3b299dc0204d6721dc0095"
-  integrity sha512-4pih3rxqUV0mo2Hk/pgQ7AA9EnMI/HrcxCnRHo8kwSCbik0MdXPo7R9fal/L2fHoWKatc/6ACG8PEjxXvGMXog==
+"@anvilco/apollo-server-plugin-introspection-metadata@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@anvilco/apollo-server-plugin-introspection-metadata/-/apollo-server-plugin-introspection-metadata-2.2.3.tgz#c913cefa665e77cd620df19842c1ce492694439e"
+  integrity sha512-qHhaXN8UuFii8Y2X/i9QSquOEuGaRCFJLEexLB06nNWIpMCvLCQtEB3zAuR4ljyoq+b9D/9TxoJ2Hsn1qtZ5KQ==
   dependencies:
-    lodash.get "^4.4.2"
-    lodash.set "^4.3.2"
+    lodash "^4.17.21"
 
 "@babel/cli@^7.17.6":
   version "7.22.9"
@@ -3619,11 +3618,6 @@ lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
-
-lodash.set@^4.3.2:
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
-  integrity sha512-4hNPN5jlm/N/HLMCO43v8BXKq9Z7QdAGc/VGrRD61w8gN9g/6jF9A4L1pbUgBLCffi0w9VsXfTOij5x8iTyFvg==
 
 lodash.truncate@^4.4.2:
   version "4.4.2"
