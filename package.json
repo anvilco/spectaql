@@ -87,7 +87,7 @@
     "@graphql-tools/load-files": "^6.3.2",
     "@graphql-tools/merge": "^8.1.2",
     "@graphql-tools/schema": "^9.0.1",
-    "@graphql-tools/utils": "^9.1.1",
+    "@graphql-tools/utils": "^10.1.1",
     "cheerio": "^1.0.0-rc.10",
     "coffeescript": "^2.6.1",
     "commander": "^10.0.0",
