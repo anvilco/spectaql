@@ -69,5 +69,8 @@
     "grunt": "~1.5.3",
     "js-beautify": "~1.14.7",
     "lodash": "^4.17.21"
+  },
+  "resolutions": {
+    "grunt-contrib-jshint/jshint/cli/glob": "^7.2.3"
   }
 }

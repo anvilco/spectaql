@@ -56,5 +56,8 @@
     "handlebars": "^4.7.7",
     "json5": "^2.2.0",
     "lodash": "^4.17.21"
+  },
+  "resolutions": {
+    "grunt-contrib-jshint/jshint/cli/glob": "^7.2.3"
   }
 }
