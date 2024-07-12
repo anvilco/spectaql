@@ -79,10 +79,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [14, 16, 18, 20, 22]
-        include:
-          - node-version: 14
-            npm-version: 7
+        node-version: [16, 18, 20, 22]
+        # Not needed anymore/right now:
+        # include:
+        #   - node-version: 14
+        #     npm-version: 7
     steps:
     - uses: actions/checkout@v3
 
