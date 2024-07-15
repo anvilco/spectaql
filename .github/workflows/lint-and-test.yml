@@ -68,7 +68,7 @@ jobs:
         key: ${{ runner.os }}-node-${{ needs.prepare-node.outputs.build-node-version }}-${{ env.GITHUB_SHA }}
 
     - run: yarn install
-    - run: yarn test-e2e:build
+    - run: npm run test-e2e:build
 
   unit-test-and-package-test:
     name: Unit Test & Package Test
