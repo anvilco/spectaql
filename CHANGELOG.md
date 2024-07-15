@@ -1,3 +1,7 @@
+### 3.0.1
+  - Added `ensure-npm` developer script
+  - Dependency updates
+
 ### 3.0.0
   - BREAKING CHANGE: Drops support for Node 14
   - Adds support for Node 20 and Node 22
