@@ -64,7 +64,7 @@
     "test:watch": "nodemon -x 'npm test'",
     "test:debug": "npm test --node-option inspect=0.0.0.0:9223",
     "test:debug:watch": "nodemon -x 'npm run test:debug'",
-    "develop": "nodemon -x 'npm run clean-build:src && node bin/spectaql' -- -D",
+    "develop": "nodemon -x 'npm run clean-build && node bin/spectaql' -- -D",
     "develop:deep-nesting": "npm run develop --theme-dir ./examples/themes/deep-nesting-data --config ./examples/config.yml",
     "develop:echo-directive-sdl": "node dev/echoDirectiveSdl.mjs",
     "test-e2e:build": "npm run clean-build && rimraf test/e2e/spectaql.tgz && node dev/build-e2e.mjs",
