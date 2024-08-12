@@ -1,7 +1,7 @@
 import JSON5 from 'json5'
 // https://www.npmjs.com/package/json-stringify-pretty-compact
 import stringify from 'json-stringify-pretty-compact'
-import cheerio from 'cheerio'
+import { load as cheerioLoad } from 'cheerio'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import {
@@ -148,7 +148,7 @@ export function markdown(
   let html = marked.parse(value)
   // We strip the surrounding <p>-tag, if
   if (stripParagraph) {
-    let $ = cheerio.load('<root>' + html + '</root>')('root')
+    let $ = cheerioLoad('<root>' + html + '</root>')('root')
     // Only strip <p>-tags and only if there is just one of them.
     if ($.children().length === 1 && $.children('p').length === 1) {
       html = $.children('p').html()
@@ -156,7 +156,7 @@ export function markdown(
   }
 
   if (addClass) {
-    let $ = cheerio.load('<root>' + html + '</root>')('root')
+    let $ = cheerioLoad('<root>' + html + '</root>')('root')
     if ($.children().length === 1) {
       $.children().first().addClass(addClass)
       html = $.html()
@@ -473,5 +473,5 @@ export function printSchema(value, _root) {
   // There is an issue with `marked` not formatting a leading quote in a single,
   // quoted string value. By unwinding the special tags after converting to markdown
   // we can avoid that issue.
-  return cheerio.load(unwindTags(quoted)).html()
+  return cheerioLoad(unwindTags(quoted)).html()
 }

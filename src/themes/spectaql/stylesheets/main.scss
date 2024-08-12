@@ -341,11 +341,11 @@ $background-sidebar: $background-subtle;
     margin-bottom: $container-padding-desktop;
     font-weight: normal;
 
-    @include containerPaddingHorizontal();
-
     background: $background-sidebar;
     border-top: 1px solid $border-color-subtle;
     border-bottom: 1px solid $border-color-subtle;
+
+    @include containerPaddingHorizontal();
 
     @media (min-width: $size-content-break) {
       width: 50%;
