@@ -1,3 +1,7 @@
+### 3.0.2
+  - Pinned `cheerio@1.0.0-rc.12`
+  - Fixed SCSS deprecation warning
+
 ### 3.0.1
   - Added `ensure-npm` developer script
   - Dependency updates

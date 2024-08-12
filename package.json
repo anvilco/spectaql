@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -23,7 +23,7 @@
     "generator"
   ],
   "engines": {
-    "node": ">=14",
+    "node": ">=16",
     "npm": ">=7"
   },
   "main": "index.js",
@@ -88,7 +88,7 @@
     "@graphql-tools/merge": "^8.1.2",
     "@graphql-tools/schema": "^9.0.1",
     "@graphql-tools/utils": "^9.1.1",
-    "cheerio": "^1.0.0-rc.10",
+    "cheerio": "1.0.0-rc.12",
     "coffeescript": "^2.6.1",
     "commander": "^10.0.0",
     "fast-glob": "^3.2.12",
