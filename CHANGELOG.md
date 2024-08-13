@@ -1,3 +1,6 @@
+### 1.5.12
+- Updated and pegged dependencies. Particularly in response to https://github.com/anvilco/spectaql/issues/986
+
 ### 1.5.11
 - Updated dependencies.
 
