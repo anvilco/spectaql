@@ -1020,7 +1020,7 @@ describe('augmenters', function () {
         .to.be.an('object')
         .that.does.have.any.keys('example')
 
-      // No top-level examples, even if ther was something in the metadata for them
+      // No top-level examples, even if there was something in the metadata for them
       expect($.introspectionManipulator.getType({ name: 'Query' }))
         .to.be.an('object')
         .that.does.not.have.any.keys('example')

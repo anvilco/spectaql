@@ -42,7 +42,7 @@ let tarballName = await execSync(
 tarballName = getTarballNameFromOutput(tarballName.toString())
 
 // Rename the thing
-const orginalPath = path.join(e2eDir, tarballName)
+const originalPath = path.join(e2eDir, tarballName)
 const newPath = path.join(e2eDir, 'spectaql.tgz')
 
-await execSync(`mv ${orginalPath} ${newPath}`)
+await execSync(`mv ${originalPath} ${newPath}`)

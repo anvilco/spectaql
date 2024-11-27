@@ -20,7 +20,7 @@ hljs.configure({
 
 hljs.registerLanguage('graphql', hljsGraphqlLang)
 
-// Create a custom renderer for highlight.js compatability
+// Create a custom renderer for highlight.js compatibility
 const mdRenderer = new marked.Renderer()
 mdRenderer.code = highlight
 
@@ -43,7 +43,7 @@ const QUOTE_TAG_REGEX = new RegExp(QUOTE_TAG, 'g')
 const QUOTE_HTML = '&quot;'
 const QUOTE_HTML_REGEX = new RegExp(QUOTE_HTML, 'g')
 
-// Map Scalar types to example data to use fro them
+// Map Scalar types to example data to use from them
 const SCALAR_TO_EXAMPLE = {
   String: ['abc123', 'xyz789'],
   Int: [123, 987],

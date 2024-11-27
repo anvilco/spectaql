@@ -69,7 +69,7 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
 - Will automatically generate documentation for all Types, Fields, Queries, Mutations, Arguments and Subscriptions by default.
 - Supports blacklisting entire areas (e.g. "don't show Mutations") and 1-off blacklisting.
 - Supports providing examples via static metadata, or dynamically via a custom generator plugin that you control.
-- Supports (beta) dynamic grouping and arranging of data via a custom data arrangment plugin that you control.
+- Supports (beta) dynamic grouping and arranging of data via a custom data arrangement plugin that you control.
 - Supports light tweaking or complete customization of CSS, JS and HTML output via themes.
 - Supports markdown just about everywhere you can provide text.
 - Live preview mode while developing.
@@ -159,7 +159,7 @@ SpectaQL supports 3 ways to include metadata to be used during processing:
 2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/main/examples/data/metadata.json) file to understand its format.
 3. If you are providing your schema information via an SDL file or files, leverage the [SpectaQL Directive](#the-spectaql-directive) feature to provide your metadata in your SDL through directives. See the [SpectaQL Directive](#the-spectaql-directive) for more information.
 
-**NOTE**: Another way to ensure that things are not documented is to pass your GraphQL Instrospection Results through [Microfiber][microfiber] and perform the removal of any Types, Fields, Queries etc before they even reach SpectaQL. Just a thought.
+**NOTE**: Another way to ensure that things are not documented is to pass your GraphQL Introspection Results through [Microfiber][microfiber] and perform the removal of any Types, Fields, Queries etc before they even reach SpectaQL. Just a thought.
 
 ## The SpectaQL Directive
 If you are providing your schema information via an SDL file or files, you can leverage the `@spectaql` directive and pass any of the supported `metadata` options to the `options` argument of that directive. This is a useful approach for those who are taking an "SDL-first" development approach. See the `spectaqlDirective` option in the [`config-example.yml`](https://github.com/anvilco/spectaql/blob/main/config-example.yml) file for more information on how to enable and implement this approach.
@@ -214,7 +214,7 @@ SpectaQL ships with 3 included themes that can be specified via the `themeDir` o
 - `basic`: Outputs the same HTML structure as the `default` theme, but with minimal CSS styling.
 - `spectaql`: Outputs the same HTML structure as the `default` theme, but with some CSS enhancements.
 
-In addition to those built-in themes, you can specify a path to a custom theme directory to the `themeDir` option. Your custom theme directory will be overlayed on top of the default theme directory, and therefore can include as much or as little overridden or additional files as necessary to obtain your desired output.
+In addition to those built-in themes, you can specify a path to a custom theme directory to the `themeDir` option. Your custom theme directory will be overlaid on top of the default theme directory, and therefore can include as much or as little overridden or additional files as necessary to obtain your desired output.
 
 See [/examples/themes/README.md][themes-readme] for more information on how you can customize SpectaQL's output with themes.
 
