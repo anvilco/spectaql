@@ -1,3 +1,7 @@
+### 3.0.3
+  - Fixed typos. https://github.com/anvilco/spectaql/pull/1002 Thanks @kianmeng
+  - Dependency updates
+
 ### 3.0.2
   - Pinned `cheerio@1.0.0-rc.12`
   - Fixed SCSS deprecation warning
