@@ -1550,12 +1550,7 @@ async@^2.6.0:
   dependencies:
     lodash "^4.17.14"
 
-async@^3.2.3, async@~3.2.0:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/async/-/async-3.2.4.tgz#2d22e00f8cddeb5fde5dd33522b56d1cf569a81c"
-  integrity sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==
-
-async@^3.2.5:
+async@^3.2.3, async@^3.2.5, async@~3.2.0:
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.5.tgz#ebd52a8fdaf7a2289a24df399f8d8485c8a46b66"
   integrity sha512-baNZyqaaLhyLVKm/DlvdW051MSgO6b8eVfIezl9E5PqWxFgzLm/wQntEW4zOytVburDEr0JlALEpdOFwvErLsg==
@@ -2964,9 +2959,9 @@ grunt-contrib-concat@^2.1.0:
     source-map "^0.5.3"
 
 grunt-contrib-connect@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/grunt-contrib-connect/-/grunt-contrib-connect-5.0.0.tgz#01efb86e849a6df81d3644cdfd53e02fc6ebeec6"
-  integrity sha512-5bnw/5h8p4P+9EYgFAPKExlNzY1U2/FQSsNlbZmXwbS5l2SyzLwyDqpXKma9RFi2y4s+3IC0ShjE1hJkzuhp4w==
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/grunt-contrib-connect/-/grunt-contrib-connect-5.0.1.tgz#c8cc828a3c806520d9126377870b62eeb8bd2f92"
+  integrity sha512-Hfq/0QJl3ddD2N/a/1cDJHkKEOGk6m7W6uxNe0AmYwtf6v0F/4+8q9rvPJ1tl+mrI90lU/89I9T/h48qqeMfQA==
   dependencies:
     async "^3.2.5"
     connect "^3.7.0"
