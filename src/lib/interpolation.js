@@ -39,12 +39,12 @@ export function substituteEnv(valueIn) {
     } else {
       const keyParts = parts[2].split(':-')
       const key = keyParts[0]
-      const defautValue = keyParts[1] || ''
+      const defaultValue = keyParts[1] || ''
 
       replacePart = parts[0].substring(prefix.length)
       value = Object.prototype.hasOwnProperty.call(process.env, key)
         ? process.env[key]
-        : defautValue
+        : defaultValue
 
       // If the value is found, remove nested expansions.
       if (keyParts.length > 1 && value) {

@@ -87,7 +87,7 @@ async function run(opts) {
         ]
         if (!customDataArrangerSuffixThatExists.endsWith('.mjs')) {
           messages.push(
-            'You can try renaming your file with an "mjs" extension, or seting "type"="module" in your package.json'
+            'You can try renaming your file with an "mjs" extension, or setting "type"="module" in your package.json'
           )
         } else {
           messages.push('Try setting "type"="module" in your package.json')

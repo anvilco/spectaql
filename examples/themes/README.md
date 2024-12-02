@@ -8,7 +8,7 @@ SpectaQL's theming system is a powerful way to tweak or augment the default them
 
 ### Overview
 
-Any custom theme that you use will be "overlayed" on top of SpectaQL's [default theme directory][default-theme-dir] and structure. This means that your theme gets all the templates, javascripts, CSS and helpers included in the default theme "for free".
+Any custom theme that you use will be "overlaid" on top of SpectaQL's [default theme directory][default-theme-dir] and structure. This means that your theme gets all the templates, javascripts, CSS and helpers included in the default theme "for free".
 
 Any files that your theme includes will be added on top of the default theme's structure. This means you can:
 
@@ -16,7 +16,7 @@ Any files that your theme includes will be added on top of the default theme's s
 - Include new files to be considered or included during the build process
 - Both!
 
-The "theme" system works on a directory structure convention. Here's how that stucture looks:
+The "theme" system works on a directory structure convention. Here's how that structure looks:
 
 ```js
 your-theme-dir/
@@ -55,7 +55,7 @@ An example or replacing the whole theme:
 
 ```scss
 // mytheme/stylesheets/main.scss
-// This will replace the deafult theme
+// This will replace the default theme
 
 // You can (but don't have to!) import structural styles from base and
 // syntax highlighting from the spectaql default theme
@@ -86,13 +86,13 @@ You can override syntax highlighting styles by specifying a `syntax-highlighting
 
 ### `views`
 
-SpectaQL uses [Handlebars][handlebars] as its templating engine - please read up on their docs if you'd like to alter this area. Any `.hbs` files that you add to this folder will be overlayed on top of the default theme's directory.
+SpectaQL uses [Handlebars][handlebars] as its templating engine - please read up on their docs if you'd like to alter this area. Any `.hbs` files that you add to this folder will be overlaid on top of the default theme's directory.
 
 SpectaQL will look for the the `main.hbs` file in the resulting `views` directory as the entry point for Handlebars. If your theme provides a `main.hbs` file, that will overwrite the default one and be used to direct the HBS -> HTML build.
 
-If you only want to tweak and/or add certain partials, you can do so by only including those customized or additional files in your theme. They will be overlayed on top of the default theme directory in a supplemental manner.
+If you only want to tweak and/or add certain partials, you can do so by only including those customized or additional files in your theme. They will be overlaid on top of the default theme directory in a supplemental manner.
 
-SpectaQL also supports running a theme in "embeddable" mode to produce output that can be embeded into an existing HTML page. In "embeddable" mode, the `embedded.hbs` file will be used as the entry point for Handlebars. Depending on the changes you've made, if you want your theme to support "embeddable" mode properly you may need to customize the `embedded.hbs` file in your theme.
+SpectaQL also supports running a theme in "embeddable" mode to produce output that can be embedded into an existing HTML page. In "embeddable" mode, the `embedded.hbs` file will be used as the entry point for Handlebars. Depending on the changes you've made, if you want your theme to support "embeddable" mode properly you may need to customize the `embedded.hbs` file in your theme.
 
 ### `helpers`
 

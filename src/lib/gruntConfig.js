@@ -86,7 +86,7 @@ module.exports = function (grunt, options, spectaqlData) {
 
     // https://www.npmjs.com/package/grunt-compile-handlebars
     // Compile the Handlebars templates as HTML into the target directory
-    // Everyting has been copied intermediately to the cache directory
+    // Everything has been copied intermediately to the cache directory
     // so that custom stuff can be combined with standard stuff
     'compile-handlebars': {
       compile: {

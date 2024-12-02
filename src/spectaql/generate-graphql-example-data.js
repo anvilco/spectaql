@@ -13,13 +13,13 @@ import {
   lowerCase,
 } from './utils'
 
-const QUERY_NAME_STATEGY_NONE = 'none'
-const QUERY_NAME_STATEGY_CAPITALIZE_FIRST = 'capitalizeFirst'
-const QUERY_NAME_STATEGY_CAPITALIZE = 'capitalize'
-const QUERY_NAME_STATEGY_CAMELCASE = 'camelCase'
-const QUERY_NAME_STATEGY_SNAKECASE = 'snakeCase'
-const QUERY_NAME_STATEGY_UPPERCASE = 'upperCase'
-const QUERY_NAME_STATEGY_LOWERCASE = 'lowerCase'
+const QUERY_NAME_STRATEGY_NONE = 'none'
+const QUERY_NAME_STRATEGY_CAPITALIZE_FIRST = 'capitalizeFirst'
+const QUERY_NAME_STRATEGY_CAPITALIZE = 'capitalize'
+const QUERY_NAME_STRATEGY_CAMELCASE = 'camelCase'
+const QUERY_NAME_STRATEGY_SNAKECASE = 'snakeCase'
+const QUERY_NAME_STRATEGY_UPPERCASE = 'upperCase'
+const QUERY_NAME_STRATEGY_LOWERCASE = 'lowerCase'
 
 // Create a sane/friendly indentation of args based on how many there are, and the depth
 function friendlyArgsString({ args, depth }) {
@@ -76,19 +76,19 @@ export function generateQuery({
   const cleanedQuery = queryResult.query.replace(/ : [\w![\]]+/g, '')
 
   let queryName = field.name
-  if (!queryNameStrategy || queryNameStrategy === QUERY_NAME_STATEGY_NONE) {
+  if (!queryNameStrategy || queryNameStrategy === QUERY_NAME_STRATEGY_NONE) {
     // no op
-  } else if (queryNameStrategy === QUERY_NAME_STATEGY_CAPITALIZE_FIRST) {
+  } else if (queryNameStrategy === QUERY_NAME_STRATEGY_CAPITALIZE_FIRST) {
     queryName = capitalizeFirstLetter(queryName)
-  } else if (queryNameStrategy === QUERY_NAME_STATEGY_CAPITALIZE) {
+  } else if (queryNameStrategy === QUERY_NAME_STRATEGY_CAPITALIZE) {
     queryName = capitalize(queryName)
-  } else if (queryNameStrategy === QUERY_NAME_STATEGY_CAMELCASE) {
+  } else if (queryNameStrategy === QUERY_NAME_STRATEGY_CAMELCASE) {
     queryName = camelCase(queryName)
-  } else if (queryNameStrategy === QUERY_NAME_STATEGY_SNAKECASE) {
+  } else if (queryNameStrategy === QUERY_NAME_STRATEGY_SNAKECASE) {
     queryName = snakeCase(queryName)
-  } else if (queryNameStrategy === QUERY_NAME_STATEGY_UPPERCASE) {
+  } else if (queryNameStrategy === QUERY_NAME_STRATEGY_UPPERCASE) {
     queryName = upperCase(queryName)
-  } else if (queryNameStrategy === QUERY_NAME_STATEGY_LOWERCASE) {
+  } else if (queryNameStrategy === QUERY_NAME_STRATEGY_LOWERCASE) {
     queryName = lowerCase(queryName)
   }
 
@@ -115,7 +115,7 @@ export function generateQuery({
   }
 
   return {
-    query, // The Query/Mutation sring/markdown
+    query, // The Query/Mutation string/markdown
     variables, // The Variables
     response, // The Response
   }
