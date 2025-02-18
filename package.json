@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "3.0.3",
+  "version": "3.0.4-beta.0",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -64,7 +64,7 @@
     "test:watch": "nodemon -x 'npm test'",
     "test:debug": "npm test --node-option inspect=0.0.0.0:9223",
     "test:debug:watch": "nodemon -x 'npm run test:debug'",
-    "develop": "nodemon -x 'npm run clean-build && node bin/spectaql' -- -D",
+    "develop": "nodemon -x 'npm run clean-build && node --no-experimental-require-module bin/spectaql' -- -D",
     "develop:deep-nesting": "npm run develop --theme-dir ./examples/themes/deep-nesting-data --config ./examples/config.yml",
     "develop:echo-directive-sdl": "node dev/echoDirectiveSdl.mjs",
     "test-e2e:build": "npm run clean-build && rimraf test/e2e/spectaql.tgz && node dev/build-e2e.mjs",
@@ -153,5 +153,6 @@
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
