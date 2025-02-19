@@ -1,6 +1,6 @@
 {
   "name": "spectaql",
-  "version": "3.0.4-beta.0",
+  "version": "4.0.0-beta.0",
   "description": "A powerful library for autogenerating static GraphQL API documentation",
   "author": "Anvil Foundry Inc. <hello@useanvil.com>",
   "homepage": "https://github.com/anvilco/spectaql",
@@ -23,7 +23,7 @@
     "generator"
   ],
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "npm": ">=7"
   },
   "main": "index.js",
@@ -153,6 +153,5 @@
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }
