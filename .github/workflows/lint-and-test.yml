@@ -79,7 +79,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16, 18, 20, 22]
+        node-version: [18, 20, 22, 23]
         # Not needed anymore/right now:
         # include:
         #   - node-version: 14

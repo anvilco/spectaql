@@ -102,6 +102,11 @@ async function run(opts) {
 
   const arrangeData = takeDefaultExport(arrangeDataModule)
 
+  console.log({
+    arrangeDataModule,
+    arrangeData,
+  })
+
   const items = arrangeData({
     introspectionResponse,
     graphQLSchema,

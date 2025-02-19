@@ -26,6 +26,7 @@ export function tmpFolder(options = {}) {
 }
 
 export function takeDefaultExport(mojule) {
+  mojule = mojule?.default ? mojule.default : mojule
   return mojule?.default ? mojule.default : mojule
 }
 
