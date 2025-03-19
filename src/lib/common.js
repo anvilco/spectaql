@@ -473,5 +473,5 @@ export function printSchema(value, _root) {
   // There is an issue with `marked` not formatting a leading quote in a single,
   // quoted string value. By unwinding the special tags after converting to markdown
   // we can avoid that issue.
-  return cheerioLoad(unwindTags(quoted)).html()
+  return cheerioLoad(unwindTags(quoted), null, false).html()
 }
