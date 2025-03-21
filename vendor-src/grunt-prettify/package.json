@@ -61,7 +61,7 @@
     "grunt-contrib-jshint": "~0.7.2",
     "js-beautify": "~1.14.7",
     "lodash": "^4.17.21",
-    "mocha": "*",
+    "mocha": "^10",
     "verb": ">= 0.2.6"
   },
   "peerDependencies": {

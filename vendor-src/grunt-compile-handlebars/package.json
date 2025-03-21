@@ -45,7 +45,7 @@
   "devDependencies": {
     "grunt": "~1.5.3",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-jshint": "~0.2.0",
+    "grunt-contrib-jshint": "^0.5.4",
     "grunt-contrib-nodeunit": "^5.0.0",
     "handlebars": "^4.7.7",
     "json5": "^2.2.0",
