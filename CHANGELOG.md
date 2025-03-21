@@ -1,3 +1,7 @@
+### 3.0.4
+  - Add cheerio load option to strip out some high-level DOM tags. https://github.com/anvilco/spectaql/pull/1044 Thanks @bitfehler
+  - Dependency updates on a few vendor packages
+
 ### 3.0.3
   - Fixed typos. https://github.com/anvilco/spectaql/pull/1002 Thanks @kianmeng
   - Dependency updates
@@ -78,7 +82,7 @@
   - `config` yaml will have environment variable substitution performed.
   - `config` yaml can now be specified as a CLI option (`-c` or `--config`), instead of only as the first argument.
   - Themes written as ESM/`.mjs` modules are now supported.
-  - BREAKING CHANGE: Accessibility improvements for `<h>` tags deeper than `<h6>` using the `aria-level` attribute.  
+  - BREAKING CHANGE: Accessibility improvements for `<h>` tags deeper than `<h6>` using the `aria-level` attribute.
   - `embeddable`, `oneFile` and `targetDir` are now options that can be specified in the config yaml (previously was only CLI).
   - `targetDir` can be set to `null` in order to not write any output to a user directory.
   - BREAKING CHANGE: `headers` CLI option is now `-H` instead of `-A`
