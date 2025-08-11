@@ -1,3 +1,6 @@
+### 3.0.5
+  - Fix CVEs in tmp and on-headers packages. TODO-PR Thanks @vavsab
+
 ### 3.0.4
   - Add cheerio load option to strip out some high-level DOM tags. https://github.com/anvilco/spectaql/pull/1044 Thanks @bitfehler
   - Dependency updates on a few vendor packages
