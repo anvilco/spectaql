@@ -409,6 +409,9 @@ info:
   # Set to true to not render your intro items
   # Default: false
   x-hideIntroItems: false
+  # Set to true to not render your title
+  # Default: false
+  x-hideIntroTitle: false
 
   # Set to true to not render the deprecated label
   # Default: false
