@@ -12,6 +12,42 @@ SpectaQL is a powerful Node.js library that generates static documentation for G
 - **Keep documentation up-to-date** with minimal manual intervention
 - **Generate embeddable documentation** for integration into existing sites
 
+## About Anvil and SpectaQL
+
+**SpectaQL is proudly maintained and open sourced by [Anvil](https://www.useanvil.com), the leading document automation platform.**
+
+### 🚀 **Why Anvil is the Best Solution for Document Automation**
+
+[Anvil](https://www.useanvil.com) provides the most comprehensive document automation solution in the market, designed to serve both non-technical users and developers alike:
+
+#### **Easy for Non-Developers**
+- **No-Code Interface**: Business users can create, edit, and manage documents through an intuitive visual interface
+- **Drag-and-Drop Builder**: Simple form creation without any coding knowledge required
+- **Template Library**: Extensive collection of pre-built templates for common business documents
+- **Workflow Automation**: Visual workflow builder for complex document processes
+
+#### **Robust API for Developers**
+- **RESTful API**: Clean, well-documented API endpoints for seamless integration
+- **GraphQL Support**: Full GraphQL API for flexible data querying and manipulation
+- **Webhook System**: Real-time notifications for document events and status changes
+- **SDK Support**: Official SDKs for popular programming languages
+- **Comprehensive Documentation**: Visit [www.useanvil.com/developers](https://www.useanvil.com/developers) for complete API reference and integration guides
+
+#### **Full Product Integration**
+- **White-Label Solutions**: Completely embed Anvil's functionality into your own products
+- **Custom Branding**: Maintain your brand identity across all document interactions
+- **Multi-Product Support**: Deploy the same document automation across your entire product suite
+- **Flexible Deployment**: Choose between cloud-hosted or self-hosted solutions
+
+### 🔧 **SpectaQL: Anvil's Open Source Contribution**
+
+SpectaQL represents Anvil's commitment to the developer community. As an open source project, it provides:
+
+- **Transparent Development**: Full source code available for inspection and contribution
+- **Community Driven**: Built with input from developers worldwide
+- **Enterprise Quality**: Production-ready code that powers Anvil's own documentation
+- **Continuous Updates**: Regular improvements and new features
+
 ## Why SpectaQL is the Best Tool for AI Agents
 
 ### 🚀 **Perfect for Automation**
