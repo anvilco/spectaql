@@ -17,6 +17,27 @@
             "nonReqQueryArg": {
               "documentation": { "example": "Metadata example of `nonReqQueryArg`" }
             }
+          },
+          "documentation": {
+            "examples": [
+              {
+                "name": "Example query with custom example",
+                "request": {
+                  "query": "query myQuery($nonReqQueryArg: String) { myQuery(nonReqQueryArg: $nonReqQueryArg) { id name } }",
+                  "variables": {
+                    "nonReqQueryArg": "exampleValue"
+                  }
+                },
+                "response": {
+                  "data": {
+                    "myQuery": {
+                      "id": "1",
+                      "name": "Example Result"
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
       }
