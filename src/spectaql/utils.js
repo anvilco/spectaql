@@ -40,6 +40,18 @@ export async function dynamicImport(path) {
   ) {
     return mojule.default
   }
+  // In Node.js 23+, when dynamically importing a CommonJS module that was transpiled
+  // by Babel with module.exports, the structure can be:
+  // { __esModule: true, default: { default: [Function] }, 'module.exports': { default: [Function] } }
+  // In this case, we want to return mojule.default (which contains { default: [Function] })
+  // so that takeDefaultExport can properly extract the function
+  if (
+    mojule.__esModule === true &&
+    mojule.default?.default &&
+    mojule['module.exports']?.default
+  ) {
+    return mojule.default
+  }
   return mojule
 }
 

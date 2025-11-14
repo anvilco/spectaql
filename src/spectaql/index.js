@@ -67,14 +67,15 @@ async function run(opts) {
     return fileExists(path.normalize(`${themeDir}/${pathSuffix}`))
   })
 
-  let arrangeDataModule = arrangeDataDefaultFn
+  let arrangeData = takeDefaultExport(arrangeDataDefaultFn)
   if (customDataArrangerSuffixThatExists) {
     try {
-      arrangeDataModule = await dynamicImport(
+      const arrangeDataModule = await dynamicImport(
         url.pathToFileURL(
           path.normalize(`${themeDir}/${customDataArrangerSuffixThatExists}`)
         )
       )
+      arrangeData = takeDefaultExport(arrangeDataModule)
     } catch (err) {
       console.error(err)
       if (
@@ -99,8 +100,6 @@ async function run(opts) {
       throw err
     }
   }
-
-  const arrangeData = takeDefaultExport(arrangeDataModule)
 
   const items = arrangeData({
     introspectionResponse,
