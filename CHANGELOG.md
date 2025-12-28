@@ -1,3 +1,6 @@
+### 3.0.6
+  - Fix for babelized dynamic imports in Node 23+ https://github.com/anvilco/spectaql/pull/1059
+
 ### 3.0.5
   - Fix CVEs in tmp and on-headers packages. https://github.com/anvilco/spectaql/pull/1056 Thanks @vavsab
 
