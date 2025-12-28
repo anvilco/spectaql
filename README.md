@@ -150,6 +150,7 @@ In our experience, nearly all of the stuff we need for the content of the docume
 
 - `example`: When provided for a Scalar, Field or Argument, this value will be used as an "example" for the Field or Argument. It can be any value supported in JSON.
 - `examples`: Same as `example`, but allows an Array of examples to be provided, from which one random one will be used during generation.
+- `examples` (for Queries and Mutations): When provided for a Query or Mutation field, this allows you to provide custom operation-level examples that include the full query/mutation string, variables, and response. This overrides the auto-generated examples. See [Operation-Level Examples](#operation-level-examples) for details.
 - `undocumented`: A Boolean value that can be provided on a Type, Field, Argument, Query or Mutation indicating that this item is _**not**_ to be included in the resulting output. Useful for 1-off hiding of things where the default was to show them.
 - `documented`: Just like `undocumented`, except it _**will**_ include it in the resulting output. Useful for 1-off showing of things where the default was to hide them.
 
@@ -197,6 +198,133 @@ type MyType {
    myFieldOtherOtherField: String @spectaql(options: [{ key: "examples", value: "[\"Example 1 from the Directive\", \"Example 2 from the Directive\"]" }])
 }
 ```
+
+## Operation-Level Examples
+
+SpectaQL supports custom operation-level examples for queries, mutations, and subscriptions. This allows you to provide complete examples including the query/mutation string, variables, and response, which will be used instead of the auto-generated examples.
+
+### Supported Formats
+
+Operation-level examples can be provided in two metadata formats:
+
+#### Format 1: OBJECT Format (Recommended)
+
+In this format, examples are nested under the Query or Mutation type in the OBJECT structure:
+
+```json
+{
+  "OBJECT": {
+    "Query": {
+      "fields": {
+        "getStorePlans": {
+          "documentation": {
+            "examples": [
+              {
+                "name": "Get active store plans",
+                "request": {
+                  "query": "query getStorePlans($status: PlanStatus, $language: String) {\n  getStorePlans(status: $status, language: $language) {\n    id\n    storeNumber\n    status\n  }\n}",
+                  "variables": {
+                    "status": "ACTIVE",
+                    "language": "en-US"
+                  }
+                },
+                "response": {
+                  "data": {
+                    "getStorePlans": [
+                      {
+                        "id": "SP-planId1",
+                        "storeNumber": "00000000",
+                        "status": "DRAFT"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### Format 2: Alternative Format (Queries/Mutations)
+
+In this format, examples are provided at the top level under `queries` or `mutations`:
+
+```json
+{
+  "queries": {
+    "getStorePlans": {
+      "examples": [
+        {
+          "name": "Get active store plans",
+          "query": "query getStorePlans($status: PlanStatus) { getStorePlans(status: $status) { id } }",
+          "variables": {
+            "status": "ACTIVE"
+          },
+          "response": {
+            "data": {
+              "getStorePlans": [{ "id": "SP-planId1" }]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "mutations": {
+    "createStorePlan": {
+      "examples": [
+        {
+          "name": "Create plan with one focus area",
+          "request": {
+            "query": "mutation createStorePlan($createPlan: CreatePlanInput!) { createStorePlan(createPlan: $createPlan) { id } }",
+            "variables": {
+              "createPlan": {
+                "focusAreas": [
+                  {
+                    "id": "customer_connection",
+                    "currentStateAndGap": "Current score 32, target 45"
+                  }
+                ]
+              }
+            }
+          },
+          "response": {
+            "data": {
+              "createStorePlan": {
+                "id": "SP-new-plan-id"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+### Example Structure
+
+Each example supports two formats for the request:
+
+1. **Request wrapper format**: `{ request: { query, variables }, response }`
+2. **Direct format**: `{ query, variables, response }`
+
+Both formats are supported and will be normalized automatically. The following fields are supported:
+
+- `name` (optional): A descriptive name for the example
+- `query` or `request.query`: The GraphQL query/mutation string (required)
+- `variables` or `request.variables` (optional): Variables object
+- `response` (optional): Expected response object, which can include `data` and `errors`
+
+### Behavior
+
+- If custom examples are provided, SpectaQL will use the first example instead of auto-generating one
+- If no custom examples are provided, SpectaQL will fall back to auto-generating examples (existing behavior)
+- Multiple examples can be provided; all are stored but only the first is currently used in the generated documentation
+- Missing `variables` or `response` fields are handled gracefully
 
 ## Dynamic Example Generators
 

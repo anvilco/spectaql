@@ -27,9 +27,7 @@
     "npm": ">=7"
   },
   "main": "index.js",
-  "bin": {
-    "spectaql": "./bin/spectaql.js"
-  },
+  "bin": "./bin/spectaql.js",
   "files": [
     "package.json",
     "README.md",
@@ -146,12 +144,11 @@
   "resolutions": {
     "grunt-compile-handlebars/lodash.merge": "^4.6.2",
     "grunt-prettify/globby": "^11.0.4",
-    "grunt-prettify/underscore.string": "^3.3.5",
-    "**/lodash": "^4.17.20",
-    "**/resolve/path-parse": "^1.0.7"
+    "grunt-prettify/underscore.string": "^3.3.5"
   },
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
-  }
+  },
+  "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538"
 }

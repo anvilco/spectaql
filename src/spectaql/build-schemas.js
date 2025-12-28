@@ -7,6 +7,7 @@ import {
 } from './graphql-loaders'
 
 import {
+  loadMetadataFromFile,
   addMetadataFromFile,
   addMetadataFromDirectables,
 } from './metadata-loaders'
@@ -113,7 +114,11 @@ export function buildSchemas(opts) {
     throw new Error('Problem with Introspection Query Response')
   }
 
+  let originalMetadata = null
   if (metadataFile) {
+    // Load original metadata for access to queries/mutations format
+    originalMetadata = loadMetadataFromFile({ pathToFile: metadataFile })
+    
     addMetadataFromFile({
       ...introspectionOptions,
       pathToFile: metadataFile,
@@ -137,6 +142,7 @@ export function buildSchemas(opts) {
   return {
     introspectionResponse: augmentedIntrospectionResponse,
     graphQLSchema,
+    originalMetadata,
   }
 }
 

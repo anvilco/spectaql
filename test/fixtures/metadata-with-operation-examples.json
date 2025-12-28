@@ -1,0 +1,93 @@
+{
+  "OBJECT": {
+    "Query": {
+      "fields": {
+        "myQuery": {
+          "documentation": {
+            "examples": [
+              {
+                "name": "Example query with custom values",
+                "request": {
+                  "query": "query myQuery($myArg: String) { myQuery(myArg: $myArg) { myField } }",
+                  "variables": {
+                    "myArg": "customValue"
+                  }
+                },
+                "response": {
+                  "data": {
+                    "myQuery": {
+                      "myField": "result"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Mutation": {
+      "fields": {
+        "myMutation": {
+          "documentation": {
+            "examples": [
+              {
+                "name": "Example mutation",
+                "query": "mutation myMutation($myArg: String) { myMutation(myArg: $myArg) { myField } }",
+                "variables": {
+                  "myArg": "mutationValue"
+                },
+                "response": {
+                  "data": {
+                    "myMutation": {
+                      "myField": "mutationResult"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "queries": {
+    "myOtherQuery": {
+      "examples": [
+        {
+          "name": "Alternative format query",
+          "request": {
+            "query": "query myOtherQuery { myOtherQuery { myField } }",
+            "variables": {}
+          },
+          "response": {
+            "data": {
+              "myOtherQuery": {
+                "myField": "otherResult"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "mutations": {
+    "myOtherMutation": {
+      "examples": [
+        {
+          "name": "Alternative format mutation",
+          "query": "mutation myOtherMutation { myOtherMutation { myField } }",
+          "variables": null,
+          "response": {
+            "data": {
+              "myOtherMutation": {
+                "myField": "otherMutationResult"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+

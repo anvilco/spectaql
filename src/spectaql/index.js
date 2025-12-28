@@ -55,7 +55,16 @@ async function run(opts) {
 
   const { protocol, host, pathname } = url.parse(urlToParse)
 
-  const { introspectionResponse, graphQLSchema } = buildSchemas(opts)
+  const {
+    introspectionResponse,
+    graphQLSchema,
+    originalMetadata,
+  } = buildSchemas(opts)
+
+  // Store original metadata in specData for access in preProcess
+  if (originalMetadata) {
+    spec.originalMetadata = originalMetadata
+  }
 
   // Figure out what data arranger to use...the default one, or the one from the theme
   const customDataArrangerSuffixThatExists = [
