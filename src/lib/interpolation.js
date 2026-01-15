@@ -32,7 +32,7 @@ export function substituteEnv(valueIn) {
   const regex = /(.?)\$({([\w]*(?::-[^}]+)?)}|([\w])*)/g
   const matches = valueIn.match(regex) || []
 
-  return matches.reduce((newValue, match, index) => {
+  return matches.reduce((newValue, match) => {
     const parts = regex.exec(match)
     if (!parts || parts.length === 0) {
       return newValue
