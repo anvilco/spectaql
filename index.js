@@ -1,4 +1,23 @@
 // This file is mainly just for cleaning up the exports to be intuitive
+function loadModule() {
+  try {
+    return require('./dist')
+  } catch (error) {
+    if (
+      error &&
+      error.code === 'MODULE_NOT_FOUND' &&
+      String(error.message || '').includes("'./dist'")
+    ) {
+      throw new Error(
+        "Cannot load SpectaQL build output (./dist). If you're running from a source checkout, run `npm run build:src` first, or install the published npm package.",
+        { cause: error }
+      )
+    }
+
+    throw error
+  }
+}
+
 const {
   run,
   parseCliOptions,
@@ -9,7 +28,7 @@ const {
   generateSpectaqlSdl,
   generateDirectiveSdl,
   generateOptionsSdl,
-} = require('./dist')
+} = loadModule()
 
 module.exports = run
 module.exports.run = run
