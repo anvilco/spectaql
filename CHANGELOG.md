@@ -1,3 +1,7 @@
+### 3.0.7
+  - Fix CVE on `lodash.unset`. https://github.com/anvilco/spectaql/issues/1069
+  - Dependeny updates
+
 ### 3.0.6
   - Fix for babelized dynamic imports in Node 23+ https://github.com/anvilco/spectaql/pull/1059
 
