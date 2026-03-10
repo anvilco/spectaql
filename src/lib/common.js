@@ -368,29 +368,32 @@ function generateIntrospectionReturnTypeExample(
   { thing, underlyingTypeDefinition, originalType, quoteEnum = false },
   otherOptions
 ) {
+  const resolvedTypeDefinition =
+    underlyingTypeDefinition || IntrospectionManipulator.digUnderlyingType(originalType) || {}
+
   let example = firstNonUndef([
     thing.example,
     originalType.example,
-    underlyingTypeDefinition.example,
+    resolvedTypeDefinition.example,
   ])
   if (isUndef(example)) {
     example =
-      (underlyingTypeDefinition.kind === 'ENUM' &&
-        underlyingTypeDefinition.enumValues.length &&
+      (resolvedTypeDefinition.kind === 'ENUM' &&
+        resolvedTypeDefinition.enumValues.length &&
         (quoteEnum
-          ? addQuoteTags(underlyingTypeDefinition.enumValues[0].name)
-          : underlyingTypeDefinition.enumValues[0].name)) ||
-      (underlyingTypeDefinition.kind === 'UNION' &&
-        underlyingTypeDefinition.possibleTypes.length &&
-        addSpecialTags(underlyingTypeDefinition.possibleTypes[0].name)) ||
-      getExampleForScalarDefinition(underlyingTypeDefinition, otherOptions)
+          ? addQuoteTags(resolvedTypeDefinition.enumValues[0].name)
+          : resolvedTypeDefinition.enumValues[0].name)) ||
+      (resolvedTypeDefinition.kind === 'UNION' &&
+        resolvedTypeDefinition.possibleTypes.length &&
+        addSpecialTags(resolvedTypeDefinition.possibleTypes[0].name)) ||
+      getExampleForScalarDefinition(resolvedTypeDefinition, otherOptions)
   }
 
   if (typeof example !== 'undefined') {
     // example = unwindTags(example)
   } else {
     // example = underlyingTypeDefinition.name
-    example = addSpecialTags(underlyingTypeDefinition.name)
+    example = addSpecialTags(resolvedTypeDefinition.name)
   }
 
   const {
