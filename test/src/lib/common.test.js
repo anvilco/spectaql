@@ -219,6 +219,26 @@ describe('common', function () {
     })
   })
 
+
+  describe('generateIntrospectionReturnTypeExample', function () {
+    const generateIntrospectionReturnTypeExample = common.__get__(
+      'generateIntrospectionReturnTypeExample'
+    )
+
+    it('does not throw when underlyingTypeDefinition is undefined', function () {
+      expect(() =>
+        generateIntrospectionReturnTypeExample(
+          {
+            thing: {},
+            originalType: { kind: 'SCALAR', name: 'String' },
+            underlyingTypeDefinition: undefined,
+          },
+          { extensions: { graphqlScalarExamples: false } }
+        )
+      ).not.to.throw()
+    })
+  })
+
   describe('printSchema', function () {
     const { printSchema } = common
 
