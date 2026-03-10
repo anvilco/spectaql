@@ -1,3 +1,6 @@
+### 3.0.8
+  - Fix for [Issue 945](https://github.com/anvilco/spectaql/issues/945) via [PR 1073](https://github.com/anvilco/spectaql/pull/1073#pullrequestreview-3919791498). Thanks @SergioChan
+
 ### 3.0.7
   - Fix CVE on `lodash.unset`. https://github.com/anvilco/spectaql/issues/1069
   - Dependeny updates
