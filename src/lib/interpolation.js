@@ -22,10 +22,10 @@ export function substituteEnv(valueIn) {
 
   // Quite heavily borrowed from https://github.com/motdotla/dotenv-expand
   // which has over 10mm weekly downloads, so this feels solid.
-  const matches = valueIn.match(/(.?\${*[\w]*(?::-[\w/]*)?}*)/g) || []
+  const matches = valueIn.match(/(.?\${*[\w]*(?::-[^}]*)?}*)/g) || []
 
   return matches.reduce((newValue, match, index) => {
-    const parts = /(.?)\${*([\w]*(?::-[\w/]*)?)?}*/g.exec(match)
+    const parts = /(.?)\${*([\w]*(?::-[^}]*)?)?}*/g.exec(match)
     if (!parts || parts.length === 0) {
       return newValue
     }
