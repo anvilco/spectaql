@@ -45,20 +45,14 @@ const QUOTE_HTML_REGEX = new RegExp(QUOTE_HTML, 'g')
 
 // Map Scalar types to example data to use from them
 const SCALAR_TO_EXAMPLE = {
-  String: ['abc123', 'xyz789'],
-  Int: [123, 987],
-  Float: [123.45, 987.65],
-  Boolean: [true, false],
-  Date: [
-    new Date(),
-    new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf()),
-  ].map((date) => date.toISOString()),
-  DateTime: [
-    new Date(),
-    new Date(new Date().setMonth(new Date().getMonth() - 6).valueOf()),
-  ].map((date) => date.toISOString()),
+  String: 'abc123',
+  Int: 123,
+  Float: 123.45,
+  Boolean: true,
+  Date: (new Date(0)).toISOString(),
+  DateTime: (new Date(0)).toISOString(),
   JSON: SPECIAL_TAG + '{}' + SPECIAL_TAG,
-  ID: [4, '4'],
+  ID: '4',
 }
 
 function unwindTags(str) {
