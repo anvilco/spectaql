@@ -1,3 +1,6 @@
+### 3.0.9
+  - Dependeny updates related to [Issue 1077](https://github.com/anvilco/spectaql/issues/1077). Thanks @trevorr
+
 ### 3.0.8
   - Fix for [Issue 945](https://github.com/anvilco/spectaql/issues/945) via [PR 1073](https://github.com/anvilco/spectaql/pull/1073#pullrequestreview-3919791498). Thanks @SergioChan
 
