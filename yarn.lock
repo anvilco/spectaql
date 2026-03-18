@@ -3705,11 +3705,6 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
 
-lodash.defaults@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.defaults/-/lodash.defaults-4.2.0.tgz#d09178716ffea4dde9e5fb7b37f6f0802274580c"
-  integrity sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==
-
 lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
@@ -3730,12 +3725,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.yarnpkg.com/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw==
 
-lodash.unset@^4.5.2:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/lodash.unset/-/lodash.unset-4.5.2.tgz#370d1d3e85b72a7e1b0cdf2d272121306f23e4ed"
-  integrity sha512-bwKX88k2JhCV9D1vtE8+naDKlLiGrSmf8zi/Y9ivFHwbmRfA8RxS/aVJ+sIht2XOwqoNr4xUPUkGZpc1sHFEKg==
-
-lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.20, lodash@^4.17.21, lodash@~4.17.19, lodash@~4.17.21:
+lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.23, lodash@~4.17.19, lodash@~4.17.21:
   version "4.17.23"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.23.tgz#f113b0378386103be4f6893388c73d0bde7f2c5a"
   integrity sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==
@@ -3827,14 +3817,12 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-microfiber@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-2.1.0.tgz#14ae512be342ede1b7ef273318d7793a85b2536d"
-  integrity sha512-Bs/qJCYEYBfc8mGSyhbO5w0uY8MQKfAn2pJxS+dycrvBBNz8ClFwCCe6DxVcfRn5ARXEVNrWQfBmgnRx+YM+8A==
+microfiber@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/microfiber/-/microfiber-2.1.2.tgz#4d4942e43ec820612941630f6b8fb4f69a4cb015"
+  integrity sha512-2V8EeYHnoIEmElINgCfq7CQwokUYeVF6wBs1JBGuYj7pXPKWeNUjJNXkXaWSbsoSKr8yat5Lc6q+IBZpfajK7Q==
   dependencies:
-    lodash.defaults "^4.2.0"
-    lodash.get "^4.4.2"
-    lodash.unset "^4.5.2"
+    lodash "^4.17.23"
 
 micromatch@^4.0.2, micromatch@^4.0.4, micromatch@^4.0.5:
   version "4.0.8"

@@ -113,7 +113,7 @@
     "json5": "^2.2.0",
     "lodash": "^4.17.21",
     "marked": "^4.0.12",
-    "microfiber": "^2.0.1",
+    "microfiber": "^2.1.2",
     "postcss": "^8.4.19",
     "sass": "^1.32.13",
     "sync-request": "^6.1.0",
