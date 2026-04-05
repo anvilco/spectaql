@@ -2,6 +2,11 @@
 //
 // Options:
 //   clazz (String)
+const escapeHtml = (input) => String(input).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]))
+
 module.exports = function (value, options) {
-  return `<span class="${options?.hash?.className || ''}">${value}</span>`
+  const className = options?.hash?.className
+  const safeClassName = typeof className === 'string' && /^[a-zA-Z0-9_- ]+$/.test(className) ? className : ''
+
+  return `<span class="${escapeHtml(safeClassName)}">${escapeHtml(value)}</span>`
 }
