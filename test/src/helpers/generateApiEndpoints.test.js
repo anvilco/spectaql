@@ -37,6 +37,27 @@ describe('generateApiEndpoints', function () {
     },
   ])
 
+  def('multiProductionServers', () => [
+    {
+      url: 'devGraphql',
+      description: 'Dev GraphQL',
+    },
+    {
+      url: 'devWs',
+      description: 'Dev WebSocket',
+    },
+    {
+      url: 'prodGraphql',
+      description: 'Production GraphQL',
+      production: true,
+    },
+    {
+      url: 'prodWs',
+      description: 'Production WebSocket',
+      production: true,
+    },
+  ])
+
   context('displayAllServers is false', function () {
     it('uses url', function () {
       expect(generateApiEndpoints($.options)).to.eql('foorl')
@@ -63,6 +84,18 @@ describe('generateApiEndpoints', function () {
             expect(generateApiEndpoints($.options)).to.eql('server1url')
           })
         })
+      })
+    })
+
+    context('multiple production servers', function () {
+      def('url', () => undefined)
+      def('server', () => undefined)
+      def('servers', () => $.multiProductionServers)
+
+      it('displays all production servers', function () {
+        expect(generateApiEndpoints($.options)).to.eql(
+          '# Production GraphQL:\nprodGraphql\n# Production WebSocket:\nprodWs\n'
+        )
       })
     })
   })
