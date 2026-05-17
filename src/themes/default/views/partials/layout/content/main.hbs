@@ -1,6 +1,8 @@
 {{! DO THE CONTENT }}
 <article id="content">
-  <h1 class="doc-heading">{{info.title}}</h1>
+  {{#unless info.x-hideIntroTitle}}
+    <h1 class="doc-heading">{{info.title}}</h1>
+  {{/unless}}
   {{! Check if there is effectively nothing to do }}
   {{#unless (or info.x-hideIntroduction (and info.x-hideWelcome (or info.x-hideIntroItems (empty info.x-introItems))))}}
     {{>layout/content/introduction/main}}
