@@ -20,6 +20,7 @@ describe('interpolation', function () {
 
     def('env', () => ({
       SOME_VAR: 'it worked',
+      SOME_URL: 'https://someurl.org',
     }))
 
     it('substitutes things from the environment', function () {
@@ -36,6 +37,12 @@ describe('interpolation', function () {
       const obj = {
         ...generateNormal(),
         substituteString: '${spectaqltest_SOME_VAR}',
+        substituteWithInterpolationInsideString:
+          'Go and visit ${spectaqltest_SOME_URL:-https://fallback.org} for more information',
+        substituteWithFallbackInString:
+          '${spectaqltest_SOME_NON_EXISTENT_VAR:-https://fallback.org}',
+        substituteWithRecursionInString:
+          '${spectaqltest_SOME_NON_EXISTENT_VAR:-$spectaqltest_SOME_VAR}',
         substituteArray: ['one', '${spectaqltest_SOME_VAR}'],
         substituteObject: {
           ...generateNormal(),
@@ -69,6 +76,10 @@ describe('interpolation', function () {
           nestedNormalArray: ['one', 1],
         },
         substituteString: 'it worked',
+        substituteWithInterpolationInsideString:
+          'Go and visit https://someurl.org for more information',
+        substituteWithFallbackInString: 'https://fallback.org',
+        substituteWithRecursionInString: 'it worked',
         substituteArray: ['one', 'it worked'],
         substituteObject: {
           normalString: 'one',

@@ -22,10 +22,18 @@ export function substituteEnv(valueIn) {
 
   // Quite heavily borrowed from https://github.com/motdotla/dotenv-expand
   // which has over 10mm weekly downloads, so this feels solid.
-  const matches = valueIn.match(/(.?\${*[\w]*(?::-[\w/]*)?}*)/g) || []
 
-  return matches.reduce((newValue, match, index) => {
-    const parts = /(.?)\${*([\w]*(?::-[\w/]*)?)?}*/g.exec(match)
+  // This regex will match ENV variables in the form of:
+  // - $ENV_VAR
+  // - ${ENV_VAR}
+  // - ${ENV_VAR:-fallback}
+  // To achieve this and not also match something like `${ENV_VAR` or `$ENV_VAR}`,
+  // there are two alternatives in the following regex, first for ${ENV} and second for $ENV
+  const regex = /(.?)\$({([\w]*(?::-[^}]+)?)}|([\w])*)/g
+  const matches = valueIn.match(regex) || []
+
+  return matches.reduce((newValue, match) => {
+    const parts = regex.exec(match)
     if (!parts || parts.length === 0) {
       return newValue
     }
@@ -37,7 +45,8 @@ export function substituteEnv(valueIn) {
       replacePart = parts[0]
       value = replacePart.replace('\\$', '$')
     } else {
-      const keyParts = parts[2].split(':-')
+      // We can have a match in parts[3] (syntax with ${ENV}) or parts[2] for a syntax like $ENV
+      const keyParts = (parts[3] || parts[2]).split(':-')
       const key = keyParts[0]
       const defaultValue = keyParts[1] || ''
 
@@ -46,14 +55,7 @@ export function substituteEnv(valueIn) {
         ? process.env[key]
         : defaultValue
 
-      // If the value is found, remove nested expansions.
-      if (keyParts.length > 1 && value) {
-        const replaceNested = matches[index + 1]
-        matches[index + 1] = ''
-
-        newValue = newValue.replace(replaceNested, '')
-      }
-      // Resolve recursive substitutesions
+      // Resolve recursive substitutions
       value = substituteEnv(value)
     }
 
