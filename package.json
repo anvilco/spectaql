@@ -117,7 +117,7 @@
     "postcss": "^8.4.19",
     "sass": "^1.32.13",
     "sync-request": "^6.1.0",
-    "tmp": "0.2.4"
+    "tmp": "0.2.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
