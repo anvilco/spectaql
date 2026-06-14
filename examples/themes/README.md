@@ -96,7 +96,7 @@ SpectaQL also supports running a theme in "embeddable" mode to produce output th
 
 ### `helpers`
 
-[Handlebars][handlebars] allows for Javascript "helpers" to be used throughout its templates. These helpers must exist in the `helpers/` directory.
+[Handlebars][handlebars] allows for JavaScript "helpers" to be used throughout its templates. These helpers must exist in the `helpers/` directory.
 All of SpectaQL's default theme helpers will be available to any custom theme "for free".
 
 If you'd like to add more helpers or overwrite an existing helper, simply put your JS file(s) into this folder and they will be copied on top of the default theme's directory and will be available for use in your templates.
