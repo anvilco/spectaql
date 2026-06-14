@@ -53,7 +53,7 @@ export function substituteEnv(valueIn) {
 
         newValue = newValue.replace(replaceNested, '')
       }
-      // Resolve recursive substitutesions
+      // Resolve recursive substitutions
       value = substituteEnv(value)
     }
 
