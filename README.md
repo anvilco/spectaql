@@ -104,7 +104,7 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
    npx spectaql config.yml
    ```
 
-Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, write the output to somewhere else using the `-t /path/to/ouputDir` option, or add `-D` flag and view your docs live by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
+Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, write the output to somewhere else using the `-t /path/to/outputDir` option, or add `-D` flag and view your docs live by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
 
 ## Examples
 
