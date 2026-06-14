@@ -238,7 +238,7 @@ The best option for customizing your output is to see if what you want to do is 
 
 If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `main` branch.
 
-Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL. We try to be pretty active about fixing and enhancing the project. Please also consider subscribing to the repo to keep up to date with the goings on.
+Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL. We try to be pretty active about fixing and enhancing the project. Also, please consider subscribing to the repo to keep up to date with the goings on.
 
 Alternatively, you can just copy and modify the contents of `app` from the main repo and pass the path from your custom `app` path to the CLI using the `-a` flag.
 
