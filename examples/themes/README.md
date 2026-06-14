@@ -88,7 +88,7 @@ You can override syntax highlighting styles by specifying a `syntax-highlighting
 
 SpectaQL uses [Handlebars][handlebars] as its templating engine - please read up on their docs if you'd like to alter this area. Any `.hbs` files that you add to this folder will be overlaid on top of the default theme's directory.
 
-SpectaQL will look for the the `main.hbs` file in the resulting `views` directory as the entry point for Handlebars. If your theme provides a `main.hbs` file, that will overwrite the default one and be used to direct the HBS -> HTML build.
+SpectaQL will look for the `main.hbs` file in the resulting `views` directory as the entry point for Handlebars. If your theme provides a `main.hbs` file, that will overwrite the default one and be used to direct the HBS -> HTML build.
 
 If you only want to tweak and/or add certain partials, you can do so by only including those customized or additional files in your theme. They will be overlaid on top of the default theme directory in a supplemental manner.
 
