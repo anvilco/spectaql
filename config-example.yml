@@ -98,7 +98,7 @@ introspection:
   # Each of these have corresponding CLI options where they can be expressed instead of here.
   # The CLI options will take precedence over what is in your config file
   #
-  # 1 and only 1 of the following options must be provided:
+  # one and only one of the following options must be provided:
   #
 
   # File containing a GraphQL Schema Definition written in SDL.

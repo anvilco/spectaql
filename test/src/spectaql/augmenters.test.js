@@ -731,7 +731,7 @@ describe('augmenters', function () {
               for (let i = 0; i < otherThings.length; i++) {
                 const otherThing = otherThings[i]
                 const otherThingTest = otherThingsTest[i]
-                // Make sure that at least 1 thing from the other thing is OK
+                // Make sure that at least one thing from the other thing is OK
                 expect(
                   $.introspectionManipulator[`get${otherThing}`]({
                     name: otherThingTest,
@@ -753,7 +753,7 @@ describe('augmenters', function () {
               expect(thingType).to.be.ok
               expect(otherThingType).to.be.ok
 
-              // But only 1 should have any fields
+              // But only one should have any fields
               expect(thingType.fields).to.eql([])
               expect(otherThingType.fields).to.be.an('array').of.length(2)
             })
