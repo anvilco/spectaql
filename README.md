@@ -153,7 +153,7 @@ In our experience, nearly all of the stuff we need for the content of the docume
 - `undocumented`: A Boolean value that can be provided on a Type, Field, Argument, Query or Mutation indicating that this item is _**not**_ to be included in the resulting output. Useful for 1-off hiding of things where the default was to show them.
 - `documented`: Just like `undocumented`, except it _**will**_ include it in the resulting output. Useful for 1-off showing of things where the default was to hide them.
 
-SpectaQL supports 3 ways to include metadata to be used during processing:
+SpectaQL supports three ways to include metadata to be used during processing:
 
 1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to "weave" our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/main/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
 2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/main/examples/data/metadata.json) file to understand its format.
@@ -208,7 +208,7 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 SpectaQL supports a "theme" system that can be used to make minor tweaks to the default look, or to completely overhaul the output. [This article][themes-blog] should be really helpful to understanding how themes work and what they can do.
 
-SpectaQL ships with 3 included themes that can be specified via the `themeDir` option:
+SpectaQL ships with three included themes that can be specified via the `themeDir` option:
 
 - `default`: Our default theme. This is the theme that will be used if do not specify any `themeDir` option.
 - `basic`: Outputs the same HTML structure as the `default` theme, but with minimal CSS styling.
