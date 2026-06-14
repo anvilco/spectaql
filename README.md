@@ -15,7 +15,7 @@ The goal of SpectaQL is to help you keep your documentation complete, current an
 
 ---
 
-**Repository sponsored by [Anvil](www.useanvil.com/developers)**
+**Repository sponsored by [Anvil](https://www.useanvil.com/developers)**
 
 ![Anvil logo (dark gray)](https://user-images.githubusercontent.com/293079/169453889-ae211c6c-7634-4ccd-8ca9-8970c2621b6f.png#gh-light-mode-only)
 ![Anvil logo (white)](https://user-images.githubusercontent.com/293079/169453892-895f637b-4633-4a14-b997-960c9e17579b.png#gh-dark-mode-only)
