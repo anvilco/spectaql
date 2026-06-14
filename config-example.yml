@@ -168,11 +168,11 @@ introspection:
   #
   # - none: will use same exact name as query)
   # - capitalizeFirst: will capitalize the first letter and leave the rest.
-  # - capitalize: will capitalize the first letter and convert the rest to lower case.
+  # - capitalize: will capitalize the first letter and convert the rest to lowercase.
   # - camelCase
   # - snakeCase
   # - upperCase: all letters to upper case.
-  # - lowerCase: all letters to lower case.
+  # - lowerCase: all letters to lowercase.
   queryNameStrategy: none
 
   # When generating a Query or Mutation example, to what maximum depth should any nested fields
