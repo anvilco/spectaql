@@ -195,7 +195,7 @@ input ContactInfoInput {
   phoneNumber: PhoneNumber
 }
 
-"AddresInput description"
+"AddressInput description"
 input AddressInput {
   lat: String
   lon: String
