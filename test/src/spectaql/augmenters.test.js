@@ -1215,14 +1215,14 @@ describe('augmenters', function () {
             // This field should have an example
             ['YetAnotherType', 'fieldWithExample', 'String', true],
           ].forEach(
-            ([typeName, fieldName, returnTypeName /*placeholdQuotes*/]) => {
+            ([typeName, fieldName, returnTypeName /*placeholderQuotes*/]) => {
               expect(
                 $.introspectionManipulator.getField({ typeName, fieldName })
                   .example
               ).to.eql(
                 // addSpecialTags(
                 [typeName, fieldName, returnTypeName, 'example'].join('.')
-                // { placeholdQuotes }
+                // { placeholderQuotes }
                 // )
               )
             }
@@ -1312,7 +1312,7 @@ describe('augmenters', function () {
             ['Mutation', 'myMutation', 'myArg', 'String', true],
             ['Mutation', 'myMutation', 'myOtherArg', 'String', true],
           ].forEach(
-            ([typeName, fieldName, argName, argType /*placeholdQuotes*/]) => {
+            ([typeName, fieldName, argName, argType /*placeholderQuotes*/]) => {
               expect(
                 $.introspectionManipulator.getArg({
                   typeName,
@@ -1322,7 +1322,7 @@ describe('augmenters', function () {
               ).to.eql(
                 // addSpecialTags(
                 [typeName, fieldName, argName, argType, 'example'].join('.')
-                // { placeholdQuotes }
+                // { placeholderQuotes }
                 // )
               )
             }
