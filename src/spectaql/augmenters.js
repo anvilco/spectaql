@@ -61,7 +61,7 @@ export function hideThingsBasedOnMetadata({
     introspectionOptions,
   })
 
-  // This hides arguments on Type Fields as well as on individual queries and mutationsa.
+  // This hides arguments on Type Fields as well as on individual queries and mutations.
   //
   // ** Should be called after hideTypes so that arguments can be hidden
   // if their return Type is also hidden - if the options say to do that **

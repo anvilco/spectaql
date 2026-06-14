@@ -1201,7 +1201,7 @@
             {
                 "kind": "INPUT_OBJECT",
                 "name": "AddressInput",
-                "description": "AddresInput description",
+                "description": "AddressInput description",
                 "fields": null,
                 "inputFields": [
                     {

@@ -15,10 +15,10 @@ The goal of SpectaQL is to help you keep your documentation complete, current an
 
 ---
 
-**Repository sponsored by [Anvil](www.useanvil.com/developers)**
+**Repository sponsored by [Anvil](https://www.useanvil.com/developers)**
 
-![Horizontal Lockupblack](https://user-images.githubusercontent.com/293079/169453889-ae211c6c-7634-4ccd-8ca9-8970c2621b6f.png#gh-light-mode-only)
-![Horizontal Lockup copywhite](https://user-images.githubusercontent.com/293079/169453892-895f637b-4633-4a14-b997-960c9e17579b.png#gh-dark-mode-only)
+![Anvil logo (dark gray)](https://user-images.githubusercontent.com/293079/169453889-ae211c6c-7634-4ccd-8ca9-8970c2621b6f.png#gh-light-mode-only)
+![Anvil logo (white)](https://user-images.githubusercontent.com/293079/169453892-895f637b-4633-4a14-b997-960c9e17579b.png#gh-dark-mode-only)
 
 Anvil provides easy APIs for all things paperwork.
 
@@ -104,7 +104,7 @@ Using SpectaQL to generate your documentation has a number of benefits, such as:
    npx spectaql config.yml
    ```
 
-Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, write the output to somewhere else using the `-t /path/to/ouputDir` option, or add `-D` flag and view your docs live by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
+Your generated documentation will be located in the `public` directory by default. You can either copy the generated HTML to your web server, write the output to somewhere else using the `-t /path/to/outputDir` option, or add `-D` flag and view your docs live by pointing your browser to [http://localhost:4400/](http://localhost:4400/).
 
 ## Examples
 
@@ -153,7 +153,7 @@ In our experience, nearly all of the stuff we need for the content of the docume
 - `undocumented`: A Boolean value that can be provided on a Type, Field, Argument, Query or Mutation indicating that this item is _**not**_ to be included in the resulting output. Useful for 1-off hiding of things where the default was to show them.
 - `documented`: Just like `undocumented`, except it _**will**_ include it in the resulting output. Useful for 1-off showing of things where the default was to hide them.
 
-SpectaQL supports 3 ways to include metadata to be used during processing:
+SpectaQL supports three ways to include metadata to be used during processing:
 
 1. Include your metadata in the introspection query (or introspection query results file). This requires manipulation of your introspection query results either on their way out from the server, or once in an output file. At Anvil, we use Apollo Server and leverage [this plugin we wrote](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) to "weave" our metadata into the introspection query results. [This example output](https://github.com/anvilco/spectaql/blob/main/examples/data/introspection-with-metadata.json) illustrates what an "interwoven" metadata scenario might look like.
 2. Provide a standalone JSON file containing your metadata to be "woven" into your introspection query results by SpectaQL. SpectaQL uses the `addMetadata` method from [our Apollo Plugin](https://www.npmjs.com/package/@anvilco/apollo-server-plugin-introspection-metadata) under the hood, so please see the documentation there or [this example](https://github.com/anvilco/spectaql/blob/main/examples/data/metadata.json) file to understand its format.
@@ -208,7 +208,7 @@ In addition to being able to use any static examples you've provided, SpectaQL a
 
 SpectaQL supports a "theme" system that can be used to make minor tweaks to the default look, or to completely overhaul the output. [This article][themes-blog] should be really helpful to understanding how themes work and what they can do.
 
-SpectaQL ships with 3 included themes that can be specified via the `themeDir` option:
+SpectaQL ships with three included themes that can be specified via the `themeDir` option:
 
 - `default`: Our default theme. This is the theme that will be used if do not specify any `themeDir` option.
 - `basic`: Outputs the same HTML structure as the `default` theme, but with minimal CSS styling.
@@ -238,7 +238,7 @@ The best option for customizing your output is to see if what you want to do is 
 
 If you need to change or extend SpectaQL beyond what's supported out of the box, another option is to [fork SpectaQL on GitHub](https://help.github.com/articles/fork-a-repo/) and make your own modifications in the source. Forked repos are always public, so if you need changes to remain private you can consider doing a clone + mirror approach as [outlined here](https://stackoverflow.com/a/30352360/1427426). Either way, you can keep up-to-date by merging changes from the `main` branch.
 
-Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL. We try to be pretty active about fixing and enhancing the project. Please also consider subscribing to the repo to keep up to date with the goings on.
+Please consider submitting a Pull Request (or asking first via an Issue) for anything you think would be a useful addition to SpectaQL. We try to be pretty active about fixing and enhancing the project. Also, please consider subscribing to the repo to keep up to date with the goings on.
 
 Alternatively, you can just copy and modify the contents of `app` from the main repo and pass the path from your custom `app` path to the CLI using the `-a` flag.
 
