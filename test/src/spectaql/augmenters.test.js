@@ -1176,7 +1176,7 @@ describe('augmenters', function () {
             metadata.SCALAR = {
               String: {
                 metadata: {
-                  example: 'Fourty-two: Life, the Universe and Everything',
+                  example: 'Forty-two: Life, the Universe and Everything',
                 },
               },
             }
@@ -1195,7 +1195,7 @@ describe('augmenters', function () {
                 kind: KINDS.SCALAR,
                 name: 'String',
               }).example
-            ).to.include('Fourty-two: Life, the Universe and Everything')
+            ).to.include('Forty-two: Life, the Universe and Everything')
           })
         })
       })
