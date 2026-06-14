@@ -171,7 +171,7 @@ introspection:
   # - capitalize: will capitalize the first letter and convert the rest to lowercase.
   # - camelCase
   # - snakeCase
-  # - upperCase: all letters to upper case.
+  # - upperCase: all letters to uppercase.
   # - lowerCase: all letters to lowercase.
   queryNameStrategy: none
 
