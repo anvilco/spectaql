@@ -105,7 +105,7 @@ If you'd like to add more helpers or overwrite an existing helper, simply put yo
 
 _NOTE:_ This is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
 
-By default, SpectaQL will use all the non-hidden data that your GraphQL schema has provided, and arrange it in an sane, but opinionated default manner. It will group `Queries` and `Mutations` under an `Operations` header, then it will display all regular `Types`, and finally it will display all `Subscriptions`. You can see the [default arranger source][default-data-arranger] for more on how the default is done.
+By default, SpectaQL will use all the non-hidden data that your GraphQL schema has provided, and arrange it in a sane, but opinionated default manner. It will group `Queries` and `Mutations` under an `Operations` header, then it will display all regular `Types`, and finally it will display all `Subscriptions`. You can see the [default arranger source][default-data-arranger] for more on how the default is done.
 
 However, if you'd like to completely customize the data that's displayed, and have some basic control over how it's displayed, you can provide a "dynamic data arranger" module. Here's how:
 
