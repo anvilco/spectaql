@@ -20,6 +20,7 @@ describe('interpolation', function () {
 
     def('env', () => ({
       SOME_VAR: 'it worked',
+      URL_VAR: 'https://something.org',
     }))
 
     it('substitutes things from the environment', function () {
@@ -57,6 +58,10 @@ describe('interpolation', function () {
             '${spectaqltest_SOME_NON_EXISTENT_VAR:-defaulted}',
           ],
         },
+        substituteUrlDefault:
+          '${spectaqltest_SOME_NON_EXISTENT_VAR:-http://example.com}',
+        substituteUrlPresent:
+          '${spectaqltest_URL_VAR:-http://example.com}',
       }
 
       const substitutedObject = interpolation.substituteEnvOnObject(obj)
@@ -92,6 +97,8 @@ describe('interpolation', function () {
           substituteStringDefault: 'defaulted',
           substituteArrayDefault: ['one', 'defaulted'],
         },
+        substituteUrlDefault: 'http://example.com',
+        substituteUrlPresent: 'https://something.org',
       })
     })
   })
