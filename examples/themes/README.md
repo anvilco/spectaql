@@ -88,7 +88,7 @@ You can override syntax highlighting styles by specifying a `syntax-highlighting
 
 SpectaQL uses [Handlebars][handlebars] as its templating engine - please read up on their docs if you'd like to alter this area. Any `.hbs` files that you add to this folder will be overlaid on top of the default theme's directory.
 
-SpectaQL will look for the the `main.hbs` file in the resulting `views` directory as the entry point for Handlebars. If your theme provides a `main.hbs` file, that will overwrite the default one and be used to direct the HBS -> HTML build.
+SpectaQL will look for the `main.hbs` file in the resulting `views` directory as the entry point for Handlebars. If your theme provides a `main.hbs` file, that will overwrite the default one and be used to direct the HBS -> HTML build.
 
 If you only want to tweak and/or add certain partials, you can do so by only including those customized or additional files in your theme. They will be overlaid on top of the default theme directory in a supplemental manner.
 
@@ -96,7 +96,7 @@ SpectaQL also supports running a theme in "embeddable" mode to produce output th
 
 ### `helpers`
 
-[Handlebars][handlebars] allows for Javascript "helpers" to be used throughout its templates. These helpers must exist in the `helpers/` directory.
+[Handlebars][handlebars] allows for JavaScript "helpers" to be used throughout its templates. These helpers must exist in the `helpers/` directory.
 All of SpectaQL's default theme helpers will be available to any custom theme "for free".
 
 If you'd like to add more helpers or overwrite an existing helper, simply put your JS file(s) into this folder and they will be copied on top of the default theme's directory and will be available for use in your templates.
@@ -105,7 +105,7 @@ If you'd like to add more helpers or overwrite an existing helper, simply put yo
 
 _NOTE:_ This is an experimental API and it could change in a breaking manner at any time before "major" release. Use at your own risk!
 
-By default, SpectaQL will use all the non-hidden data that your GraphQL schema has provided, and arrange it in an sane, but opinionated default manner. It will group `Queries` and `Mutations` under an `Operations` header, then it will display all regular `Types`, and finally it will display all `Subscriptions`. You can see the [default arranger source][default-data-arranger] for more on how the default is done.
+By default, SpectaQL will use all the non-hidden data that your GraphQL schema has provided, and arrange it in a sane, but opinionated default manner. It will group `Queries` and `Mutations` under an `Operations` header, then it will display all regular `Types`, and finally it will display all `Subscriptions`. You can see the [default arranger source][default-data-arranger] for more on how the default is done.
 
 However, if you'd like to completely customize the data that's displayed, and have some basic control over how it's displayed, you can provide a "dynamic data arranger" module. Here's how:
 

@@ -78,7 +78,7 @@ export const loadSchemaFromSDLFile = ({
     if (types.length) {
       typesArray.push(types)
     } else {
-      console.warn(`WARNING: No GraphqQL schema file(s) found at ${path}.`)
+      console.warn(`WARNING: No GraphQL schema file(s) found at ${path}.`)
     }
   }
   if (!typesArray.length) {

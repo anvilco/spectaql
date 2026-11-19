@@ -1,12 +1,12 @@
 ### 3.0.9
-  - Dependeny updates related to [Issue 1077](https://github.com/anvilco/spectaql/issues/1077). Thanks @trevorr
+  - Dependency updates related to [Issue 1077](https://github.com/anvilco/spectaql/issues/1077). Thanks @trevorr
 
 ### 3.0.8
   - Fix for [Issue 945](https://github.com/anvilco/spectaql/issues/945) via [PR 1073](https://github.com/anvilco/spectaql/pull/1073#pullrequestreview-3919791498). Thanks @SergioChan
 
 ### 3.0.7
   - Fix CVE on `lodash.unset`. https://github.com/anvilco/spectaql/issues/1069
-  - Dependeny updates
+  - Dependency updates
 
 ### 3.0.6
   - Fix for babelized dynamic imports in Node 23+ https://github.com/anvilco/spectaql/pull/1059
