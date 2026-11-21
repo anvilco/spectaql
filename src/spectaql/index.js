@@ -132,7 +132,7 @@ async function run(opts) {
     servers,
     host,
     url: urlToParse,
-    schemes: [protocol.slice(0, -1)],
+    schemes: protocol ? [protocol.slice(0, -1)] : [],
     basePath: pathname,
     items,
   }
