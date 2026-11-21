@@ -72,6 +72,17 @@ describe('index', function () {
       return expect(result).to.be.ok
     })
 
+    context('url without a protocol', function () {
+      def('url', () => 'foo.com/graphql')
+
+      it('does not error and has no schemes', async function () {
+        const result = await spectaql($.opts)
+        expect(result).to.be.ok
+        expect(result.url).to.eql('foo.com/graphql')
+        expect(result.schemes).to.eql([])
+      })
+    })
+
     context('no x-url', function () {
       def('url', () => undefined)
       it('errors', function () {
